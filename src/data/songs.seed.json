@@ -76,43 +76,6 @@
     ]
   },
   {
-    "slug": "as-i-kneel-before-you",
-    "number": 4,
-    "title": "As I kneel before you",
-    "title_alt": null,
-    "language": "english",
-    "tags": [
-      "Mother Mary",
-      "Recessional"
-    ],
-    "stanzas": [
-      {
-        "label": "Verse 1",
-        "text": "As I kneel before you,\nAs I bow my head in prayer,\nTake this day, make it yours\nand fill me with your love."
-      },
-      {
-        "label": "Verse 2",
-        "text": "Ave Maria,\nGratia plena,\nDominus tecum,\nBenedicta tu."
-      },
-      {
-        "label": "Verse 3",
-        "text": "All I have I give you,\nEvery dream and wish are yours,\nMother of Christ,\nMother of mine, present them to my Lord."
-      },
-      {
-        "label": "Verse 4",
-        "text": "Ave Maria,\nGratia plena,\nDominus tecum,\nBenedicta tu."
-      },
-      {
-        "label": "Verse 5",
-        "text": "As I kneel before you,\nAnd I see your smiling face,\nEv'ry thought, ev'ry word\nIs lost in your embrace."
-      },
-      {
-        "label": "Verse 6",
-        "text": "Ave Maria,\nGratia plena,\nDominus tecum,\nBenedicta tu."
-      }
-    ]
-  },
-  {
     "slug": "as-the-deer",
     "number": 5,
     "title": "As the deer",
@@ -312,32 +275,6 @@
       {
         "label": "Verse 4",
         "text": "I worship You in spirit and in truth"
-      }
-    ]
-  },
-  {
-    "slug": "drummer-boy",
-    "number": 12,
-    "title": "Drummer Boy",
-    "title_alt": null,
-    "language": "english",
-    "tags": [
-      "Carol",
-      "Christmas",
-      "Offertory"
-    ],
-    "stanzas": [
-      {
-        "label": "Verse 1",
-        "text": "Come they told me pa rum pum pum pum,\nA newborn King to see pa rum pum pum pum,\nOur finest gifts we bring pa rum pum pum pum,\nTo lay before the King pa rum pum pum pum,\nrum pum pum pum, rum pum pum pum.\nSo to honour Him pa rum pum pum pum,\nWhen we come."
-      },
-      {
-        "label": "Verse 2",
-        "text": "Baby Jesus pa rum pum pum pum,\nI am a poor boy too pa rum pum pum pum,\nI have no gift to bring pa rum pum pum pum,\nThat's fit to give a King pa rum pum pum pum,\nrum pum pum pum, rum pum pum pum.\nShall I play for you? pa rum pum pum pum,\non my drum."
-      },
-      {
-        "label": "Verse 3",
-        "text": "Mary nodded pa rum pum pum pum,\nThe ox and lamb kept time pa rum pum pum pum,\nI played my drum for Him pa rum pum pum pum,\nI played my best for Him pa rum pum pum pum,\nrum pum pum pum, rum pum pum pum.\nThen He smiled at me pa rum pum pum pum\nMe and my drum."
       }
     ]
   },
@@ -729,69 +666,6 @@
       {
         "label": "Verse 4",
         "text": "Make me a channel of your peace,\nIt is in pardoning that we are pardoned,\nIn giving to all men that we receive,\nAnd in dying that we're born to eternal life"
-      }
-    ]
-  },
-  {
-    "slug": "mary-did-you-know",
-    "number": 28,
-    "title": "Mary did you know",
-    "title_alt": null,
-    "language": "english",
-    "tags": [
-      "Christmas",
-      "Communion",
-      "Mother Mary"
-    ],
-    "stanzas": [
-      {
-        "label": "Verse 1",
-        "text": "Mary, did you know\nThat your baby boy will one day walk on water?\nMary, did you know\nThat your baby boy will save our sons and daughters?\nDid you know\nThat your baby boy has come to make you new?\nThis child that you've delivered\nWill soon deliver you"
-      },
-      {
-        "label": "Verse 2",
-        "text": "Mary, did you know\nThat your baby boy will give sight to a blind man?\nMary, did you know\nThat your baby boy will calm a storm with His hand?\nDid you know\nThat your baby boy has walked where angels trod?\nAnd when you kiss your little baby\nYou've kissed the face of God\nMary, did you know?"
-      },
-      {
-        "label": "Verse 3",
-        "text": "The blind will see\nThe deaf will hear\nAnd the dead will live again\nThe lame will leap\nThe dumb will speak\nThe praises of the Lamb\nSee upcoming pop shows\nGet tickets for your favorite artists\nYou might also like\nJudge Judy\nTyler, The Creator\nTake Your Mask Off\nTyler, The Creator\nPort Antonio"
-      },
-      {
-        "label": "Verse 4",
-        "text": "Mary, did you know\nThat your baby boy is Lord of all creation?\nMary, did you know\nThat your baby boy will one day rule the nations?\nDid you know\nThat your baby boy is heaven's perfect Lamb?\nThis sleeping child you're holding\nIs the Great I Am"
-      },
-      {
-        "label": "Verse 5",
-        "text": "Oh, Mary, did you know"
-      }
-    ]
-  },
-  {
-    "slug": "one-small-child",
-    "number": 29,
-    "title": "One small child",
-    "title_alt": null,
-    "language": "english",
-    "tags": [
-      "Christmas",
-      "Communion"
-    ],
-    "stanzas": [
-      {
-        "label": "Verse 1",
-        "text": "One small child in a land of a thousand\nOne small dream of a Savior tonight\nOne small hand reaching out to the starlight\nOne small Savior of life, ooh"
-      },
-      {
-        "label": "Verse 2",
-        "text": "One king bringing his gold and riches\nOne King ruling an army of might\nOne king kneeling with incense and candlelight\nOne King bringing us life, ooh"
-      },
-      {
-        "label": "Verse 3",
-        "text": "See Him lying, a cradle beneath Him\nSee Him smiling in the stall\nSee His mother praising His Father\nSee His tiny eyelids fall"
-      },
-      {
-        "label": "Verse 4",
-        "text": "See the shepherds kneeling before Him\nSee the kings on bended knee\nOh, see the mother praising the Father\nSee the blessed infant sleep"
       }
     ]
   },
@@ -1425,31 +1299,6 @@
     ]
   },
   {
-    "slug": "anchal-tumhara-o-maa",
-    "number": 50,
-    "title": "अंचल तुम्हारा ओ माँ",
-    "title_alt": "Anchal tumhara o maa",
-    "language": "hindi",
-    "tags": [
-      "Mother Mary",
-      "Recessional"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "अंचल तुम्हारा ओ माँ\nआशीष देता सदा से\nअंचल में हमको रखना\nआशीष देना सदा ही"
-      },
-      {
-        "label": "पद 1",
-        "text": "बालक, वृद्ध, युवा सभी\nजोभी आए दुवार तिहारे\nसब को तू देती साया\nसब को तू देती चाया"
-      },
-      {
-        "label": "पद 2",
-        "text": "जग की जननी मरिया\nहर दिन हर पल तुझको चढ़ाते\nतुहि बनी येशु माता\nहमारी भी बन तूही माता"
-      }
-    ]
-  },
-  {
     "slug": "asha-meri",
     "number": 51,
     "title": "आशा मेरी",
@@ -1800,31 +1649,6 @@
     ]
   },
   {
-    "slug": "namo-ae-meri-maa",
-    "number": 61,
-    "title": "नमो ए मेरी माँ",
-    "title_alt": "Namo ae meri maa",
-    "language": "hindi",
-    "tags": [
-      "Mother Mary",
-      "Recessional"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "नमो ए मेरी माँ,\nनमो ए मेरी माँ,\nमानव में झनमी है माँ धन्य तू,\nनमो ए मेरी माँ।"
-      },
-      {
-        "label": "पद 1",
-        "text": "धन्य तू है प्रभु येसु की माँ\nनारी जगत की ज्योति तू है माँ\nतेरी महिमा का गान सदा हो माँ"
-      },
-      {
-        "label": "पद 2",
-        "text": "तेरी शरण में दीन जो आये माँ\nपाते दया का दान ए मेरी माँ\nसागर दया का तू है मेरी माँ"
-      }
-    ]
-  },
-  {
     "slug": "neele-aasman-ke-paar-jayenge",
     "number": 62,
     "title": "नीले आसमान के पार जाएंगे",
@@ -1940,44 +1764,6 @@
       {
         "label": "पद 7",
         "text": "तेरी आंखों की पुतली हूं पापा\nमैं - आंखों की पुतली हूं पापा\nतेरी आंखों की पुतली हूं पापा\nमैं - आंखों की पुतली हूं पापा"
-      }
-    ]
-  },
-  {
-    "slug": "pavitra-aatma-aa",
-    "number": 64,
-    "title": "पवित्र आत्मा आ",
-    "title_alt": "Pavitra Aatma Aa",
-    "language": "hindi",
-    "tags": [
-      "Adoration",
-      "Communion",
-      "Mother Mary"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "पवित्र आत्मा आ\nपवित्र आत्मा आ\nमुझे ले जाओ येशु के चरणों में\nपवित्र आत्मा आ"
-      },
-      {
-        "label": "पद 1",
-        "text": "पवित्र आत्मा आ\nपवित्र आत्मा आ\nमुझे ले जाओ येशु के चरणों में\nपवित्र आत्मा आ"
-      },
-      {
-        "label": "पद 2",
-        "text": "सिर्फ तेरे लिए येशु तेरे लिए\nसिर्फ तेरे लिए येशु तेरे लिए\nसिर्फ तेरे लिए येशु तेरे लिए\nमैं हाथ उठाता हूं"
-      },
-      {
-        "label": "पद 3",
-        "text": "घुटने टिका कर सिर झुका कर\nहाथ उठाता तेरे लिए\nघुटने टिका कर सिर झुका कर\nहाथ उठाता तेरे लिए"
-      },
-      {
-        "label": "पद 4",
-        "text": "सिर्फ तेरे लिए येशु तेरे लिए\nसिर्फ तेरे लिए येशु तेरे लिए\nसिर्फ तेरे लिए येशु तेरे लिए\nमैं सिर झुकाता हूं"
-      },
-      {
-        "label": "पद 5",
-        "text": "येशु ही मार्ग है\nयेशु ही सत्य है\nयेशु ही जीवन है\nयेशु मेरा प्रभु"
       }
     ]
   },
