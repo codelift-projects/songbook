@@ -1,0 +1,328 @@
+[
+  {
+    "duplicate_group_id": "DOUBTFUL_1",
+    "language": "english",
+    "type": "doubtful_duplicate_kept",
+    "kept": [
+      "Lamb of God, O Jesus Christ",
+      "Lamb of God - sins of all the world"
+    ],
+    "urls": [
+      "https://choirbook.github.io/english/Lamb of God, O Jesus Christ.html",
+      "https://choirbook.github.io/english/Lamb of God - sins of all the world.html"
+    ],
+    "similarity_scores": {
+      "title_similarity": 64.28571428571428,
+      "first_line_similarity": 100.0,
+      "lyrics_similarity": 80.30303030303031
+    },
+    "decision": "Kept both songs in seed.json"
+  },
+  {
+    "duplicate_group_id": "EXACT_2",
+    "language": "english",
+    "type": "exact_duplicate_removed",
+    "kept": "We are gathering together unto him",
+    "kept_url": "https://choirbook.github.io/english/We are gathering together unto him.html",
+    "removed_url": "https://choirbook.github.io/english/We are gathering together.html",
+    "similarity_scores": {
+      "title_similarity": 100.0,
+      "lyrics_similarity": 100.0
+    }
+  },
+  {
+    "duplicate_group_id": "EXACT_3",
+    "language": "english",
+    "type": "exact_duplicate_removed",
+    "kept": "What a friend we have",
+    "kept_url": "https://choirbook.github.io/english/What a friend we have.html",
+    "removed_url": "https://choirbook.github.io/english/What a friend we have in Jesus.html",
+    "similarity_scores": {
+      "title_similarity": 100.0,
+      "lyrics_similarity": 96.49334945586457
+    }
+  },
+  {
+    "duplicate_group_id": "DOUBTFUL_4",
+    "language": "hindi",
+    "type": "doubtful_duplicate_kept",
+    "kept": [
+      "Jesus Paid It AllBy Kim Walker-Smith | Worship Circle Hymns",
+      "Praise (feat. Brandon Lake, Chris Brown & Chandler Moore) | Elevation Worship"
+    ],
+    "urls": [
+      "https://masihgeet.in/jesus-paid-it-all-lyrics-by-kim-walker-smith/",
+      "https://masihgeet.in/praise-feat-brandon-lake-chris-brown-chandler-moore-elevation-worship/"
+    ],
+    "similarity_scores": {
+      "title_similarity": 46.4,
+      "first_line_similarity": 100.0,
+      "lyrics_similarity": 83.1858407079646
+    },
+    "decision": "Kept both songs in seed.json"
+  },
+  {
+    "duplicate_group_id": "DOUBTFUL_5",
+    "language": "hindi",
+    "type": "doubtful_duplicate_kept",
+    "kept": [
+      "No One Like The LordBy Jenn Johnson | Bethel Music",
+      "Praise (feat. Brandon Lake, Chris Brown & Chandler Moore) | Elevation Worship"
+    ],
+    "urls": [
+      "https://masihgeet.in/no-one-like-the-lord-lyrics-by-jenn-johnson/",
+      "https://masihgeet.in/praise-feat-brandon-lake-chris-brown-chandler-moore-elevation-worship/"
+    ],
+    "similarity_scores": {
+      "title_similarity": 37.60683760683761,
+      "first_line_similarity": 100.0,
+      "lyrics_similarity": 85.71428571428571
+    },
+    "decision": "Kept both songs in seed.json"
+  },
+  {
+    "duplicate_group_id": "DOUBTFUL_6",
+    "language": "hindi",
+    "type": "doubtful_duplicate_kept",
+    "kept": [
+      "No One Like The LordBy Jenn Johnson | Bethel Music",
+      "AdonaiBy Nathaniel Bassey | English Version"
+    ],
+    "urls": [
+      "https://masihgeet.in/no-one-like-the-lord-lyrics-by-jenn-johnson/",
+      "https://masihgeet.in/adonai-lyrics-by-nathaniel-bassey/"
+    ],
+    "similarity_scores": {
+      "title_similarity": 35.95505617977528,
+      "first_line_similarity": 100.0,
+      "lyrics_similarity": 82.17054263565892
+    },
+    "decision": "Kept both songs in seed.json"
+  },
+  {
+    "duplicate_group_id": "DOUBTFUL_7",
+    "language": "hindi",
+    "type": "doubtful_duplicate_kept",
+    "kept": [
+      "याहवे ) By Oasis Ministry – New English (English Version",
+      "No One Like The LordBy Jenn Johnson | Bethel Music"
+    ],
+    "urls": [
+      "https://masihgeet.in/yahweh-by-oasis-ministry-new-english-christian-song/",
+      "https://masihgeet.in/no-one-like-the-lord-lyrics-by-jenn-johnson/"
+    ],
+    "similarity_scores": {
+      "title_similarity": 37.362637362637365,
+      "first_line_similarity": 100.0,
+      "lyrics_similarity": 90.64748201438849
+    },
+    "decision": "Kept both songs in seed.json"
+  },
+  {
+    "duplicate_group_id": "DOUBTFUL_8",
+    "language": "hindi",
+    "type": "doubtful_duplicate_kept",
+    "kept": [
+      "Kadosh Kadosh – By Dunsin Oyekan – (English Version)",
+      "Yeshua – By Michael Koulianos – (English Version)"
+    ],
+    "urls": [
+      "https://masihgeet.in/kadosh-kadosh-worship-song-by-dunsin-oyekan/",
+      "https://masihgeet.in/yeshua-worship-song-by-michael-koulianos-english-version/"
+    ],
+    "similarity_scores": {
+      "title_similarity": 70.73170731707317,
+      "first_line_similarity": 100.0,
+      "lyrics_similarity": 88.17204301075269
+    },
+    "decision": "Kept both songs in seed.json"
+  },
+  {
+    "duplicate_group_id": "EXACT_9",
+    "language": "hindi",
+    "type": "exact_duplicate_removed",
+    "kept": "मुझे बाइबल से प्यार है",
+    "kept_url": "https://masihgeet.in/mujhe-bible-se-pyar-hai/",
+    "removed_url": "https://masihgeet.in/mujhe-bible-se-pyar-hai-lyrics-in-hindi/",
+    "similarity_scores": {
+      "title_similarity": 100.0,
+      "lyrics_similarity": 96.3265306122449
+    }
+  },
+  {
+    "duplicate_group_id": "EXACT_10",
+    "language": "hindi",
+    "type": "exact_duplicate_removed",
+    "kept": "यीशु के बच्चे",
+    "kept_url": "https://masihgeet.in/yeshu-ke-bachche-action-song/",
+    "removed_url": "https://masihgeet.in/yeshu-ke-bachche-lyrics-in-hindi/",
+    "similarity_scores": {
+      "title_similarity": 100.0,
+      "lyrics_similarity": 95.81395348837209
+    }
+  },
+  {
+    "duplicate_group_id": "DOUBTFUL_11",
+    "language": "hindi",
+    "type": "doubtful_duplicate_kept",
+    "kept": [
+      "मैं हूँ अनमोल",
+      "मैं हूँ अनमोल"
+    ],
+    "urls": [
+      "https://masihgeet.in/yeshu-ki-nazron-me-main-hun-anmol-lyrics-in-hindi/",
+      "https://masihgeet.in/mai-hu-anmol-lyrics-in-hindi/"
+    ],
+    "similarity_scores": {
+      "title_similarity": 100.0,
+      "first_line_similarity": 100.0,
+      "lyrics_similarity": 94.5578231292517
+    },
+    "decision": "Kept both songs in seed.json"
+  },
+  {
+    "duplicate_group_id": "DOUBTFUL_12",
+    "language": "hindi",
+    "type": "doubtful_duplicate_kept",
+    "kept": [
+      "मसीहा आया है",
+      "आया मसीहा आया है"
+    ],
+    "urls": [
+      "https://masihgeet.in/masiha-aaya-hai-lyrics-in-hindi/",
+      "https://masihgeet.in/aaya-masiha-aaya-hai-christmas-song-lyrics-in-hindi/"
+    ],
+    "similarity_scores": {
+      "title_similarity": 100.0,
+      "first_line_similarity": 100.0,
+      "lyrics_similarity": 83.07692307692308
+    },
+    "decision": "Kept both songs in seed.json"
+  },
+  {
+    "duplicate_group_id": "EXACT_13",
+    "language": "hindi",
+    "type": "exact_duplicate_removed",
+    "kept": "क्या दिन खुशी का आया",
+    "kept_url": "https://masihgeet.in/kya-din-khushee-ka-aaya-lyrics-in-hindi/",
+    "removed_url": "https://masihgeet.in/kya-din-khushi-ka-aaya-christmas-song-lyrics-in-hindi/",
+    "similarity_scores": {
+      "title_similarity": 97.5609756097561,
+      "lyrics_similarity": 95.95375722543352
+    }
+  },
+  {
+    "duplicate_group_id": "DOUBTFUL_14",
+    "language": "hindi",
+    "type": "doubtful_duplicate_kept",
+    "kept": [
+      "Go Tell It On The Mountain Song",
+      "Days of Christmas"
+    ],
+    "urls": [
+      "https://masihgeet.in/go-tell-it-on-the-mountain-song-lyrics-in-english/",
+      "https://masihgeet.in/12-days-of-christmas-lyrics-in-english/"
+    ],
+    "similarity_scores": {
+      "title_similarity": 29.16666666666667,
+      "first_line_similarity": 100.0,
+      "lyrics_similarity": 83.21167883211679
+    },
+    "decision": "Kept both songs in seed.json"
+  },
+  {
+    "duplicate_group_id": "DOUBTFUL_15",
+    "language": "hindi",
+    "type": "doubtful_duplicate_kept",
+    "kept": [
+      "आशा मेरी",
+      "आशा मेरी"
+    ],
+    "urls": [
+      "https://masihgeet.in/aasha-meri-lyrics-in-hindi/",
+      "https://choirbook.github.io/hindi/आशा मेरी.html"
+    ],
+    "similarity_scores": {
+      "title_similarity": 100.0,
+      "first_line_similarity": 20.0,
+      "lyrics_similarity": 82.31884057971014
+    },
+    "decision": "Kept both songs in seed.json"
+  },
+  {
+    "duplicate_group_id": "DOUBTFUL_16",
+    "language": "hindi",
+    "type": "doubtful_duplicate_kept",
+    "kept": [
+      "आओ हम यहोवा के लिये",
+      "आओ हम यहोवा के लिए"
+    ],
+    "urls": [
+      "https://masihgeet.in/aao-hum-yahowa-ke-liye-lyrics-in-hindi/",
+      "https://masihgeet.in/aao-hum-yahowa-ke-liye-lyrics-in-hindi-by-pastor-joy-gill/"
+    ],
+    "similarity_scores": {
+      "title_similarity": 91.89189189189189,
+      "first_line_similarity": 96.06299212598425,
+      "lyrics_similarity": 82.15488215488216
+    },
+    "decision": "Kept both songs in seed.json"
+  },
+  {
+    "duplicate_group_id": "DOUBTFUL_17",
+    "language": "hindi",
+    "type": "doubtful_duplicate_kept",
+    "kept": [
+      "Jesus Christ, My Living Hope Song",
+      "Go Tell It On The Mountain Song"
+    ],
+    "urls": [
+      "https://masihgeet.in/jesus-christ-my-living-hope-song-lyrics/",
+      "https://masihgeet.in/go-tell-it-on-the-mountain-song-lyrics-in-english/"
+    ],
+    "similarity_scores": {
+      "title_similarity": 41.26984126984127,
+      "first_line_similarity": 100.0,
+      "lyrics_similarity": 90.41095890410959
+    },
+    "decision": "Kept both songs in seed.json"
+  },
+  {
+    "duplicate_group_id": "DOUBTFUL_18",
+    "language": "hindi",
+    "type": "doubtful_duplicate_kept",
+    "kept": [
+      "என்னை நடத்துபவர் நீரே Yennai Nadathubavar Neerae | Jasmin Faith",
+      "என்னை நடத்துபவர் நீரே Yennai Nadathubavar Neerae| Jasmin Faith"
+    ],
+    "urls": [
+      "https://christianmedias.org/%e0%ae%8e%e0%ae%a9%e0%af%8d%e0%ae%a9%e0%af%88-%e0%ae%a8%e0%ae%9f%e0%ae%a4%e0%af%8d%e0%ae%a4%e0%af%81%e0%ae%aa%e0%ae%b5%e0%ae%b0%e0%af%8d-%e0%ae%a8%e0%af%80%e0%ae%b0%e0%af%87-yennai-nadathubavar-neerae/",
+      "https://christianmedias.org/yennai-nadathubavar-neerae-lyrics/"
+    ],
+    "similarity_scores": {
+      "title_similarity": 100.0,
+      "first_line_similarity": 100.0,
+      "lyrics_similarity": 92.3076923076923
+    },
+    "decision": "Kept both songs in seed.json"
+  },
+  {
+    "duplicate_group_id": "DOUBTFUL_19",
+    "language": "hindi",
+    "type": "doubtful_duplicate_kept",
+    "kept": [
+      "Undhan Aaviyai Neer Ootrum",
+      "unthan Aviyai neer ootrrum ootrrida vendumae ennai nirappida vendumae"
+    ],
+    "urls": [
+      "https://christianmedias.org/undhan-aaviyai-neer-ootrum-lyrics/",
+      "https://christianmedias.org/unthan-aviyai-neer-ootrrum-ootrrida-vendumae-ennai-nirappida-vendumae-lyrics/"
+    ],
+    "similarity_scores": {
+      "title_similarity": 55.81395348837209,
+      "first_line_similarity": 100.0,
+      "lyrics_similarity": 88.54961832061069
+    },
+    "decision": "Kept both songs in seed.json"
+  }
+]

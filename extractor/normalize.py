@@ -1,0 +1,305 @@
+import re
+from .utils import normalize_unicode, transliterate_to_roman, classify_category, detect_language
+
+CHORD_PATTERN = re.compile(
+    r'(\b[A-G](?:#|b)?(?:m|maj|min|dim|aug|sus|add)?[0-9]?(?:/[A-G](?:#|b)?)?\b|\bIntro:|\bCapo\s*\d*|\bKey:|\bBPM:|\bTabs?:)',
+    re.IGNORECASE
+)
+
+REPEAT_PATTERNS = [
+    (re.compile(r'[\(\[\{]\s*(?:x\s*|×\s*)?([2-9])\s*[\)\]\}]', re.IGNORECASE), r' – \1'),
+    (re.compile(r'(?:x|×)\s*([2-9])\b', re.IGNORECASE), r' – \1'),
+    (re.compile(r'\(\s*२\s*\)'), ' – 2'),
+    (re.compile(r'\(\s*३\s*\)'), ' – 3'),
+    (re.compile(r'\(\s*४\s*\)'), ' – 4'),
+]
+
+SECTION_HEADING_MAP = {
+    # Hindi / Marathi
+    'chorus': 'कोरस',
+    'sthayi': 'कोरस',
+    'mukhda': 'कोरस',
+    'refrain': 'कोरस',
+    'कोरस': 'कोरस',
+    'स्थायी': 'कोरस',
+    'मुखड़ा': 'कोरस',
+    'टेक': 'कोरस',
+    'ध्रुपद': 'कोरस',
+    'ध्रुवपद': 'कोरस',
+    'verse': 'पद',
+    'verse 1': 'पद 1',
+    'verse 2': 'पद 2',
+    'verse 3': 'पद 3',
+    'verse 4': 'पद 4',
+    'verse 5': 'पद 5',
+    'verse 6': 'पद 6',
+    'antara': 'पद',
+    'antara 1': 'पद 1',
+    'antara 2': 'पद 2',
+    'antara 3': 'पद 3',
+    'पद': 'पद',
+    'अंतरा': 'पद',
+    'कडवे': 'कडवे',
+    'कडवे १': 'कडवे १',
+    'कडवे २': 'कडवे २',
+    'कडवे ३': 'कडवे ३',
+    'bridge': 'ब्रिज',
+    'पुल': 'पुल',
+    'ब्रिज': 'ब्रिज',
+    'pre-chorus': 'प्री-कोरस',
+    'pre chorus': 'प्री-कोरस',
+    # English
+    'chorus_en': 'Chorus',
+    'verse_en': 'Verse',
+    'bridge_en': 'Bridge',
+    'pre_chorus_en': 'Pre-Chorus',
+    'refrain_en': 'Chorus',
+}
+
+def clean_line(line, language):
+    """
+    Clean a single lyric line.
+    """
+    if not line:
+        return ""
+    line = normalize_unicode(line)
+    
+    # Remove inline brackets like [C] [Am]
+    line = re.sub(r'\[[A-Ga-g0-9#/bmsusmajdim\s\.\,\-\+\*]+\]', '', line)
+    
+    # Normalize repeat markers
+    for pattern, repl in REPEAT_PATTERNS:
+        line = pattern.sub(repl, line)
+        
+    # Remove HTML remnants
+    line = re.sub(r'<[^>]+>', '', line)
+    
+    # Remove chord-only lines
+    words = line.split()
+    if words and all(re.match(r'^[A-G](?:#|b)?(?:m|maj|min|dim|aug|sus|add)?[0-9]?(?:/[A-G](?:#|b)?)?$', w, re.IGNORECASE) for w in words):
+        return ""
+        
+    # Remove lines containing boilerplate
+    if re.search(r'(?:share on|subscribe|lyrics by|written by|chord progression|tab by|download mp3|copyright)', line, re.IGNORECASE):
+        return ""
+
+    line = re.sub(r'\s+', ' ', line).strip()
+    return line
+
+def clean_raw_lyrics_to_stanzas(raw_text, language):
+    """
+    Parses raw lyrics text into a list of { label, text } stanza objects.
+    """
+    if not raw_text:
+        return []
+        
+    text = normalize_unicode(raw_text)
+    # Remove YAML frontmatter
+    text = re.sub(r'^---\r?\n[\s\S]*?\r?\n---', '', text).strip()
+    
+    # Remove markdown headers and block markers
+    text = re.sub(r'^#+\s+.*$', '', text, flags=re.MULTILINE)
+    text = re.sub(r'===\s*".*?"', '', text)
+    
+    # Split into raw blocks by double newlines or section headers
+    blocks = re.split(r'\n\s*\n+', text)
+    raw_stanzas = []
+    
+    for block in blocks:
+        lines = block.split('\n')
+        label = ""
+        lyric_lines = []
+        
+        for idx, line in enumerate(lines):
+            clean = line.strip()
+            if not clean:
+                continue
+                
+            # Check if this line is a section header (e.g. Chorus:, [Verse 1], अंतरा १, etc.)
+            header_match = re.match(r'^(?:\[|\()?(?:chorus|verse\s*\d*|antara\s*\d*|कडवे\s*\d*|पद\s*\d*|कोरस|अंतरा|bridge|pre-?chorus|refrain|sthayi|स्थायी|मुखड़ा)(?:\s*\d*)?(?:\:|\)|\])?$', clean, re.IGNORECASE)
+            if header_match and idx == 0:
+                header_raw = clean.strip('[]():').lower()
+                # Map to normalized label
+                if language in ('hindi', 'marathi'):
+                    label = SECTION_HEADING_MAP.get(header_raw, 'पद')
+                else:
+                    if 'chorus' in header_raw or 'refrain' in header_raw:
+                        label = 'Chorus'
+                    elif 'bridge' in header_raw:
+                        label = 'Bridge'
+                    elif 'pre' in header_raw:
+                        label = 'Pre-Chorus'
+                    else:
+                        label = 'Verse'
+                continue
+                
+            cl = clean_line(clean, language)
+            if cl:
+                # If language is Hindi or Marathi, skip lines that are pure English roman translations
+                if language in ('hindi', 'marathi'):
+                    is_devanagari = bool(re.search(r'[\u0900-\u097F]', cl))
+                    # Allow punctuation and numbers with Devanagari, but drop pure Latin lines if Devanagari exists
+                    if not is_devanagari and re.search(r'[a-zA-Z]{3,}', cl):
+                        continue
+                lyric_lines.append(cl)
+                
+        if lyric_lines:
+            stanza_text = "\n".join(lyric_lines).strip()
+            if stanza_text:
+                raw_stanzas.append({
+                    "label": label,
+                    "text": stanza_text
+                })
+                
+    # Assign labels if missing
+    verse_counter = 1
+    has_chorus = any(s["label"] in ('कोरस', 'Chorus') for s in raw_stanzas)
+    
+    for i, s in enumerate(raw_stanzas):
+        if not s["label"]:
+            if language in ('hindi', 'marathi'):
+                if i == 0 and not has_chorus:
+                    s["label"] = "कोरस"
+                else:
+                    if language == 'marathi':
+                        s["label"] = f"कडवे {verse_counter}"
+                    else:
+                        s["label"] = f"पद {verse_counter}"
+                    verse_counter += 1
+            else:
+                if i == 0 and not has_chorus:
+                    s["label"] = "Verse 1"
+                else:
+                    s["label"] = f"Verse {verse_counter}"
+                    verse_counter += 1
+        else:
+            # Add index to Verse if missing number
+            if s["label"] == 'पद':
+                s["label"] = f"पद {verse_counter}"
+                verse_counter += 1
+            elif s["label"] == 'कडवे':
+                s["label"] = f"कडवे {verse_counter}"
+                verse_counter += 1
+            elif s["label"] == 'Verse':
+                s["label"] = f"Verse {verse_counter}"
+                verse_counter += 1
+
+    # Deduplicate repeated choruses if > 8 sections
+    if len(raw_stanzas) > 8:
+        unique_stanzas = []
+        seen_texts = set()
+        for s in raw_stanzas:
+            t_key = s["text"].lower()
+            if s["label"] in ('कोरस', 'Chorus') and t_key in seen_texts:
+                continue
+            seen_texts.add(t_key)
+            unique_stanzas.append(s)
+        raw_stanzas = unique_stanzas[:8]
+
+    return raw_stanzas
+
+def normalize_song_record(raw_song):
+    """
+    Transforms raw song dict into the exact 5-key schema:
+    {
+      "title": str,
+      "title_alt": str,
+      "language": "hindi" | "english" | "marathi",
+      "category": "worship" | "praise",
+      "stanzas": [{ "label": str, "text": str }, ...]
+    }
+    Also returns metadata for raw/incomplete categorization.
+    """
+    raw_title = raw_song.get("raw_title") or raw_song.get("title") or ""
+    raw_lyrics = raw_song.get("raw_lyrics") or raw_song.get("lyrics") or ""
+    source_url = raw_song.get("source_url") or ""
+    source_site = raw_song.get("source_site") or ""
+    tags = raw_song.get("tags") or []
+    
+    declared_lang = raw_song.get("language") or ""
+    detected_lang = detect_language(raw_title, raw_lyrics, declared_lang)
+    
+    # Title clean
+    clean_title = normalize_unicode(raw_title)
+    # Remove boilerplate suffixes
+    clean_title = re.sub(
+        r'\s*[\(\[\{]?(?:lyrics\s*(?:in\s*(?:hindi|english|marathi))?(?:\s*(?:&|and)\s*in\s*(?:hindi|english|marathi))?|christian\s*song|worship\s*song|hindi\s*christian\s*song)[\)\]\}]?',
+        '',
+        clean_title,
+        flags=re.IGNORECASE
+    ).strip()
+    # Remove prefixes like "Song - ", "Lyrics: ", numbers "12. "
+    clean_title = re.sub(r'^(?:[0-9]+[\.\-\s]+|(?:lyrics|song|गीत)\s*[\:\-\–]\s*)', '', clean_title, flags=re.IGNORECASE).strip()
+
+    title_alt = ""
+    # Check if title has Devanagari and Roman parts in parentheses
+    if detected_lang in ('hindi', 'marathi'):
+        # Check for Roman (Devanagari)
+        paren_match = re.search(r'([a-zA-Z\s,]+)\s*[\(\[](.*[\u0900-\u097F].*)[\)\]]', clean_title)
+        if paren_match:
+            title_alt = paren_match.group(1).strip()
+            clean_title = paren_match.group(2).strip()
+        else:
+            # Check for Devanagari (Roman)
+            paren_match2 = re.search(r'(.*[\u0900-\u097F].*)\s*[\(\[](.*[a-zA-Z].*)[\)\]]', clean_title)
+            if paren_match2:
+                clean_title = paren_match2.group(1).strip()
+                title_alt = paren_match2.group(2).strip()
+
+    # Clean punctuation left over in title
+    clean_title = re.sub(r'[\(\[\{]\s*[\)\]\}]', '', clean_title).strip()
+
+    # Title alt / transliteration
+    provided_alt = raw_song.get("title_alt") or raw_song.get("raw_title_alt")
+    if provided_alt and provided_alt != clean_title:
+        title_alt = normalize_unicode(provided_alt)
+    elif not title_alt:
+        if detected_lang in ('hindi', 'marathi'):
+            title_alt = transliterate_to_roman(clean_title)
+        else:
+            title_alt = clean_title
+
+    if not title_alt:
+        title_alt = clean_title
+
+    # Category
+    category = classify_category(clean_title, raw_lyrics, tags)
+    
+    # Stanzas
+    stanzas = clean_raw_lyrics_to_stanzas(raw_lyrics, detected_lang)
+    
+    is_incomplete = False
+    reasons = []
+    
+    if len(stanzas) < 2:
+        is_incomplete = True
+        reasons.append("fewer than 2 stanzas")
+    if not clean_title:
+        is_incomplete = True
+        reasons.append("missing title")
+        
+    for s in stanzas:
+        if not s.get("text") or not s.get("label"):
+            is_incomplete = True
+            reasons.append("empty stanza text or label")
+            
+    final_song = {
+        "title": clean_title,
+        "title_alt": title_alt,
+        "language": detected_lang,
+        "category": category,
+        "stanzas": stanzas
+    }
+    
+    meta = {
+        "source_url": source_url,
+        "source_site": source_site,
+        "raw_title": raw_title,
+        "extraction_confidence": 0.95 if not is_incomplete else 0.5,
+        "duplicate_suspect": False,
+        "duplicate_group_id": None,
+        "incomplete": is_incomplete,
+        "incomplete_reasons": reasons,
+    }
+    
+    return final_song, meta
