@@ -525,38 +525,6 @@
   },
   {
     "song": {
-      "title": "Anchal tumhara o maa",
-      "title_alt": "Anchal tumhara o maa",
-      "language": "hindi",
-      "category": "worship",
-      "stanzas": [
-        {
-          "label": "कोरस",
-          "text": "अंचल तुम्हारा ओ माँ\nआशीष देता सदा से\nअंचल में हमको रखना\nआशीष देना सदा ही"
-        },
-        {
-          "label": "पद 1",
-          "text": "बालक, वृद्ध, युवा सभी\nजोभी आए दुवार तिहारे\nसब को तू देती साया\nसब को तू देती चाया"
-        },
-        {
-          "label": "पद 2",
-          "text": "जग की जननी मरिया\nहर दिन हर पल तुझको चढ़ाते\nतुहि बनी येशु माता\nहमारी भी बन तूही माता"
-        }
-      ]
-    },
-    "metadata": {
-      "source_url": "https://choirbook.github.io/hindi/Anchal tumhara o maa.html",
-      "source_site": "Choirbook",
-      "raw_title": "Anchal tumhara o maa",
-      "extraction_confidence": 0.95,
-      "duplicate_suspect": false,
-      "duplicate_group_id": null,
-      "incomplete": false,
-      "incomplete_reasons": []
-    }
-  },
-  {
-    "song": {
       "title": "Anjalodu Nenjurugi -அஞ்சலோடு நெஞ்சுருகி",
       "title_alt": "Anjalodu Nenjurugi -அஞ்சலோடு நெஞ்சுருகி",
       "language": "hindi",
@@ -3379,90 +3347,7 @@
       "incomplete_reasons": []
     }
   },
-  {
-    "song": {
-      "title": "Namo ae meri maa",
-      "title_alt": "Namo ae meri maa",
-      "language": "hindi",
-      "category": "worship",
-      "stanzas": [
-        {
-          "label": "कोरस",
-          "text": "नमो ए मेरी माँ,\nनमो ए मेरी माँ,\nमानव में झनमी है माँ धन्य तू,\nनमो ए मेरी माँ।"
-        },
-        {
-          "label": "पद 1",
-          "text": "धन्य तू है प्रभु येसु की माँ\nनारी जगत की ज्योति तू है माँ\nतेरी महिमा का गान सदा हो माँ"
-        },
-        {
-          "label": "पद 2",
-          "text": "तेरी शरण में दीन जो आये माँ\nपाते दया का दान ए मेरी माँ\nसागर दया का तू है मेरी माँ"
-        }
-      ]
-    },
-    "metadata": {
-      "source_url": "https://choirbook.github.io/hindi/Namo ae meri maa.html",
-      "source_site": "Choirbook",
-      "raw_title": "Namo ae meri maa",
-      "extraction_confidence": 0.95,
-      "duplicate_suspect": false,
-      "duplicate_group_id": null,
-      "incomplete": false,
-      "incomplete_reasons": []
-    }
-  },
-  {
-    "song": {
-      "title": "Namo – Nambi Vanthaen | Beryl Natasha, Clement Vedanayagam",
-      "title_alt": "Namo – Nambi Vanthaen | Beryl Natasha, Clement Vedanayagam",
-      "language": "hindi",
-      "category": "worship",
-      "stanzas": [
-        {
-          "label": "कोरस",
-          "text": "நம்பிவந்தேன் மேசியா"
-        },
-        {
-          "label": "पद 1",
-          "text": "நான் நம்பிவந்தேனே -திவ்ய"
-        },
-        {
-          "label": "पद 2",
-          "text": "சரணம்! சரணம்! சரணம் ஐயா"
-        },
-        {
-          "label": "पद 3",
-          "text": "நான் நம்பிவந்தேனே."
-        },
-        {
-          "label": "पद 4",
-          "text": "1. தம்பிரான் ஒருவனே"
-        },
-        {
-          "label": "पद 5",
-          "text": "தம்பமே தருவனே – வரு"
-        },
-        {
-          "label": "पद 6",
-          "text": "தவிது குமர குரு"
-        },
-        {
-          "label": "पद 7",
-          "text": "பரமனுவேலே நம்பிவந்தேனே – நான்"
-        }
-      ]
-    },
-    "metadata": {
-      "source_url": "https://christianmedias.org/namo-nambi-vanthaen-beryl-natasha-clement-vedanayagam/",
-      "source_site": "ChristianMedias",
-      "raw_title": "Namo – Nambi Vanthaen | Beryl Natasha, Clement Vedanayagam",
-      "extraction_confidence": 0.95,
-      "duplicate_suspect": false,
-      "duplicate_group_id": null,
-      "incomplete": false,
-      "incomplete_reasons": []
-    }
-  },
+ 
   {
     "song": {
       "title": "Nanmaigal seiyya ennai Pirithedutheer",
@@ -47188,46 +47073,6 @@
       "source_url": "https://choirbook.github.io/english/Make me a channel of your peace.html",
       "source_site": "Choirbook",
       "raw_title": "Make me a channel of your peace",
-      "extraction_confidence": 0.95,
-      "duplicate_suspect": false,
-      "duplicate_group_id": null,
-      "incomplete": false,
-      "incomplete_reasons": []
-    }
-  },
-  {
-    "song": {
-      "title": "Mary, did you know",
-      "title_alt": "Mary, did you know",
-      "language": "english",
-      "category": "worship",
-      "stanzas": [
-        {
-          "label": "Verse 1",
-          "text": "Mary, did you know\nThat your baby boy will one day walk on water?\nMary, did you know\nThat your baby boy will save our sons and daughters?\nDid you know\nThat your baby boy has come to make you new?\nThis child that you've delivered\nWill soon deliver you"
-        },
-        {
-          "label": "Verse 1",
-          "text": "Mary, did you know\nThat your baby boy will give sight to a blind man?\nMary, did you know\nThat your baby boy will calm a storm with His hand?\nDid you know\nThat your baby boy has walked where angels trod?\nAnd when you kiss your little baby\nYou've kissed the face of God\nMary, did you know?"
-        },
-        {
-          "label": "Verse 2",
-          "text": "The blind will see\nThe deaf will hear\nAnd the dead will live again\nThe lame will leap\nThe dumb will speak\nThe praises of the Lamb\nSee upcoming pop shows\nGet tickets for your favorite artists\nYou might also like\nJudge Judy\nTyler, The Creator\nTake Your Mask Off\nTyler, The Creator\nPort Antonio"
-        },
-        {
-          "label": "Verse 3",
-          "text": "Mary, did you know\nThat your baby boy is Lord of all creation?\nMary, did you know\nThat your baby boy will one day rule the nations?\nDid you know\nThat your baby boy is heaven's perfect Lamb?\nThis sleeping child you're holding\nIs the Great I Am"
-        },
-        {
-          "label": "Verse 4",
-          "text": "Oh, Mary, did you know"
-        }
-      ]
-    },
-    "metadata": {
-      "source_url": "https://choirbook.github.io/english/Mary, did you know.html",
-      "source_site": "Choirbook",
-      "raw_title": "Mary, did you know",
       "extraction_confidence": 0.95,
       "duplicate_suspect": false,
       "duplicate_group_id": null,
