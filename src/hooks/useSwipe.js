@@ -16,6 +16,7 @@ export function useSwipe({
   return {
     onPointerDown(e) {
       if (e.pointerType === 'mouse' && e.button !== 0) return;
+      if (e.target?.closest?.('button, a, input, select, textarea, [data-no-swipe]')) return;
       start.current = { x: e.clientX, y: e.clientY, t: performance.now(), id: e.pointerId };
       moved.current = false;
     },
@@ -28,6 +29,7 @@ export function useSwipe({
       const s = start.current;
       start.current = null;
       if (!s || e.pointerId !== s.id) return;
+      if (e.target?.closest?.('button, a, input, select, textarea, [data-no-swipe]')) return;
 
       const dx = e.clientX - s.x;
       const dy = e.clientY - s.y;

@@ -1,6 +1,6 @@
 import { useState, useRef, useMemo } from 'react';
 import { parseLyrics, detectLanguage } from '../lib/parse';
-import { downloadSampleJsonTemplate } from '../lib/export';
+import { downloadSampleJsonTemplate, SAMPLE_JSON_TEMPLATE_STRING } from '../lib/export';
 import { useSongs } from '../store/SongContext';
 import { 
   Upload, 
@@ -16,7 +16,8 @@ import {
   CheckSquare,
   Square,
   AlertTriangle,
-  Filter
+  Filter,
+  Copy
 } from 'lucide-react';
 
 function robustJsonParse(text) {
@@ -53,6 +54,26 @@ export default function SongImportModal({ isOpen, onClose, onImportSongs }) {
   const [jsonError, setJsonError] = useState('');
   const [importSearch, setImportSearch] = useState('');
   const [skipDuplicates, setSkipDuplicates] = useState(true);
+  const [copiedTemplate, setCopiedTemplate] = useState(false);
+
+  const handleCopyJsonTemplate = async () => {
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        await navigator.clipboard.writeText(SAMPLE_JSON_TEMPLATE_STRING);
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = SAMPLE_JSON_TEMPLATE_STRING;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+      }
+      setCopiedTemplate(true);
+      setTimeout(() => setCopiedTemplate(false), 2500);
+    } catch {
+      setCopiedTemplate(false);
+    }
+  };
 
   // Text / Lyrics mode state
   const [lyricsTitle, setLyricsTitle] = useState('');
@@ -334,7 +355,7 @@ export default function SongImportModal({ isOpen, onClose, onImportSongs }) {
         <div className="flex-1 overflow-y-auto p-5 space-y-4">
           {tab === 'json' && (
             <div className="space-y-4">
-              {/* File upload and Sample template download */}
+              {/* File upload and Sample template actions */}
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 rounded-xl border border-slate-200 bg-slate-50/70 p-3">
                 <div className="flex items-center gap-2">
                   <input
@@ -353,24 +374,58 @@ export default function SongImportModal({ isOpen, onClose, onImportSongs }) {
                     <span>Upload JSON File</span>
                   </button>
 
-                  <span className="text-xs font-medium text-slate-500">or paste JSON below</span>
+                  <span className="text-xs font-medium text-slate-500 hidden sm:inline">or paste JSON below</span>
                 </div>
 
-                <button
-                  type="button"
-                  onClick={downloadSampleJsonTemplate}
-                  className="flex items-center gap-1 text-xs font-bold text-emerald-700 hover:text-emerald-800 underline transition"
-                >
-                  <DownloadCloud className="h-3.5 w-3.5" />
-                  <span>Download Sample JSON Template</span>
-                </button>
+                <div className="flex items-center gap-2 flex-wrap">
+                  <button
+                    type="button"
+                    onClick={handleCopyJsonTemplate}
+                    className="flex items-center gap-1.5 rounded-xl border border-emerald-300 bg-white px-3 py-1.5 text-xs font-bold text-emerald-800 hover:bg-emerald-50 shadow-2xs transition"
+                    title="Copy sample JSON structure to clipboard for easy editing"
+                  >
+                    {copiedTemplate ? (
+                      <>
+                        <Check className="h-3.5 w-3.5 text-emerald-600" />
+                        <span className="text-emerald-700 font-extrabold">Copied Format!</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="h-3.5 w-3.5 text-emerald-600" />
+                        <span>Copy JSON Format</span>
+                      </>
+                    )}
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={downloadSampleJsonTemplate}
+                    className="flex items-center gap-1 text-xs font-bold text-slate-600 hover:text-slate-900 transition py-1.5 px-2"
+                    title="Download template file"
+                  >
+                    <DownloadCloud className="h-3.5 w-3.5" />
+                    <span className="hidden xs:inline">Download</span>
+                  </button>
+                </div>
               </div>
 
               {/* JSON Textarea */}
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1">
-                  Paste JSON Array or Object
-                </label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="block text-xs font-bold text-slate-700">
+                    Paste JSON Array or Object
+                  </label>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setJsonText(SAMPLE_JSON_TEMPLATE_STRING);
+                      validateAndParseJson(SAMPLE_JSON_TEMPLATE_STRING);
+                    }}
+                    className="text-[11px] font-bold text-emerald-700 hover:text-emerald-800 hover:underline"
+                  >
+                    Insert Example JSON
+                  </button>
+                </div>
                 <textarea
                   value={jsonText}
                   onChange={handleJsonTextChange}

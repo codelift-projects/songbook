@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useSongs } from '../store/SongContext';
 import { useSettings } from '../store/SettingsContext';
@@ -9,7 +9,14 @@ import { useContainerSize } from '../hooks/useContainerSize';
 import { projectorStyle, hexA } from '../lib/theme';
 import { formatCommaLines } from '../lib/parse';
 import SimpleSettingsModal from '../components/SimpleSettingsModal';
-import { ArrowLeft, Maximize2, Minimize2, Settings as SettingsIcon } from 'lucide-react';
+import { 
+  ArrowLeft, 
+  Maximize2, 
+  Minimize2, 
+  Settings as SettingsIcon, 
+  ChevronLeft, 
+  ChevronRight 
+} from 'lucide-react';
 
 export default function Projector() {
   const { id } = useParams();
@@ -21,10 +28,10 @@ export default function Projector() {
   const song = useMemo(() => songs.find((s) => s.id === id), [songs, id]);
 
   const rootRef = useRef(null);
+  const contentRef = useRef(null);
   const { isFullscreen, toggle: toggleFullscreen, enter: enterFullscreen } = useFullscreen(rootRef);
 
   const [index, setIndex] = useState(0);
-  const [blank, setBlank] = useState(false);
   const [showUi, setShowUi] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [portraitHintDismissed, setPortraitHintDismissed] = useState(false);
@@ -53,28 +60,74 @@ export default function Projector() {
   const isTitle = slide?.kind === 'title';
   const lines = useMemo(() => (!slide ? [] : isTitle ? [slide.title, slide.subtitle].filter(Boolean) : slide.lines), [slide, isTitle]);
 
-  /* -------- FULL SCREEN EXPANDED VIEW SIZING (PRECISELY INSIDE SCREEN) -------- */
-  const fontSize = useMemo(() => {
+  /* -------- ROBUST FONT SIZING (GUARANTEED NOTHING GOES OUTSIDE THE SCREEN) -------- */
+  const baseFontSize = useMemo(() => {
     const w = size.width || (typeof window !== 'undefined' ? window.innerWidth : 1280);
     const h = size.height || (typeof window !== 'undefined' ? window.innerHeight : 720);
-    
-    if (!lines.length) return 64;
-    
+
+    if (!lines.length) return 48;
+
+    // Available safe drawing area:
+    // Leaving ample safe margins for top bar (56px) and bottom dots (36px)
+    const availW = Math.max(260, w * 0.90);
+    const availH = Math.max(160, h - 96);
+
     const longest = Math.max(1, ...lines.map((l) => l.length));
     const lineCount = Math.max(1, lines.length);
 
-    // Keep text precisely inside the screen bounds (96% width & 90% height)
-    const charWidthRatio = 0.48; // realistic average character ratio
+    // Font metrics for Devanagari with conjuncts and English
+    const charWidthRatio = 0.56;
     const lineSpacing = settings.lineHeight || 1.18;
 
-    const byWidth = (w * 0.96) / (longest * charWidthRatio);
-    const byHeight = (h * 0.90) / (lineCount * lineSpacing);
+    // Estimate line wrapping on narrower screens (mobile portrait)
+    const approxCharsPerLine = Math.max(12, availW / (42 * charWidthRatio));
+    let effectiveLineCount = 0;
+    for (const l of lines) {
+      effectiveLineCount += Math.max(1, Math.ceil(l.length / approxCharsPerLine));
+    }
+    const finalLineCount = Math.max(lineCount, effectiveLineCount);
 
-    let calculated = Math.min(byWidth, byHeight) * (settings.fontSizeScale || 1.30);
+    const byWidth = availW / (longest * charWidthRatio);
+    const byHeight = availH / (finalLineCount * lineSpacing);
 
-    // Fine-grained range up to max limits (18px to 380px)
-    return Math.max(18, Math.min(calculated, 380));
+    // Baseline fit size (100% fits screen area)
+    const baseFit = Math.min(byWidth, byHeight);
+
+    // User scale multiplier (clamped safely)
+    const scale = settings.fontSizeScale || 1.0;
+    const computed = baseFit * (scale / 1.15);
+
+    return Math.max(16, Math.min(computed, 260));
   }, [size, lines, settings.fontSizeScale, settings.lineHeight]);
+
+  const [currentFontSize, setCurrentFontSize] = useState(baseFontSize);
+
+  useEffect(() => {
+    setCurrentFontSize(baseFontSize);
+  }, [baseFontSize, index, slide]);
+
+  // Real-DOM safety fitting: guarantees text is 100% inside container
+  useLayoutEffect(() => {
+    const el = contentRef.current;
+    if (!el) return;
+
+    const w = size.width || (typeof window !== 'undefined' ? window.innerWidth : 1280);
+    const h = size.height || (typeof window !== 'undefined' ? window.innerHeight : 720);
+    const maxW = w * 0.92;
+    const maxH = Math.max(150, h - 96);
+
+    const actualH = el.scrollHeight;
+    const actualW = el.scrollWidth;
+
+    if (actualH > maxH || actualW > maxW) {
+      const ratioH = maxH / actualH;
+      const ratioW = maxW / actualW;
+      const factor = Math.min(ratioH, ratioW) * 0.95;
+      if (factor < 0.98) {
+        setCurrentFontSize((curr) => Math.max(14, Math.floor(curr * factor)));
+      }
+    }
+  }, [currentFontSize, baseFontSize, index, slide, size]);
 
   /* -------- navigation -------- */
   const next = useCallback(() => setIndex((i) => Math.min(i + 1, slides.length - 1)), [slides.length]);
@@ -85,7 +138,7 @@ export default function Projector() {
     setShowUi(true);
     clearTimeout(hideTimer.current);
     if (settings.autoHideControls && !settingsOpen) {
-      hideTimer.current = setTimeout(() => setShowUi(false), settings.autoHideDelayMs || 2000);
+      hideTimer.current = setTimeout(() => setShowUi(false), settings.autoHideDelayMs || 2500);
     }
   }, [settings.autoHideControls, settings.autoHideDelayMs, settingsOpen]);
 
@@ -108,14 +161,13 @@ export default function Projector() {
         case 'ArrowLeft': case 'PageUp': e.preventDefault(); prev(); poke(); break;
         case 'Home': setIndex(0); poke(); break;
         case 'End':  setIndex(Math.max(0, slides.length - 1)); poke(); break;
-        case 'b': case 'B': setBlank((v) => !v); poke(); break;
         case 'f': case 'F': toggleFullscreen(); break;
         case '+': case '=':
-          updateSettings({ fontSizeScale: Math.min(3.5, +(settings.fontSizeScale + 0.05).toFixed(2)) });
+          updateSettings({ fontSizeScale: Math.min(2.5, +(settings.fontSizeScale + 0.05).toFixed(2)) });
           poke();
           break;
         case '-': case '_':
-          updateSettings({ fontSizeScale: Math.max(0.3, +(settings.fontSizeScale - 0.05).toFixed(2)) });
+          updateSettings({ fontSizeScale: Math.max(0.4, +(settings.fontSizeScale - 0.05).toFixed(2)) });
           poke();
           break;
         case 'Escape':
@@ -132,12 +184,12 @@ export default function Projector() {
   const swipe = useSwipe({
     onSwipeLeft:  () => { next(); poke(); },
     onSwipeRight: () => { prev(); poke(); },
-    onDoubleTap:  () => { setBlank((v) => !v); poke(); },
-    onTap: (e) => {
-      poke();
-      const x = e.clientX / window.innerWidth;
-      if (x < 0.25) prev();
-      else next();
+    onTap: () => {
+      // Tap on slide background only toggles UI visibility, does NOT advance slide
+      setShowUi((prevUi) => {
+        if (!prevUi) poke();
+        return !prevUi;
+      });
     },
   });
 
@@ -170,63 +222,68 @@ export default function Projector() {
       onPointerUp={swipe.onPointerUp}
       onPointerCancel={swipe.onPointerCancel}
     >
-      {/* 100% FULL SCREEN EDGE-TO-EDGE CONTAINER (TEXT EXPANDS TO MAXIMUM LIMIT) */}
+      {/* 100% BOUNDED SLIDE CONTAINER (NEVER OVERFLOWS SCREEN) */}
       <div 
         ref={sizeRef} 
-        className="pointer-events-none absolute inset-0 w-full h-full flex flex-col items-center justify-center p-1 sm:p-2 text-center"
+        className="pointer-events-none absolute inset-0 w-full h-full flex flex-col items-center justify-center pt-14 pb-10 px-4 sm:px-8 text-center"
       >
-        {blank ? null : isTitle ? (
-          <div className="w-full h-full flex flex-col items-center justify-center px-2">
-            {slide.number != null && (
-              <div 
-                className="font-black tracking-[0.25em] opacity-40 mb-2"
-                style={{ fontSize: Math.max(16, fontSize * 0.28), fontFamily }}
+        <div
+          ref={contentRef}
+          className="w-full max-w-[94vw] max-h-[82vh] flex flex-col items-center justify-center overflow-hidden"
+        >
+          {isTitle ? (
+            <div className="w-full flex flex-col items-center justify-center px-2">
+              {slide.number != null && (
+                <div 
+                  className="font-black tracking-[0.25em] opacity-40 mb-2"
+                  style={{ fontSize: Math.max(14, currentFontSize * 0.32), fontFamily }}
+                >
+                  SONG #{slide.number}
+                </div>
+              )}
+              <h1 
+                className="w-full font-black leading-tight tracking-tight break-words text-balance" 
+                style={{ fontSize: currentFontSize * 1.1, fontFamily }}
               >
-                SONG #{slide.number}
-              </div>
-            )}
-            <h1 
-              className="w-full font-black leading-tight tracking-tight" 
-              style={{ fontSize: fontSize * 1.15, fontFamily }}
-            >
-              {slide.title}
-            </h1>
-            {slide.subtitle && (
-              <p 
-                className="mt-3 opacity-60 font-semibold" 
-                style={{ fontSize: Math.max(16, fontSize * 0.42), fontFamily }}
-              >
-                {slide.subtitle}
-              </p>
-            )}
-          </div>
-        ) : (
-          <div className="w-full h-full flex flex-col items-center justify-center px-1">
-            {slide.label && (
-              <div 
-                className="font-bold uppercase tracking-[0.25em] mb-1 opacity-70"
-                style={{ fontSize: Math.max(12, fontSize * 0.18), color: settings.accentColor, fontFamily }}
-              >
-                {slide.label}
-              </div>
-            )}
-            <div 
-              className="w-full whitespace-pre-line font-black tracking-normal leading-tight"
-              style={{ 
-                fontSize, 
-                fontFamily, 
-                lineHeight: settings.lineHeight || 1.18 
-              }}
-            >
-              {slide.lines.join('\n')}
+                {slide.title}
+              </h1>
+              {slide.subtitle && (
+                <p 
+                  className="mt-3 opacity-60 font-semibold break-words" 
+                  style={{ fontSize: Math.max(14, currentFontSize * 0.45), fontFamily }}
+                >
+                  {slide.subtitle}
+                </p>
+              )}
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="w-full flex flex-col items-center justify-center px-1">
+              {slide.label && (
+                <div 
+                  className="font-bold uppercase tracking-[0.25em] mb-1.5 opacity-75"
+                  style={{ fontSize: Math.max(11, currentFontSize * 0.22), color: settings.accentColor, fontFamily }}
+                >
+                  {slide.label}
+                </div>
+              )}
+              <div 
+                className="w-full whitespace-pre-line font-black tracking-normal leading-tight break-words"
+                style={{ 
+                  fontSize: currentFontSize, 
+                  fontFamily, 
+                  lineHeight: settings.lineHeight || 1.18 
+                }}
+              >
+                {slide.lines.join('\n')}
+              </div>
+            </div>
+          )}
+        </div>
       </div>
 
-      {/* MINIMAL PROGRESS DOTS (SLIM AT VERY BOTTOM) */}
-      {settings.showProgressDots && !blank && slides.length > 1 && (
-        <div className="pointer-events-none absolute inset-x-0 bottom-1 flex justify-center gap-1 z-10">
+      {/* MINIMAL PROGRESS DOTS (SLIM AT BOTTOM) */}
+      {settings.showProgressDots && slides.length > 1 && (
+        <div className="pointer-events-none absolute inset-x-0 bottom-2 flex justify-center gap-1 z-10">
           {slides.map((_, i) => (
             <span 
               key={i} 
@@ -241,18 +298,71 @@ export default function Projector() {
         </div>
       )}
 
+      {/* DISCREET TOUCH-FRIENDLY PREV / NEXT NAVIGATION CONTROLS */}
+      <div 
+        className={`pointer-events-none absolute inset-y-0 inset-x-2 flex items-center justify-between z-15 transition-opacity duration-300 ${
+          showUi ? 'opacity-100' : 'opacity-0'
+        }`}
+      >
+        {index > 0 ? (
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); prev(); poke(); }}
+            onPointerDown={(e) => e.stopPropagation()}
+            onPointerUp={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            data-no-swipe="true"
+            className="pointer-events-auto flex items-center justify-center h-11 w-11 rounded-full transition shadow-lg backdrop-blur-md active:scale-95"
+            style={{ 
+              background: `${settings.textColor}18`, 
+              color: settings.textColor,
+              border: `1px solid ${settings.textColor}25`
+            }}
+            title="Previous Slide"
+          >
+            <ChevronLeft className="h-6 w-6" />
+          </button>
+        ) : <div className="w-11" />}
+
+        {index < slides.length - 1 ? (
+          <button
+            type="button"
+            onClick={(e) => { e.stopPropagation(); next(); poke(); }}
+            onPointerDown={(e) => e.stopPropagation()}
+            onPointerUp={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            data-no-swipe="true"
+            className="pointer-events-auto flex items-center justify-center h-11 w-11 rounded-full transition shadow-lg backdrop-blur-md active:scale-95"
+            style={{ 
+              background: `${settings.textColor}18`, 
+              color: settings.textColor,
+              border: `1px solid ${settings.textColor}25`
+            }}
+            title="Next Slide"
+          >
+            <ChevronRight className="h-6 w-6" />
+          </button>
+        ) : <div className="w-11" />}
+      </div>
+
       {/* ULTRA CLEAN AUTO-HIDING TOP CONTROL BAR */}
       <div
+        data-no-swipe="true"
+        onPointerDown={(e) => e.stopPropagation()}
+        onPointerUp={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
+        onTouchEnd={(e) => e.stopPropagation()}
         className={`absolute inset-x-0 top-0 flex items-center justify-between gap-2 px-3 py-2 transition-opacity duration-300 z-20 ${
           showUi ? 'opacity-100' : 'pointer-events-none opacity-0'
         }`}
         style={{ 
-          background: `linear-gradient(to bottom, ${hexA(settings.background, 0.92)}, transparent)` 
+          background: `linear-gradient(to bottom, ${hexA(settings.background, 0.94)}, transparent)` 
         }}
       >
         <button
+          type="button"
           onClick={(e) => { e.stopPropagation(); navigate('/'); }}
-          className="flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-bold transition shadow-sm"
+          className="flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-xs font-bold transition shadow-xs active:scale-95"
           style={{ background: `${settings.textColor}15`, color: settings.textColor }}
         >
           <ArrowLeft className="h-3.5 w-3.5" />
@@ -268,62 +378,65 @@ export default function Projector() {
           </p>
         </div>
 
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1.5">
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
-              updateSettings({ fontSizeScale: Math.max(0.3, +(settings.fontSizeScale - 0.05).toFixed(2)) });
+              updateSettings({ fontSizeScale: Math.max(0.4, +(settings.fontSizeScale - 0.05).toFixed(2)) });
+              poke();
             }}
-            className="rounded-lg px-2 py-1 text-xs font-bold"
+            className="rounded-xl px-2.5 py-1.5 text-xs font-bold active:scale-95 transition"
             style={{ background: `${settings.textColor}15`, color: settings.textColor }}
+            title="Decrease font size"
           >
             A−
           </button>
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
-              updateSettings({ fontSizeScale: Math.min(3.5, +(settings.fontSizeScale + 0.05).toFixed(2)) });
+              updateSettings({ fontSizeScale: Math.min(2.5, +(settings.fontSizeScale + 0.05).toFixed(2)) });
+              poke();
             }}
-            className="rounded-lg px-2 py-1 text-xs font-bold"
+            className="rounded-xl px-2.5 py-1.5 text-xs font-bold active:scale-95 transition"
             style={{ background: `${settings.textColor}15`, color: settings.textColor }}
+            title="Increase font size"
           >
             A+
           </button>
           <button
-            onClick={(e) => { e.stopPropagation(); setBlank((v) => !v); poke(); }}
-            className="rounded-lg px-2.5 py-1 text-xs font-bold transition"
-            style={{
-              background: blank ? settings.accentColor : `${settings.textColor}15`,
-              color: blank ? settings.background : settings.textColor,
-            }}
-          >
-            {blank ? 'Unblank' : 'Blank'}
-          </button>
-          <button
+            type="button"
             onClick={(e) => { e.stopPropagation(); toggleFullscreen(); }}
-            className="rounded-lg p-1 text-xs font-bold"
+            className="rounded-xl p-1.5 text-xs font-bold active:scale-95 transition"
             style={{ background: `${settings.textColor}15`, color: settings.textColor }}
             title="Toggle Fullscreen"
           >
             {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
           </button>
           
-          {/* IN-PLACE SETTINGS POPUP MODAL */}
+          {/* FLOATING SETTINGS SIDEBAR TOGGLE BUTTON */}
           <button
+            type="button"
             onClick={(e) => {
               e.stopPropagation();
-              setSettingsOpen(true);
+              setSettingsOpen((prev) => !prev);
             }}
-            className="rounded-lg p-1 text-xs font-bold"
-            style={{ background: `${settings.textColor}15`, color: settings.textColor }}
-            title="Display Settings"
+            className={`rounded-xl p-1.5 text-xs font-bold transition active:scale-95 ${
+              settingsOpen ? 'ring-2 ring-emerald-500' : ''
+            }`}
+            style={{ 
+              background: settingsOpen ? settings.accentColor : `${settings.textColor}15`, 
+              color: settingsOpen ? '#ffffff' : settings.textColor 
+            }}
+            title="Open Display Settings Sidebar"
           >
             <SettingsIcon className="h-4 w-4" />
           </button>
         </div>
       </div>
 
-      {/* ROTATE-TO-LANDSCAPE MOBILE OVERLAY */}
+      {/* ROTATE-TO-LANDSCAPE MOBILE OVERLAY (Dismissable) */}
       {showPortraitHint && (
         <div 
           className="absolute inset-0 z-40 grid place-items-center px-6" 
@@ -337,15 +450,17 @@ export default function Projector() {
             </p>
             <div className="mt-6 flex justify-center gap-3">
               <button
+                type="button"
                 onClick={() => { enterFullscreen(); setPortraitHintDismissed(true); }}
-                className="rounded-xl px-4 py-2.5 text-xs font-black shadow-md"
+                className="rounded-xl px-4 py-2.5 text-xs font-black shadow-md active:scale-95"
                 style={{ background: settings.accentColor, color: '#ffffff' }}
               >
                 Fullscreen Mode
               </button>
               <button
+                type="button"
                 onClick={() => setPortraitHintDismissed(true)}
-                className="rounded-xl px-4 py-2.5 text-xs font-bold"
+                className="rounded-xl px-4 py-2.5 text-xs font-bold active:scale-95"
                 style={{ background: `${settings.textColor}15`, color: settings.textColor }}
               >
                 Continue
@@ -355,7 +470,7 @@ export default function Projector() {
         </div>
       )}
 
-      {/* POPUP SETTINGS MODAL (IN-PLACE WITHOUT NAVIGATING AWAY) */}
+      {/* RESPONSIVE FLOATING SIDEBAR / BOTTOM DRAWER SETTINGS (LIVE SLIDE PREVIEW) */}
       <SimpleSettingsModal
         isOpen={settingsOpen}
         onClose={() => setSettingsOpen(false)}

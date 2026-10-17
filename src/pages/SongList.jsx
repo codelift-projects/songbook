@@ -3,9 +3,6 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useSongs } from '../store/SongContext';
 import { buildIndex, parseQuery, scoreSongMatch } from '../lib/search';
 import { isSeedSong } from '../lib/seed';
-import { exportSongsToJson } from '../lib/export';
-import DeletePasswordModal from '../components/DeletePasswordModal';
-import SelectionToolbar from '../components/SelectionToolbar';
 import {
   Search,
   Play,
@@ -13,29 +10,15 @@ import {
   X,
   SlidersHorizontal,
   Eye,
-  CheckSquare,
-  Square,
   Lock
 } from 'lucide-react';
 
 export default function SongList() {
-  const { songs, loading, deleteMany } = useSongs();
+  const { songs, loading } = useSongs();
   const navigate = useNavigate();
 
   const [search, setSearch] = useState('');
   const [langFilter, setLangFilter] = useState('all'); // 'all' | 'hindi' | 'marathi' | 'english'
-
-  // Selection & Multi-select delete state
-  const [selected, setSelected] = useState(() => new Set());
-  const [pendingDelete, setPendingDelete] = useState(null); // { ids: string[] } | null
-  const [deleteBusy, setDeleteBusy] = useState(false);
-  const [deleteError, setDeleteError] = useState('');
-  const [toastMessage, setToastMessage] = useState('');
-
-  const flashToast = (msg) => {
-    setToastMessage(msg);
-    setTimeout(() => setToastMessage(''), 4000);
-  };
 
   // Precompute normalised search index per song
   const indexed = useMemo(
@@ -63,104 +46,8 @@ export default function SongList() {
       .map((x) => x.song);
   }, [indexed, parsedQuery, langFilter]);
 
-  // Multi-select handlers
-  const toggleSelect = (id, e) => {
-    if (e) e.stopPropagation();
-    setSelected((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) next.delete(id);
-      else next.add(id);
-      return next;
-    });
-  };
-
-  const isAllFilteredSelected = useMemo(() => {
-    if (filteredSongs.length === 0) return false;
-    return filteredSongs.every((s) => selected.has(s.id));
-  }, [filteredSongs, selected]);
-
-  const toggleSelectAllFiltered = () => {
-    if (isAllFilteredSelected) {
-      setSelected((prev) => {
-        const next = new Set(prev);
-        filteredSongs.forEach((s) => next.delete(s.id));
-        return next;
-      });
-    } else {
-      setSelected((prev) => {
-        const next = new Set(prev);
-        filteredSongs.forEach((s) => next.add(s.id));
-        return next;
-      });
-    }
-  };
-
-  const selectedCount = selected.size;
-  const deletableCount = useMemo(() => {
-    let count = 0;
-    for (const id of selected) {
-      if (!String(id).startsWith('seed:')) count++;
-    }
-    return count;
-  }, [selected]);
-
-  const handleExportSelected = () => {
-    const selectedSongs = songs.filter((s) => selected.has(s.id));
-    if (selectedSongs.length === 0) return;
-    exportSongsToJson(selectedSongs);
-  };
-
-  const openDeleteModal = (ids) => {
-    const deletable = ids.filter((id) => !String(id).startsWith('seed:'));
-    if (deletable.length === 0) {
-      flashToast('Selected seed songs are read-only and cannot be deleted.');
-      return;
-    }
-    setDeleteError('');
-    setPendingDelete({ ids: deletable });
-  };
-
-  const confirmDelete = async (password) => {
-    if (!pendingDelete) return;
-    setDeleteBusy(true);
-    setDeleteError('');
-    try {
-      const { deleted, failed, skipped } = await deleteMany(pendingDelete.ids, password);
-      setPendingDelete(null);
-      setSelected((prev) => {
-        const next = new Set(prev);
-        deleted.forEach((id) => next.delete(id));
-        return next;
-      });
-
-      const parts = [`Deleted ${deleted.length} song${deleted.length === 1 ? '' : 's'}`];
-      if (failed.length) parts.push(`${failed.length} failed`);
-      if (skipped) parts.push(`${skipped} seed locked`);
-      flashToast(parts.join(' · '));
-    } catch (e) {
-      setDeleteError(
-        e.code === 'NOT_CONFIGURED'
-          ? 'Delete is not configured. Ask an administrator.'
-          : e.code === 'BAD_PASSWORD'
-          ? 'Incorrect password.'
-          : e.message
-      );
-    } finally {
-      setDeleteBusy(false);
-    }
-  };
-
   return (
     <div className="space-y-4 pb-20">
-      {/* Toast Notification */}
-      {toastMessage && (
-        <div className="fixed top-16 inset-x-0 z-50 flex justify-center px-4 pointer-events-none animate-in fade-in slide-in-from-top-2">
-          <div className="pointer-events-auto rounded-xl bg-slate-900 px-4 py-2 text-xs font-semibold text-white shadow-xl shadow-slate-900/20">
-            {toastMessage}
-          </div>
-        </div>
-      )}
-
       {/* Top Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2.5">
@@ -173,22 +60,6 @@ export default function SongList() {
         </div>
 
         <div className="flex items-center gap-2">
-          {filteredSongs.length > 0 && (
-            <button
-              type="button"
-              onClick={toggleSelectAllFiltered}
-              className="flex items-center gap-1 rounded-xl border border-slate-200/90 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 transition shadow-xs"
-              title="Select all currently visible songs"
-            >
-              {isAllFilteredSelected ? (
-                <CheckSquare className="h-3.5 w-3.5 text-emerald-600" />
-              ) : (
-                <Square className="h-3.5 w-3.5 text-slate-400" />
-              )}
-              <span className="hidden sm:inline">Select Visible</span>
-            </button>
-          )}
-
           <Link
             to="/manage"
             className="flex items-center gap-1.5 rounded-xl border border-slate-200/90 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition shadow-xs"
@@ -201,7 +72,7 @@ export default function SongList() {
 
       {/* Search Bar and Language Filter Pills */}
       <div className="grid gap-2.5 sm:grid-cols-12">
-        {/* Search Bar: No placeholder, clean subtle border, no harsh focus ring */}
+        {/* Search Bar */}
         <div className="relative sm:col-span-7">
           <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
           <input
@@ -288,37 +159,15 @@ export default function SongList() {
         <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {filteredSongs.map((song) => {
             const isSeed = isSeedSong(song);
-            const isSelected = selected.has(song.id);
 
             return (
               <div
                 key={song.id}
-                className={`interactive-card group relative flex flex-col justify-between rounded-2xl border p-3.5 shadow-2xs transition-all ${
-                  isSelected
-                    ? 'border-emerald-500 ring-2 ring-emerald-500/20 bg-emerald-50/20 shadow-md shadow-emerald-600/10'
-                    : 'border-slate-200/90 bg-white hover:border-emerald-400 hover:shadow-md hover:shadow-emerald-600/10'
-                }`}
+                onClick={() => navigate(`/present/${song.id}`)}
+                className="interactive-card group relative flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-3.5 shadow-2xs transition-all hover:border-emerald-400 hover:shadow-md hover:shadow-emerald-600/10 cursor-pointer"
               >
-                {/* Select Checkbox (Hover or Selected or Touch) */}
-                <div
-                  onClick={(e) => toggleSelect(song.id, e)}
-                  className={`absolute top-2.5 right-2.5 z-10 cursor-pointer p-1 rounded-lg transition-opacity ${
-                    isSelected ? 'opacity-100' : 'opacity-70 sm:opacity-0 group-hover:opacity-100'
-                  }`}
-                  title={isSelected ? 'Deselect song' : 'Select song'}
-                >
-                  {isSelected ? (
-                    <CheckSquare className="h-4 w-4 text-emerald-600 bg-white rounded-xs shadow-2xs" />
-                  ) : (
-                    <Square className="h-4 w-4 text-slate-400 hover:text-slate-700 bg-white/80 rounded-xs" />
-                  )}
-                </div>
-
-                <div
-                  onClick={() => navigate(`/present/${song.id}`)}
-                  className="cursor-pointer space-y-1.5 pr-5"
-                >
-                  {/* Badges: Lock view on the leftmost position */}
+                <div className="space-y-1.5">
+                  {/* Badges */}
                   <div className="flex flex-wrap items-center gap-1">
                     {isSeed && (
                       <span className="inline-flex items-center gap-0.5 rounded-md bg-slate-100 border border-slate-200/90 px-1.5 py-0.5 text-[9px] font-semibold text-slate-600 uppercase tracking-wider" title="Seed song · Read-only">
@@ -334,7 +183,7 @@ export default function SongList() {
                     </span>
                   </div>
 
-                  {/* Song Title: clean, pleasant-to-read font weight */}
+                  {/* Song Title */}
                   <h3 className="font-semibold text-xs sm:text-sm text-slate-900 group-hover:text-emerald-700 line-clamp-2 leading-snug transition-colors">
                     {song.title}
                   </h3>
@@ -346,7 +195,10 @@ export default function SongList() {
                 </div>
 
                 {/* Action Buttons: Present & View */}
-                <div className="mt-3.5 flex items-center justify-between border-t border-slate-100 pt-2.5 gap-1.5">
+                <div 
+                  className="mt-3.5 flex items-center justify-between border-t border-slate-100 pt-2.5 gap-1.5"
+                  onClick={(e) => e.stopPropagation()}
+                >
                   {/* Present Button */}
                   <button
                     type="button"
@@ -374,25 +226,6 @@ export default function SongList() {
           })}
         </div>
       )}
-
-      {/* Floating Multi-Select Action Toolbar */}
-      <SelectionToolbar
-        count={selectedCount}
-        deletableCount={deletableCount}
-        onClear={() => setSelected(new Set())}
-        onDelete={() => openDeleteModal([...selected])}
-        onExport={handleExportSelected}
-      />
-
-      {/* Password-Protected Delete Modal */}
-      <DeletePasswordModal
-        open={Boolean(pendingDelete)}
-        count={pendingDelete?.ids?.length || 0}
-        busy={deleteBusy}
-        error={deleteError}
-        onCancel={() => setPendingDelete(null)}
-        onConfirm={confirmDelete}
-      />
     </div>
   );
 }
