@@ -104,7 +104,7 @@ export default function SongViewer() {
           {/* Actions: Size A-, A+, Present, Settings */}
           <div className="flex items-center gap-1">
             <button
-              onClick={() => updateSettings({ fontSizeScale: Math.max(0.4, +(settings.fontSizeScale - 0.08).toFixed(2)) })}
+              onClick={() => updateSettings({ fontSizeScale: Math.max(0.5, +(settings.fontSizeScale - 0.05).toFixed(2)) })}
               className="rounded-lg px-2 py-1 text-xs font-bold transition"
               style={{ 
                 background: hexA(settings.textColor, 0.10),
@@ -116,7 +116,7 @@ export default function SongViewer() {
             </button>
 
             <button
-              onClick={() => updateSettings({ fontSizeScale: Math.min(3.0, +(settings.fontSizeScale + 0.08).toFixed(2)) })}
+              onClick={() => updateSettings({ fontSizeScale: Math.min(2.5, +(settings.fontSizeScale + 0.05).toFixed(2)) })}
               className="rounded-lg px-2 py-1 text-xs font-bold transition"
               style={{ 
                 background: hexA(settings.textColor, 0.10),

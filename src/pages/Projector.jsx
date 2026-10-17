@@ -65,7 +65,7 @@ export default function Projector() {
     const w = size.width || (typeof window !== 'undefined' ? window.innerWidth : 1280);
     const h = size.height || (typeof window !== 'undefined' ? window.innerHeight : 720);
 
-    if (!lines.length) return 48;
+    if (!lines.length) return 40;
 
     const isLandscape = orientation === 'landscape' || w > h;
 
@@ -84,19 +84,21 @@ export default function Projector() {
       availW,
       availH,
       lineSpacing,
-      minSize: isLandscape ? 18 : 16,
-      maxSize: isLandscape ? 150 : 200,
-      charWidthRatio: 0.54,
+      isLandscape,
+      isTitle,
+      hasLabel: Boolean(slide?.label),
+      minSize: isLandscape ? 16 : 14,
+      maxSize: isLandscape ? (h < 500 ? 54 : 96) : (h < 700 ? 50 : 68),
+      charWidthRatio: 0.58,
     });
 
     // 2. User scale multiplier:
-    // When settings.fontSizeScale is 1.0 (or default), it uses the calculated baselineFit.
-    // If user clicks A+ or uses slider (e.g. 1.2, 1.5, 2.0, 2.5), scale up directly!
+    // Smooth, linear scaling without sudden 4x cliffs:
     const scale = settings.fontSizeScale || 1.0;
     const computed = Math.round(baselineFit * scale);
 
-    return Math.max(14, Math.min(computed, 280));
-  }, [size, lines, settings.fontSizeScale, settings.lineHeight, orientation]);
+    return Math.max(12, Math.min(computed, 240));
+  }, [size, lines, settings.fontSizeScale, settings.lineHeight, orientation, isTitle, slide?.label]);
 
   const [currentFontSize, setCurrentFontSize] = useState(baseFontSize);
 
@@ -105,15 +107,15 @@ export default function Projector() {
   }, [baseFontSize, index, slide]);
 
   // Real-DOM safety fitting:
-  // ONLY adjust down if the user is in fit-to-screen mode (fontSizeScale <= 1.05)
-  // If the user has explicitly requested a larger font size (fontSizeScale > 1.05 or clicked A+),
+  // ONLY adjust down if the user is in fit-to-screen mode (fontSizeScale <= 1.0)
+  // If the user has explicitly requested a larger font size (fontSizeScale > 1.0 or clicked A+),
   // NEVER suppress their choice, allowing the text to grow and scroll vertically!
   useLayoutEffect(() => {
     const el = contentRef.current;
     if (!el) return;
 
     const scale = settings.fontSizeScale || 1.0;
-    if (scale > 1.05) return; // Allow font size increase without clamping!
+    if (scale > 1.0) return; // Allow font size increase without clamping!
 
     const w = size.width || (typeof window !== 'undefined' ? window.innerWidth : 1280);
     const h = size.height || (typeof window !== 'undefined' ? window.innerHeight : 720);
@@ -127,12 +129,12 @@ export default function Projector() {
     if (actualH > maxH || actualW > maxW) {
       const ratioH = maxH / actualH;
       const ratioW = maxW / actualW;
-      const factor = Math.min(ratioH, ratioW) * 0.96;
-      if (factor < 0.97) {
-        setCurrentFontSize((curr) => Math.max(14, Math.floor(curr * factor)));
+      const factor = Math.min(ratioH, ratioW);
+      if (factor < 0.96 && factor > 0.65) {
+        setCurrentFontSize(Math.max(14, Math.floor(baseFontSize * factor)));
       }
     }
-  }, [currentFontSize, baseFontSize, index, slide, size, settings.fontSizeScale, orientation]);
+  }, [baseFontSize, index, slide, size, settings.fontSizeScale, orientation]);
 
   /* -------- navigation -------- */
   const next = useCallback(() => setIndex((i) => Math.min(i + 1, slides.length - 1)), [slides.length]);
@@ -168,11 +170,11 @@ export default function Projector() {
         case 'End':  setIndex(Math.max(0, slides.length - 1)); poke(); break;
         case 'f': case 'F': toggleFullscreen(); break;
         case '+': case '=':
-          updateSettings({ fontSizeScale: Math.min(3.0, +(settings.fontSizeScale + 0.08).toFixed(2)) });
+          updateSettings({ fontSizeScale: Math.min(2.5, +(settings.fontSizeScale + 0.05).toFixed(2)) });
           poke();
           break;
         case '-': case '_':
-          updateSettings({ fontSizeScale: Math.max(0.4, +(settings.fontSizeScale - 0.08).toFixed(2)) });
+          updateSettings({ fontSizeScale: Math.max(0.5, +(settings.fontSizeScale - 0.05).toFixed(2)) });
           poke();
           break;
         case 'Escape':
@@ -393,7 +395,7 @@ export default function Projector() {
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              updateSettings({ fontSizeScale: Math.max(0.4, +(settings.fontSizeScale - 0.08).toFixed(2)) });
+              updateSettings({ fontSizeScale: Math.max(0.5, +(settings.fontSizeScale - 0.05).toFixed(2)) });
               poke();
             }}
             className="rounded-xl px-2.5 py-1.5 text-xs font-bold active:scale-95 transition"
@@ -406,7 +408,7 @@ export default function Projector() {
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              updateSettings({ fontSizeScale: Math.min(3.0, +(settings.fontSizeScale + 0.08).toFixed(2)) });
+              updateSettings({ fontSizeScale: Math.min(2.5, +(settings.fontSizeScale + 0.05).toFixed(2)) });
               poke();
             }}
             className="rounded-xl px-2.5 py-1.5 text-xs font-bold active:scale-95 transition"

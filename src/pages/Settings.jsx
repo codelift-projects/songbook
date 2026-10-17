@@ -78,13 +78,15 @@ export default function Settings() {
           <div>
             <label className="mb-1.5 flex items-center justify-between text-xs font-bold text-slate-700">
               <span>Background Color</span>
-              <span className="font-mono text-[10px] text-slate-400 uppercase">{settings.background}</span>
+              <span className="text-[11px] font-medium text-slate-500">
+                {BACKGROUND_COLOR_OPTIONS.find(o => o.value.toLowerCase() === settings.background.toLowerCase())?.label || 'Custom'}
+              </span>
             </label>
             <div className="flex items-center gap-2">
               <span 
                 className="h-9 w-9 rounded-xl border border-slate-300 shadow-2xs shrink-0 transition-all"
                 style={{ background: settings.background }}
-                title={`Current Background: ${settings.background}`}
+                title="Current Background Color"
               />
               <select
                 value={BACKGROUND_COLOR_OPTIONS.some(o => o.value.toLowerCase() === settings.background.toLowerCase()) ? settings.background.toLowerCase() : 'custom'}
@@ -101,11 +103,11 @@ export default function Settings() {
                   </option>
                 ))}
                 {!BACKGROUND_COLOR_OPTIONS.some(o => o.value.toLowerCase() === settings.background.toLowerCase()) && (
-                  <option value="custom">Custom Color ({settings.background})</option>
+                  <option value="custom">Custom Color</option>
                 )}
               </select>
               <label 
-                title="Pick custom background hex color"
+                title="Choose custom background color"
                 className="relative grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 cursor-pointer shadow-2xs shrink-0"
               >
                 <input
@@ -123,13 +125,15 @@ export default function Settings() {
           <div>
             <label className="mb-1.5 flex items-center justify-between text-xs font-bold text-slate-700">
               <span>Text Color</span>
-              <span className="font-mono text-[10px] text-slate-400 uppercase">{settings.textColor}</span>
+              <span className="text-[11px] font-medium text-slate-500">
+                {TEXT_COLOR_OPTIONS.find(o => o.value.toLowerCase() === settings.textColor.toLowerCase())?.label || 'Custom'}
+              </span>
             </label>
             <div className="flex items-center gap-2">
               <span 
                 className="h-9 w-9 rounded-xl border border-slate-300 shadow-2xs shrink-0 transition-all"
                 style={{ background: settings.textColor }}
-                title={`Current Text Color: ${settings.textColor}`}
+                title="Current Text Color"
               />
               <select
                 value={TEXT_COLOR_OPTIONS.some(o => o.value.toLowerCase() === settings.textColor.toLowerCase()) ? settings.textColor.toLowerCase() : 'custom'}
@@ -146,11 +150,11 @@ export default function Settings() {
                   </option>
                 ))}
                 {!TEXT_COLOR_OPTIONS.some(o => o.value.toLowerCase() === settings.textColor.toLowerCase()) && (
-                  <option value="custom">Custom Color ({settings.textColor})</option>
+                  <option value="custom">Custom Color</option>
                 )}
               </select>
               <label 
-                title="Pick custom text hex color"
+                title="Choose custom text color"
                 className="relative grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 cursor-pointer shadow-2xs shrink-0"
               >
                 <input
@@ -200,9 +204,9 @@ export default function Settings() {
           </div>
           <input
             type="range"
-            min={0.3}
-            max={3.5}
-            step={0.02}
+            min={0.5}
+            max={2.5}
+            step={0.05}
             value={settings.fontSizeScale}
             onChange={(e) => update({ fontSizeScale: Number(e.target.value) })}
             className="w-full h-2 rounded-lg bg-slate-200 accent-emerald-600 cursor-pointer"

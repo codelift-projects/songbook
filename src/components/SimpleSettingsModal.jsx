@@ -105,13 +105,15 @@ export default function SimpleSettingsModal({ isOpen, onClose }) {
               <div>
                 <div className="mb-1 flex items-center justify-between text-[11px] font-bold text-slate-300">
                   <span>Background Color</span>
-                  <span className="font-mono text-[10px] text-slate-400 uppercase">{settings.background}</span>
+                  <span className="text-[11px] font-medium text-slate-400">
+                    {BACKGROUND_COLOR_OPTIONS.find(o => o.value.toLowerCase() === settings.background.toLowerCase())?.label || 'Custom'}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span 
                     className="h-8 w-8 rounded-xl border border-slate-600 shadow-2xs shrink-0 transition-all"
                     style={{ background: settings.background }}
-                    title={`Background: ${settings.background}`}
+                    title="Current Background Color"
                   />
                   <select
                     value={BACKGROUND_COLOR_OPTIONS.some(o => o.value.toLowerCase() === settings.background.toLowerCase()) ? settings.background.toLowerCase() : 'custom'}
@@ -128,11 +130,11 @@ export default function SimpleSettingsModal({ isOpen, onClose }) {
                       </option>
                     ))}
                     {!BACKGROUND_COLOR_OPTIONS.some(o => o.value.toLowerCase() === settings.background.toLowerCase()) && (
-                      <option value="custom">Custom Color ({settings.background})</option>
+                      <option value="custom">Custom Color</option>
                     )}
                   </select>
                   <label 
-                    title="Pick custom background color"
+                    title="Choose custom background color"
                     className="relative grid h-8 w-8 place-items-center rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 cursor-pointer shadow-2xs shrink-0"
                   >
                     <input
@@ -150,13 +152,15 @@ export default function SimpleSettingsModal({ isOpen, onClose }) {
               <div>
                 <div className="mb-1 flex items-center justify-between text-[11px] font-bold text-slate-300">
                   <span>Text Color</span>
-                  <span className="font-mono text-[10px] text-slate-400 uppercase">{settings.textColor}</span>
+                  <span className="text-[11px] font-medium text-slate-400">
+                    {TEXT_COLOR_OPTIONS.find(o => o.value.toLowerCase() === settings.textColor.toLowerCase())?.label || 'Custom'}
+                  </span>
                 </div>
                 <div className="flex items-center gap-2">
                   <span 
                     className="h-8 w-8 rounded-xl border border-slate-600 shadow-2xs shrink-0 transition-all"
                     style={{ background: settings.textColor }}
-                    title={`Text Color: ${settings.textColor}`}
+                    title="Current Text Color"
                   />
                   <select
                     value={TEXT_COLOR_OPTIONS.some(o => o.value.toLowerCase() === settings.textColor.toLowerCase()) ? settings.textColor.toLowerCase() : 'custom'}
@@ -173,11 +177,11 @@ export default function SimpleSettingsModal({ isOpen, onClose }) {
                       </option>
                     ))}
                     {!TEXT_COLOR_OPTIONS.some(o => o.value.toLowerCase() === settings.textColor.toLowerCase()) && (
-                      <option value="custom">Custom Color ({settings.textColor})</option>
+                      <option value="custom">Custom Color</option>
                     )}
                   </select>
                   <label 
-                    title="Pick custom text color"
+                    title="Choose custom text color"
                     className="relative grid h-8 w-8 place-items-center rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 cursor-pointer shadow-2xs shrink-0"
                   >
                     <input
@@ -233,7 +237,7 @@ export default function SimpleSettingsModal({ isOpen, onClose }) {
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => update({ fontSizeScale: Math.max(0.4, +(settings.fontSizeScale - 0.08).toFixed(2)) })}
+                onClick={() => update({ fontSizeScale: Math.max(0.5, +(settings.fontSizeScale - 0.05).toFixed(2)) })}
                 className="grid h-7 w-7 place-items-center rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition"
                 title="Decrease font size"
               >
@@ -241,16 +245,16 @@ export default function SimpleSettingsModal({ isOpen, onClose }) {
               </button>
               <input
                 type="range"
-                min={0.4}
-                max={3.0}
-                step={0.02}
+                min={0.5}
+                max={2.5}
+                step={0.05}
                 value={settings.fontSizeScale}
                 onChange={(e) => update({ fontSizeScale: Number(e.target.value) })}
                 className="w-full h-2 rounded-lg bg-slate-700 accent-emerald-500 cursor-pointer"
               />
               <button
                 type="button"
-                onClick={() => update({ fontSizeScale: Math.min(3.0, +(settings.fontSizeScale + 0.08).toFixed(2)) })}
+                onClick={() => update({ fontSizeScale: Math.min(2.5, +(settings.fontSizeScale + 0.05).toFixed(2)) })}
                 className="grid h-7 w-7 place-items-center rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition"
                 title="Increase font size"
               >

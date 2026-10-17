@@ -6,28 +6,28 @@ export const FONT_STACKS = {
 };
 
 export const BACKGROUND_COLOR_OPTIONS = [
-  { value: '#000000', label: 'Pitch Black (#000000)' },
-  { value: '#0f172a', label: 'Dark Navy (#0f172a)' },
-  { value: '#18181b', label: 'Dark Charcoal (#18181b)' },
-  { value: '#062d1b', label: 'Deep Forest Green (#062d1b)' },
-  { value: '#2b0e14', label: 'Deep Maroon / Wine (#2b0e14)' },
-  { value: '#ffffff', label: 'Pure White (#ffffff)' },
-  { value: '#fbf9f4', label: 'Warm Cream (#fbf9f4)' },
-  { value: '#fef08a', label: 'Parchment Yellow (#fef08a)' },
-  { value: '#f1f5f9', label: 'Light Slate Gray (#f1f5f9)' },
+  { value: '#000000', label: 'Black' },
+  { value: '#0f172a', label: 'Dark Navy' },
+  { value: '#18181b', label: 'Dark Gray' },
+  { value: '#062d1b', label: 'Dark Green' },
+  { value: '#2b0e14', label: 'Maroon' },
+  { value: '#ffffff', label: 'White' },
+  { value: '#fbf9f4', label: 'Cream' },
+  { value: '#fef08a', label: 'Soft Yellow' },
+  { value: '#f1f5f9', label: 'Light Gray' },
 ];
 
 export const TEXT_COLOR_OPTIONS = [
-  { value: '#ffffff', label: 'Pure White (#ffffff)' },
-  { value: '#facc15', label: 'Bright Yellow (#facc15)' },
-  { value: '#fbbf24', label: 'Warm Amber / Gold (#fbbf24)' },
-  { value: '#22c55e', label: 'Grass Green (#22c55e)' },
-  { value: '#38bdf8', label: 'Sky Cyan (#38bdf8)' },
-  { value: '#000000', label: 'Pure Black (#000000)' },
-  { value: '#dc2626', label: 'Vivid Red (#dc2626)' },
-  { value: '#991b1b', label: 'Deep Crimson (#991b1b)' },
-  { value: '#1e293b', label: 'Dark Slate (#1e293b)' },
-  { value: '#ecfdf5', label: 'Mint Cream (#ecfdf5)' },
+  { value: '#ffffff', label: 'White' },
+  { value: '#facc15', label: 'Yellow' },
+  { value: '#fbbf24', label: 'Gold' },
+  { value: '#22c55e', label: 'Green' },
+  { value: '#38bdf8', label: 'Sky Blue' },
+  { value: '#000000', label: 'Black' },
+  { value: '#dc2626', label: 'Red' },
+  { value: '#991b1b', label: 'Dark Red' },
+  { value: '#1e293b', label: 'Dark Gray' },
+  { value: '#ecfdf5', label: 'Light Mint' },
 ];
 
 export function projectorStyle(settings) {
@@ -49,46 +49,69 @@ export function hexA(hex, alpha) {
 
 /**
  * Accurately finds the maximum font size (in px) where all lines fit within
- * availW and availH without circular estimation bugs.
+ * availW and availH smoothly without abrupt threshold jumps.
  */
 export function computeFitFontSize({
   lines,
   availW,
   availH,
   lineSpacing = 1.18,
-  minSize = 16,
-  maxSize = 160,
-  charWidthRatio = 0.54,
+  isLandscape = false,
+  isTitle = false,
+  hasLabel = false,
+  minSize = 14,
+  maxSize = 96,
+  charWidthRatio = 0.58,
 }) {
-  if (!lines || !lines.length) return 48;
+  if (!lines || !lines.length) return 36;
   const valid = lines.filter((l) => typeof l === 'string' && l.trim().length > 0);
-  if (!valid.length) return 48;
+  if (!valid.length) return 36;
+
+  // Header / extra content overhead (SONG # or VERSE 1 label)
+  let overheadH = 0;
+  if (isTitle) {
+    overheadH = Math.min(50, availH * 0.18);
+  } else if (hasLabel) {
+    overheadH = Math.min(28, availH * 0.12);
+  }
+
+  const usableH = Math.max(80, availH - overheadH);
 
   let low = minSize;
   let high = maxSize;
   let best = minSize;
 
-  for (let i = 0; i < 11; i++) {
+  for (let i = 0; i < 12; i++) {
     const mid = (low + high) / 2;
+    let fits = true;
     let totalLines = 0;
-    let fitsWidth = true;
 
     for (const line of valid) {
-      const estimatedWidth = line.length * mid * charWidthRatio;
-      const wrapped = Math.max(1, Math.ceil(estimatedWidth / availW));
-      totalLines += wrapped;
-      // If a line is too wide for availW
-      if (estimatedWidth > availW * 1.06 && wrapped === 1) {
-        fitsWidth = false;
-        break;
+      const effectiveSize = isTitle ? mid * 1.1 : mid;
+      const lineWidth = line.length * effectiveSize * charWidthRatio;
+
+      if (lineWidth > availW) {
+        if (isLandscape && availW > 480) {
+          // In landscape widescreen, lines should not break mid-phrase
+          fits = false;
+          break;
+        } else {
+          totalLines += Math.max(1, Math.ceil(lineWidth / availW));
+        }
+      } else {
+        totalLines += 1;
       }
     }
 
-    const totalHeight = totalLines * mid * lineSpacing;
-
-    if (fitsWidth && totalHeight <= availH) {
-      best = mid;
-      low = mid;
+    if (fits) {
+      const effectiveMid = isTitle ? mid * 1.08 : mid;
+      const totalH = totalLines * effectiveMid * lineSpacing;
+      if (totalH <= usableH) {
+        best = mid;
+        low = mid;
+      } else {
+        high = mid;
+      }
     } else {
       high = mid;
     }
