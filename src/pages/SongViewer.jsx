@@ -53,7 +53,7 @@ export default function SongViewer() {
 
   const theme = projectorStyle(settings);
   const fontFamily = theme.fontFamily;
-  const baseFontSize = Math.max(16, Math.min(22 * (settings.fontSizeScale || 1.0), 52));
+  const baseFontSize = Math.max(16, Math.min(22 * (settings.fontSizeScale || 1.0), 68));
 
   return (
     <div 
@@ -104,7 +104,7 @@ export default function SongViewer() {
           {/* Actions: Size A-, A+, Present, Settings */}
           <div className="flex items-center gap-1">
             <button
-              onClick={() => updateSettings({ fontSizeScale: Math.max(0.6, +(settings.fontSizeScale - 0.05).toFixed(2)) })}
+              onClick={() => updateSettings({ fontSizeScale: Math.max(0.4, +(settings.fontSizeScale - 0.08).toFixed(2)) })}
               className="rounded-lg px-2 py-1 text-xs font-bold transition"
               style={{ 
                 background: hexA(settings.textColor, 0.10),
@@ -116,7 +116,7 @@ export default function SongViewer() {
             </button>
 
             <button
-              onClick={() => updateSettings({ fontSizeScale: Math.min(2.5, +(settings.fontSizeScale + 0.05).toFixed(2)) })}
+              onClick={() => updateSettings({ fontSizeScale: Math.min(3.0, +(settings.fontSizeScale + 0.08).toFixed(2)) })}
               className="rounded-lg px-2 py-1 text-xs font-bold transition"
               style={{ 
                 background: hexA(settings.textColor, 0.10),

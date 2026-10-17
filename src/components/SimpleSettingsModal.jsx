@@ -1,4 +1,5 @@
 import { useSettings } from '../store/SettingsContext';
+import { BACKGROUND_COLOR_OPTIONS, TEXT_COLOR_OPTIONS } from '../lib/theme';
 import { X, RotateCcw, Check, Sparkles, Sliders, Type, Minus, Plus } from 'lucide-react';
 
 export default function SimpleSettingsModal({ isOpen, onClose }) {
@@ -97,6 +98,99 @@ export default function SimpleSettingsModal({ isOpen, onClose }) {
                 );
               })}
             </div>
+
+            {/* Custom Dropdown Selection for Background & Text Color */}
+            <div className="pt-3 border-t border-slate-800/80 space-y-3">
+              {/* Background Color Dropdown */}
+              <div>
+                <div className="mb-1 flex items-center justify-between text-[11px] font-bold text-slate-300">
+                  <span>Background Color</span>
+                  <span className="font-mono text-[10px] text-slate-400 uppercase">{settings.background}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span 
+                    className="h-8 w-8 rounded-xl border border-slate-600 shadow-2xs shrink-0 transition-all"
+                    style={{ background: settings.background }}
+                    title={`Background: ${settings.background}`}
+                  />
+                  <select
+                    value={BACKGROUND_COLOR_OPTIONS.some(o => o.value.toLowerCase() === settings.background.toLowerCase()) ? settings.background.toLowerCase() : 'custom'}
+                    onChange={(e) => {
+                      if (e.target.value !== 'custom') {
+                        update({ background: e.target.value });
+                      }
+                    }}
+                    className="flex-1 rounded-xl border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-xs font-semibold text-slate-100 focus:border-emerald-500 focus:outline-none"
+                  >
+                    {BACKGROUND_COLOR_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                    {!BACKGROUND_COLOR_OPTIONS.some(o => o.value.toLowerCase() === settings.background.toLowerCase()) && (
+                      <option value="custom">Custom Color ({settings.background})</option>
+                    )}
+                  </select>
+                  <label 
+                    title="Pick custom background color"
+                    className="relative grid h-8 w-8 place-items-center rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 cursor-pointer shadow-2xs shrink-0"
+                  >
+                    <input
+                      type="color"
+                      value={settings.background.startsWith('#') && settings.background.length === 7 ? settings.background : '#000000'}
+                      onChange={(e) => update({ background: e.target.value })}
+                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                    />
+                    <span className="text-xs">🎨</span>
+                  </label>
+                </div>
+              </div>
+
+              {/* Text Color Dropdown */}
+              <div>
+                <div className="mb-1 flex items-center justify-between text-[11px] font-bold text-slate-300">
+                  <span>Text Color</span>
+                  <span className="font-mono text-[10px] text-slate-400 uppercase">{settings.textColor}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <span 
+                    className="h-8 w-8 rounded-xl border border-slate-600 shadow-2xs shrink-0 transition-all"
+                    style={{ background: settings.textColor }}
+                    title={`Text Color: ${settings.textColor}`}
+                  />
+                  <select
+                    value={TEXT_COLOR_OPTIONS.some(o => o.value.toLowerCase() === settings.textColor.toLowerCase()) ? settings.textColor.toLowerCase() : 'custom'}
+                    onChange={(e) => {
+                      if (e.target.value !== 'custom') {
+                        update({ textColor: e.target.value });
+                      }
+                    }}
+                    className="flex-1 rounded-xl border border-slate-700 bg-slate-800 px-2.5 py-1.5 text-xs font-semibold text-slate-100 focus:border-emerald-500 focus:outline-none"
+                  >
+                    {TEXT_COLOR_OPTIONS.map((opt) => (
+                      <option key={opt.value} value={opt.value}>
+                        {opt.label}
+                      </option>
+                    ))}
+                    {!TEXT_COLOR_OPTIONS.some(o => o.value.toLowerCase() === settings.textColor.toLowerCase()) && (
+                      <option value="custom">Custom Color ({settings.textColor})</option>
+                    )}
+                  </select>
+                  <label 
+                    title="Pick custom text color"
+                    className="relative grid h-8 w-8 place-items-center rounded-xl border border-slate-700 bg-slate-800 hover:bg-slate-700 cursor-pointer shadow-2xs shrink-0"
+                  >
+                    <input
+                      type="color"
+                      value={settings.textColor.startsWith('#') && settings.textColor.length === 7 ? settings.textColor : '#ffffff'}
+                      onChange={(e) => update({ textColor: e.target.value })}
+                      className="absolute inset-0 opacity-0 cursor-pointer w-full h-full"
+                    />
+                    <span className="text-xs">🎨</span>
+                  </label>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Typography / Font Family */}
@@ -139,7 +233,7 @@ export default function SimpleSettingsModal({ isOpen, onClose }) {
             <div className="flex items-center gap-2">
               <button
                 type="button"
-                onClick={() => update({ fontSizeScale: Math.max(0.4, +(settings.fontSizeScale - 0.05).toFixed(2)) })}
+                onClick={() => update({ fontSizeScale: Math.max(0.4, +(settings.fontSizeScale - 0.08).toFixed(2)) })}
                 className="grid h-7 w-7 place-items-center rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition"
                 title="Decrease font size"
               >
@@ -148,7 +242,7 @@ export default function SimpleSettingsModal({ isOpen, onClose }) {
               <input
                 type="range"
                 min={0.4}
-                max={2.5}
+                max={3.0}
                 step={0.02}
                 value={settings.fontSizeScale}
                 onChange={(e) => update({ fontSizeScale: Number(e.target.value) })}
@@ -156,7 +250,7 @@ export default function SimpleSettingsModal({ isOpen, onClose }) {
               />
               <button
                 type="button"
-                onClick={() => update({ fontSizeScale: Math.min(2.5, +(settings.fontSizeScale + 0.05).toFixed(2)) })}
+                onClick={() => update({ fontSizeScale: Math.min(3.0, +(settings.fontSizeScale + 0.08).toFixed(2)) })}
                 className="grid h-7 w-7 place-items-center rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition"
                 title="Increase font size"
               >

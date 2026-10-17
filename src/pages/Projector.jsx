@@ -6,7 +6,7 @@ import { useSwipe } from '../hooks/useSwipe';
 import { useFullscreen } from '../hooks/useFullscreen';
 import { useOrientation } from '../hooks/useOrientation';
 import { useContainerSize } from '../hooks/useContainerSize';
-import { projectorStyle, hexA } from '../lib/theme';
+import { projectorStyle, hexA, computeFitFontSize } from '../lib/theme';
 import { formatCommaLines } from '../lib/parse';
 import SimpleSettingsModal from '../components/SimpleSettingsModal';
 import { 
@@ -60,45 +60,43 @@ export default function Projector() {
   const isTitle = slide?.kind === 'title';
   const lines = useMemo(() => (!slide ? [] : isTitle ? [slide.title, slide.subtitle].filter(Boolean) : slide.lines), [slide, isTitle]);
 
-  /* -------- ROBUST FONT SIZING (GUARANTEED NOTHING GOES OUTSIDE THE SCREEN) -------- */
+  /* -------- ROBUST & DYNAMIC FONT SIZING (FULL FREEDOM IN LANDSCAPE & PORTRAIT) -------- */
   const baseFontSize = useMemo(() => {
     const w = size.width || (typeof window !== 'undefined' ? window.innerWidth : 1280);
     const h = size.height || (typeof window !== 'undefined' ? window.innerHeight : 720);
 
     if (!lines.length) return 48;
 
-    // Available safe drawing area:
-    // Leaving ample safe margins for top bar (56px) and bottom dots (36px)
-    const availW = Math.max(260, w * 0.90);
-    const availH = Math.max(160, h - 96);
+    const isLandscape = orientation === 'landscape' || w > h;
 
-    const longest = Math.max(1, ...lines.map((l) => l.length));
-    const lineCount = Math.max(1, lines.length);
+    // In landscape mode, vertical space is precious:
+    // When phone is in landscape, top bar & bottom indicators are slim so we leave optimal breathing room
+    const topMargin = isLandscape ? (h < 500 ? 44 : 64) : 80;
+    const bottomMargin = isLandscape ? (h < 500 ? 24 : 38) : 52;
 
-    // Font metrics for Devanagari with conjuncts and English
-    const charWidthRatio = 0.56;
+    const availW = Math.max(260, w * (isLandscape ? 0.94 : 0.90));
+    const availH = Math.max(140, h - topMargin - bottomMargin);
     const lineSpacing = settings.lineHeight || 1.18;
 
-    // Estimate line wrapping on narrower screens (mobile portrait)
-    const approxCharsPerLine = Math.max(12, availW / (42 * charWidthRatio));
-    let effectiveLineCount = 0;
-    for (const l of lines) {
-      effectiveLineCount += Math.max(1, Math.ceil(l.length / approxCharsPerLine));
-    }
-    const finalLineCount = Math.max(lineCount, effectiveLineCount);
+    // 1. Calculate baseline fit size (100% fits screen area perfectly without overflowing):
+    const baselineFit = computeFitFontSize({
+      lines,
+      availW,
+      availH,
+      lineSpacing,
+      minSize: isLandscape ? 18 : 16,
+      maxSize: isLandscape ? 150 : 200,
+      charWidthRatio: 0.54,
+    });
 
-    const byWidth = availW / (longest * charWidthRatio);
-    const byHeight = availH / (finalLineCount * lineSpacing);
-
-    // Baseline fit size (100% fits screen area)
-    const baseFit = Math.min(byWidth, byHeight);
-
-    // User scale multiplier (clamped safely)
+    // 2. User scale multiplier:
+    // When settings.fontSizeScale is 1.0 (or default), it uses the calculated baselineFit.
+    // If user clicks A+ or uses slider (e.g. 1.2, 1.5, 2.0, 2.5), scale up directly!
     const scale = settings.fontSizeScale || 1.0;
-    const computed = baseFit * (scale / 1.15);
+    const computed = Math.round(baselineFit * scale);
 
-    return Math.max(16, Math.min(computed, 260));
-  }, [size, lines, settings.fontSizeScale, settings.lineHeight]);
+    return Math.max(14, Math.min(computed, 280));
+  }, [size, lines, settings.fontSizeScale, settings.lineHeight, orientation]);
 
   const [currentFontSize, setCurrentFontSize] = useState(baseFontSize);
 
@@ -106,15 +104,22 @@ export default function Projector() {
     setCurrentFontSize(baseFontSize);
   }, [baseFontSize, index, slide]);
 
-  // Real-DOM safety fitting: guarantees text is 100% inside container
+  // Real-DOM safety fitting:
+  // ONLY adjust down if the user is in fit-to-screen mode (fontSizeScale <= 1.05)
+  // If the user has explicitly requested a larger font size (fontSizeScale > 1.05 or clicked A+),
+  // NEVER suppress their choice, allowing the text to grow and scroll vertically!
   useLayoutEffect(() => {
     const el = contentRef.current;
     if (!el) return;
 
+    const scale = settings.fontSizeScale || 1.0;
+    if (scale > 1.05) return; // Allow font size increase without clamping!
+
     const w = size.width || (typeof window !== 'undefined' ? window.innerWidth : 1280);
     const h = size.height || (typeof window !== 'undefined' ? window.innerHeight : 720);
-    const maxW = w * 0.92;
-    const maxH = Math.max(150, h - 96);
+    const isLandscape = orientation === 'landscape' || w > h;
+    const maxW = w * (isLandscape ? 0.95 : 0.92);
+    const maxH = Math.max(140, h - (isLandscape ? (h < 500 ? 56 : 76) : 96));
 
     const actualH = el.scrollHeight;
     const actualW = el.scrollWidth;
@@ -122,12 +127,12 @@ export default function Projector() {
     if (actualH > maxH || actualW > maxW) {
       const ratioH = maxH / actualH;
       const ratioW = maxW / actualW;
-      const factor = Math.min(ratioH, ratioW) * 0.95;
-      if (factor < 0.98) {
+      const factor = Math.min(ratioH, ratioW) * 0.96;
+      if (factor < 0.97) {
         setCurrentFontSize((curr) => Math.max(14, Math.floor(curr * factor)));
       }
     }
-  }, [currentFontSize, baseFontSize, index, slide, size]);
+  }, [currentFontSize, baseFontSize, index, slide, size, settings.fontSizeScale, orientation]);
 
   /* -------- navigation -------- */
   const next = useCallback(() => setIndex((i) => Math.min(i + 1, slides.length - 1)), [slides.length]);
@@ -163,11 +168,11 @@ export default function Projector() {
         case 'End':  setIndex(Math.max(0, slides.length - 1)); poke(); break;
         case 'f': case 'F': toggleFullscreen(); break;
         case '+': case '=':
-          updateSettings({ fontSizeScale: Math.min(2.5, +(settings.fontSizeScale + 0.05).toFixed(2)) });
+          updateSettings({ fontSizeScale: Math.min(3.0, +(settings.fontSizeScale + 0.08).toFixed(2)) });
           poke();
           break;
         case '-': case '_':
-          updateSettings({ fontSizeScale: Math.max(0.4, +(settings.fontSizeScale - 0.05).toFixed(2)) });
+          updateSettings({ fontSizeScale: Math.max(0.4, +(settings.fontSizeScale - 0.08).toFixed(2)) });
           poke();
           break;
         case 'Escape':
@@ -215,21 +220,26 @@ export default function Projector() {
     <div
       ref={rootRef}
       className={`fixed inset-0 w-screen h-screen overflow-hidden select-none ${showUi ? '' : 'cursor-hidden'}`}
-      style={{ ...theme, touchAction: 'none' }}
+      style={{ ...theme, touchAction: 'pan-y' }}
       onMouseMove={poke}
       onPointerDown={(e) => { poke(); swipe.onPointerDown(e); }}
       onPointerMove={swipe.onPointerMove}
       onPointerUp={swipe.onPointerUp}
       onPointerCancel={swipe.onPointerCancel}
     >
-      {/* 100% BOUNDED SLIDE CONTAINER (NEVER OVERFLOWS SCREEN) */}
+      {/* BOUNDED & SCROLLABLE SLIDE CONTAINER */}
       <div 
         ref={sizeRef} 
-        className="pointer-events-none absolute inset-0 w-full h-full flex flex-col items-center justify-center pt-14 pb-10 px-4 sm:px-8 text-center"
+        className={`absolute inset-0 w-full h-full flex flex-col items-center justify-center text-center ${
+          (orientation === 'landscape' || (size.width && size.width > size.height))
+            ? 'pt-10 pb-5 px-3 sm:px-6' 
+            : 'pt-14 pb-10 px-4 sm:px-8'
+        }`}
       >
         <div
           ref={contentRef}
-          className="w-full max-w-[94vw] max-h-[82vh] flex flex-col items-center justify-center overflow-hidden"
+          className="w-full max-w-[96vw] max-h-[88vh] flex flex-col items-center justify-center overflow-y-auto pointer-events-auto overscroll-contain select-text"
+          style={{ touchAction: 'pan-y' }}
         >
           {isTitle ? (
             <div className="w-full flex flex-col items-center justify-center px-2">
@@ -383,7 +393,7 @@ export default function Projector() {
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              updateSettings({ fontSizeScale: Math.max(0.4, +(settings.fontSizeScale - 0.05).toFixed(2)) });
+              updateSettings({ fontSizeScale: Math.max(0.4, +(settings.fontSizeScale - 0.08).toFixed(2)) });
               poke();
             }}
             className="rounded-xl px-2.5 py-1.5 text-xs font-bold active:scale-95 transition"
@@ -396,7 +406,7 @@ export default function Projector() {
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              updateSettings({ fontSizeScale: Math.min(2.5, +(settings.fontSizeScale + 0.05).toFixed(2)) });
+              updateSettings({ fontSizeScale: Math.min(3.0, +(settings.fontSizeScale + 0.08).toFixed(2)) });
               poke();
             }}
             className="rounded-xl px-2.5 py-1.5 text-xs font-bold active:scale-95 transition"
