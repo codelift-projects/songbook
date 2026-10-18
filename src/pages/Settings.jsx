@@ -13,9 +13,6 @@ export default function Settings() {
           <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900">
             Display Settings
           </h1>
-          <p className="text-xs text-slate-500 mt-0.5">
-            Configure live projector colors, font, and text sizing.
-          </p>
         </div>
         <button
           onClick={reset}
@@ -48,11 +45,10 @@ export default function Settings() {
                 type="button"
                 onClick={() => applyPreset(p)}
                 title={p.name}
-                className={`group relative flex items-center justify-center h-16 rounded-2xl border-2 transition-all duration-150 shadow-xs cursor-pointer ${
-                  isActive
+                className={`group relative flex items-center justify-center h-16 rounded-2xl border-2 transition-all duration-150 shadow-xs cursor-pointer ${isActive
                     ? 'border-emerald-600 ring-2 ring-emerald-600/40 shadow-sm scale-[1.04]'
                     : 'border-slate-300/80 hover:border-slate-400 hover:scale-[1.02]'
-                }`}
+                  }`}
                 style={{ background: p.background }}
               >
                 <span
@@ -83,7 +79,7 @@ export default function Settings() {
               </span>
             </label>
             <div className="flex items-center gap-2">
-              <span 
+              <span
                 className="h-9 w-9 rounded-xl border border-slate-300 shadow-2xs shrink-0 transition-all"
                 style={{ background: settings.background }}
                 title="Current Background Color"
@@ -106,7 +102,7 @@ export default function Settings() {
                   <option value="custom">Custom Color</option>
                 )}
               </select>
-              <label 
+              <label
                 title="Choose custom background color"
                 className="relative grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 cursor-pointer shadow-2xs shrink-0"
               >
@@ -130,7 +126,7 @@ export default function Settings() {
               </span>
             </label>
             <div className="flex items-center gap-2">
-              <span 
+              <span
                 className="h-9 w-9 rounded-xl border border-slate-300 shadow-2xs shrink-0 transition-all"
                 style={{ background: settings.textColor }}
                 title="Current Text Color"
@@ -153,7 +149,7 @@ export default function Settings() {
                   <option value="custom">Custom Color</option>
                 )}
               </select>
-              <label 
+              <label
                 title="Choose custom text color"
                 className="relative grid h-9 w-9 place-items-center rounded-xl border border-slate-200 bg-slate-50 hover:bg-slate-100 cursor-pointer shadow-2xs shrink-0"
               >

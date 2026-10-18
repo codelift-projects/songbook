@@ -38,6 +38,8 @@ export default function SongList() {
   });
 
   const [langFilter, setLangFilter] = useState('all'); // 'all' | 'hindi' | 'marathi' | 'english'
+  const [typeFilter, setTypeFilter] = useState('all'); // 'all' | 'worship' | 'praise'
+  const [beatFilter, setBeatFilter] = useState('all'); // 'all' | '4/4' | '3/4' | '6/8' | '2/4'
 
   // Incomplete song flags
   const [incompleteFlags, setIncompleteFlags] = useState({});
@@ -153,7 +155,7 @@ export default function SongList() {
 
   const parsedQuery = useMemo(() => parseQuery(search), [search]);
 
-  // Robust Typo-Tolerant & Phonetic Search with Score Ranking
+  // Robust Typo-Tolerant & Phonetic Search with Score Ranking, Language, Type, and Beat filtering
   const filteredSongs = useMemo(() => {
     return indexed
       .map(({ song, index }) => ({
@@ -162,6 +164,14 @@ export default function SongList() {
       }))
       .filter(({ song, score }) => {
         if (langFilter !== 'all' && song.language !== langFilter && song.language !== 'bilingual') return false;
+        if (typeFilter !== 'all') {
+          const sType = (song.type || 'worship').toLowerCase().trim();
+          if (sType !== typeFilter) return false;
+        }
+        if (beatFilter !== 'all') {
+          const sBeat = (song.beat || '').trim();
+          if (sBeat !== beatFilter) return false;
+        }
         return score > 0;
       })
       .sort((a, b) => {
@@ -169,7 +179,7 @@ export default function SongList() {
         return (a.song.number || 0) - (b.song.number || 0);
       })
       .map((x) => x.song);
-  }, [indexed, parsedQuery, langFilter]);
+  }, [indexed, parsedQuery, langFilter, typeFilter, beatFilter]);
 
   return (
     <div className="space-y-3.5 pb-20 w-full max-w-full overflow-x-hidden">
@@ -187,79 +197,57 @@ export default function SongList() {
         </div>
       )}
 
-      {/* Search Bar and Language Filter Pills - Clean and No Top Bar Clutter */}
-      <div className="grid gap-2.5 sm:grid-cols-12 w-full max-w-full">
-        {/* Search Bar */}
-        <div className="relative sm:col-span-7 min-w-0 w-full">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
-          <input
-            type="text"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search songs by title or lyrics..."
-            className="w-full rounded-xl border border-slate-200/90 bg-white pl-10 pr-24 sm:pr-28 py-2.5 text-sm font-normal text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none shadow-2xs transition"
-          />
+      {/* Search Bar and Filters: Language, Type (Worship/Praise), Beat */}
+      <div className="space-y-2 w-full max-w-full">
+        {/* Row 1: Search Bar & Fullscreen Toggle */}
+        <div className="flex items-center gap-2 w-full max-w-full">
+          <div className="relative flex-1 min-w-0">
+            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+            <input
+              type="text"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search songs by title or lyrics..."
+              className="w-full rounded-xl border border-slate-200/90 bg-white pl-10 pr-24 sm:pr-28 py-2.5 text-sm font-normal text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none shadow-2xs transition"
+            />
 
-          {/* Action buttons inside search bar */}
-          <div className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
-            {search.trim() && (
-              <button
-                type="button"
-                onClick={() => handleQuickReport(search)}
-                className="flex items-center gap-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 px-2 py-1 text-[11px] font-bold transition shadow-2xs active:scale-95"
-                title={`Report "${search}" as missing song`}
-              >
-                <Plus className="h-3 w-3 text-amber-700" />
-                <span>Report</span>
-              </button>
-            )}
+            {/* Action buttons inside search bar */}
+            <div className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
+              {search.trim() && (
+                <button
+                  type="button"
+                  onClick={() => handleQuickReport(search)}
+                  className="flex items-center gap-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 px-2 py-1 text-[11px] font-bold transition shadow-2xs active:scale-95"
+                  title={`Report "${search}" as missing song`}
+                >
+                  <Plus className="h-3 w-3 text-amber-700" />
+                  <span>Report</span>
+                </button>
+              )}
 
-            {search && (
-              <button
-                type="button"
-                onClick={() => {
-                  setSearch('');
-                  try {
-                    sessionStorage.removeItem(SEARCH_STORAGE_KEY);
-                  } catch (e) {}
-                }}
-                className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition"
-                title="Clear search"
-              >
-                <X className="h-3.5 w-3.5" />
-              </button>
-            )}
-          </div>
-        </div>
-
-        {/* Language Tabs & Home Page Fullscreen Button */}
-        <div className="flex items-center gap-2 sm:col-span-5 min-w-0 max-w-full">
-          <div className="flex-1 flex rounded-xl border border-slate-200/90 bg-white p-1 shadow-xs overflow-x-auto min-w-0 max-w-full">
-            {[
-              { id: 'all', label: 'All' },
-              { id: 'hindi', label: 'हिन्दी' },
-              { id: 'marathi', label: 'मराठी' },
-              { id: 'english', label: 'English' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setLangFilter(tab.id)}
-                className={`flex-1 shrink-0 rounded-lg py-1.5 px-2 text-xs font-semibold transition-all duration-150 ${
-                  langFilter === tab.id
-                    ? 'bg-emerald-600 text-white shadow-xs'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+              {search && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearch('');
+                    try {
+                      sessionStorage.removeItem(SEARCH_STORAGE_KEY);
+                    } catch (e) {}
+                  }}
+                  className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition"
+                  title="Clear search"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              )}
+            </div>
           </div>
 
           {/* Fullscreen Toggle Button on Home Page */}
           <button
             type="button"
             onClick={toggleAppFullscreen}
-            className={`shrink-0 flex items-center gap-1.5 rounded-xl border px-2.5 sm:px-3 py-2 text-xs font-bold transition shadow-xs active:scale-95 ${
+            className={`shrink-0 flex items-center gap-1.5 rounded-xl border px-2.5 sm:px-3 py-2.5 text-xs font-bold transition shadow-xs active:scale-95 ${
               isFullscreen
                 ? 'border-emerald-600 bg-emerald-600 text-white shadow-emerald-600/20'
                 : 'border-slate-200/90 bg-white text-slate-700 hover:bg-slate-50 hover:text-emerald-700'
@@ -278,6 +266,92 @@ export default function SongList() {
               </>
             )}
           </button>
+        </div>
+
+        {/* Row 2: Filter Tabs (Language, Type of Song: Worship/Praise, Beat) */}
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 pt-0.5">
+          {/* Language Tabs */}
+          <div className="flex rounded-xl border border-slate-200/90 bg-white p-1 shadow-2xs overflow-x-auto">
+            {[
+              { id: 'all', label: 'All' },
+              { id: 'hindi', label: 'हिन्दी' },
+              { id: 'marathi', label: 'मराठी' },
+              { id: 'english', label: 'English' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setLangFilter(tab.id)}
+                className={`shrink-0 rounded-lg py-1 px-2.5 text-xs font-semibold transition-all ${
+                  langFilter === tab.id
+                    ? 'bg-emerald-600 text-white shadow-2xs'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Type of Song Filter: Worship / Praise */}
+          <div className="flex rounded-xl border border-slate-200/90 bg-white p-1 shadow-2xs overflow-x-auto">
+            {[
+              { id: 'all', label: 'All Types' },
+              { id: 'worship', label: 'Worship' },
+              { id: 'praise', label: 'Praise' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setTypeFilter(tab.id)}
+                className={`shrink-0 rounded-lg py-1 px-2.5 text-xs font-semibold transition-all ${
+                  typeFilter === tab.id
+                    ? tab.id === 'praise'
+                      ? 'bg-indigo-600 text-white shadow-2xs'
+                      : tab.id === 'worship'
+                      ? 'bg-emerald-600 text-white shadow-2xs'
+                      : 'bg-slate-900 text-white shadow-2xs'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Beat Filter */}
+          <div className="flex rounded-xl border border-slate-200/90 bg-white p-1 shadow-2xs overflow-x-auto items-center">
+            <span className="text-[10px] font-bold text-slate-400 px-1.5 uppercase tracking-wider hidden sm:inline">
+              Beat:
+            </span>
+            {['all', '4/4', '3/4', '6/8', '2/4'].map((b) => (
+              <button
+                key={b}
+                onClick={() => setBeatFilter(b)}
+                className={`shrink-0 rounded-lg py-1 px-2 text-xs font-semibold transition-all ${
+                  beatFilter === b
+                    ? 'bg-slate-900 text-white shadow-2xs'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                }`}
+              >
+                {b === 'all' ? 'All' : b}
+              </button>
+            ))}
+          </div>
+
+          {/* Reset all filters button if any filter is active */}
+          {(langFilter !== 'all' || typeFilter !== 'all' || beatFilter !== 'all') && (
+            <button
+              type="button"
+              onClick={() => {
+                setLangFilter('all');
+                setTypeFilter('all');
+                setBeatFilter('all');
+              }}
+              className="rounded-lg px-2 py-1 text-xs font-bold text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition shadow-2xs active:scale-95"
+              title="Reset all filters"
+            >
+              Reset
+            </button>
+          )}
         </div>
       </div>
 
@@ -314,7 +388,7 @@ export default function SongList() {
               </button>
             )}
 
-            {(search || langFilter !== 'all') && (
+            {(search || langFilter !== 'all' || typeFilter !== 'all' || beatFilter !== 'all') && (
               <button
                 type="button"
                 onClick={() => {
@@ -323,6 +397,8 @@ export default function SongList() {
                     sessionStorage.removeItem(SEARCH_STORAGE_KEY);
                   } catch (e) {}
                   setLangFilter('all');
+                  setTypeFilter('all');
+                  setBeatFilter('all');
                 }}
                 className="inline-flex items-center rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 transition"
               >
@@ -344,7 +420,7 @@ export default function SongList() {
         onDeleteMissing={handleDeleteMissingFromModal}
       />
 
-      {/* Pure, Uncluttered Clean List View (No cards, only View button, no seed/number/lang/english clutter) */}
+      {/* Pure, Uncluttered Clean List View (No cards, only View button, no praise/worship badge clutter) */}
       {!loading && filteredSongs.length > 0 && (
         <div className="flex flex-col divide-y divide-slate-100 rounded-2xl border border-slate-200/90 bg-white overflow-hidden shadow-2xs w-full max-w-full">
           {filteredSongs.map((song) => {
@@ -361,18 +437,6 @@ export default function SongList() {
                   <span className="font-semibold text-sm sm:text-base text-slate-900 group-hover:text-emerald-700 transition-colors truncate">
                     {song.title}
                   </span>
-
-                  {song.type && (
-                    <span 
-                      className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider shrink-0 ${
-                        song.type === 'praise'
-                          ? 'bg-indigo-50 text-indigo-700 border border-indigo-200/70'
-                          : 'bg-emerald-50 text-emerald-800 border border-emerald-200/70'
-                      }`}
-                    >
-                      {song.type === 'praise' ? 'Praise' : 'Worship'}
-                    </span>
-                  )}
 
                   {needsEdit && (
                     <span 
