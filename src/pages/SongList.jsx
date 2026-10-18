@@ -170,19 +170,68 @@ export default function SongList() {
 
       {/* Search Bar and Prebuilt Filters */}
       <div className="space-y-2.5 w-full max-w-full">
-        {/* Row 1: Full-Width Search Input */}
-        <div className="relative w-full">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+        {/* Row 1: Search Bar with Active Filter Badges */}
+        <div className="relative flex items-center flex-wrap gap-1.5 w-full rounded-xl border border-slate-200/90 bg-white px-3 py-1.5 focus-within:border-emerald-500 focus-within:ring-1 focus-within:ring-emerald-500 shadow-2xs transition min-h-[44px]">
+          <Search className="h-4 w-4 text-slate-400 shrink-0 mr-0.5 pointer-events-none" />
+
+          {/* Active Filter Badges (inside search bar) */}
+          {langFilter !== 'all' && (
+            <span className="inline-flex items-center gap-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 pl-2 pr-1 py-0.5 text-xs font-bold animate-in fade-in zoom-in-95">
+              <span>{langFilter === 'hindi' ? 'हिन्दी' : langFilter === 'marathi' ? 'मराठी' : 'English'}</span>
+              <button
+                type="button"
+                onClick={() => setLangFilter('all')}
+                className="text-emerald-700 hover:text-emerald-950 rounded p-0.5 hover:bg-emerald-200/60 transition"
+                title="Remove language filter"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </span>
+          )}
+
+          {typeFilter !== 'all' && (
+            <span className="inline-flex items-center gap-1 rounded-lg bg-indigo-50 text-indigo-800 border border-indigo-200 pl-2 pr-1 py-0.5 text-xs font-bold animate-in fade-in zoom-in-95">
+              <span className="capitalize">{typeFilter}</span>
+              <button
+                type="button"
+                onClick={() => setTypeFilter('all')}
+                className="text-indigo-700 hover:text-indigo-950 rounded p-0.5 hover:bg-indigo-200/60 transition"
+                title="Remove type filter"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </span>
+          )}
+
+          {beatFilter !== 'all' && (
+            <span className="inline-flex items-center gap-1 rounded-lg bg-slate-100 text-slate-800 border border-slate-300 pl-2 pr-1 py-0.5 text-xs font-bold animate-in fade-in zoom-in-95">
+              <span>Beat: {beatFilter}</span>
+              <button
+                type="button"
+                onClick={() => setBeatFilter('all')}
+                className="text-slate-600 hover:text-slate-900 rounded p-0.5 hover:bg-slate-200 transition"
+                title="Remove beat filter"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </span>
+          )}
+
+          {/* Search Input */}
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search songs by title or lyrics..."
-            className="w-full rounded-xl border border-slate-200/90 bg-white pl-10 pr-24 sm:pr-28 py-2.5 text-sm font-normal text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none shadow-2xs transition"
+            placeholder={
+              langFilter !== 'all' || typeFilter !== 'all' || beatFilter !== 'all'
+                ? "Filter active · search within results..."
+                : "Search songs by title or lyrics..."
+            }
+            className="flex-1 min-w-[130px] bg-transparent py-1 text-sm font-normal text-slate-800 focus:outline-none"
           />
 
-          {/* Action buttons inside search bar */}
-          <div className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
+          {/* Action buttons inside search bar (Report + Clear) */}
+          <div className="flex items-center gap-1 ml-auto shrink-0">
             {search.trim() && (
               <button
                 type="button"

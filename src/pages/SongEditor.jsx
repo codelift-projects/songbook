@@ -239,6 +239,9 @@ export default function SongEditor() {
     if (first.title_alt) setTitleAlt(first.title_alt);
     if (first.number != null) setNumber(String(first.number));
     if (first.language) setLanguage(first.language);
+    if (first.type) setSongType(first.type);
+    if (first.beat) setBeat(first.beat);
+    if (first.tempo) setTempo(String(first.tempo));
     if (first.stanzas && first.stanzas.length) setStanzas(first.stanzas);
   };
 

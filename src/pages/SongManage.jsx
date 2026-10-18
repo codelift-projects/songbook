@@ -6,6 +6,7 @@ import { exportSongsToJson } from '../lib/export';
 import { isSeedSong } from '../lib/seed';
 import { fetchMissingSongs, addMissingSong, deleteMissingSong } from '../lib/missingSongs';
 import SongImportModal from '../components/SongImportModal';
+import SongExportModal from '../components/SongExportModal';
 import DeletePasswordModal from '../components/DeletePasswordModal';
 import SelectionToolbar from '../components/SelectionToolbar';
 import MissingSongModal from '../components/MissingSongModal';
@@ -38,6 +39,7 @@ export default function SongManage() {
   const [typeFilter, setTypeFilter] = useState('all'); // 'all' | 'worship' | 'praise'
   const [beatFilter, setBeatFilter] = useState('all'); // 'all' | '13' | '31' | '37' | '49' | '55' | '68' | 'NA'
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [editingBeatTempoSong, setEditingBeatTempoSong] = useState(null);
 
   // Missing songs state
@@ -190,6 +192,10 @@ export default function SongManage() {
 
   const handleBulkImport = async (importedSongs) => {
     if (!importedSongs || importedSongs.length === 0) return;
+    if (importedSongs.length === 1) {
+      navigate('/songs/new', { state: importedSongs[0] });
+      return;
+    }
     await addBulkSongs(importedSongs);
     flashToast(`Successfully imported ${importedSongs.length} song(s)!`);
   };
@@ -264,7 +270,7 @@ export default function SongManage() {
 
         <button
           type="button"
-          onClick={() => exportSongsToJson(songs)}
+          onClick={() => setIsExportModalOpen(true)}
           className="flex items-center justify-center rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 py-2 px-1 text-center text-xs font-bold transition shadow-2xs active:scale-95 truncate"
         >
           Export
@@ -282,20 +288,69 @@ export default function SongManage() {
       {/* Search Input & Select All */}
       <div className="space-y-2.5 w-full max-w-full">
         <div className="flex items-center gap-2 w-full">
-          <div className="relative flex-1 min-w-0">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+          {/* Search bar with active filter badges inside */}
+          <div className="relative flex-1 flex items-center flex-wrap gap-1.5 min-w-0 rounded-xl border border-slate-200/90 bg-white px-3 py-1.5 focus-within:border-emerald-500 focus-within:ring-1 focus-within:ring-emerald-500 shadow-2xs transition min-h-[44px]">
+            <Search className="h-4 w-4 text-slate-400 shrink-0 mr-0.5 pointer-events-none" />
+
+            {/* Active Filter Badges (inside search bar) */}
+            {langFilter !== 'all' && (
+              <span className="inline-flex items-center gap-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 pl-2 pr-1 py-0.5 text-xs font-bold animate-in fade-in zoom-in-95">
+                <span>{langFilter === 'hindi' ? 'हिन्दी' : langFilter === 'marathi' ? 'मराठी' : 'English'}</span>
+                <button
+                  type="button"
+                  onClick={() => setLangFilter('all')}
+                  className="text-emerald-700 hover:text-emerald-950 rounded p-0.5 hover:bg-emerald-200/60 transition"
+                  title="Remove language filter"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </span>
+            )}
+
+            {typeFilter !== 'all' && (
+              <span className="inline-flex items-center gap-1 rounded-lg bg-indigo-50 text-indigo-800 border border-indigo-200 pl-2 pr-1 py-0.5 text-xs font-bold animate-in fade-in zoom-in-95">
+                <span className="capitalize">{typeFilter}</span>
+                <button
+                  type="button"
+                  onClick={() => setTypeFilter('all')}
+                  className="text-indigo-700 hover:text-indigo-950 rounded p-0.5 hover:bg-indigo-200/60 transition"
+                  title="Remove type filter"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </span>
+            )}
+
+            {beatFilter !== 'all' && (
+              <span className="inline-flex items-center gap-1 rounded-lg bg-slate-100 text-slate-800 border border-slate-300 pl-2 pr-1 py-0.5 text-xs font-bold animate-in fade-in zoom-in-95">
+                <span>Beat: {beatFilter}</span>
+                <button
+                  type="button"
+                  onClick={() => setBeatFilter('all')}
+                  className="text-slate-600 hover:text-slate-900 rounded p-0.5 hover:bg-slate-200 transition"
+                  title="Remove beat filter"
+                >
+                  <X className="h-3 w-3" />
+                </button>
+              </span>
+            )}
+
             <input
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search songs to manage, edit, or delete..."
-              className="w-full rounded-xl border border-slate-200/90 bg-white pl-10 pr-9 py-2.5 text-sm font-normal text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none shadow-2xs transition"
+              placeholder={
+                langFilter !== 'all' || typeFilter !== 'all' || beatFilter !== 'all'
+                  ? "Filter active · search within results..."
+                  : "Search songs to manage, edit, or delete..."
+              }
+              className="flex-1 min-w-[130px] bg-transparent py-1 text-sm font-normal text-slate-800 focus:outline-none"
             />
             {search && (
               <button
                 type="button"
                 onClick={() => setSearch('')}
-                className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition"
+                className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition ml-auto"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
@@ -546,6 +601,13 @@ export default function SongManage() {
         isOpen={isImportModalOpen}
         onClose={() => setIsImportModalOpen(false)}
         onImportSongs={handleBulkImport}
+      />
+
+      {/* Song Export Modal */}
+      <SongExportModal
+        isOpen={isExportModalOpen}
+        onClose={() => setIsExportModalOpen(false)}
+        songs={songs}
       />
 
       {/* Missing Song Modal */}
