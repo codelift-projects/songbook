@@ -57,13 +57,37 @@ export default function Projector() {
   const [showUi, setShowUi] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(false);
 
-  // Attempt automatic orientation lock via code without annoying overlays
+  // Automatic orientation handling: attempt landscape lock in Present view,
+  // and upon exit, unlock and restore original orientation so it goes back to
+  // portrait if it was portrait, or landscape if landscape.
   useEffect(() => {
+    const initialType = screen?.orientation?.type;
+    const wasPortrait = initialType
+      ? initialType.includes('portrait')
+      : (typeof window !== 'undefined' && window.innerHeight > window.innerWidth);
+
     try {
       if (screen?.orientation?.lock) {
         screen.orientation.lock('landscape').catch(() => {});
       }
     } catch (e) {}
+
+    return () => {
+      try {
+        if (screen?.orientation?.unlock) {
+          screen.orientation.unlock();
+        }
+        if (wasPortrait && screen?.orientation?.lock) {
+          screen.orientation.lock('portrait')
+            .then(() => {
+              if (screen?.orientation?.unlock) screen.orientation.unlock();
+            })
+            .catch(() => {
+              if (screen?.orientation?.unlock) screen.orientation.unlock();
+            });
+        }
+      } catch (e) {}
+    };
   }, []);
 
   const [sizeRef, size] = useContainerSize();
@@ -205,6 +229,27 @@ export default function Projector() {
     return () => clearTimeout(hideTimer.current);
   }, [poke]);
 
+  const handleExit = useCallback(() => {
+    try {
+      if (screen?.orientation?.unlock) {
+        screen.orientation.unlock();
+      }
+    } catch (e) {}
+
+    if (document.fullscreenElement) {
+      try {
+        if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+        else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+      } catch (e) {}
+    }
+
+    if (groupId) {
+      navigate(`/groups/${groupId}`);
+    } else {
+      navigate(-1);
+    }
+  }, [groupId, navigate]);
+
   /* -------- keyboard controls -------- */
   useEffect(() => {
     const onKey = (e) => {
@@ -230,13 +275,13 @@ export default function Projector() {
           break;
         case 'Escape':
           if (document.fullscreenElement) document.exitFullscreen();
-          else navigate(-1);
+          else handleExit();
           break;
       }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [next, prev, poke, slides.length, toggleFullscreen, navigate, settings.fontSizeScale, settingsOpen, updateSettings]);
+  }, [next, prev, poke, slides.length, toggleFullscreen, handleExit, settings.fontSizeScale, settingsOpen, updateSettings]);
 
   /* -------- touch gestures -------- */
   const swipe = useSwipe({
@@ -423,7 +468,7 @@ export default function Projector() {
       >
         <button
           type="button"
-          onClick={(e) => { e.stopPropagation(); navigate(groupId ? `/groups/${groupId}` : '/'); }}
+          onClick={(e) => { e.stopPropagation(); handleExit(); }}
           className="flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-xs font-bold transition shadow-xs active:scale-95"
           style={{ background: `${settings.textColor}15`, color: settings.textColor }}
         >
