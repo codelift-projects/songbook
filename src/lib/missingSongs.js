@@ -1,153 +1,213 @@
-import { supabase, isSupabaseConfigured } from './supabase';
-
-const LOCAL_STORAGE_KEY = 'church-songbook:missing_songs:v1';
-
-export function getLocalMissingSongs() {
-  try {
-    const raw = localStorage.getItem(LOCAL_STORAGE_KEY);
-    if (!raw) return [];
-    const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? parsed : [];
-  } catch (err) {
-    console.error('Error reading local missing songs:', err);
-    return [];
-  }
-}
-
-export function saveLocalMissingSongs(list) {
-  try {
-    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(list));
-  } catch (err) {
-    console.error('Error saving local missing songs:', err);
-  }
-}
+import { supabase, isSupabaseConfigured } from './supabase.js';
 
 /**
- * Fetch missing songs from Supabase if configured, with localStorage fallback.
+ * Validates a reported song keyword and optional notes before saving.
+ * Throws a clear Error if validation fails.
  */
-export async function fetchMissingSongs() {
-  const localList = getLocalMissingSongs();
+export function validateMissingSongInput(keyword, notes = '') {
+  if (keyword === null || keyword === undefined) {
+    throw new Error('Song name or keyword is required.');
+  }
 
-  if (isSupabaseConfigured && supabase) {
-    try {
-      const { data, error } = await supabase
-        .from('missing_songs')
-        .select('*')
-        .order('created_at', { ascending: false });
+  const trimmedKeyword = String(keyword).trim().replace(/\s+/g, ' ');
 
-      if (error) {
-        console.warn('Supabase missing_songs fetch failed, using local storage fallback:', error.message);
-        return localList;
-      }
+  if (!trimmedKeyword) {
+    throw new Error('Song name or keyword cannot be blank.');
+  }
 
-      if (Array.isArray(data)) {
-        // Merge Supabase with local items by id or keyword
-        const seen = new Set(data.map((item) => item.keyword.toLowerCase()));
-        const uniqueLocal = localList.filter((item) => !seen.has(item.keyword.toLowerCase()));
-        const combined = [...data, ...uniqueLocal].sort(
-          (a, b) => new Date(b.created_at || 0) - new Date(a.created_at || 0)
-        );
-        saveLocalMissingSongs(combined);
-        return combined;
-      }
-    } catch (err) {
-      console.warn('Network error fetching missing_songs from Supabase:', err.message);
-      return localList;
+  if (trimmedKeyword.length < 1) {
+    throw new Error('Song keyword must be at least 1 character.');
+  }
+
+  if (trimmedKeyword.length > 200) {
+    throw new Error('Song keyword must be 200 characters or less.');
+  }
+
+  let trimmedNotes = null;
+  if (notes !== null && notes !== undefined) {
+    const s = String(notes).trim();
+    if (s.length > 500) {
+      throw new Error('Notes must be 500 characters or less.');
+    }
+    if (s.length > 0) {
+      trimmedNotes = s;
     }
   }
 
-  return localList;
+  return {
+    keyword: trimmedKeyword,
+    notes: trimmedNotes,
+  };
 }
 
 /**
- * Add a missing song keyword to Supabase and LocalStorage.
+ * Asserts that Supabase client is configured and available.
+ */
+function assertSupabaseReady() {
+  if (!isSupabaseConfigured || !supabase) {
+    throw new Error(
+      'Supabase is not configured. Please ensure VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY are set.'
+    );
+  }
+}
+
+/**
+ * Validate that the Supabase `missing_songs` table exists and is accessible.
+ * Returns { ok: true } or { ok: false, error: string }.
+ */
+export async function validateSupabaseConnection() {
+  if (!isSupabaseConfigured || !supabase) {
+    return {
+      ok: false,
+      error: 'Supabase credentials not configured in environment (VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY).',
+    };
+  }
+
+  try {
+    const { error } = await supabase
+      .from('missing_songs')
+      .select('id')
+      .limit(1);
+
+    if (error) {
+      return { ok: false, error: error.message };
+    }
+
+    return { ok: true };
+  } catch (err) {
+    return { ok: false, error: err.message || 'Network error connecting to Supabase.' };
+  }
+}
+
+/**
+ * Fetch all missing songs from Supabase ONLY.
+ */
+export async function fetchMissingSongs() {
+  if (!isSupabaseConfigured || !supabase) {
+    console.warn('Supabase not configured: cannot fetch missing songs from Supabase.');
+    return [];
+  }
+
+  try {
+    const { data, error } = await supabase
+      .from('missing_songs')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      console.error('Failed to fetch missing songs from Supabase:', error.message);
+      throw new Error(`Supabase query error: ${error.message}`);
+    }
+
+    return Array.isArray(data) ? data : [];
+  } catch (err) {
+    console.error('Supabase fetch error:', err.message);
+    throw err;
+  }
+}
+
+/**
+ * Add a missing song keyword to Supabase ONLY.
+ * Performs input validation and checks for duplicates.
  */
 export async function addMissingSong(keyword, notes = '') {
-  const trimmed = String(keyword || '').trim();
-  if (!trimmed) {
-    throw new Error('Keyword cannot be empty');
-  }
+  // 1. Validate inputs
+  const validated = validateMissingSongInput(keyword, notes);
 
-  const localList = getLocalMissingSongs();
-  
-  // Check if already in list (case insensitive)
-  const existingIndex = localList.findIndex(
-    (item) => item.keyword.toLowerCase() === trimmed.toLowerCase()
-  );
+  // 2. Validate Supabase connection
+  assertSupabaseReady();
 
-  const newEntry = {
-    id: `missing-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-    keyword: trimmed,
-    notes: notes ? String(notes).trim() : null,
-    status: 'pending',
-    created_at: new Date().toISOString(),
-  };
+  try {
+    // 3. Check if song already exists in Supabase (case-insensitive)
+    const { data: existing, error: searchError } = await supabase
+      .from('missing_songs')
+      .select('id, keyword, notes')
+      .ilike('keyword', validated.keyword)
+      .limit(1);
 
-  let updatedList;
-  if (existingIndex >= 0) {
-    // Bump existing to top with new timestamp
-    const existing = { ...localList[existingIndex], ...newEntry, id: localList[existingIndex].id };
-    updatedList = [existing, ...localList.filter((_, i) => i !== existingIndex)];
-  } else {
-    updatedList = [newEntry, ...localList];
-  }
-  saveLocalMissingSongs(updatedList);
+    if (searchError) {
+      console.warn('Supabase duplicate check query failed, continuing with insert:', searchError.message);
+    }
 
-  if (isSupabaseConfigured && supabase) {
-    try {
-      const { data, error } = await supabase
+    let insertedOrUpdated;
+
+    if (existing && existing.length > 0) {
+      // If already reported, update timestamp and append notes if new notes provided
+      const targetId = existing[0].id;
+      const mergedNotes = validated.notes
+        ? existing[0].notes
+          ? `${existing[0].notes} | ${validated.notes}`
+          : validated.notes
+        : existing[0].notes;
+
+      const { data: updated, error: updateError } = await supabase
+        .from('missing_songs')
+        .update({
+          notes: mergedNotes,
+          created_at: new Date().toISOString(),
+        })
+        .eq('id', targetId)
+        .select()
+        .single();
+
+      if (updateError) {
+        throw new Error(`Supabase update error: ${updateError.message}`);
+      }
+      insertedOrUpdated = updated;
+    } else {
+      // Insert new record into Supabase
+      const { data: inserted, error: insertError } = await supabase
         .from('missing_songs')
         .insert([
           {
-            keyword: trimmed,
-            notes: notes ? String(notes).trim() : null,
+            keyword: validated.keyword,
+            notes: validated.notes,
             status: 'pending',
-            created_at: newEntry.created_at,
           },
         ])
         .select()
         .single();
 
-      if (error) {
-        console.warn('Supabase missing_songs insert failed, saved locally:', error.message);
-      } else if (data) {
-        // Replace temporary entry id with DB id
-        const idx = updatedList.findIndex((item) => item.id === newEntry.id);
-        if (idx !== -1) {
-          updatedList[idx] = data;
-          saveLocalMissingSongs(updatedList);
-        }
+      if (insertError) {
+        throw new Error(`Supabase insert error: ${insertError.message}`);
       }
-    } catch (err) {
-      console.warn('Supabase missing_songs request error, saved locally:', err.message);
+      insertedOrUpdated = inserted;
     }
-  }
 
-  return { entry: newEntry, list: updatedList };
+    // 4. Return refreshed list from Supabase
+    const list = await fetchMissingSongs();
+    return { entry: insertedOrUpdated, list };
+  } catch (err) {
+    console.error('addMissingSong failed in Supabase:', err.message);
+    throw err;
+  }
 }
 
 /**
- * Delete a missing song from Supabase and LocalStorage.
+ * Delete a missing song from Supabase ONLY by id.
  */
-export async function deleteMissingSong(idOrKeyword) {
-  const localList = getLocalMissingSongs();
-  const target = localList.find((item) => item.id === idOrKeyword || item.keyword === idOrKeyword);
-  const filtered = localList.filter((item) => item.id !== idOrKeyword && item.keyword !== idOrKeyword);
-  saveLocalMissingSongs(filtered);
-
-  if (isSupabaseConfigured && supabase) {
-    try {
-      if (target && target.id && !String(target.id).startsWith('missing-')) {
-        await supabase.from('missing_songs').delete().eq('id', target.id);
-      } else if (target && target.keyword) {
-        await supabase.from('missing_songs').delete().eq('keyword', target.keyword);
-      } else {
-        await supabase.from('missing_songs').delete().eq('id', idOrKeyword);
-      }
-    } catch (err) {
-      console.warn('Supabase missing_songs delete error:', err.message);
-    }
+export async function deleteMissingSong(id) {
+  if (!id) {
+    throw new Error('Missing song ID is required for deletion.');
   }
 
-  return filtered;
+  assertSupabaseReady();
+
+  try {
+    const { error } = await supabase
+      .from('missing_songs')
+      .delete()
+      .eq('id', id);
+
+    if (error) {
+      throw new Error(`Supabase delete error: ${error.message}`);
+    }
+
+    // Return updated list from Supabase
+    const list = await fetchMissingSongs();
+    return list;
+  } catch (err) {
+    console.error('deleteMissingSong failed in Supabase:', err.message);
+    throw err;
+  }
 }

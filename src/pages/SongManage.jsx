@@ -40,20 +40,35 @@ export default function SongManage() {
   const [isMissingModalOpen, setIsMissingModalOpen] = useState(false);
 
   useEffect(() => {
-    fetchMissingSongs().then((list) => {
-      if (Array.isArray(list)) setMissingSongs(list);
-    });
+    fetchMissingSongs()
+      .then((list) => {
+        if (Array.isArray(list)) setMissingSongs(list);
+      })
+      .catch((err) => {
+        console.warn('Could not load missing songs from Supabase:', err.message);
+      });
   }, []);
 
   const handleAddMissing = async (keyword, notes) => {
-    const { list } = await addMissingSong(keyword, notes);
-    setMissingSongs(list);
+    try {
+      const { list } = await addMissingSong(keyword, notes);
+      setMissingSongs(list);
+      flashToast('Missing song saved to Supabase!');
+    } catch (err) {
+      flashToast(err.message || 'Failed to save to Supabase');
+      throw err;
+    }
   };
 
   const handleDeleteMissing = async (id) => {
-    const updated = await deleteMissingSong(id);
-    setMissingSongs(updated);
-    flashToast('Song removed from missing list');
+    try {
+      const updated = await deleteMissingSong(id);
+      setMissingSongs(updated);
+      flashToast('Song removed from Supabase');
+    } catch (err) {
+      flashToast(err.message || 'Failed to delete from Supabase');
+      throw err;
+    }
   };
 
   // Selection & Protected Delete state

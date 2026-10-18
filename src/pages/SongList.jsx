@@ -35,11 +35,15 @@ export default function SongList() {
   const [modalKeyword, setModalKeyword] = useState('');
   const [toastMessage, setToastMessage] = useState(null);
 
-  // Load missing songs on mount
+  // Load missing songs on mount from Supabase
   useEffect(() => {
-    fetchMissingSongs().then((list) => {
-      if (Array.isArray(list)) setMissingSongs(list);
-    });
+    fetchMissingSongs()
+      .then((list) => {
+        if (Array.isArray(list)) setMissingSongs(list);
+      })
+      .catch((err) => {
+        console.warn('Could not load missing songs from Supabase:', err.message);
+      });
   }, []);
 
   const handleOpenMissingModal = () => {
@@ -54,13 +58,13 @@ export default function SongList() {
     try {
       const { list } = await addMissingSong(val);
       setMissingSongs(list);
-      setToastMessage(`"${val}" reported as missing!`);
+      setToastMessage(`"${val}" saved to Supabase!`);
       setTimeout(() => setToastMessage(null), 3500);
       // Only show toast, do not open popup
     } catch (err) {
-      console.error('Error reporting missing song:', err);
-      setToastMessage(`Error reporting "${val}"`);
-      setTimeout(() => setToastMessage(null), 3500);
+      console.error('Error reporting missing song to Supabase:', err);
+      setToastMessage(err.message || `Failed to save "${val}" to Supabase`);
+      setTimeout(() => setToastMessage(null), 4500);
     }
   };
 
@@ -70,10 +74,16 @@ export default function SongList() {
   };
 
   const handleDeleteMissingFromModal = async (id) => {
-    const updated = await deleteMissingSong(id);
-    setMissingSongs(updated);
-    setToastMessage('Song removed from missing list');
-    setTimeout(() => setToastMessage(null), 3000);
+    try {
+      const updated = await deleteMissingSong(id);
+      setMissingSongs(updated);
+      setToastMessage('Song removed from Supabase');
+      setTimeout(() => setToastMessage(null), 3000);
+    } catch (err) {
+      setToastMessage(err.message || 'Error deleting from Supabase');
+      setTimeout(() => setToastMessage(null), 4000);
+      throw err;
+    }
   };
 
   // Precompute normalised search index per song

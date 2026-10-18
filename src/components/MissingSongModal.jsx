@@ -33,6 +33,7 @@ export default function MissingSongModal({
   const [listSearch, setListSearch] = useState('');
   const [justAdded, setJustAdded] = useState(null);
   const [justDeleted, setJustDeleted] = useState(null);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const inputRef = useRef(null);
 
@@ -44,6 +45,7 @@ export default function MissingSongModal({
       setListSearch('');
       setJustAdded(null);
       setJustDeleted(null);
+      setErrorMessage(null);
       
       // If opened with initialTab or if list requested or if there's an initial search query
       if (initialKeyword) {
@@ -80,6 +82,7 @@ export default function MissingSongModal({
 
     try {
       setIsSubmitting(true);
+      setErrorMessage(null);
       await onAddMissing(val, notes.trim());
       setJustAdded(val);
       setKeyword('');
@@ -88,7 +91,8 @@ export default function MissingSongModal({
         setJustAdded(null);
       }, 3500);
     } catch (err) {
-      console.error('Failed to report missing song:', err);
+      console.error('Failed to report missing song to Supabase:', err);
+      setErrorMessage(err.message || 'Failed to save to Supabase');
     } finally {
       setIsSubmitting(false);
     }
@@ -97,13 +101,15 @@ export default function MissingSongModal({
   const handleDelete = async (id, songKeyword, e) => {
     if (e) e.stopPropagation();
     try {
+      setErrorMessage(null);
       await onDeleteMissing(id);
       setJustDeleted(songKeyword);
       setTimeout(() => {
         setJustDeleted(null);
       }, 3000);
     } catch (err) {
-      console.error('Failed to delete missing song:', err);
+      console.error('Failed to delete missing song from Supabase:', err);
+      setErrorMessage(err.message || 'Failed to delete from Supabase');
     }
   };
 
@@ -213,11 +219,27 @@ export default function MissingSongModal({
         {/* Scrollable Content */}
         <div className="flex-1 overflow-y-auto px-5 py-4 space-y-4">
           {/* Quick Notification Toasts */}
+          {errorMessage && (
+            <div className="flex items-center gap-2.5 rounded-2xl bg-rose-50 border border-rose-200 p-3 text-xs font-bold text-rose-900 shadow-sm animate-in fade-in slide-in-from-top-2 duration-200">
+              <AlertCircle className="h-5 w-5 text-rose-600 shrink-0" />
+              <div className="flex-1">
+                {errorMessage}
+              </div>
+              <button
+                type="button"
+                onClick={() => setErrorMessage(null)}
+                className="text-rose-400 hover:text-rose-700 p-1"
+              >
+                <X className="h-4 w-4" />
+              </button>
+            </div>
+          )}
+
           {justAdded && (
             <div className="flex items-center gap-2.5 rounded-2xl bg-emerald-50 border border-emerald-200/90 p-3 text-xs font-bold text-emerald-900 shadow-sm animate-in fade-in slide-in-from-top-2 duration-200">
               <CheckCircle2 className="h-5 w-5 text-emerald-600 shrink-0" />
               <div className="flex-1">
-                <span className="font-extrabold">"{justAdded}"</span> added to missing songs list!
+                <span className="font-extrabold">"{justAdded}"</span> saved to Supabase missing songs!
               </div>
             </div>
           )}
@@ -226,7 +248,7 @@ export default function MissingSongModal({
             <div className="flex items-center gap-2.5 rounded-2xl bg-rose-50 border border-rose-200/90 p-3 text-xs font-bold text-rose-900 shadow-sm animate-in fade-in slide-in-from-top-2 duration-200">
               <Trash2 className="h-4 w-4 text-rose-600 shrink-0" />
               <div className="flex-1">
-                Removed <span className="font-extrabold">"{justDeleted}"</span> from missing list.
+                Removed <span className="font-extrabold">"{justDeleted}"</span> from Supabase.
               </div>
             </div>
           )}
@@ -400,7 +422,7 @@ export default function MissingSongModal({
         {/* Modal Footer */}
         <div className="border-t border-slate-100 bg-slate-50/80 px-5 py-3 rounded-b-3xl sm:rounded-b-2xl flex items-center justify-between">
           <p className="text-[11px] text-slate-400 font-medium">
-            Synced with Supabase & local storage
+            Saved directly to Supabase cloud table
           </p>
           <button
             type="button"
