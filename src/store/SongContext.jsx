@@ -4,6 +4,11 @@ import { fetchAllSongs, createSong, bulkCreateSongs, updateSong, deleteSong } fr
 import { loadSeedSongs, isSeedSong } from '../lib/seed';
 import { mergeSongs } from '../lib/merge';
 import { verifyDeletePassword } from '../lib/deleteAuth';
+import {
+  fetchSongMetadata,
+  saveSongMetadata,
+  getLocalSongMeta,
+} from '../lib/songMetadata';
 
 const SongContext = createContext(null);
 
@@ -19,14 +24,31 @@ export function SongProvider({ children }) {
   }, []);
 
   const [dbSongs, setDbSongs] = useState([]);
+  const [songMeta, setSongMeta] = useState(() => getLocalSongMeta());
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Single merged array sorted by number -> title
-  const songs = useMemo(
-    () => mergeSongs(seedSongs, dbSongs),
-    [seedSongs, dbSongs]
-  );
+  // Merged array sorted by number -> title with Supabase songMeta overrides (beat, tempo, type) applied
+  const songs = useMemo(() => {
+    const rawList = mergeSongs(seedSongs, dbSongs);
+    if (!songMeta || Object.keys(songMeta).length === 0) return rawList;
+
+    return rawList.map((s) => {
+      const override =
+        (s.id && songMeta[String(s.id)]) ||
+        (s.title && songMeta[s.title.trim().toLowerCase()]) ||
+        null;
+
+      if (!override) return s;
+
+      return {
+        ...s,
+        beat: override.beat !== undefined && override.beat !== null ? override.beat : s.beat,
+        tempo: override.tempo !== undefined && override.tempo !== null ? override.tempo : s.tempo,
+        type: override.type !== undefined && override.type !== null ? override.type : s.type,
+      };
+    });
+  }, [seedSongs, dbSongs, songMeta]);
 
   const loadSongs = useCallback(async () => {
     try {
@@ -45,13 +67,29 @@ export function SongProvider({ children }) {
   useEffect(() => {
     loadSongs();
 
+    // Fetch beat, tempo, type metadata from Supabase
+    fetchSongMetadata()
+      .then((meta) => {
+        if (meta && Object.keys(meta).length > 0) {
+          setSongMeta(meta);
+        }
+      })
+      .catch((err) => {
+        console.warn('Could not load song metadata overrides:', err.message);
+      });
+
     // Supabase Realtime subscription
     let channel;
     if (isSupabaseConfigured && supabase) {
       channel = supabase
-        .channel('public:songs')
+        .channel('public:songbook_realtime')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'songs' }, () => {
           loadSongs();
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'missing_songs' }, () => {
+          fetchSongMetadata().then((meta) => {
+            if (meta) setSongMeta(meta);
+          });
         })
         .subscribe();
     }
@@ -127,6 +165,32 @@ export function SongProvider({ children }) {
     return { deleted, failed, skipped };
   }, []);
 
+  /**
+   * Update beat, tempo, and type for ANY song (both seed and DB songs),
+   * persisting immediately to Supabase and local cache.
+   */
+  const updateSongBeatTempo = useCallback(async (songOrId, updates) => {
+    let targetSong =
+      typeof songOrId === 'object' && songOrId !== null
+        ? songOrId
+        : songs.find((s) => String(s.id) === String(songOrId));
+
+    if (!targetSong) {
+      throw new Error('Song not found');
+    }
+
+    const saved = await saveSongMetadata(targetSong, updates);
+
+    setSongMeta((prev) => {
+      const next = { ...prev };
+      if (targetSong.id) next[String(targetSong.id)] = saved;
+      if (targetSong.title) next[targetSong.title.trim().toLowerCase()] = saved;
+      return next;
+    });
+
+    return saved;
+  }, [songs]);
+
   return (
     <SongContext.Provider
       value={{
@@ -139,6 +203,7 @@ export function SongProvider({ children }) {
         addSong,
         addBulkSongs,
         editSong,
+        updateSongBeatTempo,
         removeSong,
         deleteMany,
       }}

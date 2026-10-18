@@ -13,6 +13,7 @@ import {
 } from '../lib/songIncomplete';
 import SimpleSettingsModal from '../components/SimpleSettingsModal';
 import AddToGroupModal from '../components/AddToGroupModal';
+import BeatTempoModal from '../components/BeatTempoModal';
 import { 
   ArrowLeft, 
   Play, 
@@ -23,7 +24,9 @@ import {
   CheckCircle2,
   X,
   Flag,
-  Layers
+  Layers,
+  Music2,
+  Sliders
 } from 'lucide-react';
 
 export default function SongViewer() {
@@ -31,10 +34,11 @@ export default function SongViewer() {
   const [searchParams] = useSearchParams();
   const groupId = searchParams.get('groupId');
   const navigate = useNavigate();
-  const { songs, loading } = useSongs();
+  const { songs, loading, updateSongBeatTempo } = useSongs();
   const { settings, update: updateSettings } = useSettings();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [isAddToGroupOpen, setIsAddToGroupOpen] = useState(false);
+  const [isBeatTempoOpen, setIsBeatTempoOpen] = useState(false);
 
   // Group context if opened within a group/collection
   const group = useMemo(() => (groupId ? getGroup(groupId) : null), [groupId]);
@@ -120,6 +124,20 @@ export default function SongViewer() {
       console.error('Error resolving incomplete song:', err);
     } finally {
       setSubmittingFlag(false);
+    }
+  };
+
+  const handleSaveBeatTempo = async (updates) => {
+    if (!song) return;
+    try {
+      await updateSongBeatTempo(song, updates);
+      setToastMessage('Beat & tempo saved to Supabase!');
+      setTimeout(() => setToastMessage(null), 3500);
+    } catch (err) {
+      console.error('Error saving beat and tempo:', err);
+      setToastMessage(err.message || 'Error updating beat & tempo');
+      setTimeout(() => setToastMessage(null), 4000);
+      throw err;
     }
   };
 
@@ -357,41 +375,62 @@ export default function SongViewer() {
             <span>{(song.stanzas || []).length} stanzas</span>
           </div>
 
-          {/* Badges for Type, Beat, Tempo */}
+          {/* Badges for Type, Beat, Tempo - Click to Update & Save to Supabase */}
           <div className="flex flex-wrap items-center justify-center gap-1.5 pt-1.5">
-            <span
-              className={`rounded-full px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider ${
+            <button
+              type="button"
+              onClick={() => setIsBeatTempoOpen(true)}
+              className={`rounded-full px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider transition hover:opacity-90 active:scale-95 cursor-pointer ${
                 song.type === 'praise'
                   ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30'
                   : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
               }`}
+              title="Click to change Song Type (Praise/Worship) or Beat/Tempo"
             >
               {song.type === 'praise' ? 'Praise' : 'Worship'}
-            </span>
-            {song.beat && (
-              <span 
-                className="rounded-full px-2 py-0.5 text-[11px] font-bold border opacity-90"
-                style={{ 
-                  background: hexA(settings.textColor, 0.06),
-                  borderColor: hexA(settings.textColor, 0.15),
-                  color: settings.textColor 
-                }}
-              >
-                Beat: {song.beat}
-              </span>
-            )}
-            {song.tempo && (
-              <span 
-                className="rounded-full px-2 py-0.5 text-[11px] font-bold border opacity-90"
-                style={{ 
-                  background: hexA(settings.textColor, 0.06),
-                  borderColor: hexA(settings.textColor, 0.15),
-                  color: settings.textColor 
-                }}
-              >
-                ♩ {song.tempo} BPM
-              </span>
-            )}
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setIsBeatTempoOpen(true)}
+              className="rounded-full px-2.5 py-0.5 text-[11px] font-bold border transition hover:opacity-100 opacity-90 active:scale-95 cursor-pointer flex items-center gap-1"
+              style={{ 
+                background: hexA(settings.textColor, 0.08),
+                borderColor: hexA(settings.textColor, 0.18),
+                color: settings.textColor 
+              }}
+              title="Click to update Beat"
+            >
+              <span>Beat: {song.beat || 'Set'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setIsBeatTempoOpen(true)}
+              className="rounded-full px-2.5 py-0.5 text-[11px] font-bold border transition hover:opacity-100 opacity-90 active:scale-95 cursor-pointer flex items-center gap-1"
+              style={{ 
+                background: hexA(settings.textColor, 0.08),
+                borderColor: hexA(settings.textColor, 0.18),
+                color: settings.textColor 
+              }}
+              title="Click to update Tempo (BPM)"
+            >
+              <span>♩ {song.tempo ? `${song.tempo} BPM` : 'Set BPM'}</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={() => setIsBeatTempoOpen(true)}
+              className="rounded-full p-1 border transition hover:opacity-100 opacity-70 active:scale-95 cursor-pointer"
+              style={{ 
+                background: hexA(settings.textColor, 0.06),
+                borderColor: hexA(settings.textColor, 0.15),
+                color: settings.textColor 
+              }}
+              title="Edit Beat, Tempo & Type (Saves to Supabase)"
+            >
+              <Sliders className="h-3 w-3" />
+            </button>
           </div>
         </div>
 
@@ -561,6 +600,14 @@ export default function SongViewer() {
         open={isAddToGroupOpen}
         song={song}
         onClose={() => setIsAddToGroupOpen(false)}
+      />
+
+      {/* Beat & Tempo Edit Modal (Saves to Supabase) */}
+      <BeatTempoModal
+        open={isBeatTempoOpen}
+        song={song}
+        onClose={() => setIsBeatTempoOpen(false)}
+        onSave={handleSaveBeatTempo}
       />
     </div>
   );

@@ -25,7 +25,7 @@ export default function SongEditor() {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { songs, addSong, editSong } = useSongs();
+  const { songs, addSong, editSong, updateSongBeatTempo } = useSongs();
   const { settings } = useSettings();
 
   const isEdit = Boolean(id);
@@ -266,6 +266,19 @@ export default function SongEditor() {
         targetId = created.id;
       }
 
+      // Sync beat, tempo, and type to Supabase metadata store
+      if (targetId) {
+        try {
+          await updateSongBeatTempo(targetId, {
+            type: songType,
+            beat: beat ? String(beat).trim() : null,
+            tempo: tempo ? parseInt(tempo, 10) : null,
+          });
+        } catch (syncErr) {
+          console.warn('Sync beat/tempo to Supabase metadata error:', syncErr.message);
+        }
+      }
+
       if (launchProjector && targetId) {
         navigate(`/present/${targetId}`);
       } else {
@@ -273,6 +286,24 @@ export default function SongEditor() {
       }
     } catch (err) {
       alert(`Error saving song: ${err.message}`);
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleSaveSeedBeatTempo = async () => {
+    const existing = songs.find((s) => s.id === id);
+    if (!existing) return;
+    try {
+      setIsSaving(true);
+      await updateSongBeatTempo(existing, {
+        type: songType,
+        beat: beat ? String(beat).trim() : null,
+        tempo: tempo ? parseInt(tempo, 10) : null,
+      });
+      alert('Beat & tempo saved to Supabase successfully!');
+    } catch (err) {
+      alert(`Error saving beat & tempo to Supabase: ${err.message}`);
     } finally {
       setIsSaving(false);
     }
@@ -317,6 +348,17 @@ export default function SongEditor() {
         <div className="flex flex-wrap items-center gap-2">
           {isSeed ? (
             <>
+              <button
+                type="button"
+                onClick={handleSaveSeedBeatTempo}
+                disabled={isSaving}
+                className="flex items-center gap-1.5 rounded-xl border border-emerald-600 bg-emerald-50 px-3.5 py-2 text-xs font-black text-emerald-800 hover:bg-emerald-100 shadow-2xs transition"
+                title="Save Beat and Tempo to Supabase without duplicating"
+              >
+                <Save className="h-3.5 w-3.5 text-emerald-600" />
+                <span>{isSaving ? 'Saving...' : 'Save Beat/Tempo (Supabase)'}</span>
+              </button>
+
               <button
                 type="button"
                 onClick={() => navigate(`/present/${id}`)}
@@ -504,31 +546,36 @@ export default function SongEditor() {
 
               {/* Song Type: Praise or Worship */}
               <div className="sm:col-span-4">
-                <label className="mb-1 block text-xs font-black text-slate-700">
-                  Song Type
-                </label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs font-black text-slate-700">
+                    Song Type
+                  </label>
+                  {isSeed && (
+                    <span className="text-[10px] text-emerald-700 font-bold">
+                      Editable
+                    </span>
+                  )}
+                </div>
                 <div className="grid grid-cols-2 gap-1.5">
                   <button
                     type="button"
-                    disabled={isSeed}
                     onClick={() => setSongType('praise')}
                     className={`rounded-xl border py-2 text-xs font-black transition-all ${
                       songType === 'praise'
                         ? 'border-indigo-600 bg-indigo-50 text-indigo-800 ring-1 ring-indigo-600 shadow-2xs'
                         : 'border-slate-200/90 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                    } ${isSeed ? 'cursor-not-allowed opacity-80' : ''}`}
+                    }`}
                   >
                     Praise
                   </button>
                   <button
                     type="button"
-                    disabled={isSeed}
                     onClick={() => setSongType('worship')}
                     className={`rounded-xl border py-2 text-xs font-black transition-all ${
                       songType === 'worship'
                         ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600 shadow-2xs'
                         : 'border-slate-200/90 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                    } ${isSeed ? 'cursor-not-allowed opacity-80' : ''}`}
+                    }`}
                   >
                     Worship
                   </button>
@@ -537,26 +584,29 @@ export default function SongEditor() {
 
               {/* Beat / Time Signature */}
               <div className="sm:col-span-4">
-                <label className="mb-1 block text-xs font-black text-slate-700">
-                  Beat / Signature
-                </label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs font-black text-slate-700">
+                    Beat / Signature
+                  </label>
+                  {isSeed && (
+                    <span className="text-[10px] text-emerald-700 font-bold">
+                      Editable
+                    </span>
+                  )}
+                </div>
                 <div className="flex gap-1.5 items-center">
                   <input
                     type="text"
-                    disabled={isSeed}
                     placeholder="4/4"
                     value={beat}
                     onChange={(e) => setBeat(e.target.value)}
-                    className={`w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs ${
-                      isSeed ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : 'bg-slate-50/70 focus:bg-white'
-                    }`}
+                    className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs bg-slate-50/70 focus:bg-white"
                   />
                   <div className="flex gap-1">
                     {['4/4', '3/4', '6/8'].map((b) => (
                       <button
                         key={b}
                         type="button"
-                        disabled={isSeed}
                         onClick={() => setBeat(b)}
                         className={`rounded-lg border px-1.5 py-1 text-[10px] font-bold transition ${
                           beat === b
@@ -573,21 +623,25 @@ export default function SongEditor() {
 
               {/* Tempo (BPM) */}
               <div className="sm:col-span-4">
-                <label className="mb-1 block text-xs font-black text-slate-700">
-                  Tempo (BPM)
-                </label>
+                <div className="flex items-center justify-between mb-1">
+                  <label className="text-xs font-black text-slate-700">
+                    Tempo (BPM)
+                  </label>
+                  {isSeed && (
+                    <span className="text-[10px] text-emerald-700 font-bold">
+                      Editable
+                    </span>
+                  )}
+                </div>
                 <div className="flex items-center gap-1.5">
                   <input
                     type="number"
                     min="30"
                     max="260"
-                    disabled={isSeed}
                     placeholder="75"
                     value={tempo}
                     onChange={(e) => setTempo(e.target.value)}
-                    className={`w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs ${
-                      isSeed ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : 'bg-slate-50/70 focus:bg-white'
-                    }`}
+                    className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs bg-slate-50/70 focus:bg-white"
                   />
                   <span className="text-[11px] font-bold text-slate-500 shrink-0">BPM</span>
                 </div>

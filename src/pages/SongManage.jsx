@@ -9,6 +9,7 @@ import SongImportModal from '../components/SongImportModal';
 import DeletePasswordModal from '../components/DeletePasswordModal';
 import SelectionToolbar from '../components/SelectionToolbar';
 import MissingSongModal from '../components/MissingSongModal';
+import BeatTempoModal from '../components/BeatTempoModal';
 import { 
   Search, 
   Play, 
@@ -18,22 +19,24 @@ import {
   Upload, 
   Music, 
   Trash2, 
-  X,
-  SlidersHorizontal,
-  Eye,
-  CheckSquare,
-  Square,
-  Lock,
-  FileQuestion
+  X, 
+  SlidersHorizontal, 
+  Eye, 
+  CheckSquare, 
+  Square, 
+  Lock, 
+  FileQuestion,
+  Activity
 } from 'lucide-react';
 
 export default function SongManage() {
-  const { songs, loading, addBulkSongs, deleteMany } = useSongs();
+  const { songs, loading, addBulkSongs, deleteMany, updateSongBeatTempo } = useSongs();
   const navigate = useNavigate();
 
   const [search, setSearch] = useState('');
   const [langFilter, setLangFilter] = useState('all'); // 'all' | 'hindi' | 'marathi' | 'english'
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
+  const [editingBeatTempoSong, setEditingBeatTempoSong] = useState(null);
 
   // Missing songs state
   const [missingSongs, setMissingSongs] = useState([]);
@@ -81,6 +84,17 @@ export default function SongManage() {
   const flashToast = (msg) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(''), 4000);
+  };
+
+  const handleSaveBeatTempo = async (updates) => {
+    if (!editingBeatTempoSong) return;
+    try {
+      await updateSongBeatTempo(editingBeatTempoSong, updates);
+      flashToast('Beat & tempo saved to Supabase!');
+    } catch (err) {
+      flashToast(err.message || 'Error updating beat & tempo');
+      throw err;
+    }
   };
 
   // Precompute normalised search index per song
@@ -462,14 +476,20 @@ export default function SongManage() {
                     </span>
                   )}
 
-                  {/* Beat & Tempo Badge (if present) */}
-                  {(song.beat || song.tempo) && (
-                    <span className="hidden sm:inline-flex items-center gap-1 rounded-md bg-slate-50 border border-slate-200/70 px-1.5 py-0.5 text-[10px] font-medium text-slate-500 shrink-0">
-                      {song.beat && <span>{song.beat}</span>}
-                      {song.beat && song.tempo && <span>·</span>}
-                      {song.tempo && <span>{song.tempo} bpm</span>}
-                    </span>
-                  )}
+                  {/* Beat & Tempo Badge (Clickable to edit & save to Supabase) */}
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setEditingBeatTempoSong(song);
+                    }}
+                    className="hidden sm:inline-flex items-center gap-1 rounded-md bg-slate-50 hover:bg-slate-100 border border-slate-200/70 hover:border-slate-300 px-1.5 py-0.5 text-[10px] font-medium text-slate-600 transition shadow-2xs cursor-pointer shrink-0"
+                    title="Click to update Beat & Tempo (Saves to Supabase)"
+                  >
+                    {song.beat ? <span>{song.beat}</span> : <span>Set beat</span>}
+                    <span>·</span>
+                    {song.tempo ? <span>{song.tempo} bpm</span> : <span>Set bpm</span>}
+                  </button>
                 </div>
 
                 {/* Right: Clean minimal action buttons */}
@@ -547,6 +567,14 @@ export default function SongManage() {
         onClose={() => setIsMissingModalOpen(false)}
         onAddMissing={handleAddMissing}
         onDeleteMissing={handleDeleteMissing}
+      />
+
+      {/* Beat & Tempo Edit Modal (Saves to Supabase) */}
+      <BeatTempoModal
+        open={Boolean(editingBeatTempoSong)}
+        song={editingBeatTempoSong}
+        onClose={() => setEditingBeatTempoSong(null)}
+        onSave={handleSaveBeatTempo}
       />
     </div>
   );
