@@ -352,7 +352,7 @@ export default function SongViewer() {
 
         {/* Single Primary Song Header Info */}
         <div 
-          className="border-b pb-4 text-center space-y-1.5"
+          className="border-b pb-4 text-center space-y-2"
           style={{ borderColor: hexA(settings.textColor, 0.12) }}
         >
           <h1 
@@ -362,21 +362,8 @@ export default function SongViewer() {
             {song.title}
           </h1>
 
-          {song.title_alt && (
-            <p 
-              className="text-sm font-semibold opacity-70 italic"
-              style={{ fontFamily, color: settings.textColor }}
-            >
-              {song.title_alt}
-            </p>
-          )}
-
-          <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-xs font-bold opacity-60">
-            <span>{(song.stanzas || []).length} stanzas</span>
-          </div>
-
           {/* Badges for Type, Beat, Tempo - Click to Update & Save to Supabase */}
-          <div className="flex flex-wrap items-center justify-center gap-1.5 pt-1.5">
+          <div className="flex flex-wrap items-center justify-center gap-1.5 pt-1">
             <button
               type="button"
               onClick={() => setIsBeatTempoOpen(true)}

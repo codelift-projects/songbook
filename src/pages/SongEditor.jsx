@@ -311,7 +311,7 @@ export default function SongEditor() {
 
   const previewSlides = useMemo(() => {
     return [
-      { kind: 'title', label: 'TITLE SLIDE', title: title || 'Song Title Preview', subtitle: titleAlt, number },
+      { kind: 'title', label: 'TITLE SLIDE', title: title || 'Song Title Preview', subtitle: '', number },
       ...stanzas.map((s, idx) => ({
         kind: 'stanza',
         label: s.label || `Slide ${idx + 1}`,

@@ -73,7 +73,7 @@ export default function Projector() {
   const slides = useMemo(() => {
     if (!song) return [];
     return [
-      { kind: 'title', title: song.title, subtitle: song.title_alt || '', number: song.number },
+      { kind: 'title', title: song.title, subtitle: '', number: song.number },
       ...(song.stanzas || []).map((s, i) => {
         const formatted = formatCommaLines(s.text || '');
         return {
