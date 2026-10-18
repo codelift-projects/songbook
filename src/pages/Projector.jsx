@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useSongs } from '../store/SongContext';
 import { useSettings } from '../store/SettingsContext';
 import { useSwipe } from '../hooks/useSwipe';
@@ -8,6 +8,7 @@ import { useOrientation } from '../hooks/useOrientation';
 import { useContainerSize } from '../hooks/useContainerSize';
 import { projectorStyle, hexA, computeFitFontSize } from '../lib/theme';
 import { formatCommaLines } from '../lib/parse';
+import { getGroup } from '../lib/groups';
 import SimpleSettingsModal from '../components/SimpleSettingsModal';
 import { 
   ArrowLeft, 
@@ -15,17 +16,38 @@ import {
   Minimize2, 
   Settings as SettingsIcon, 
   ChevronLeft, 
-  ChevronRight 
+  ChevronRight,
+  SkipForward,
+  SkipBack,
+  Layers
 } from 'lucide-react';
 
 export default function Projector() {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const groupId = searchParams.get('groupId');
   const navigate = useNavigate();
   const { songs, loading } = useSongs();
   const { settings, update: updateSettings } = useSettings();
   const orientation = useOrientation();
 
+  const group = useMemo(() => (groupId ? getGroup(groupId) : null), [groupId]);
   const song = useMemo(() => songs.find((s) => s.id === id), [songs, id]);
+
+  const groupSongIndex = useMemo(() => {
+    if (!group || !song) return -1;
+    return group.songIds.indexOf(song.id);
+  }, [group, song]);
+
+  const prevGroupSongId = useMemo(() => {
+    if (!group || groupSongIndex <= 0) return null;
+    return group.songIds[groupSongIndex - 1];
+  }, [group, groupSongIndex]);
+
+  const nextGroupSongId = useMemo(() => {
+    if (!group || groupSongIndex < 0 || groupSongIndex >= group.songIds.length - 1) return null;
+    return group.songIds[groupSongIndex + 1];
+  }, [group, groupSongIndex]);
 
   const rootRef = useRef(null);
   const contentRef = useRef(null);
@@ -136,9 +158,30 @@ export default function Projector() {
     }
   }, [baseFontSize, index, slide, size, settings.fontSizeScale, orientation]);
 
+  useEffect(() => {
+    setIndex(0);
+  }, [id]);
+
   /* -------- navigation -------- */
-  const next = useCallback(() => setIndex((i) => Math.min(i + 1, slides.length - 1)), [slides.length]);
-  const prev = useCallback(() => setIndex((i) => Math.max(i - 1, 0)), []);
+  const next = useCallback(() => {
+    setIndex((i) => {
+      if (i < slides.length - 1) return i + 1;
+      if (nextGroupSongId) {
+        navigate(`/present/${nextGroupSongId}?groupId=${groupId}`);
+      }
+      return i;
+    });
+  }, [slides.length, nextGroupSongId, groupId, navigate]);
+
+  const prev = useCallback(() => {
+    setIndex((i) => {
+      if (i > 0) return i - 1;
+      if (prevGroupSongId) {
+        navigate(`/present/${prevGroupSongId}?groupId=${groupId}`);
+      }
+      return 0;
+    });
+  }, [prevGroupSongId, groupId, navigate]);
 
   /* -------- auto-hide controls -------- */
   const poke = useCallback(() => {
@@ -373,7 +416,7 @@ export default function Projector() {
       >
         <button
           type="button"
-          onClick={(e) => { e.stopPropagation(); navigate('/'); }}
+          onClick={(e) => { e.stopPropagation(); navigate(groupId ? `/groups/${groupId}` : '/'); }}
           className="flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-xs font-bold transition shadow-xs active:scale-95"
           style={{ background: `${settings.textColor}15`, color: settings.textColor }}
         >
@@ -382,6 +425,12 @@ export default function Projector() {
         </button>
 
         <div className="min-w-0 flex-1 text-center px-2">
+          {group && (
+            <div className="flex items-center justify-center gap-1 text-[11px] font-black text-emerald-400 mb-0.5">
+              <Layers className="h-3 w-3" />
+              <span className="truncate">{group.name} • Song {groupSongIndex + 1} of {group.songIds.length}</span>
+            </div>
+          )}
           <p className="truncate text-xs font-bold" style={{ fontFamily, color: settings.textColor }}>
             {song.title} {song.number ? `(#${song.number})` : ''}
           </p>
@@ -391,6 +440,36 @@ export default function Projector() {
         </div>
 
         <div className="flex items-center gap-1.5">
+          {group && (
+            <div className="flex items-center gap-1 border-r pr-1.5" style={{ borderColor: `${settings.textColor}25` }}>
+              <button
+                type="button"
+                disabled={!prevGroupSongId}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/present/${prevGroupSongId}?groupId=${groupId}`);
+                }}
+                className="flex items-center gap-1 rounded-xl px-2 py-1.5 text-xs font-bold active:scale-95 transition disabled:opacity-30 disabled:pointer-events-none"
+                style={{ background: `${settings.textColor}15`, color: settings.textColor }}
+                title="Previous Song in Collection"
+              >
+                <SkipBack className="h-3.5 w-3.5" />
+              </button>
+              <button
+                type="button"
+                disabled={!nextGroupSongId}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  navigate(`/present/${nextGroupSongId}?groupId=${groupId}`);
+                }}
+                className="flex items-center gap-1 rounded-xl px-2 py-1.5 text-xs font-bold active:scale-95 transition disabled:opacity-30 disabled:pointer-events-none"
+                style={{ background: `${settings.textColor}15`, color: settings.textColor }}
+                title="Next Song in Collection"
+              >
+                <SkipForward className="h-3.5 w-3.5" />
+              </button>
+            </div>
+          )}
           <button
             type="button"
             onClick={(e) => {

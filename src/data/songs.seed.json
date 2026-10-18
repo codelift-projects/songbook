@@ -32,6 +32,23 @@
     ]
   },
   {
+    "slug": "apna-bojh-yeshu-par-daalo",
+    "number": 1,
+    "title": "अपना बोझ यीशु पर डालो",
+    "title_alt": "Apna Bojh Yeshu Par Daalo",
+    "language": "hindi",
+    "tags": [
+      "Praise",
+      "Encouragement"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "अपना बोझ यीशु पर डालो\nवो तुमसे प्यार करता है\nऊँचा... ऊँचा... ऊँचा... ऊँचा...\nऊँचा, ऊँचा, यीशु को उठाओ\nनीचा... नीचा... नीचा... नीचा...\nनीचा, नीचा, शैतान को दबाओ"
+      }
+    ]
+  },
+  {
     "slug": "alleluia-speak-lord",
     "number": 2,
     "title": "Alleluia, Speak Lord",
@@ -56,6 +73,35 @@
     ]
   },
   {
+    "slug": "aaj-ka-din-yehova-ne-banaya-hai",
+    "number": 2,
+    "title": "आज का दिन यहोवा ने बनाया है",
+    "title_alt": "Aaj Ka Din Yehova Ne Banaya Hai",
+    "language": "hindi",
+    "tags": [
+      "Praise",
+      "Joy"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "आज का दिन यहोवा ने बनाया है\nहम उसमें आनंदित हों, आनंदित हों"
+      },
+      {
+        "label": "पद 1",
+        "text": "प्रभु को महिमा मिले चाहे हो मेरा अपमान\nवो बढ़े और मैं घटूँ, रहे इसी का ध्यान"
+      },
+      {
+        "label": "पद 2",
+        "text": "स्तुति प्रशंसा करें क्यों ना कुछ होता रहे\nउसको हम भाते रहें चाहे हम जहाँ भी रहें"
+      },
+      {
+        "label": "पद 3",
+        "text": "आता हूँ तेरे पास मुझको कबूल कर ले\nमुझको है तुझसे आस, पापों से शुद्ध कर ले"
+      }
+    ]
+  },
+  {
     "slug": "amazing-love",
     "number": 3,
     "title": "Amazing Love",
@@ -72,6 +118,60 @@
       {
         "label": "Verse 2",
         "text": "Amazing love, how can it be?\nThat You, my King would die for me?\nAmazing love, I know its true\nIt's my joy to honor You\nIn all I do, I honor You"
+      }
+    ]
+  },
+  {
+    "slug": "aatma-mandraata-pavitra-aatma-mandraata",
+    "number": 3,
+    "title": "आत्मा मण्डराता, पवित्र आत्मा मण्डराता",
+    "title_alt": "Aatma Mandraata, Pavitra Aatma Mandraata",
+    "language": "hindi",
+    "tags": [
+      "Holy Spirit",
+      "Worship"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "आत्मा मण्डराता, पवित्र आत्मा मण्डराता\nपिन्तेकुस्त के दिन समान\nआत्मा मण्डराता"
+      },
+      {
+        "label": "पद 1",
+        "text": "अंधे देखते हैं, बहरे सुनते हैं\nयीशु मसीह के नाम से\nअंधे देखते हैं, आत्मा मण्डराता"
+      },
+      {
+        "label": "पद 2",
+        "text": "लंगड़े चलते हैं, गूंगे बोलते हैं\nयीशु मसीह के नाम से\nलंगड़े चलते हैं, आत्मा मण्डराता"
+      },
+      {
+        "label": "पद 3",
+        "text": "पापी क्षमा पाते, बीमार चंगाई पाते\nयीशु मसीह के नाम से\nबीमार चंगाई पाते, आत्मा मण्डराता"
+      }
+    ]
+  },
+  {
+    "slug": "aao-hum-yehova-ka-dhanyavaad-karein",
+    "number": 4,
+    "title": "आओ हम यहोवा का धन्यवाद करें",
+    "title_alt": "Aao Hum Yehova Ka Dhanyavaad Karein",
+    "language": "hindi",
+    "tags": [
+      "Praise",
+      "Worship"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "आओ हम यहोवा का धन्यवाद करें\nअपने सारे हृदय से वंदना करें\nउसके फाटकों में स्तुति करें और ललकारें (२)"
+      },
+      {
+        "label": "पद 1",
+        "text": "जिसने बनाया हमें वो है हमारा आधार\nजिसने दी हमको सांस वो है हमारा उद्धार\nउसकी ही जय जय हो आराधना\nवो है सभों का प्रधान\nउसकी ही जय जय हो आराधना"
+      },
+      {
+        "label": "पद 2",
+        "text": "अपने पूरे तन मन से हम उसकी महिमा करें\nवो है शिफा और नजात, उसकी प्रशंसा करें\nवो है जग का त्राता और तारणहार\nउसकी हो जय जय सदा (२)"
       }
     ]
   },
@@ -100,6 +200,35 @@
       {
         "label": "Verse 4",
         "text": "You're my friend and you are my brother,\nEven though you are my Lord\nI love you more than any other,\nSo much more than anything."
+      }
+    ]
+  },
+  {
+    "slug": "aawaz-uthayenge-hum-saaz-bajayenge",
+    "number": 5,
+    "title": "आवाज उठायेंगे, हम साज बजायेंगे",
+    "title_alt": "Aawaz Uthayenge, Hum Saaz Bajayenge",
+    "language": "hindi",
+    "tags": [
+      "Praise",
+      "Worship"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "आवाज़ उठायेंगे, हम साज़ बजायेंगे\nहै यीशु महान अपना, यह गीत सुनायेंगे"
+      },
+      {
+        "label": "पद 1",
+        "text": "संसार की सुंदरता में, है रूप जो तेरा ही\nइन चाँद सितारों में, है अक्स जो तेरा ही\nमहिमा की तेरी बातें, हम सबको बतायेंगे"
+      },
+      {
+        "label": "पद 2",
+        "text": "दिल तेरा खज़ाना है, इक पाक मोहब्बत का\nथाह पा न सका कोई, सागर है तू उल्फत का\nहम तेरी मोहब्बत से, दिल अपना सजायेंगे"
+      },
+      {
+        "label": "पद 3",
+        "text": "न देख सका हमको, तू पाप के सागर में\nऔर बन के मनुष्य आया, आकाश से इस जग में\nमुक्ति का तू दाता है, दुनिया को बतायेंगे"
       }
     ]
   },
@@ -177,6 +306,31 @@
     ]
   },
   {
+    "slug": "aaradhana-mein-hai-chhutkara-aaradhana-mein-hai-changai",
+    "number": 7,
+    "title": "आराधना में है छुटकारा, आराधना में है चंगाई",
+    "title_alt": "Aaradhana Mein Hai Chhutkara, Aaradhana Mein Hai Changai",
+    "language": "hindi",
+    "tags": [
+      "Worship",
+      "Healing"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "आराधना में है छुटकारा, आराधना में है चंगाई\nशरीर, प्राण, आत्मा में शांति आनंद देता है जान से प्यारा प्रभु\nप्रार्थना करें, आराधना करें, वो अच्छा है कितना भला है (२)\nछुटकारा पायें हमेशा हमेशा"
+      },
+      {
+        "label": "पद 1",
+        "text": "माँगोगे तो मिलेगा, ढूँढोगे तो पाओगे\nखटखटाओ, खुलेगी स्वर्ग की आशीषें\nपाओ तुम उसे अभी\nप्रार्थना करें, आराधना करें, वो अच्छा है कितना भला है\nछुटकारा पायें हमेशा हमेशा"
+      },
+      {
+        "label": "पद 2",
+        "text": "प्रार्थना करो निरंतर, प्रार्थना करो विश्वास से\nधर्मी जन की प्रार्थना, विश्वास की प्रार्थना खोलती है सारे बंधन को\nप्रार्थना करें, आराधना करें, वो अच्छा है कितना भला है\nछुटकारा पायें हमेशा हमेशा"
+      }
+    ]
+  },
+  {
     "slug": "because-he-lives",
     "number": 8,
     "title": "Because He lives",
@@ -210,6 +364,39 @@
     ]
   },
   {
+    "slug": "aaye-hain-hum-tere-charnon-me",
+    "number": 8,
+    "title": "आये हैं हम, तेरे चरणों मे",
+    "title_alt": "Aaye Hain Hum, Tere Charnon Me",
+    "language": "hindi",
+    "tags": [
+      "Worship",
+      "Entrance"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "आये हैं हम तेरे चरणों में, लेकर हम स्तुति\nहालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह..."
+      },
+      {
+        "label": "पद 1",
+        "text": "प्यारे मसीहा आशीष दे हमें\nआत्मा से तू भर दे हमें (३)\nहालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह..."
+      },
+      {
+        "label": "पद 2",
+        "text": "हम बच्चे हैं परमपिता के\nबढ़ना है हमें वचनों में (३)\nहालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह..."
+      },
+      {
+        "label": "पद 3",
+        "text": "मिलती है हमें तुझसे चंगाईयाँ\nदेता तू हमें पापों से मुक्ति (३)\nहालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह..."
+      },
+      {
+        "label": "पद 4",
+        "text": "हम तैयार हैं यीशु तेरे लिए\nजल्दी आ तू हमको लेने (३)\nहालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह..."
+      }
+    ]
+  },
+  {
     "slug": "bless-the-lord-o-my-soul",
     "number": 9,
     "title": "Bless the Lord O My Soul",
@@ -222,6 +409,35 @@
       {
         "label": "Verse 1",
         "text": "The sun comes up\nIt's a new day dawning\nIt's time to sing Your song again\nWhatever may pass\nAnd whatever lies before me\nLet me be singing\nWhen the evening comes\nBless the Lord oh my soul\nOh my soul\nWorship His Holy name\nSing like never before\nOh my soul\nI'll worship Your Holy name\nYou're rich in love\nAnd You're slow to anger\nYour name is great\nAnd Your heart is kind\nFor all Your goodness\nI will keep on singing\nTen thousand reasons\nFor my heart to find\nSo bless the Lord oh my soul\nOh my soul\nWorship His Holy name\nSing like never before\nOh my soul\nI'll worship Your Holy name\nBless You Lord\nAnd on that day\nWhen my strength is failing\nThe end draws near\nAnd my time has come\nStill my soul will\nSing Your praise unending\nTen thousand years\nAnd then forevermore\nForevermore\nBless the Lord oh my soul\nOh my soul\nWorship His Holy name\nSing like never before\nOh my soul\nI'll worship Your Holy name"
+      }
+    ]
+  },
+  {
+    "slug": "aashish-tum-se-chahte-hai",
+    "number": 9,
+    "title": "आशीष तुम से चाहते हैं",
+    "title_alt": "Aashish Tum Se Chahte Hai",
+    "language": "hindi",
+    "tags": [
+      "Prayer",
+      "Worship"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "आशीष तुझ से चाहते हैं\nहे स्वर्गीय पिता हम आते हैं"
+      },
+      {
+        "label": "पद 1",
+        "text": "न कोई ख़ूबी है न लियाकत, बख़्श हमको अपनी ताकत (२)\nखाली दिलों को लाते हैं (२)"
+      },
+      {
+        "label": "पद 2",
+        "text": "हमने बहुत खताएं की हैं, रहे निकम्मे जफाएं की हैं (२)\nशर्म से सर झुक जाते हैं (२)"
+      },
+      {
+        "label": "पद 3",
+        "text": "तू है शक्तिमान प्रभु जी, दया भी है अपार प्रभु जी\nस्तुति हम सब गाते हैं (२)"
       }
     ]
   },
@@ -246,6 +462,35 @@
       {
         "label": "Verse 3",
         "text": "Blest are You, Lord God of all creation\nThanks to Your goodness\nthis wine we offer\nFruit of the vine, work of our hands\nIt will become the cup of joy."
+      }
+    ]
+  },
+  {
+    "slug": "aao-hum-yehova-ke-liye",
+    "number": 10,
+    "title": "आओ हम यहोवा के लिए",
+    "title_alt": "Aao Hum Yehova Ke Liye",
+    "language": "hindi",
+    "tags": [
+      "Praise",
+      "Psalms"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "आओ हम यहोवा के लिये ऊँचे स्वर से गायें\nअपनी मुक्ति की चट्टान का जय जयकार करें"
+      },
+      {
+        "label": "पद 1",
+        "text": "धन्यवाद करते हुए उसके सम्मुख आयें\nभजन गाते हुए उसका जय जयकार करें"
+      },
+      {
+        "label": "पद 2",
+        "text": "क्योंकि यहोवा महान ईश्वर है\nसारे देवताओं के ऊपर वो महान राजा है"
+      },
+      {
+        "label": "पद 3",
+        "text": "क्योंकि वो हमारा परमेश्वर है\nऔर हम उसकी प्रजा, उसके हाथ की भेड़ें हैं"
       }
     ]
   },
@@ -279,6 +524,44 @@
     ]
   },
   {
+    "slug": "dhanyavaad-karte-hue",
+    "number": 11,
+    "title": "धन्यवाद करते हुए",
+    "title_alt": "Dhanyavaad Karte Hue",
+    "language": "hindi",
+    "tags": [
+      "Thanksgiving",
+      "Praise"
+    ],
+    "stanzas": [
+      {
+        "label": "पद",
+        "text": "धन्यवाद करते हुए उसके दरबार में\nआओ हम उसकी स्तुति करें\nगाओ नया गीत यहोवा के लिए\nगाओ नया गीत यहोवा के लिए"
+      }
+    ]
+  },
+  {
+    "slug": "uthte-hain-tera-naam-teri-stuti-karte-hue",
+    "number": 12,
+    "title": "उठाते हैं तेरा नाम, तेरी स्तुति करते हुए",
+    "title_alt": "Uthte Hain Tera Naam, Teri Stuti Karte Hue",
+    "language": "hindi",
+    "tags": [
+      "Praise",
+      "Worship"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "उठाते हैं तेरा नाम, तेरी स्तुति करते हुए\nघुटनों पर हम आकर, करते हैं तुझसे प्रार्थना\nमिलकर हम गायें, प्रभु की स्तुति हो (२)\nमिलकर हम गायें, हालेलुयाह... हालेलुयाह... हालेलुयाह..."
+      },
+      {
+        "label": "पद 1",
+        "text": "आएगा मेरा यीशु हमें लेने एक दिन\nजाएंगे हम उसके संग जहां पर होगा अनंत जीवन\nमिलकर हम गायें, प्रभु की स्तुति हो (२)\nहालेलुयाह, हालेलुयाह, हालेलुयाह..."
+      }
+    ]
+  },
+  {
     "slug": "feliz-navidad",
     "number": 13,
     "title": "Feliz Navidad",
@@ -296,6 +579,32 @@
       {
         "label": "Verse 2",
         "text": "We wanna wish you a merry Christmas!\nWe wanna wish you a merry Christmas!\nWe wanna wish you a merry Christmas!\nFrom the bottom of our hearts (2)"
+      }
+    ]
+  },
+  {
+    "slug": "yeshu-hai-sachcha-gadiya",
+    "number": 13,
+    "title": "यीशु है सच्चा गड़रिया",
+    "title_alt": "Yeshu Hai Sachcha Gadiya",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "यीशु है सच्चा गड़रिया,\nउसकी हम भेड़ें हैं...२\nहरी चराइयों में हमें चराता है\nहालेलूयाह आमीन...."
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. वादी पहाड़ों में ले चलता है\nजहाँ पर सुखदाई झरने बहते हैं...२"
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. हमको किसी का अब तो डर नहीं है\nक्योंकि यीशु जो मेरा साथी है...२"
+      },
+      {
+        "label": "Verse 4",
+        "text": "३. मार्गों में मेरी रक्षा वह करता है\nशैतान के हाथों से हमें बचाता है..२"
       }
     ]
   },
@@ -326,6 +635,35 @@
     ]
   },
   {
+    "slug": "uth-aa-uth-aa-uth-aa",
+    "number": 14,
+    "title": "उतर आ, उतर आ, ऐ रूह-ए-पाक उतर आ",
+    "title_alt": "Uth Aa, Uth Aa, Uth Aa",
+    "language": "hindi",
+    "tags": [
+      "Holy Spirit",
+      "Prayer"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "उतर आ, उतर आ, उतर आ\nऐ रूह-ए-पाक उतर आ (२)\nआसमानी खुशी से भर दे मुझको\nगीत नया दिल में ला (२), उतर आ..."
+      },
+      {
+        "label": "पद 1",
+        "text": "अमृत जल प्रभु मुझको पिला दे\nदिल मेरे की प्यास बुझा दे\nचश्मा बन के उतर आ..."
+      },
+      {
+        "label": "पद 2",
+        "text": "आसमानी रोटी मुझको खिला दे\nकमजोर दिल को तगड़ा बना दे\nभरपूर जीवन दिला..."
+      },
+      {
+        "label": "पद 3",
+        "text": "पाक रूह आ मेरे दिल के अंदर\nबन जाऊँ मैं तेरा मंदिर\nअपनी राह दिखा..."
+      }
+    ]
+  },
+  {
     "slug": "give-me-joy-in-my-heart",
     "number": 15,
     "title": "Give me Joy in my heart",
@@ -346,6 +684,27 @@
       {
         "label": "Verse 3",
         "text": "Give me oil in my heart, keep me burning,\nGive me oil in my heart, I pray.\nGive me joy in my heart, keep me burning,\nKeep me burning till the end of day."
+      }
+    ]
+  },
+  {
+    "slug": "karte-hain-teri-mahima-yehova",
+    "number": 15,
+    "title": "करते हैं तेरी हम स्तुति",
+    "title_alt": "Karte Hain Teri Mahima Yehova",
+    "language": "hindi",
+    "tags": [
+      "Worship",
+      "Praise"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "करते हैं तेरी हम स्तुति, हृदय की गहराइयों से (२)\nयीशु तू ही है, तू ही है, हमारा प्रभु (२)\nमहिमा हो तेरी... महिमा हो तेरी\nमहिमा हो तेरी... महिमा हो तेरी"
+      },
+      {
+        "label": "पद 1",
+        "text": "आत्मा और सच्चाई से, तेरी आराधना करें\nऊँचा और ऊँचा, सबसे ऊँचा रहे तेरा नाम\nमहिमा हो तेरी... महिमा हो तेरी\nमहिमा हो तेरी... महिमा हो तेरी"
       }
     ]
   },
@@ -382,6 +741,35 @@
     ]
   },
   {
+    "slug": "kitna-haseen-varda-kiya-khudavand-ne",
+    "number": 16,
+    "title": "कितना हसीन वादा किया खुदावंद ने",
+    "title_alt": "Kitna Haseen Varda Kiya Khudavand Ne",
+    "language": "hindi",
+    "tags": [
+      "Encouragement",
+      "Promise"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "कितना हसीन वादा ये किया खुदावंद ने\nजहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें (२)"
+      },
+      {
+        "label": "पद 1",
+        "text": "तुझे अकेला ना छोड़ूँ मैं, रूह अपनी भेजूँ\nतुझे अनाथ भी ना छोड़ूँ, एक मददगार भेजूँ\nयीशु के सिवा ये बात कही किसने?\nजहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें"
+      },
+      {
+        "label": "पद 2",
+        "text": "दस्तक वो देता है चाहे हर दिल में आना\nभरता उसको रूह से अपनी, जिसने उसे जाना\nजिसका बने है माली वो, कलियाँ लगे खिलने\nजहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें"
+      },
+      {
+        "label": "पद 3",
+        "text": "रूह-ए-पाक जो हाज़िर है और कहें खुशामदीद\nइज्जत, दौलत, हशमत जिसकी, उसकी करें तमजीद\nरूह के शोले बरसें जब फिर बदन लगे जलने\nजहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें"
+      }
+    ]
+  },
+  {
     "slug": "great-indeed-are-your-works-o-lord",
     "number": 17,
     "title": "Great indeed are your works O lord",
@@ -403,6 +791,23 @@
       {
         "label": "Verse 3",
         "text": "From every corner of the Earth\nAll the nations gather\nYou lead us all by the hand\nTo the heavenly kingdom\nThen at the end of all time\nYou will come in glory."
+      }
+    ]
+  },
+  {
+    "slug": "tujhe-chhodunga-nahi-main-rahunga-tere-saaye-mein",
+    "number": 17,
+    "title": "तुझे छोड़ूँगा नहीं मैं रहूँगा तेरे साये में",
+    "title_alt": "Tujhe Chhodunga Nahi Main Rahunga Tere Saaye Mein",
+    "language": "hindi",
+    "tags": [
+      "Promise",
+      "Comfort"
+    ],
+    "stanzas": [
+      {
+        "label": "पद",
+        "text": "तुझे छोड़ूँगा नहीं मैं रहूँगा तेरे साये में\nआएगा वो दिन तेरे लिए भी\nदेखेगा तू सपने सच होते\nतुझे छोड़ूँगा नहीं मैं रहूँगा तेरे साये में (२)"
       }
     ]
   },
@@ -444,9 +849,26 @@
     ]
   },
   {
+    "slug": "dil-se-jo-pyaar-hota-hai",
+    "number": 19,
+    "title": "दिल से जो प्यार होता है",
+    "title_alt": "Dil Se Jo Pyaar Hota Hai",
+    "language": "hindi",
+    "tags": [
+      "Love",
+      "Worship"
+    ],
+    "stanzas": [
+      {
+        "label": "पद 1",
+        "text": "दिल से जो प्यार होता है, वो जीवन भर साथ रहता है (२)\nमैं तुझे छोड़ूँगा नहीं (२)\nमैं तुझे भूलूँगा नहीं (२)\nतेरी स्तुति गाता रहूँगा, जब तक जीवन रहेगा (२)"
+      }
+    ]
+  },
+  {
     "slug": "i-the-lord-of-sea-and-sky",
     "number": 20,
-    "title": "I, the Lord of sea and sky,",
+    "title": "I, the Lord of sea and sky",
     "title_alt": null,
     "language": "english",
     "tags": [
@@ -484,6 +906,27 @@
       {
         "label": "Verse 8",
         "text": "Here I am, Lord..."
+      }
+    ]
+  },
+  {
+    "slug": "tu-dhanya-hai-sarvashaktiman",
+    "number": 20,
+    "title": "तू धन्य है, सर्वश्रेष्ठ है",
+    "title_alt": "Tu Dhanya Hai, Sarvashaktiman",
+    "language": "hindi",
+    "tags": [
+      "Worship",
+      "Adoration"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "गहरे प्यार से तूने प्यार किया\nमाँ से गहरा है प्यार तेरा (२)\nतू धन्य है, सर्वश्रेष्ठ है\nतेरे जैसा नहीं और कोई (२)\nहल्लेलूयाह... हल्लेलूयाह... हल्लेलूयाह... हल्लेलूयाह..."
+      },
+      {
+        "label": "पद 1",
+        "text": "तुझे मैं कभी भूलूँगा नहीं\nतुझे मैं कभी छोड़ूँगा नहीं\nतेरे साथ-साथ मैं चलूँगा\nएक नूर के समान रहूँगा"
       }
     ]
   },
@@ -670,6 +1113,57 @@
     ]
   },
   {
+    "slug": "yeshu-mera-yeshu-mera",
+    "number": 27,
+    "title": "यीशु मेरा यीशु मेरा",
+    "title_alt": "Yeshu Mera Yeshu Mera",
+    "language": "hindi",
+    "tags": [
+      "Praise",
+      "Devotion"
+    ],
+    "stanzas": [
+      {
+        "label": "पद",
+        "text": "यीशु मेरा, यीशु मेरा, नाम लेता हूँ (२)\nजय जयकार करूँ मैं तेरा\nतूने मुझको है बचाया\nअपने लहू से है छुड़ाया\nयीशु मेरा, यीशु मेरा नाम लेता हूँ"
+      }
+    ]
+  },
+  {
+    "slug": "tere-bin-main-kuchh-bhi-nahi",
+    "number": 28,
+    "title": "तेरे बिन मैं कुछ भी नहीं",
+    "title_alt": "Tere Bin Main Kuchh Bhi Nahi",
+    "language": "hindi",
+    "tags": [
+      "Worship",
+      "Surrender"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "तेरे बिन मैं कुछ भी नहीं, कुछ भी नहीं (२)\nऐ खुदावंद यीशु तेरे बिन\nओ येशुआ, येशुआ (२), करूँ आराधना (२)\nहाथों को अपने उठाकर तुझे दूँ महिमा (२)"
+      }
+    ]
+  },
+  {
+    "slug": "khaali-hoon-bhar-de-mujhko",
+    "number": 29,
+    "title": "खाली हूँ भर दे मुझको",
+    "title_alt": "Khaali Hoon Bhar De Mujhko",
+    "language": "hindi",
+    "tags": [
+      "Prayer",
+      "Holy Spirit"
+    ],
+    "stanzas": [
+      {
+        "label": "पद",
+        "text": "खाली हूँ भर दे मुझको, है दुआ तुझसे (२)\nकुछ भी मैं नहीं हूँ बिना तेरे (२)\nओ येशुआ, येशुआ (२), करूँ आराधना (२)\nहाथों को अपने उठाकर तुझे दूँ महिमा (२)"
+      }
+    ]
+  },
+  {
     "slug": "shepherd-of-my-soul",
     "number": 30,
     "title": "Shepherd of my soul",
@@ -707,6 +1201,27 @@
     ]
   },
   {
+    "slug": "teri-ichchha-poori-ho-jaaye",
+    "number": 30,
+    "title": "तेरी इच्छा पूरी हो जाए",
+    "title_alt": "Teri Ichchha Poori Ho Jaaye",
+    "language": "hindi",
+    "tags": [
+      "Surrender",
+      "Worship"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "तेरी इच्छा पूरी हो जाए\nहाथों में तेरे जीवन है ये\nमैं मिट्टी हूँ, तू है कुम्हार\nमुझको उठा, मुझको बना"
+      },
+      {
+        "label": "पद 1",
+        "text": "अपनी मर्जी पर मैं चलता रहा\nतुझको कभी भी अपना ना कहा\nलेकिन प्रभु आज से मैं\nतेरे क्रूस को ले लेता हूँ"
+      }
+    ]
+  },
+  {
     "slug": "shine-jesus-shine",
     "number": 31,
     "title": "Shine Jesus shine",
@@ -727,6 +1242,23 @@
       {
         "label": "Verse 3",
         "text": "Lord I come to your awesome presence\nFrom the shadows into your radiance\nBy the blood I may enter your brightness\nSearch me, try me, consume all my darkness\nShine on me\nShine on me."
+      }
+    ]
+  },
+  {
+    "slug": "sar-ko-apne-jhukaata-hoon",
+    "number": 31,
+    "title": "सर को अपने झुकाता हूँ",
+    "title_alt": "Sar Ko Apne Jhukaata Hoon",
+    "language": "hindi",
+    "tags": [
+      "Worship",
+      "Surrender"
+    ],
+    "stanzas": [
+      {
+        "label": "पद",
+        "text": "सर को अपने झुकाता हूँ मैं तेरे हुज़ूर (२)\nबन कर क़ुरबानी आता हूँ मेरे हुज़ूर (२)\nओ येशुआ, येशुआ, करूँ आराधना\nहाथों को अपने उठाकर तुझे दूँ महिमा"
       }
     ]
   },
@@ -776,6 +1308,23 @@
     ]
   },
   {
+    "slug": "prabhu-yeshu-tere-charnon-mein",
+    "number": 32,
+    "title": "प्रभु यीशु तेरे चरणों में",
+    "title_alt": "Prabhu Yeshu Tere Charnon Mein",
+    "language": "hindi",
+    "tags": [
+      "Worship",
+      "Devotion"
+    ],
+    "stanzas": [
+      {
+        "label": "पद",
+        "text": "प्रभु यीशु तेरे चरणों में\nलाया हूँ मैं अपना जीवन\nतू ही मेरा जीवन आधार (२)"
+      }
+    ]
+  },
+  {
     "slug": "silent-night",
     "number": 33,
     "title": "Silent night",
@@ -797,6 +1346,22 @@
       {
         "label": "Verse 3",
         "text": "Silent night, holy night\nSon of God, love's pure light\nRadiant beams from Thy holy face\nWith the dawn of redeeming grace\nJesus Lord, at Thy birth\nJesus Lord, at Thy birth"
+      }
+    ]
+  },
+  {
+    "slug": "yeshu-mere-jeevan-mein",
+    "number": 33,
+    "title": "यीशु मेरे जीवन में",
+    "title_alt": "Yeshu Mere Jeevan Mein",
+    "language": "hindi",
+    "tags": [
+      "Thanksgiving"
+    ],
+    "stanzas": [
+      {
+        "label": "पद",
+        "text": "यीशु मेरे जीवन में तूने जो किया है\nउसके लिए मैं तुझे धन्यवाद दूँगा"
       }
     ]
   },
@@ -875,6 +1440,23 @@
     ]
   },
   {
+    "slug": "teri-mahima-ho-mahima",
+    "number": 36,
+    "title": "तेरी महिमा, हो महिमा",
+    "title_alt": "Teri Mahima, Ho Mahima",
+    "language": "hindi",
+    "tags": [
+      "Praise",
+      "Worship"
+    ],
+    "stanzas": [
+      {
+        "label": "पद",
+        "text": "तेरी महिमा, हो महिमा (४)\nमहिमा मिले तुझे स्वर्ग में\nमहिमा मिले तुझे पृथ्वी पर"
+      }
+    ]
+  },
+  {
     "slug": "way-maker",
     "number": 37,
     "title": "Way Maker",
@@ -912,6 +1494,38 @@
     ]
   },
   {
+    "slug": "taareef-taareef-milkar-karo-saare-taareef",
+    "number": 37,
+    "title": "तारीफ, तारीफ मिलकर करो सारे तारीफ",
+    "title_alt": "Taareef, Taareef Milkar Karo Saare Taareef",
+    "language": "hindi",
+    "tags": [
+      "Praise"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "तारीफ़, तारीफ़ तारीफ़, मिलके करो सारे तारीफ़ (२)\nयीशु की जो है प्यारा मुन्जी (२)"
+      },
+      {
+        "label": "पद 1",
+        "text": "उसने हम सब को है बनाया, जो कुछ दिखता उसने रचाया (२)\nसारे जहाँ का वह शाहनशाह (२)"
+      },
+      {
+        "label": "पद 2",
+        "text": "पापों से वह पाक है करता, सारी खताये माफ है करता (२)\nसारे रोगों को करता चंगा (२)"
+      },
+      {
+        "label": "पद 3",
+        "text": "उसकी मौत से जिन्दगी है पायी, आशा नयी एक उसने दिलायी (२)\nबैठेंगे तख्त पर फतहमन्द हो (२)"
+      },
+      {
+        "label": "पद 4",
+        "text": "हम्द-ओ-सन्ना हम मिलके करेंगे, सदा वहां पर उसको ताकेंगे (२)\nगीत नया वहाँ गायेंगे (२)"
+      }
+    ]
+  },
+  {
     "slug": "we-are-gathering-together-unto-him",
     "number": 38,
     "title": "We are gathering together unto Him",
@@ -940,22 +1554,27 @@
     ]
   },
   {
-    "slug": "we-are-gathering-together",
-    "number": 39,
-    "title": "We are gathering together",
-    "title_alt": null,
-    "language": "english",
+    "slug": "tu-mera-sharanasthan",
+    "number": 38,
+    "title": "तू मेरा शरणस्थान",
+    "title_alt": "Tu Mera Sharanasthan",
+    "language": "hindi",
     "tags": [
-      "Entrance"
+      "Worship",
+      "Refuge"
     ],
     "stanzas": [
       {
-        "label": "Verse 1",
-        "text": "We are gathering together unto Him\nWe are gathering together unto Him\nUnto Him shall the gathering of the people be\nWe are gathering together unto Him"
+        "label": "कोरस",
+        "text": "तू मेरा शरणस्थान, तू मेरा गढ़ है\nसंकट में मेरा दोस्त, मेरा प्रभु!\nआराधना करूँ मैं पूरे दिल से, मैं तुझे ढूँढूँगा संपूर्ण जीवन से\nतेरी सेवा करूँगा तन-मन-धन से, मैं हूँ यहाँ प्रभु..."
       },
       {
-        "label": "Verse 2",
-        "text": "We are Singing..\nWe are Offering..\nWe are Praying.."
+        "label": "पद 1",
+        "text": "उद्धारक मेरा तू, मेरी चंगाई है\nसंकट में सामर्थ है, मेरा प्रभु..."
+      },
+      {
+        "label": "पद 2",
+        "text": "तू मेरा चरवाहा, संकट में सांत्वना है मेरा दोस्त, मेरा प्रभु..."
       }
     ]
   },
@@ -1016,6 +1635,23 @@
     ]
   },
   {
+    "slug": "toone-lahoo-ki-kataron-ko",
+    "number": 40,
+    "title": "तूने लहू के कतरों को",
+    "title_alt": "Toone Lahoo Ki Kataron Ko",
+    "language": "hindi",
+    "tags": [
+      "Sacrifice",
+      "Salvation"
+    ],
+    "stanzas": [
+      {
+        "label": "पद",
+        "text": "तूने लहू के कतरों को मेरे लिये बहा दिया\nतूने जाँ बदन देकर यीशु मुझको बचा लिया (२)\nतेरे लहू से (२), यीशु के लहू से, मसीह के लहू से\nमेरा जीवन संवर गया, यीशु नाम मिला"
+      }
+    ]
+  },
+  {
     "slug": "we-wish-you-a-merry-christmas",
     "number": 41,
     "title": "We wish you a Merry Christmas",
@@ -1033,6 +1669,31 @@
       {
         "label": "Verse 2",
         "text": "Good tidings we bring to you and your kin,\nWe wish you a merry Christmas\nAnd a happy new year!"
+      }
+    ]
+  },
+  {
+    "slug": "taali-bajaake-khushiyaan-manao",
+    "number": 41,
+    "title": "ताली बजाके खुशियां मनाओ",
+    "title_alt": "Taali Bajaake Khushiyaan Manao",
+    "language": "hindi",
+    "tags": [
+      "Praise",
+      "Joy"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "ताली बजाके खुशियां मनाओ\nप्रभु के सम्मुख आनंद मनाओ (२)\nआनंद मनाओ, आनंद मनाओ\nसब दुःख भूलकर आनंद मनाओ"
+      },
+      {
+        "label": "पद 1",
+        "text": "विनती से, विचारों से, बढ़कर करता है (२)"
+      },
+      {
+        "label": "पद 2",
+        "text": "भयभीत न हो, मैंने छुड़ाया तुझे, तू है मेरा अपना"
       }
     ]
   },
@@ -1084,6 +1745,35 @@
       {
         "label": "Verse 9",
         "text": "Fill us with Your power\nLive inside of me\nFill us with Your power\nLive inside of me"
+      }
+    ]
+  },
+  {
+    "slug": "tu-hai-mera-apna",
+    "number": 42,
+    "title": "तू है मेरा अपना",
+    "title_alt": "Tu Hai Mera Apna",
+    "language": "hindi",
+    "tags": [
+      "Comfort",
+      "Encouragement"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "तू है मेरा अपना (२)"
+      },
+      {
+        "label": "पद 1",
+        "text": "निश्चय भलाई और करुणा\nजीवन भर साथ है सदा (२)"
+      },
+      {
+        "label": "पद 2",
+        "text": "ज्ञान सिखाता राह बताता\nवचन को देता सदा (२)"
+      },
+      {
+        "label": "पद 3",
+        "text": "संकट में अगर हम दुहाई दें\nछुटकारा देगा हमें (२)"
       }
     ]
   },
@@ -1145,6 +1835,39 @@
     ]
   },
   {
+    "slug": "thoda-samay-hai-baaki",
+    "number": 43,
+    "title": "थोड़ा समय है बाकी",
+    "title_alt": "Thoda Samay Hai Baaki",
+    "language": "hindi",
+    "tags": [
+      "Encouragement",
+      "Service"
+    ],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "थोड़ा समय है बाकी, सेवा अभी है काफी (२)\nहम रुकें नहीं, पीछे मुड़े नहीं, यीशु है हमारा साथी (२)"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१) संदेश सुनाते जाना, सेवा से नहीं शरमाना\nचाहे जग हमें रोके आये दु:ख के झकोरे (२)\nहमें देगा वो भरपूर शांति (२)"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२) हम अपना क्रूस उठायें, और यीशु के पीछे आयें\nअपने को त्यागे यीशु से मन लगायें\nहम हैं उसके विश्वासी (२)"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३) यीशु ने हमें भेजा है, उसका काम दिन ही दिन में करना है\nवो है रात आने वाली, ये हमारी जिम्मेवारी\nयीशु है हमारा न्यायी (२)"
+      },
+      {
+        "label": "Verse 4",
+        "text": "४) प्रतिफल हमें वो देगा, विश्वास में स्थिर करेगा\nउसकी आज्ञा हम मानें, उससे शांति हम पायें\nप्रतिज्ञा है उसकी काफी (२)"
+      }
+    ]
+  },
+  {
     "slug": "what-a-friend-we-have-in-jesus",
     "number": 44,
     "title": "What a friend we have in Jesus",
@@ -1170,26 +1893,60 @@
     ]
   },
   {
-    "slug": "what-a-friend-we-have-in-jesus-2",
-    "number": 45,
-    "title": "What a friend we have in Jesus",
-    "title_alt": null,
-    "language": "english",
+    "slug": "dekho-chali-naiya-meri",
+    "number": 44,
+    "title": "देखो चली, नैया मेरी",
+    "title_alt": "Dekho Chali, Naiya Meri",
+    "language": "hindi",
     "tags": [
-      "Communion"
+      "Trust",
+      "Encouragement"
     ],
     "stanzas": [
       {
-        "label": "Verse 1",
-        "text": "What a Friend we have in Jesus,\nAll our sins and griefs to bear!\nWhat a privilege to carry\nEverything to God in prayer!\nO what peace we often forfeit,\nO what needless pain we bear,\nAll because we do not carry\nEverything to God in prayer!"
+        "label": "कोरस",
+        "text": "देखो चली, नैया मेरी कैसी है ये, झूमती डोली\nदेखो चली रे मोरी नैया है इसका यीशु खिवैया"
       },
       {
-        "label": "Verse 2",
-        "text": "Have we trials and temptations?\nIs there trouble anywhere?\nWe should never be discouraged,\nTake it to the Lord in prayer.\nCan we find a friend so faithful\nWho will all our sorrows share?\nJesus knows our every weakness,\nTake it to the Lord in prayer."
+        "label": "पद 1",
+        "text": "आ प्रभु आ थाम ले मुझे, अपने कर में जीवन चाहे\nजीवन है यीशु हवाले, चलते हैं तोरे सहारे"
       },
       {
-        "label": "Verse 3",
-        "text": "Are we weak and heavy-laden,\nCumbered with a load of care?\nPrecious Savior, still our refuge\nTake it to the Lord in prayer;\nDo thy friends despise, forsake thee?\nTake it to the Lord in prayer;\nIn His arms He’ll take and shield thee,\nThou wilt find a solace there."
+        "label": "पद 2",
+        "text": "बातों पर तोरे ध्यान लगायें, मन में हमारे तू ही समाये\nदुनियाँ के राजा यीशु उजाले, पापों से हमें तू ही संभाले"
+      },
+      {
+        "label": "पद 3",
+        "text": "अब तो मसीह तू ही बचाये, आये हम तो पास में तोरे\nयीशु ही राह दिखाये, जीवन को तू ही बचाये"
+      }
+    ]
+  },
+  {
+    "slug": "do-to-tumhe-diya-jayega",
+    "number": 45,
+    "title": "दो तो तुम्हें दिया जायेगा",
+    "title_alt": "Do To Tumhe Diya Jayega",
+    "language": "hindi",
+    "tags": [
+      "Giving",
+      "Offertory"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "दो तो तुम्हें दिया जायेगा (४)\nजिस नाप से तुम नापते हो\nतुम्हारे लिए भी नापा जायेगा\nदो तो तुम्हें दिया जायेगा (४)"
+      },
+      {
+        "label": "पद 1",
+        "text": "दायाँ अगर देता है तो, बायाँ ये जानने न पाये\nगुप्त में रहे तुम्हारा देना, यही है यहोवा को भाये (२)\nजिस नाप से तुम नापते हो"
+      },
+      {
+        "label": "पद 2",
+        "text": "विधवा के जैसे तुम दान दो, धनवान के जैसे नहीं\nमन को तुम साफ कर देना, कुड़कुड़ाते हुए नहीं (२)\nजिस नाप से तुम नापते हो"
+      },
+      {
+        "label": "पद 3",
+        "text": "जो कुछ तुम पृथ्वी पर बांधोगे, वो स्वर्ग में बंधेगा\nजो कुछ तुम पृथ्वी पर खोलोगे, वो स्वर्ग में खुलेगा"
       }
     ]
   },
@@ -1238,6 +1995,27 @@
     ]
   },
   {
+    "slug": "pavitra-jeevan-mein-jyoti-jala-de",
+    "number": 47,
+    "title": "पवित्र जीवन में ज्योति जला दे",
+    "title_alt": "Pavitra Jeevan Mein Jyoti Jala De",
+    "language": "hindi",
+    "tags": [
+      "Prayer",
+      "Holiness"
+    ],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "पवित्र जीवन में ज्योति जला दे\nतुझ पर लगी है ये आशा मेरी\nपापमय तन को दूर हटा दे (२)\nपूर्ण हो अभिलाषा मेरी"
+      },
+      {
+        "label": "Verse 2",
+        "text": "जीवन के दु:खी और कठिन क्षणों का\nदृढ़ता से सामना करने का बल दे\nअपने पवित्र वचनों से चला मुझे\nपूर्ण हो अभिलाषा मेरी"
+      }
+    ]
+  },
+  {
     "slug": "aawaaz-uthayenge",
     "number": 48,
     "title": "आवाज़ उठाएंगे",
@@ -1263,6 +2041,27 @@
       {
         "label": "पद 3",
         "text": "न देख सका हमको तू पाप के सागर में\nऔर बनके मनुष्य आया आकाश में सागर में\nमुक्ति का तू दाता है दुनिया को बतायेंगे।\nहे येसु महान..."
+      }
+    ]
+  },
+  {
+    "slug": "anokha-pyaar-hai-tera",
+    "number": 49,
+    "title": "अनोखा प्यार है तेरा",
+    "title_alt": "Anokha Pyaar Hai Tera",
+    "language": "hindi",
+    "tags": [
+      "Love",
+      "Praise"
+    ],
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "अनोखा प्यार है तेरा, करूँगा स्तुति तेरी मैं सर्वदा (२)"
+      },
+      {
+        "label": "पद 1",
+        "text": "जग में आया यीशु स्वर्ग छोड़कर, मेरा सारा दंड सह लिया उसने\nकोड़े खा के क्रूस उठा के यीशु ने, मुझको मुक्ति और चंगाई दे दी है\nअनोखा प्यार है तेरा, करूँगा स्तुति तेरी मैं सर्वदा"
       }
     ]
   },
@@ -1295,6 +2094,23 @@
       {
         "label": "पद 4",
         "text": "तूने क्रूस उठाया,\nअपना लहू बहाया\nपाप का बोझ हमारा तूने सहा\nजीवन ये हमारा है तेरा ही दान\nमोक्ष के सिवा और क्या चाहिए ।"
+      }
+    ]
+  },
+  {
+    "slug": "an-vachan-aur-mannat-aulad",
+    "number": 50,
+    "title": "अन्न वस्त्र और सभी आशीषें",
+    "title_alt": "An Vachan Aur Mannat Aulad",
+    "language": "hindi",
+    "tags": [
+      "Thanksgiving",
+      "Provision"
+    ],
+    "stanzas": [
+      {
+        "label": "पद",
+        "text": "अन्न वस्त्र और सभी आशीषें, दी मुझे उसने भरपूरी से\nखतरों और सब मुसीबतों से, आँख की पुतली जैसे संभाला मुझे\nतेरे प्यार से मुझे मिली, जीवन में पाया नया जीवन मैंने\nपवित्र आत्मा और वचन से भी नया, जीवन में पाया नया जीवन मैंने"
       }
     ]
   },
@@ -1356,6 +2172,23 @@
     ]
   },
   {
+    "slug": "yeshu-ka-naam-leta-hai",
+    "number": 51,
+    "title": "यीशु का नाम लेता है",
+    "title_alt": "Yeshu Ka Naam Leta Hai",
+    "language": "hindi",
+    "tags": [
+      "Praise",
+      "Salvation"
+    ],
+    "stanzas": [
+      {
+        "label": "पद",
+        "text": "यीशु का नाम लेता है, वो ज़िंदगी पाता है\nतेरी राहों पर चलकर, रूह इनाम में पाता है (२)\nतेरी रूह से (२), खुदा की रूह से, मसीह की रूह से\nमेरा जीवन संवर गया, यीशु नाम मिला"
+      }
+    ]
+  },
+  {
     "slug": "changa-karta-hai",
     "number": 52,
     "title": "चंगा करता है",
@@ -1384,6 +2217,40 @@
       {
         "label": "पद 4",
         "text": "स्वर्ग से, धरती पे बरसे तेरी चंगाई (x2)\nस्वर्ग से, धरती पे बरसे तेरी चंगाई (x2)\nस्वर्ग से, धरती पे बरसे तेरी चंगाई\nस्वर्ग से, धरती पे बरसे"
+      }
+    ]
+  },
+  {
+    "slug": "naam-bada-hai-tera",
+    "number": 52,
+    "title": "नाम बड़ा है तेरा",
+    "title_alt": "Naam Bada Hai Tera",
+    "language": "hindi",
+    "tags": [
+      "Praise",
+      "Adoration"
+    ],
+    "stanzas": [
+      {
+        "label": "पद",
+        "text": "नाम बड़ा है तेरा, यीशु नाम बड़ा है तेरा (२)\nजिसने मेरे जीवन को, नया जीवन दिया है (२)"
+      }
+    ]
+  },
+  {
+    "slug": "kya-hai-teri-ichchha-prabhu",
+    "number": 53,
+    "title": "क्या है तेरी इच्छा प्रभु",
+    "title_alt": "Kya Hai Teri Ichchha Prabhu",
+    "language": "hindi",
+    "tags": [
+      "Guidance",
+      "Prayer"
+    ],
+    "stanzas": [
+      {
+        "label": "पद",
+        "text": "क्या है तेरी इच्छा प्रभु, मुझे बता दे\nमैं तो चलूँगा तेरे पीछे, तेरे संग चलूँगा"
       }
     ]
   },
@@ -1420,6 +2287,27 @@
     ]
   },
   {
+    "slug": "making-melody-in-your-heart",
+    "number": 54,
+    "title": "Making melody in your heart",
+    "title_alt": "Making melody in your heart",
+    "language": "english",
+    "tags": [
+      "Praise",
+      "Worship"
+    ],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "Making melody in your heart unto the King of Kings\nWorship and adore Him (2)\nMaking melody in your heart unto the King of Kings"
+      },
+      {
+        "label": "Verse 1",
+        "text": "King of kings and Lord of lords (3), glory to His name\nGive to the Lord glory (3), oh give unto the Lord\nHe is the King and Lord (3), महिमा उसकी हो"
+      }
+    ]
+  },
+  {
     "slug": "hai-di-awaaz",
     "number": 54,
     "title": "है दी आवाज़",
@@ -1445,6 +2333,26 @@
       {
         "label": "पद 3",
         "text": "3. हमारे वास्ते वो आसमानी प्यार लाया है\nनया जीवन नए राहे नया संसार लाया है\nकभी जो खत्म ना हो आया ऐसी दास्तान बनके\nउतर आया जहाँ में....."
+      }
+    ]
+  },
+  {
+    "slug": "i-will-praise-you",
+    "number": 55,
+    "title": "I will praise you",
+    "title_alt": "I will praise you",
+    "language": "english",
+    "tags": [
+      "Worship"
+    ],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "I will praise you with all of my life\nI will praise you with all of my strength\nWith all of my life, with all of my strength\nAll of my hope is in you"
+      },
+      {
+        "label": "Verse 2",
+        "text": "I will seek you with all of my heart\nI will seek you with all of my mind\nWith all of my heart, with all of my strength\nAll of my hope is in you"
       }
     ]
   },
@@ -1477,6 +2385,31 @@
     ]
   },
   {
+    "slug": "seek-ye-first",
+    "number": 56,
+    "title": "Seek ye first",
+    "title_alt": "Seek ye first",
+    "language": "english",
+    "tags": [
+      "Gospel",
+      "Scripture"
+    ],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "Seek ye first the Kingdom of God\nAnd His righteousness,\nAnd all these things shall be added unto you\nHallelu, Hallelujah\nHallelujah, Hallelujah\nHallelujah, Hallelu-Hallelujah"
+      },
+      {
+        "label": "Verse 2",
+        "text": "Ask and it shall be given unto you,\nSeek and you shall find,\nKnock and the door shall be opened unto you\nHallelu, Hallelujah"
+      },
+      {
+        "label": "Verse 3",
+        "text": "Man shall not live by bread alone,\nBut by every word\nThat proceeds from the mouth of God\nHallelu, Hallelujah"
+      }
+    ]
+  },
+  {
     "slug": "jab-se-pyaara-yeshu-aaya",
     "number": 56,
     "title": "जब से प्यारा येसु आया",
@@ -1497,6 +2430,31 @@
       {
         "label": "पद 2",
         "text": "रात का दिल बीत गया, हुवा सवेरा का सुबह तारा\nइस लिए, मैंने ये गीत गाया, मेरा जीवन बदल-बदल गया"
+      }
+    ]
+  },
+  {
+    "slug": "more-love-more-power",
+    "number": 57,
+    "title": "More love, more power",
+    "title_alt": "More love, more power",
+    "language": "english",
+    "tags": [
+      "Worship",
+      "Prayer"
+    ],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "More love, more power\nMore of you in my life (2)"
+      },
+      {
+        "label": "Verse 1",
+        "text": "And I will worship you with all of my heart\nAnd I will worship you with all of my mind\nAnd I will worship you with all of my strength\nFor you are my Lord (2)"
+      },
+      {
+        "label": "Verse 2",
+        "text": "I will seek your face with all of my heart\nI will seek your face with all of my mind\nI will seek your face with all of my strength\nFor you are my Lord (2)"
       }
     ]
   },
@@ -1522,6 +2480,31 @@
       {
         "label": "पद 2",
         "text": "ख़ुशी मनाओ गाओ रे\nजन्मा है येसु राजा"
+      }
+    ]
+  },
+  {
+    "slug": "majesty-worship-his-majesty",
+    "number": 58,
+    "title": "Majesty, worship His majesty",
+    "title_alt": "Majesty, worship His majesty",
+    "language": "english",
+    "tags": [
+      "Worship",
+      "Adoration"
+    ],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "Majesty, worship His majesty\nUnto Jesus be all glory, power and praise\nMajesty, kingdom authority,\nFlow from His throne unto His own, His anthem raise!"
+      },
+      {
+        "label": "Chorus",
+        "text": "So exalt, lift up on high the name of Jesus\nMagnify, come glorify Christ Jesus, the King"
+      },
+      {
+        "label": "Verse 2",
+        "text": "Majesty, worship His majesty,\nJesus who died, now glorified, King of all Kings"
       }
     ]
   },
@@ -1554,6 +2537,23 @@
     ]
   },
   {
+    "slug": "when-the-spirit-of-the-lord",
+    "number": 59,
+    "title": "When the Spirit of the Lord",
+    "title_alt": "When the Spirit of the Lord",
+    "language": "english",
+    "tags": [
+      "Praise",
+      "Holy Spirit"
+    ],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "When the Spirit of the Lord moves in my heart\nI will praise like David praised (2)\nI will sing like David sang\nI will clap like David clapped\nI will dance like David danced"
+      }
+    ]
+  },
+  {
     "slug": "mere-yeshu-mai-swagat-karu",
     "number": 59,
     "title": "मेरे येसु मैं स्वागत करूँ",
@@ -1578,6 +2578,53 @@
       {
         "label": "पद 3",
         "text": "गूंगे जो आये थे सुनने वचन तूने उन्हें स्वर दे दिया\nअन्धे जो आये थे सुनने वचन तूने उन्हें दर्शन दिया\nमेरे येसु इन सबका दिल खुशियों से तूने भरा - 2"
+      }
+    ]
+  },
+  {
+    "slug": "there-is-power-power",
+    "number": 60,
+    "title": "There is power, power",
+    "title_alt": "There is power, power",
+    "language": "english",
+    "tags": [
+      "Victory",
+      "Power"
+    ],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "There is power, power, wonder-working power\nIn the blood of the Lamb\nThere is power, power, wonder-working power\nIn the precious blood of Jesus"
+      },
+      {
+        "label": "Verse 1",
+        "text": "Victory... Victory to the Blood\nVictory... Victory to the Blood\nVictory... Victory to the Blood of Jesus"
+      }
+    ]
+  },
+  {
+    "slug": "tarak-to-samarth-to",
+    "number": 60,
+    "title": "तारक तो सामर्थ तो",
+    "title_alt": "Tarak To Samarth To",
+    "language": "marathi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "तारक तो सामर्थ तो\nयेशु देव युग युग आहे\nहा..हा.. हालेलुया हो..हो..होसना..२\nहालेलुया, हालेलुया, हालेलुया...२"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. हा दिवस प्रभुचा आहे,\nआपण उल्हास व आनंद करू,\nस्वर्गाच्या देवाला स्तुतीचे गीत गाऊ."
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. चला हो आता त्या कडे,\nआपण महिमा व स्तुति वर्णु\nकिती थोर तो देव, सर्वस्व आपणा दिले."
+      },
+      {
+        "label": "Verse 4",
+        "text": "३. त्याचा अनुभव घ्या,\nतो किती चांगला आहे,\nशैतानी बंधनातुनी\nआपणाला सोडवितो."
       }
     ]
   },
@@ -1645,6 +2692,44 @@
       {
         "label": "पद 12",
         "text": "येशुआ... येशुआ..."
+      }
+    ]
+  },
+  {
+    "slug": "pray-for-india",
+    "number": 61,
+    "title": "Pray For India",
+    "title_alt": "Pray For India",
+    "language": "bilingual",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "Pray for India...6\nतेरा इंडिया मेरा इंडिया\nअपना इंडिया\nPray for India...3\nYou love India\nI love India, We love India\nPray for India"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. सारी दुनिया से है निराला इंडिया\nसबकी निगाहें का उजाला इंडिया\nइसको लगे ना किसी गैर की नजर\nचमके जहां में प्यारा...२\nPray for India अपना इंडिया\nPray for India...6"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. यारो अपना तो बस एक ही खुदा\nमिलके रहेंगे हम होंगे ना जुदा\nबहकाये हमको ना कोई शैतान\nआओ मांगे मिलके खुदा से ये दुआ\nचमके जहां में प्यारा...२\nPray for India अपना इंडिया\nPray for India...3"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. गांव शहर गली (२) जाना है\nप्यार का पैगाम सबको सुनाना है\nप्यार कैदियों को है आजाद करता\nप्यार दुश्मन को भी माफ करता\nPray for India अपना इंडिया\nPray for India...3"
+      },
+      {
+        "label": "Verse 4",
+        "text": "४. You love India, I love India,\nGod love India too (5)\ncome lift your hands &\nmake a prayer\nAnd he is gonna answer\nyou."
+      },
+      {
+        "label": "Verse 5",
+        "text": "५. हमको है इंडिया से महोब्बत,\nहमको है\nहम सबको इंडिया से महोब्बत,"
+      },
+      {
+        "label": "Verse 6",
+        "text": "कामयाब हम होंगे,\nहां कामयाब हम होंगे,\nदुआ से दुआ से\nहर बाजी जितेंगे\nजो तलवारों से जियेंगे,\nतलवारों से मरेंगे\nमहोब्बत से हम यारो\nदुश्मन को जितेंगे\nPray for India\nतेरा इंडिया, मेरा इंडिया\nअपना इंडिया\nYou love India,\nI love India,\nWe love India\nPray for India"
       }
     ]
   },
@@ -1722,6 +2807,28 @@
     ]
   },
   {
+    "slug": "parvaton-ko-dekhunga-main",
+    "number": 62,
+    "title": "पर्वतों को देखूंगा मैं",
+    "title_alt": "Parvaton Ko Dekhunga Main",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "पर्वतों को देखूंगा मैं\nकौन है मददगार मेरा...२\nमेरा मददगार है खुदा...२\nजिसने जमी और आसमां को बनाया"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. वो मेरे पांव को,\nफिसलने नहीं देगा...२\nखुदावंद है मेरा जागा हुआ,\nमुझे तन्हा ना छोड़ेगा...२\nमेरा निगेहबान खुदा है...२\nजिसने जमी और आसमां को बनाया"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. मेरी जां को बला छूं भी ना पाएगी...२\nन गर्मी चांद और सूरज की,\nकभी मुझको जलाएगी...२\nमेरा साहेबान खुदा है...२\nजिसने जमी और आसमां को बनाया"
+      }
+    ]
+  },
+  {
     "slug": "papa-by-bridge-music",
     "number": 63,
     "title": "पापा",
@@ -1768,6 +2875,65 @@
     ]
   },
   {
+    "slug": "he-jeevit-parameshwar",
+    "number": 63,
+    "title": "हे जीवित परमेश्वर",
+    "title_alt": "He Jeevit Parameshwar",
+    "language": "hindi",
+    "tags": [
+      "Worship",
+      "Adoration"
+    ],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "हे जीवित परमेश्वर\nमैं तेरी आराधना करता हूं\nजीवन को देनेवाले,\nमैं तेरी आराधना करता हूं\nहालेलुय्याह, होसाना...४"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. मृत्यु को जीतने वाले,\nमैं तेरी आराधना करता हूं\nनरक को जीतने वाले,\nमैं तेरी आराधना करता हूं।"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. सृष्टि को रचनेवाले,\nमैं तेरी आराधना करता हूं।\nजीवन को देने वाले,\nमैं तेरी आराधना करता हूं।"
+      }
+    ]
+  },
+  {
+    "slug": "taali-bajaakar-khushiyan-manao",
+    "number": 64,
+    "title": "ताली बजाकर खुशियां मनाओ",
+    "title_alt": "Taali Bajaakar Khushiyan Manao",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "ताली बजाके खुशियां मनाओ\nप्रभु के सम्मुख आनंद मनाओ...२\nआनंद मनाओ, आनंद मनाओ\nसब दुख भुल कर आनंद मनाओ...२"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. बिनती से विचारों से,\nबढ़कर करता है...२"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. भयभीत ना हो, मैंने छुड़ाया तुझे\nतू है मेरा अपना...२"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. निश्चय भलाई और करुणा\nजीवन भर साथ है सदा...२"
+      },
+      {
+        "label": "Verse 4",
+        "text": "४. ज्ञान सिखाता राह बताता,\nवचन को देता सदा...२"
+      },
+      {
+        "label": "Verse 5",
+        "text": "५. संकट में अगर हम, दुहाई दे\nछुटकारा देगा हमें...२"
+      }
+    ]
+  },
+  {
     "slug": "prabhu-tere-hi-mandir-mai",
     "number": 65,
     "title": "प्रभु तेरे ही मन्दिर में",
@@ -1788,6 +2954,54 @@
       {
         "label": "पद 2",
         "text": "कृपा दया सागर, बरसाता प्रेम की फुहार\nगुमराह भेड़ों का बन जाता राखनहार"
+      }
+    ]
+  },
+  {
+    "slug": "yehova-yehova-yehova-yehova",
+    "number": 65,
+    "title": "यहोवा यहोवा यहोवा यहोवा",
+    "title_alt": "Yehova Yehova Yehova Yehova",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "यहोवा यहोवा यहोवा यहोवा\nयहोवा जिन्दा खुदा,\nवो हमारा बादशाह\nजो मसीह में मुर्जस्सिम हुआ\nयहोवा यहोवा यहोवा ..."
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. यहोवा शामा भी तू\nजो रहता साथ साथ\nयहोवा राहें भी तू\nमेरा चौपाल साथ साथ\nजो भी मांगे वही मिल जाए\nजो भी ढूंढेंगे वही पाएंगे\nखटखटाए तो खुल जाएगा\nयहोवा ..."
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. - ऐ पाक यहोवा निस्सी\nतू झंडा कौम का\nऐ पाक यहोवा राफा\nतू शाफी कौम का\nतेरे पीछे चलें और\nशक ना करें\nबल्कि रखें ईनाम है मसीह मेरा\nजो भी चाहे हो जाएगा\nयहोवा ..."
+      },
+      {
+        "label": "Verse 4",
+        "text": "३. तू है यहोवा यारी\nजो मुहय्या करता है\nतू है यहोवा शम्मा\nजो तसल्ली देता है\nतू ने बेटा दिया\nसबको माफ किया\nनया जन्म दिया\nरूह से भर दिया\nआज शैतान झुक जाएगा\nयहोवा ..."
+      }
+    ]
+  },
+  {
+    "slug": "tu-hai-mera-parameshwar-pita",
+    "number": 66,
+    "title": "तू है मेरा परमेश्वर पिता",
+    "title_alt": "Tu Hai Mera Parameshwar Pita",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "तू है मेरा परमेश्वर पिता\nमैं हूं तेरी संतान,\nतेरा प्यार मेरे लिये है बड़ा महान"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. तेरा प्यार मैं चाहूं,\nहर खुशी से बढ़कर\nतेरे घर में मैं रहूं, सदा सर्वदा"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. तेरा प्यार मैं चाहूं,\nहर खुशी से बढ़कर\nतेरे घर में मैं रहूं, सदा सर्वदा"
       }
     ]
   },
@@ -1824,6 +3038,50 @@
     ]
   },
   {
+    "slug": "main-aankhen-apni-parvat-ki-aur-uthaunga",
+    "number": 66,
+    "title": "मैं आंखें अपनी पर्वत की ओर उठाऊंगा",
+    "title_alt": "Main Aankhen Apni Parvat Ki Aur Uthaunga",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "मैं आंखें अपनी पर्वत की ओर उठाऊंगा।\nमुझको है पता सहायता\nवहीं से पाऊंगा ...३\nनीचे धरती ऊपर आसमां बनाता है\nपरमेश्वर है वो\nउसके गुण गाऊंगा।"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. फिसले ना कभी कदम राहों में\nइसीलिए ना सोता दिन रातों में\nइस्राएल का वो है रखवाला\nऊंघेगा ना वो सोयेगा\nमैं आंखें अपनी..."
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. कष्टों से यीशु मुझे बचाएगा\nरक्षक बनकर प्राण संभालेगा\nबाहर जाओ या अंदर आओ\nवो ही हमेशा रक्षक होगा\nमैं आंखें अपनी..."
+      }
+    ]
+  },
+  {
+    "slug": "pavitra-tu-hi-to-hai",
+    "number": 67,
+    "title": "पवित्र तू ही तो है",
+    "title_alt": "Pavitra Tu Hi To Hai",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "पवित्र तू ही तो है,\nतेरा नाम पवित्र है ...२\nआसमां के नीचे और धरती पर\nमेरा यीशु पवित्र है ...२\nपवित्र तू ही तो है,\nतेरा नाम पवित्र है ...२\nआ हा हा हालेलुया, हालेलुया...२"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. तू ने हमको अपना बना लिया\nअपनी महिमा को हम पर प्रगट किया\nतेरी महिमा हम रोज करते रहे\nअपने हाथों को उठाकर पवित्र कहे\nपवित्र कहे... पवित्र कहे.. पवित्र कहे..\nपवित्र तू ही"
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. सिंहासन स्तुति का तैयार है\nआराधना आज ऐसी है\nपवित्र पिता है सिंहासन पे\nऔर भरता हमें अपने पाक रूह से\nआ पाक रूह ... आ पाक रूह ...\nआ पाक रूह ..."
+      }
+    ]
+  },
+  {
     "slug": "pyaasa-hiran",
     "number": 67,
     "title": "प्यासा हिरन",
@@ -1848,6 +3106,28 @@
       {
         "label": "पद 3",
         "text": "तू जो बन जाये श्रद्धा सुमन\nपुष्प पराग सा झरता रहूँ मैं"
+      }
+    ]
+  },
+  {
+    "slug": "yehova-ka-tum-dhanyavaad-karo",
+    "number": 68,
+    "title": "यहोवा का तुम धन्यवाद करो",
+    "title_alt": "Yehova Ka Tum Dhanyavaad Karo",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "यहोवा का तुम धन्यवाद करो\nउसके प्रेम के लिए धन्यवाद करो\nसदा का है . . .२"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. सारे गौरव में प्रभु आता\nहोकर महिमा में वो सवार\nसच्चाई, नम्रता और नम्रता के लिए"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. उसकी सेना आती आकाश में,\nउसकी सेना आती है नाचते\nउसने आनंद से है दिल भरा\nखुशियां मनाओ, राज बढ़ रहा\nउसका प्रेम युद्ध का नारा\nयहोवा का तुम . . ."
       }
     ]
   },
@@ -1906,6 +3186,32 @@
     ]
   },
   {
+    "slug": "sandesh-sunate-jaana",
+    "number": 69,
+    "title": "संदेश सुनाते जाना",
+    "title_alt": "Sandesh Sunate Jaana",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "१. संदेश सुनाते जाना,\nसेवा से नहीं शरमाना,\nचाहे जग हमें रोके,\nआये दुख के झरोके,\nहमें देगा वो भरपूर शांति...२"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. हम अपना क्रूस उठाये,\nऔर यीशु के पीछे आये,\nअपने को त्यागे यीशु से मन लगाये\nहम हैं उसके विश्वासी...२"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. यीशु ने हमें भेजा है,\nउसका काम दिन ही दिन में करना ह,\nवो है रात आने वाली\nये हमारी जिम्मेवारी\nयीशु है हमारा न्यायी...२"
+      },
+      {
+        "label": "Verse 4",
+        "text": "४. प्रतिफल हमें वो देता,\nविश्वास में स्थिर करेगा,\nउसकी आज्ञा हम माने,\nउससे शांति हम पाये\nप्रतिज्ञा है उसकी काफी...२"
+      }
+    ]
+  },
+  {
     "slug": "srishti-hai-teri-kavita",
     "number": 69,
     "title": "सृष्टि है तेरी कविता",
@@ -1918,19 +3224,23 @@
     "stanzas": [
       {
         "label": "कोरस",
-        "text": "सृष्टि है तेरी कविता,\nगाती है सन्ना तेरी\nसारी धरा पर गूँजती है,\nनिस दिन महिमा तेरी"
+        "text": "सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2\nसारी धरा पर गूँजती है, निस दिन महिमा तेरी\nसृष्टि है तेरी कविता, गाती है सन्ना तेरी 2"
       },
       {
         "label": "पद 1",
-        "text": "झरने की कल कल भी,\nकरती है तेरी महिमा\nपक्षी भी गाते है,\nतू है कितना महान\nवन के सुमन भी है हंसते,\nकरते है जय जय कार"
+        "text": "झरने की कल कल भी, करती है तेरी महिमा\nपक्षी भी गाते है, तू है कितना महान\nवन के सुमन भी है हंसते, करते हैं जय जयकार । 2"
       },
       {
         "label": "पद 2",
-        "text": "नभ की नीलिमां से तारे,\nधरती को करते इशारे\nसागर की चंचल मौजे,\nदेती हैं तेरी ही यादें\nऊँचे शिखर भी हैं कहते,\nतेरी कला है अपार"
+        "text": "सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2"
       },
       {
         "label": "पद 3",
-        "text": "दाऊद के गीतों में है,\nतेरी प्रशंसा की धारा\nजन्नत में कहते फरिश्ते,\nकर्ता है तू ही हमारा\nसृष्टि के हर एक कण में,\nनिखरा है तेरा प्यार"
+        "text": "नभ की नीलिमां से तारे, धरती को करते इशारे\nसागर की चंचल मौजे,देती हैं तेरी ही यादें\nऊँचे शिखर भी हैं कहते, तेरी कला है अपार 2"
+      },
+      {
+        "label": "पद 4",
+        "text": "सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2\nसारी धरा पर गूँजती है, निस दिन महिमा तेरी\nसृष्टि है तेरी कविता, गाती है सन्ना तेरी 2"
       }
     ]
   },
@@ -1995,6 +3305,32 @@
     ]
   },
   {
+    "slug": "yeshu-ke-sang-tu-chalta-chal",
+    "number": 71,
+    "title": "यीशु के संग तू चलता चल",
+    "title_alt": "Yeshu Ke Sang Tu Chalta Chal",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "यीशु के संग तू चलता चल\nतेरा जीवन होगा महान\nतेरे लिए वो आया है,\nताकि तू पाए आसानी वा ताज...२"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. जब तू अकेला,\nदुनिया के इस सफर में\nथामेगा वो तेरा हाथ,\nजब लोग तुझको छोड़े।\nयीशु के संग . . ."
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. यीशु का अब्दी प्यार,\nकभी नहीं बदलेगा\nगर तू करता है प्यार,\nतेरा वो है मददगार।\nयीशु के संग . . ."
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. जीवन उसे सौंप दे,\nआशीष वो देगा तुझे\nपाया यीशु का साथ,\nउद्धार वो देगा तुझे।"
+      }
+    ]
+  },
+  {
     "slug": "tu-mera-geet-hai",
     "number": 72,
     "title": "तू मेरा गीत है",
@@ -2019,6 +3355,66 @@
       {
         "label": "पद 3",
         "text": "तू मेरी आशा\nतू मेरा प्रीत है\nजीवन की हार में\nतू जीत है"
+      }
+    ]
+  },
+  {
+    "slug": "dil-ke-daag-ko-dhove-kaun",
+    "number": 72,
+    "title": "दिल के दाग को धोवे कौन",
+    "title_alt": "Dil Ke Daag Ko Dhove Kaun",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "दिल के दाग को धोवे कौन\nलहू जो कि क्रूस से जारी\nमेरे मर्ज को खोवे कौन?\nलहू जो कि क्रूस से जारी"
+      },
+      {
+        "label": "Verse 2",
+        "text": "वह चश्मा है मामूर\nदाग दिल के करता दूर\nहै मुझको दिल मंजूर\nलहू जो कि क्रूस से जारी"
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. मेरे मर्ज का शाफी है\nलहू जो कि क्रूस से जारी\nमाफी को वो काफी है\nलहू जो कि क्रूस से जारी"
+      },
+      {
+        "label": "Verse 4",
+        "text": "३. वह है मेरे कर्ज का दाम\nलहू जो कि क्रूस से जारी\nवह है मेरा खास इनाम\nलहू जो कि क्रूस से जारी"
+      },
+      {
+        "label": "Verse 5",
+        "text": "४. मेरी वह उम्मीद है खास\nलहू जो कि क्रूस से जारी\nरास्ती का है खुश लिबास\nलहू जो कि क्रूस से जारी"
+      },
+      {
+        "label": "Verse 6",
+        "text": "५. दुख तकलीफ में है पनाह\nलहू जो कि क्रूस से जारी\nवह है मेरे घर की राह\nलहू जो कि क्रूस से जारी"
+      },
+      {
+        "label": "Verse 7",
+        "text": "६. मेरे गीत का है मजमून\nलहू जो कि क्रूस से जारी\nमुझको करता है ममनून\nलहू जो कि क्रूस से जारी"
+      }
+    ]
+  },
+  {
+    "slug": "yeshu-mera-raja",
+    "number": 73,
+    "title": "यीशु मेरा राजा",
+    "title_alt": "Yeshu Mera Raja",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "१. यीशु मेरा राजा,\nयीशु मेरा प्रभु,\nयीशु मेरा जीवन,\nयीशु ही सब कुछ है।\nस्तुति के योग्य,\nयोग्य तू ही है,\nसदा सदा के लिए\nसृष्टि किया मुझको,\nस्तुति करूं तुझको\nमैं सदा के लिए . . ."
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. जीवन की रोटी,\nयीशु मेरी ज्योति\nयीशु मेरा प्रेम है\nयीशु ही सब कुछ है।\nस्तुति के योग्य . . ."
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. यीशु मेरा मार्ग है,\nयीशु मेरा द्वार है।\nस्वर्गराज में यीशु\nयीशु मेरा जीवन,\nयीशु ही सब कुछ है।\nस्तुति के योग्य . . ."
       }
     ]
   },
@@ -2075,6 +3471,54 @@
     ]
   },
   {
+    "slug": "samarthi-kitna-hai-yeshu-tu-mahaan",
+    "number": 74,
+    "title": "सामर्थी कितना है यीशु तू महान",
+    "title_alt": "Samarthi Kitna Hai Yeshu Tu Mahaan",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "सामर्थी कितना है यीशु तू महान\nतेरी रचना तो हैं हम,\nगाते है होके मगन\nसामर्थी कितना . . ."
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. तू मेरा हमसफर,\nतुझमें हूं मैं निडर (२)\nप्यार मेरा हर पल\nहै मेरा जीवन जल (२)\nमेरे दिल से कहता हूं,\nसामर्थी कितना . . ."
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. आदि भी तू है, अंत भी तू है (२)\nअल्फा भी तू है,\nऔर ओमेगा भी है (२)\nभरे दिल से कहता हूं,\nयीशु तू है महान\nसामर्थी कितना . . ."
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. यीशु के मैं साथ,\nकरता हूं नित्य बात (२)\nदेकर अपना हाथ\nचलता मेरे साथ (२)\nइसलिए मैं कहता हूं,\nयीशु तू है महान\nसामर्थी कितना . . ."
+      }
+    ]
+  },
+  {
+    "slug": "yeshu-mere-koi-nahi-tere-jaisa",
+    "number": 75,
+    "title": "यीशु मेरे कोई नहीं तेरे जैसा",
+    "title_alt": "Yeshu Mere Koi Nahi Tere Jaisa",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "यीशु मेरे कोई नहीं तेरे जैसा (२)\nअपार प्रेम, अपार करुणा\nदयालु तू बड़ा\nयीशु मेरे ॥धृ॥"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. किसी आंख न देखा,\nना कान ने सुना है\nकिसी मानव के चित्त में नहीं आया\nजो परमेश्वर ने तैयार किया है\nअपने प्रेम करने वालों के लिए\nयीशु मेरे . . ."
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. जो तुझसे प्रेम करते,\nउनमें सारी ही बातें (२)\nभलाई उत्पन्न करती है\nमसीह के प्रेम से दुनिया की बातें\nअलग नहीं कर सकती हमें...\nयीशु मेरे . . ."
+      }
+    ]
+  },
+  {
     "slug": "yeshu-tu-mera-meet",
     "number": 75,
     "title": "येसु तू मेरा मीत",
@@ -2120,42 +3564,50 @@
     ]
   },
   {
-    "slug": "hammein-vo-doori-thi-kitni-gehri",
-    "number": 77,
-    "title": "आशा मेरी",
-    "title_alt": "Hammein vo doori thi kitni gehri",
+    "slug": "dekho-pita-ne-kaisa-mahaan",
+    "number": 76,
+    "title": "देखो पिता ने कैसा महान",
+    "title_alt": "Dekho Pita Ne Kaisa Mahaan",
     "language": "hindi",
-    "tags": [
-      "Communion"
-    ],
+    "tags": [],
     "stanzas": [
       {
-        "label": "कोरस",
-        "text": "हममें वो दूरी थी कितनी गहरी\nकितना बड़ा था वो फ़ासला\nमायूस होकर स्वर्ग की ओर देखा\nनिराशा में तेरा नाम लिया"
+        "label": "Chorus",
+        "text": "देखो पिता ने कैसा महान\nप्रेम हमसे किया है\nकि हम सभी उसकी संतान,\nकहलाये जा सके (२)\nऔर हम है भी\nदेखो पिता ने . . ."
       },
       {
-        "label": "पद 1",
-        "text": "अंधकार हटा कर तेरी मोहब्बत\nसे मेरा दिल तूने भर दिया\nपूरा हुआ सब, लिखा गया अंत\nयेशु मसीह, तू है आशा मेरी"
+        "label": "Verse 1",
+        "text": "१. कृपा मुझ पर है किया इतना,\nगहराई का कोई नाप नहीं\nप्यार मुझसे है किया इतना,\nसीमाओं का कोई अन्त नहीं (२)\nधन्य हुआ मैं ऐसे प्रेम और कृपा से\nजो महान पिता ने दिखाया\nदेखो पिता ने . . ."
       },
       {
-        "label": "पद 2",
-        "text": "किसने था सोचा\nकि ऐसी दया मिलेगी हमको भरपूरी से\nयुगों का राजा महिमा को छोड़कर\nअपनाया मेरे शर्म और गुनाह"
+        "label": "Verse 2",
+        "text": "२. गुजर जाऊ मैं नदी से होकर\nउसकी गहराई ना डुबाएगी\nचला जाऊं मैं अग्नि से होकर,\nउसकी लौ ना झुलसाएगी।\nनहीं डरूं मैं अग्नि और पानी से\nउस महान पिता ने छुड़ाया\nदेखो पिता ने . . ."
+      }
+    ]
+  },
+  {
+    "slug": "rishta-lahoo-ka",
+    "number": 77,
+    "title": "रिश्ता लहू का",
+    "title_alt": "Rishta Lahoo Ka",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "रिश्ता लहू का\nयीशु से है मेरा,\nये रिश्ता लहू का (२)\nदुनिया से यीशु का,\nये रिश्ता लहू का (२)\nयीशु से है मेरा,\nये रिश्ता लहू का"
       },
       {
-        "label": "पद 3",
-        "text": "क्रूस से मैंने पाई है माफ़ी\nमैं हो गया उस राजा का\nसुंदर मसीहा अब मैं हूँ तेरा\nयेशु मसीह, तू है आशा मेरी"
+        "label": "Verse 1",
+        "text": "१. मेरे लिए, सबके लिए\nयीशु ने दी अपनी जान (२)\nयीशु से है मेरा,\nये रिश्ता लहू का"
       },
       {
-        "label": "पद 4",
-        "text": "आल्लेलुया - प्रभु, तेरी स्तुती हो\nआल्लेलुया - तूने हराया मृत्यु को\nतूने तोड़ी हर ज़ंजीर, तेरे नाम में रिहाई\nयेशु मसीह, तू है आशा मेरी"
+        "label": "Verse 2",
+        "text": "२. दुनिया में आकर,\nलहू बहाकर, किया हमारा उद्धार\nयीशु से है मेरा,\nये रिश्ता लहू का"
       },
       {
-        "label": "पद 5",
-        "text": "आई वो सुबह, वादा पूरा हुआ\nबेजान शरीर ने फिर साँसें ली\nख़ामोशी में से तूने पुकारा\nकब्र तेरी, जीत है कहाँ\nयेशुआ, तेरी जय हो सदा"
-      },
-      {
-        "label": "पद 6",
-        "text": "आल्लेलुया - प्रभु, तेरी स्तुती हो\nआल्लेलुया - तूने हराया मृत्यु को\nतूने तोड़ी हर ज़ंजीर, तेरे नाम में रिहाई\nयेशु मसीह, तू है आशा मेरी"
+        "label": "Verse 3",
+        "text": "३. जीवन मेरा, ये दिल मेरा,\nखुशियों से उसने भरा (२)\nयीशु से है मेरा,\nये रिश्ता लहू का\nदुनिया से यीशु . . ."
       }
     ]
   },
@@ -2184,6 +3636,32 @@
     ]
   },
   {
+    "slug": "gaane-ka-dil",
+    "number": 78,
+    "title": "गाने का दिल",
+    "title_alt": "Gaane Ka Dil",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "गाने का दिल\nऔर बजाने का जीवन,\nहम सबने पाया है ...२\nखुशियां ये कैसी अनोखी ...२\nदिल में यीशु आ गया"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. जिस व्यक्ति ने यीशु को पाया ...२\nउसका जीवन बदल गया है\nगाने का दिल..."
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. जिस व्यक्ति ने आत्मा को पाया ...२\nवो सामर्थ से भर गया है\nगाने का दिल..."
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. जिस व्यक्ति ने पिता को पाया ...२\nवो स्वर्गीय वारिस बन गया\nगाने का दिल..."
+      }
+    ]
+  },
+  {
     "slug": "khrist-marr-gaye",
     "number": 79,
     "title": "ख्रीस्त मर गये",
@@ -2196,6 +3674,62 @@
       {
         "label": "कोरस",
         "text": "ख्रीस्त मर गये\nख्रीस्त जी उठे\nख्रीस्त महिमा के साथ फिर आयेंगे (2)"
+      }
+    ]
+  },
+  {
+    "slug": "lahoo-lahoo-yeshu-ka-lahoo",
+    "number": 79,
+    "title": "लहू लहू यीशु का लहू",
+    "title_alt": "Lahoo Lahoo Yeshu Ka Lahoo",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "लहू लहू यीशु का लहू\nगुनाहों से हमको धोता\nमस्सा मस्सा मसीह का मस्सा\nबंधन सारे तोड़ता है"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. बड़े बड़े ना पीछ हटे ...२\nखुदावन्द का रूह फर्माता है"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. शिफा शिफा मुक्कमल शिफा ...२\nखुदावंद का रूह फर्माता है"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. खुदा खुदा हमारा खुदा ...२\nदिल में रहना चाहता है"
+      },
+      {
+        "label": "Verse 4",
+        "text": "४. खुदा खुदा हमारा खुदा ...२\nरूह से मरना चाहता है"
+      }
+    ]
+  },
+  {
+    "slug": "tu-hi-to-hak-aur-tu-hi-raasta",
+    "number": 80,
+    "title": "तू ही तो हक और तू ही रास्ता",
+    "title_alt": "Tu Hi To Hak Aur Tu Hi Raasta",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "तू ही तो हक और तू ही रास्ता\nतू ही है जिन्दगी ...२ जिन्दगी ...\nखुदावंत खुदा"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. मेरा सब कुछ तू ही तू है\nसाथ मेरे अब तेरी रूह है ...२\nतू है मालिक, तू है दाता\nतूर है तू, और तू खुशबू है\nमुझसे हो चाहे सारी\nदुनिया खफा ...२\nतू है जिन्दगी है, तू है बन्दगी है,\nबन्दगी खुदावंत खुदा\nतू है आशिकी है आशिकी\nखुदावंत खुदा"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. घर जो बनाए, तू ही बनाए\nतू ना बनाए कौन बनाए ...२\nशहर बचाए तू ही बचाए\nतू ना बचाए कौन बचाए\nदुनिया में होगी बस, तेरी ही रजा\nतू ही जिन्दगी है"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. हर बेबस का, तू ही सहारा\nडूबने वालों का है किनारा\nतू आगाज है, तू अंजाम है\nतेरे बिना अब कौन हमारा\nतू ने बनाए है, जुमीं आसमां ...२"
       }
     ]
   },
@@ -2216,31 +3750,28 @@
     ]
   },
   {
-    "slug": "pavitr-aatma-aa-pavitr-aatma-aa",
+    "slug": "mere-masiha",
     "number": 81,
-    "title": "पवित्र आत्मा आ",
-    "title_alt": "Pavitr aatma aa pavitr aatma aa",
+    "title": "मेरे मसीहा",
+    "title_alt": "Mere Masiha",
     "language": "hindi",
-    "tags": [
-      "Adoration",
-      "Holy Spirit"
-    ],
+    "tags": [],
     "stanzas": [
       {
-        "label": "कोरस",
-        "text": "पवित्र आत्मा आ, पवित्र आत्मा आ\nमुझे ले जाओ येशु के चरणों में\nपवित्र आत्मा आ"
+        "label": "Verse 1",
+        "text": "मेरे मसीहा ...२\nकोई नहीं है तेरे समान\nतू है महान सर्वशक्तिमान\nतू है महान दयालु प्रभु"
       },
       {
-        "label": "पद 1",
-        "text": "सिर्फ तेरे लिए येशु तेरे लिए\nसिर्फ तेरे लिए येशु तेरे लिए\nसिर्फ तेरे लिए येशु तेरे लिए\nमै हाथ उठाता हूँ\nघुटने टिका कर सर झुका कर\nहाथ उठाता तेरे लिए – २"
+        "label": "Verse 2",
+        "text": "१. अपने शब्दों से आकाश\nऔर पृथ्वी बनाया\nअपने सामर्थ से सारे जहा में फैलाया\nपंछी और सागर,\nपर्वत और नदियां\nसारे जहा में बनाया"
       },
       {
-        "label": "पद 2",
-        "text": "सिर्फ तेरे लिए येशु तेरे लिए\nसिर्फ तेरे लिए येशु तेरे लिए\nसिर्फ तेरे लिए येशु तेरे लिए\nमैं सर झुकाता हूँ"
+        "label": "Verse 3",
+        "text": "२. आदम को भूमि की मिट्टी से बनाया\nअपने जीवन का सांस\nउसमें फूंक दिया\nअपने स्वरूप में, अपने स्वभाव में\nमनुष्य को उसने बनाया\nतू है महान ..."
       },
       {
-        "label": "पद 3",
-        "text": "येशु ही मार्ग है\nयेशु ही सत्य है\nयेशु ही जीवन है\nयेशु मेरा प्रभु"
+        "label": "Verse 4",
+        "text": "३. अपने वचनों से अंधों को\nआंखे दिया है\nअपनी शक्ति से लंगड़ों को\nउसने चलाया\nअद्भुत सामर्थ से पवित्र प्रेम से\nमुर्दों को उसने जिलाया"
       }
     ]
   },
@@ -2261,10 +3792,32 @@
     ]
   },
   {
+    "slug": "main-khush-hoon-chhudaya-yeshu-ne",
+    "number": 82,
+    "title": "मैं खुश हूं छुड़ाया यीशु ने",
+    "title_alt": "Main Khush Hoon Chhudaya Yeshu Ne",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "मैं खुश हूं छुड़ाया यीशु ने (३)\nगाऊं महिमा हालेलुय्याह\nछुड़ाया यीशु ने"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. शैतान ने बांधा था,\nछुड़ाया यीशु ने (३)\nगाऊं महिमा हालेलुय्याह\nछुड़ाया यीशु ने"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. पापों से धोया है,\nछुड़ाया यीशु ने (३)\nगाऊं महिमा हालेलुय्याह\nछुड़ाया यीशु ने"
+      }
+    ]
+  },
+  {
     "slug": "paavan-ati-paavan-prabhu-eshwar-akhileshwar",
     "number": 83,
     "title": "पावन, अति पावन",
-    "title_alt": "Paavan ati paavan prabhu Eshwar akhileshwar -",
+    "title_alt": "Paavan ati paavan prabhu Eshwar akhileshwar",
     "language": "hindi",
     "tags": [
       "Holy"
@@ -2281,6 +3834,46 @@
       {
         "label": "पद 2",
         "text": "२. धन्य है वह जो आता है परमेश्वर के नाम\nपरमेश्वर की महिमा गरिमा फेले तीनों धाम - २"
+      }
+    ]
+  },
+  {
+    "slug": "he-duniya-ke-logon",
+    "number": 83,
+    "title": "हे दुनिया के लोगों",
+    "title_alt": "He Duniya Ke Logon",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "शैतान ने बांधा था,\nछुड़ाया यीशु ने (३)\nगाऊं महिमा हालेलुय्याह\nछुड़ाया यीशु ने"
+      },
+      {
+        "label": "Chorus",
+        "text": "हे दुनिया के लोगों,\nऊंची आवाज करो\nगाओ खुशी के गीत\nउसका धन्यवाद करो\nइबादत करो उसकी, इबादत करो..."
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. याद रखो कि वही एक खुदा है\nहमको ये जीवन उसी ने है दिया है\nउस चरागाह से हम सब हैं आये\nहम्द और सना के हम गीत गाये\nरब्ब का तुम शुक्र करो, ऊंची आवा\nकरो, इबादत करो..."
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. नामे खुदावंद कितना मुबारक\nमेरा खुदावंद कितना भला है\nरहमत है उसकी सदियों पुरानी\nवफा का अजल से,\nयही सीलसीला है\nउस पर ईमान धरो,\nउसके घर आज चलो\nगाओ खुशी के गीत,\nउसका गुणगाण करो\nइबादत करो..."
+      }
+    ]
+  },
+  {
+    "slug": "aur-paas-tere-aana-chahta-hoon",
+    "number": 84,
+    "title": "और पास तेरे आना चाहता हूं",
+    "title_alt": "Aur Paas Tere Aana Chahta Hoon",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "और पास तेरे, आना चाहता हूं\nचेहरा तेरा निहारने\nकैसा खुबसुरत है तू\nतुलना मैं किससे करूं\nआराधना मैं करता प्रभु\nतुझे ताकते हुए।"
       }
     ]
   },
@@ -2341,6 +3934,32 @@
     ]
   },
   {
+    "slug": "yeshu-ka-lahoo-saare-paapon-se",
+    "number": 85,
+    "title": "यीशु का लहू सारे पापों से",
+    "title_alt": "Yeshu Ka Lahoo Saare Paapon Se",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "यीशु का लहू सारे पापों से\nशुद्ध करता है\nउद्धार देता, शांति देता\nअनंत जीवन भी देता"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. ऐसा कभी ना सोचो मन में\nबेकार का है ये जीवन\nखरीदा है हमें उसने अपने\nलहू का मोल देकर।"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. पवित्र स्थान में जाएंगे हम\nउसके लहू के ही द्वारा,\nद्वार हमारा यीशु प्यारा\nवही है भोर का तारा।"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. ना ही हम खुद के ना दुनिया के,\nहम तो हैं यीशु मसीह के,\nहम विश्वासी इस जहां के\nगवाह है उसके लहू के।"
+      }
+    ]
+  },
+  {
     "slug": "kehta-hai-tumse-vo-ek-baat",
     "number": 86,
     "title": "मेरे तुम",
@@ -2377,10 +3996,70 @@
     ]
   },
   {
+    "slug": "yeshu-ne-mujhe-pyaar-kiya-hai",
+    "number": 86,
+    "title": "यीशु ने मुझे प्यार किया है",
+    "title_alt": "Yeshu Ne Mujhe Pyaar Kiya Hai",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "यीशु ने मुझे प्यार किया है\nइसलिये मैं गाऊंगा सबको बताऊंगा\nएक ही राजा, यीशु मसीह...२\nहालेलुय्याह आमेन हालेलुय्याह..४"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. यीशु ने मुझे जीवन दिया है...४"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. यीशु ने मुझे चंगा किया है...४"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. यीशु ने मुझे मुक्ति दिया है...४"
+      },
+      {
+        "label": "Verse 4",
+        "text": "४. यीशु ने मुझे शांति दिया है...४"
+      },
+      {
+        "label": "Verse 5",
+        "text": "५. यीशु ने मुझे क्षमा दिया है...४"
+      }
+    ]
+  },
+  {
+    "slug": "parameshwar-mera-mahaan-hai",
+    "number": 87,
+    "title": "परमेश्वर मेरा महान है",
+    "title_alt": "Parameshwar Mera Mahaan Hai",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "परमेश्वर मेरा महान है,\nउसके बिना जीवन अधूरा है..२\nजिंगूंगा, मरूंगा मैं उसके लिये,\nमैं सबकुछ करूंगा उसके लिये..२"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. राहों में जब आएगी कठिनाइयां,\nचलता जाऊंगा मैं पीछे ना हटूंगा..२"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. उसने है सिखाया जीना मुझे,\nपापों की डगर पर कभी ना चलना..२"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. जीवन का वो ही है उद्देश्य बना,\nगाऊंगा सदा मैं उसकी महिमा..२"
+      }
+    ]
+  },
+  {
     "slug": "main-dhundta-raha-hun-tumko-hey-prabhu",
     "number": 87,
     "title": "मैं ढूढ़ता रहा हूँ",
-    "title_alt": "Main dhundta raha hun tumko hey prabhu-",
+    "title_alt": "Main dhundta raha hun tumko hey prabhu",
     "language": "hindi",
     "tags": [
       "Entrance"
@@ -2437,34 +4116,24 @@
     ]
   },
   {
-    "slug": "srishti-hai-teri-kavita-gaati-hai-sanna-teri",
-    "number": 89,
-    "title": "सृष्टि है तेरी कविता",
-    "title_alt": "Srishti hai teri kavita gaati hai sanna teri",
+    "slug": "tu-pyaar-ka-sagar-hai",
+    "number": 90,
+    "title": "तू प्यार का सागर है",
+    "title_alt": "Tu Pyaar Ka Sagar Hai",
     "language": "hindi",
-    "tags": [
-      "Psalms"
-    ],
+    "tags": [],
     "stanzas": [
       {
-        "label": "कोरस",
-        "text": "सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2\nसारी धरा पर गूँजती है, निस दिन महिमा तेरी\nसृष्टि है तेरी कविता, गाती है सन्ना तेरी 2"
+        "label": "Verse 1",
+        "text": "तू प्यार का सागर है\nसागर दया का तू है,\nतेरे प्यार के सागर में,\nहम तैरना चाहते हैं।\nतेरे प्यार के सागर में हम डूबना चाहते हैं"
       },
       {
-        "label": "पद 1",
-        "text": "झरने की कल कल भी, करती है तेरी महिमा\nपक्षी भी गाते है, तू है कितना महान\nवन के सुमन भी है हंसते, करते हैं जय जयकार । 2"
+        "label": "Verse 2",
+        "text": "१. गहराई मिले सागर की\nऊँचाई मिले आसमाँ की।\nपर कोई नाप न पायेगा,\nगहराई तेरे प्यार की।\nतू प्यार का सागर..."
       },
       {
-        "label": "पद 2",
-        "text": "सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2"
-      },
-      {
-        "label": "पद 3",
-        "text": "नभ की नीलिमां से तारे, धरती को करते इशारे\nसागर की चंचल मौजे,देती हैं तेरी ही यादें\nऊँचे शिखर भी हैं कहते, तेरी कला है अपार 2"
-      },
-      {
-        "label": "पद 4",
-        "text": "सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2\nसारी धरा पर गूँजती है, निस दिन महिमा तेरी\nसृष्टि है तेरी कविता, गाती है सन्ना तेरी 2"
+        "label": "Verse 3",
+        "text": "२. परमेश्वर होने पर भी तू,\nमानव रूप धारण किया।\nप्रभु तेरे इसी प्यार ने,\nहमको है दीवाना बनाया।\nतू प्यार का सागर..."
       }
     ]
   },
@@ -2525,6 +4194,28 @@
     ]
   },
   {
+    "slug": "bhusiyon-yehova-ki-stuti-karo",
+    "number": 91,
+    "title": "भूसियों यहोवा की स्तुति करो",
+    "title_alt": "Bhusiyon Yehova Ki Stuti Karo",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "भूसियों यहोवा की स्तुति करो\nको: वह कितना अच्छा है,\nउसकी करुणा सदा है,\nवो कैसा भला है,\nउसकी करुणा सदा है।\nभूसियों यहोवा की स्तुति करो (२)"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. यहोवा सारे सृष्टि का कर्ता,\nहमारा वो सिरजनहार,\nवो हमारा पिता,\nहम उसकी संतान हैं।\nउसका धन्यवाद करो।\nवो कितना अच्छा....."
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. यहोवा पवित्र परमेश्वर है,\nहमारा वो तारणहार है,\nवो अच्छा चरवाह,\nहम उसकी भेड़े हैं।\nउसका धन्यवाद करो।\nवो कितना अच्छा....."
+      }
+    ]
+  },
+  {
     "slug": "sweekar-lo-bhagwan",
     "number": 91,
     "title": "स्वीकार लो भगवन्",
@@ -2549,6 +4240,24 @@
       {
         "label": "पद 3",
         "text": "तुम हो पिता प्रभु करतार,\nहमें करो मिटे विपदा\nये कामना पूरी कर लो,\nविनती प्रभु सुन लो।"
+      }
+    ]
+  },
+  {
+    "slug": "man-mandir-mein-yeshu-aaya",
+    "number": 92,
+    "title": "मन मंदिर में यीशु आया",
+    "title_alt": "Man Mandir Mein Yeshu Aaya",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "मन मंदिर में यीशु आया\nदिल मेरा खुशियों से भर गया।।(२)\nहालेलूयाह, हालेलूयाह,\nहालेलूयाह, हालेलूयाह, हालेलूयाह,"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. जब से आया यीशु दिल में मेरे\nदूर हो गए गम दिल से मेरे...२"
       }
     ]
   },
@@ -2585,6 +4294,32 @@
     ]
   },
   {
+    "slug": "yehova-nissi",
+    "number": 94,
+    "title": "यहोवा निस्सी",
+    "title_alt": "Yehova Nissi",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "यहोवा निस्सी... धन्य तेरा नाम\nधन्य, धन्य, धन्य तेरा नाम"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. शत्रुओं की सेना को हराता तू\nजय का झंडा है हमारा तू...२\nधन्य, धन्य, धन्य तेरा नाम।"
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. शैतान के सिर को कुचल कर तू\nमृत्यु पर जयवंत हुआ है तू...२\nधन्य, धन्य, धन्य तेरा नाम।"
+      },
+      {
+        "label": "Verse 4",
+        "text": "३. जय के उत्सव में ले चलता तू\nसुन्स वचन की हमसे है फैलाता तू...२\nधन्य, धन्य, धन्य तेरा नाम।"
+      }
+    ]
+  },
+  {
     "slug": "hosanna-hosanna-prabhuvar-teri",
     "number": 94,
     "title": "होसन्ना होसन्ना",
@@ -2597,6 +4332,28 @@
       {
         "label": "कोरस",
         "text": "होसन्ना होसन्ना प्रभुवर तेरी\nतेरी जय जयकार हो,\nनूतन स्वर में तुझको भजे पावन ज्योति तेरी जले,\nशतपथ का तू अन्तर्यामी तेरी जय जयकार हो"
+      }
+    ]
+  },
+  {
+    "slug": "anand-anand-anand-hai",
+    "number": 95,
+    "title": "आनंद आनंद आनंद है",
+    "title_alt": "Anand Anand Anand Hai",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "१. आनंद आनंद आनंद है (२)\nअब्दी मोहब्बत से हमें प्रेम किया\nअपना बेटा हमें बना लिया\nयह हमारी आशीष है\nहालेलूयाह सदा गाएंगे, (२)\nहम प्रभु यीशु के लिए"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. आनंद आनंद आनंद है (२)\nआनंद के तेल से मस्सा किया है\nपवित्र स्थान में दाखिल किया\nयह हमारा सौभाग्य हुआ\nहालेलूयाह सदा गाएंगे, (२)\nहम प्रभु यीशु के लिए"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. आनंद आनंद आनंद है\nप्रभु की स्तुति करना आनंद है"
       }
     ]
   },
@@ -2669,6 +4426,50 @@
     ]
   },
   {
+    "slug": "chhodo-chhodo-ye-tera-naam",
+    "number": 96,
+    "title": "छोड़ो छोड़ो ये तेरा नाम",
+    "title_alt": "Chhodo Chhodo Ye Tera Naam",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "छोड़ो छोड़ो ये तेरा नाम\nउसने तो मुझे मुक्ति दी है\nयीशु ने तेरा नाम... (२)\nहम प्रभु यीशु के लिए"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. उसने तो हमें अपनी मुक्ति दी है\nयह हमारा सौभाग्य हुआ\nहालेलूयाह सदा गाएंगे, (२)\nहम प्रभु यीशु के लिए"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. उसने तो हमें अपनी मुक्ति दी है\nयह हमारा सौभाग्य हुआ\nहालेलूयाह सदा गाएंगे, (२)\nहम प्रभु यीशु के लिए"
+      }
+    ]
+  },
+  {
+    "slug": "phir-se-wo-aag-barasa-de",
+    "number": 97,
+    "title": "फिर से वो आग बरसा दे",
+    "title_alt": "Phir Se Wo Aag Barasa De",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "फिर से वो आग बरसा दे\nफिर से उफान आने दे\nफिर से महिमा देश में\nआ जाए यहोवा (२)"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. तेरी महिमा देश में\nफिर से उफान आने दे\nपवित्र आत्मा की सामर्थ्य से\nफिर से आग बरसा दे"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. टूटे हुए दिल जुड़ जाएं\nभटके हुए जन मुड़ आएं\nयीशु के नाम की महिमा हो\nफिर से आग बरसा दे"
+      }
+    ]
+  },
+  {
     "slug": "he-mere-man-yahova-ko",
     "number": 97,
     "title": "हे मेरे मन यहोवा को",
@@ -2725,6 +4526,28 @@
     ]
   },
   {
+    "slug": "rajaon-ka-raja-hai",
+    "number": 98,
+    "title": "राजाओं का राजा है",
+    "title_alt": "Rajaon Ka Raja Hai",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "राजाओं का राजा है,\nप्रभुओं का प्रभु है... (२)\nप्रभु यीशु मसीह... (४)"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. यहूदा का शेर है,\nसारे जगत के लिए,\nमुर्दों में से जी उठा...२"
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. उसने वचन दिया,\nतुम पर पवित्र आत्मा\nआने वाला है...२"
+      }
+    ]
+  },
+  {
     "slug": "jay-jay-yeshu-jay-jay-yeshu",
     "number": 99,
     "title": "जय जय यीशु, जय जय यीशु",
@@ -2757,6 +4580,28 @@
     ]
   },
   {
+    "slug": "saare-jahaan-ka-raja-hai",
+    "number": 99,
+    "title": "सारे जहान का राजा है",
+    "title_alt": "Saare Jahaan Ka Raja Hai",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "सारे जहान का राजा है,\nजिसने दुनिया बनाई...\nजिसने पापों से छुड़ाया,\nयीशु का नाम लेता है,\nवो जीवन पाता है..."
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. यीशु का नाम लेता है,\nवो जीवन पाता है,\nतेरे राहों पर चलकर,\nसच्चा नाम ये पाता है...२"
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. तेरी रूह से...२\nखुदा की रूह से,\nमसीह के रूह से,\nमेरा जीवन संवर गया,\nयेशु नाम......"
+      }
+    ]
+  },
+  {
     "slug": "pyar-milta-hai",
     "number": 100,
     "title": "प्यार मिलता है",
@@ -2777,6 +4622,28 @@
       {
         "label": "पद 2",
         "text": "हर गम की दावा येशु, येशु ही मसीहा है\nआओ तुम चले आओ, जीवन यहाँ है"
+      }
+    ]
+  },
+  {
+    "slug": "sab-se-bada-sagar",
+    "number": 100,
+    "title": "सब से बड़ा सागर",
+    "title_alt": "Sab Se Bada Sagar",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "सब से बड़ा सागर है,\nतेरे प्यार का सागर,\nहम तैरना चाहते हैं,\nतेरे प्यार के सागर में,\nहम डूबना चाहते हैं"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. हम सब पापी हैं... (२)\nप्रभु यीशु ने... (२)\nअपना खून बहाया... (२)"
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. मुक्ति दी है हमें... (२)\nपापों से छुड़ाया... (२)\nआनंद से भर दिया... (२)"
       }
     ]
   },
@@ -2805,6 +4672,50 @@
       {
         "label": "पद 3",
         "text": "जब मैंने सोचा आसंभव है, तब प्रभु यीशु ने मुझ से कहा (2)\nआसंभव के संभव करने वाला यीशु, मैं तेरे साथ हूँ (2)"
+      }
+    ]
+  },
+  {
+    "slug": "wo-sab-se-bada-sagar",
+    "number": 101,
+    "title": "वो सब से बड़ा सागर",
+    "title_alt": "Wo Sab Se Bada Sagar",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "वो सब से बड़ा सागर है,\nजिसने हमें बचाया,\nयीशु ने तेरे पापों को,\nअपने खून से धोया...२"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. यीशु ने तेरे रोगों को,\nअपने बल से मिटाया,\nतेरे जीवन में नया जीवन,\nयीशु ने ही दिया...२"
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. यीशु ने तेरे रोगों को,\nअपने बल से मिटाया,\nतेरे जीवन में नया जीवन,\nयीशु ने ही दिया...२"
+      }
+    ]
+  },
+  {
+    "slug": "aaye-hain-hum-tere-charnon-mein",
+    "number": 102,
+    "title": "आये हैं हम, तेरे चरणों में",
+    "title_alt": "Aaye Hain Hum, Tere Charnon Mein",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "आये हैं हम, तेरे चरणों में,\nलेकर हम स्तुति,\nहालेलूयाह... (४)\nदेखो हम यीशु, तेरे चरणों में,\nहालेलूयाह... (४)"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. हमको तू अपना बना,\nअपने वचनों से,\nहालेलूयाह... (४)"
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. पवित्र आत्मा से,\nहमें भर दे तू,\nहालेलूयाह... (४)"
       }
     ]
   },
@@ -2865,6 +4776,31 @@
     ]
   },
   {
+    "slug": "pavitra-aatma-aa",
+    "number": 103,
+    "title": "पवित्र आत्मा आ",
+    "title_alt": "Pavitra Aatma Aa",
+    "language": "hindi",
+    "tags": [
+      "Adoration",
+      "Holy Spirit"
+    ],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "पवित्र आत्मा आ, पवित्र आत्मा आ\nहम पर छा जा, हम पर छा जा (२)"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. अपने सामर्थ्य से भर दे हमें\nअपनी आग से छू ले हमें\nनया जीवन दे दे हमें\nपवित्र आत्मा आ"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. ज्ञान और बुद्धि का आत्मा\nशांति और आनंद का आत्मा\nअपने प्रेम से भर दे हमें\nपवित्र आत्मा आ"
+      }
+    ]
+  },
+  {
     "slug": "naare-lagao-aur-gao-re",
     "number": 104,
     "title": "नारे लगाओ और गाओ रे",
@@ -2889,6 +4825,28 @@
       {
         "label": "पद 3",
         "text": "यीशु कुर्बान हुआ है, पापों का अन्त हुआ है\nखुशियाँ वो बाँट रहा है, प्रेम की धारा वही है…"
+      }
+    ]
+  },
+  {
+    "slug": "param-pita-aaya",
+    "number": 104,
+    "title": "परम पिता आया",
+    "title_alt": "Param Pita Aaya",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "परम पिता आया,\nयीशु को दिया,\nहमारे पापों के लिए,\nहमें बचाने को,\nअपना खून बहाया,\nयीशु ने हमारे लिए..."
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. यीशु ने हमारे लिए,\nअपना खून बहाया,\nहमें बचाने को,\nअपना खून बहाया...२"
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. यीशु ने हमारे लिए,\nअपना खून बहाया,\nहमें बचाने को,\nअपना खून बहाया...२"
       }
     ]
   },
@@ -2950,7 +4908,7 @@
   },
   {
     "slug": "aadi-aur-ant-tu-hi-hai",
-    "number": 107,
+    "number": 6,
     "title": "आदि और अंत तू ही है",
     "title_alt": "Aadi Aur Ant Tu Hi Hai",
     "language": "hindi",
@@ -3041,1196 +4999,196 @@
     ]
   },
   {
-    "slug": "geet-1-apna-bojh-yeshu-par-daalo",
-    "number": 1,
-    "title": "गीत नं १ - अपना बोझ यीशु पर डालो",
-    "title_alt": "Geet No. 1 - Apna Bojh Yeshu Par Daalo",
+    "slug": "tere-aasan-ke-paas-aaun",
+    "number": 117,
+    "title": "तेरे आसन के पास आऊं",
+    "title_alt": "Tere Aasan Ke Paas Aaun",
     "language": "hindi",
-    "tags": [
-      "Praise",
-      "Encouragement"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "अपना बोझ यीशु पर डालो\nवो तुमसे प्यार करता है\nऊँचा... ऊँचा... ऊँचा... ऊँचा...\nऊँचा, ऊँचा, यीशु को उठाओ\nनीचा... नीचा... नीचा... नीचा...\nनीचा, नीचा, शैतान को दबाओ"
-      }
-    ]
-  },
-  {
-    "slug": "geet-2-aaj-ka-din-yehova-ne-banaya-hai",
-    "number": 2,
-    "title": "गीत नं २ - आज का दिन यहोवा ने बनाया है",
-    "title_alt": "Geet No. 2 - Aaj Ka Din Yehova Ne Banaya Hai",
-    "language": "hindi",
-    "tags": [
-      "Praise",
-      "Joy"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "आज का दिन यहोवा ने बनाया है\nहम उसमें आनंदित हों, आनंदित हों"
-      },
-      {
-        "label": "पद 1",
-        "text": "प्रभु को महिमा मिले चाहे हो मेरा अपमान\nवो बढ़े और मैं घटूँ, रहे इसी का ध्यान"
-      },
-      {
-        "label": "पद 2",
-        "text": "स्तुति प्रशंसा करें क्यों ना कुछ होता रहे\nउसको हम भाते रहें चाहे हम जहाँ भी रहें"
-      },
-      {
-        "label": "पद 3",
-        "text": "आता हूँ तेरे पास मुझको कबूल कर ले\nमुझको है तुझसे आस, पापों से शुद्ध कर ले"
-      }
-    ]
-  },
-  {
-    "slug": "geet-3-aatma-mandraata-pavitra-aatma-mandraata",
-    "number": 3,
-    "title": "गीत नं ३ - आत्मा मण्डराता... पवित्र आत्मा मण्डराता...",
-    "title_alt": "Geet No. 3 - Aatma Mandraata... Pavitra Aatma Mandraata...",
-    "language": "hindi",
-    "tags": [
-      "Holy Spirit",
-      "Worship"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "आत्मा मण्डराता, पवित्र आत्मा मण्डराता\nपिन्तेकुस्त के दिन समान\nआत्मा मण्डराता"
-      },
-      {
-        "label": "पद 1",
-        "text": "अंधे देखते हैं, बहरे सुनते हैं\nयीशु मसीह के नाम से\nअंधे देखते हैं, आत्मा मण्डराता"
-      },
-      {
-        "label": "पद 2",
-        "text": "लंगड़े चलते हैं, गूंगे बोलते हैं\nयीशु मसीह के नाम से\nलंगड़े चलते हैं, आत्मा मण्डराता"
-      },
-      {
-        "label": "पद 3",
-        "text": "पापी क्षमा पाते, बीमार चंगाई पाते\nयीशु मसीह के नाम से\nबीमार चंगाई पाते, आत्मा मण्डराता"
-      }
-    ]
-  },
-  {
-    "slug": "geet-4-aao-hum-yehova-ka-dhanyavaad-karein",
-    "number": 4,
-    "title": "गीत नं ४ - आओ हम यहोवा का धन्यवाद करें",
-    "title_alt": "Geet No. 4 - Aao Hum Yehova Ka Dhanyavaad Karein",
-    "language": "hindi",
-    "tags": [
-      "Praise",
-      "Worship"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "आओ हम यहोवा का धन्यवाद करें\nअपने सारे हृदय से वंदना करें\nउसके फाटकों में स्तुति करें और ललकारें (२)"
-      },
-      {
-        "label": "पद 1",
-        "text": "जिसने बनाया हमें वो है हमारा आधार\nजिसने दी हमको सांस वो है हमारा उद्धार\nउसकी ही जय जय हो आराधना\nवो है सभों का प्रधान\nउसकी ही जय जय हो आराधना"
-      },
-      {
-        "label": "पद 2",
-        "text": "अपने पूरे तन मन से हम उसकी महिमा करें\nवो है शिफा और नजात, उसकी प्रशंसा करें\nवो है जग का त्राता और तारणहार\nउसकी हो जय जय सदा (२)"
-      }
-    ]
-  },
-  {
-    "slug": "geet-5-aawaz-uthayenge-hum-saaz-bajayenge",
-    "number": 5,
-    "title": "गीत नं ५ - आवाज उठायेंगे... हम साज बजायेंगे...",
-    "title_alt": "Geet No. 5 - Aawaz Uthayenge... Hum Saaz Bajayenge...",
-    "language": "hindi",
-    "tags": [
-      "Praise",
-      "Worship"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "आवाज़ उठायेंगे, हम साज़ बजायेंगे\nहै यीशु महान अपना, यह गीत सुनायेंगे"
-      },
-      {
-        "label": "पद 1",
-        "text": "संसार की सुंदरता में, है रूप जो तेरा ही\nइन चाँद सितारों में, है अक्स जो तेरा ही\nमहिमा की तेरी बातें, हम सबको बतायेंगे"
-      },
-      {
-        "label": "पद 2",
-        "text": "दिल तेरा खज़ाना है, इक पाक मोहब्बत का\nथाह पा न सका कोई, सागर है तू उल्फत का\nहम तेरी मोहब्बत से, दिल अपना सजायेंगे"
-      },
-      {
-        "label": "पद 3",
-        "text": "न देख सका हमको, तू पाप के सागर में\nऔर बन के मनुष्य आया, आकाश से इस जग में\nमुक्ति का तू दाता है, दुनिया को बतायेंगे"
-      }
-    ]
-  },
-  {
-    "slug": "geet-6-aadi-aur-ant-tu-hi-hai",
-    "number": 6,
-    "title": "गीत नं ६ - आदि और अन्त तू ही है",
-    "title_alt": "Geet No. 6 - Aadi Aur Ant Tu Hi Hai",
-    "language": "hindi",
-    "tags": [
-      "Worship",
-      "Adoration"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "आदि और अन्त तू ही है, अल्फा और ओमेगा तू ही है\nदूतों की स्तुति भी तू ही है, बुद्धि और सब ज्ञान तू ही है\nयीशु तू महान है, यीशु तू अच्छा है\nयीशु तू ज़िन्दा है, यीशु तू धन्य है"
-      },
-      {
-        "label": "पद 1",
-        "text": "दूतों की स्तुति तू ही है, बुद्धि और सब ज्ञान तू ही है\nराजाओं का राजा तू ही है, प्रभुओं का प्रभु तू ही है"
-      },
-      {
-        "label": "पद 2",
-        "text": "जीवन भरा पापों से मेरा, जग अंधेरा और अशुद्ध सारा\nमेरे पापों से बचाने को, मेरे लिए जीवन दिया है"
-      },
-      {
-        "label": "पद 3",
-        "text": "सारे गुनाहगारों के लिए, अपना खून बहाया यीशु ने\nखाई कोड़ों की मार भी, दी सलीब पर उसने अपनी जान"
-      },
-      {
-        "label": "पद 4",
-        "text": "न्याय करने आनेवाला है, न्याय के साथ राज्य करने को\nधर्मियों को लेकर न्याय से, सिंहासन पर राज्य करेगा"
-      },
-      {
-        "label": "पद 5",
-        "text": "वादा किया है तूने, वादा तू करता है पूरा\nवादे के लिए आते हैं, बरकतों की बारिश अब उंडेल\nखोल दे सारे बंधन को"
-      }
-    ]
-  },
-  {
-    "slug": "geet-7-aaradhana-mein-hai-chhutkara-changai",
-    "number": 7,
-    "title": "गीत नं ७ - आराधना में है छुटकारा, आराधना में है चंगाई",
-    "title_alt": "Geet No. 7 - Aaradhana Mein Hai Chhutkara, Aaradhana Mein Hai Changai",
-    "language": "hindi",
-    "tags": [
-      "Worship",
-      "Healing"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "आराधना में है छुटकारा, आराधना में है चंगाई\nशरीर, प्राण, आत्मा में शांति आनंद देता है जान से प्यारा प्रभु\nप्रार्थना करें, आराधना करें, वो अच्छा है कितना भला है (२)\nछुटकारा पायें हमेशा हमेशा"
-      },
-      {
-        "label": "पद 1",
-        "text": "माँगोगे तो मिलेगा, ढूँढोगे तो पाओगे\nखटखटाओ, खुलेगी स्वर्ग की आशीषें\nपाओ तुम उसे अभी\nप्रार्थना करें, आराधना करें, वो अच्छा है कितना भला है\nछुटकारा पायें हमेशा हमेशा"
-      },
-      {
-        "label": "पद 2",
-        "text": "प्रार्थना करो निरंतर, प्रार्थना करो विश्वास से\nधर्मी जन की प्रार्थना, विश्वास की प्रार्थना खोलती है सारे बंधन को\nप्रार्थना करें, आराधना करें, वो अच्छा है कितना भला है\nछुटकारा पायें हमेशा हमेशा"
-      }
-    ]
-  },
-  {
-    "slug": "geet-8-aaye-hain-hum-tere-charnon-me",
-    "number": 8,
-    "title": "गीत नं ८ - आये हैं हम... तेरे चरणों मे...",
-    "title_alt": "Geet No. 8 - Aaye Hain Hum... Tere Charnon Me...",
-    "language": "hindi",
-    "tags": [
-      "Worship",
-      "Entrance"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "आये हैं हम तेरे चरणों में, लेकर हम स्तुति\nहालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह..."
-      },
-      {
-        "label": "पद 1",
-        "text": "प्यारे मसीहा आशीष दे हमें\nआत्मा से तू भर दे हमें (३)\nहालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह..."
-      },
-      {
-        "label": "पद 2",
-        "text": "हम बच्चे हैं परमपिता के\nबढ़ना है हमें वचनों में (३)\nहालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह..."
-      },
-      {
-        "label": "पद 3",
-        "text": "मिलती है हमें तुझसे चंगाईयाँ\nदेता तू हमें पापों से मुक्ति (३)\nहालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह..."
-      },
-      {
-        "label": "पद 4",
-        "text": "हम तैयार हैं यीशु तेरे लिए\nजल्दी आ तू हमको लेने (३)\nहालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह..."
-      }
-    ]
-  },
-  {
-    "slug": "geet-9-aashish-tum-se-chahte-hai",
-    "number": 9,
-    "title": "गीत नं ९ - आशीष तुम से चाहते हैं",
-    "title_alt": "Geet No. 9 - Aashish Tum Se Chahte Hai",
-    "language": "hindi",
-    "tags": [
-      "Prayer",
-      "Worship"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "आशीष तुझ से चाहते हैं\nहे स्वर्गीय पिता हम आते हैं"
-      },
-      {
-        "label": "पद 1",
-        "text": "न कोई ख़ूबी है न लियाकत, बख़्श हमको अपनी ताकत (२)\nखाली दिलों को लाते हैं (२)"
-      },
-      {
-        "label": "पद 2",
-        "text": "हमने बहुत खताएं की हैं, रहे निकम्मे जफाएं की हैं (२)\nशर्म से सर झुक जाते हैं (२)"
-      },
-      {
-        "label": "पद 3",
-        "text": "तू है शक्तिमान प्रभु जी, दया भी है अपार प्रभु जी\nस्तुति हम सब गाते हैं (२)"
-      }
-    ]
-  },
-  {
-    "slug": "geet-10-aao-hum-yehova-ke-liye",
-    "number": 10,
-    "title": "गीत नं १० - आओ हम यहोवा के लिए",
-    "title_alt": "Geet No. 10 - Aao Hum Yehova Ke Liye",
-    "language": "hindi",
-    "tags": [
-      "Praise",
-      "Psalms"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "आओ हम यहोवा के लिये ऊँचे स्वर से गायें\nअपनी मुक्ति की चट्टान का जय जयकार करें"
-      },
-      {
-        "label": "पद 1",
-        "text": "धन्यवाद करते हुए उसके सम्मुख आयें\nभजन गाते हुए उसका जय जयकार करें"
-      },
-      {
-        "label": "पद 2",
-        "text": "क्योंकि यहोवा महान ईश्वर है\nसारे देवताओं के ऊपर वो महान राजा है"
-      },
-      {
-        "label": "पद 3",
-        "text": "क्योंकि वो हमारा परमेश्वर है\nऔर हम उसकी प्रजा, उसके हाथ की भेड़ें हैं"
-      }
-    ]
-  },
-  {
-    "slug": "geet-11-dhanyavaad-karte-hue",
-    "number": 11,
-    "title": "गीत नं ११ - धन्यवाद करते हुए",
-    "title_alt": "Geet No. 11 - Dhanyavaad Karte Hue",
-    "language": "hindi",
-    "tags": [
-      "Thanksgiving",
-      "Praise"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "धन्यवाद करते हुए उसके दरबार में\nआओ हम उसकी स्तुति करें\nगाओ नया गीत यहोवा के लिए\nगाओ नया गीत यहोवा के लिए"
-      }
-    ]
-  },
-  {
-    "slug": "geet-12-uthate-hain-tera-naam-teri-stuti-karte-hue",
-    "number": 12,
-    "title": "गीत नं १२ - उठाते हैं तेरा नाम... तेरी स्तुति करते हुए",
-    "title_alt": "Geet No. 12 - Uthte Hain Tera Naam... Teri Stuti Karte Hue",
-    "language": "hindi",
-    "tags": [
-      "Praise",
-      "Worship"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "उठाते हैं तेरा नाम, तेरी स्तुति करते हुए\nघुटनों पर हम आकर, करते हैं तुझसे प्रार्थना\nमिलकर हम गायें, प्रभु की स्तुति हो (२)\nमिलकर हम गायें, हालेलुयाह... हालेलुयाह... हालेलुयाह..."
-      },
-      {
-        "label": "पद 1",
-        "text": "आएगा मेरा यीशु हमें लेने एक दिन\nजाएंगे हम उसके संग जहां पर होगा अनंत जीवन\nमिलकर हम गायें, प्रभु की स्तुति हो (२)\nहालेलुयाह, हालेलुयाह, हालेलुयाह..."
-      }
-    ]
-  },
-  {
-    "slug": "geet-14-uth-aa-uth-aa-rooh-e-paak",
-    "number": 14,
-    "title": "गीत नं १४ - उतर आ... उतर आ... ऐ रूह-ए-पाक उतर आ",
-    "title_alt": "Geet No. 14 - Uth Aa... Uth Aa... Uth Aa...",
-    "language": "hindi",
-    "tags": [
-      "Holy Spirit",
-      "Prayer"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "उतर आ, उतर आ, उतर आ\nऐ रूह-ए-पाक उतर आ (२)\nआसमानी खुशी से भर दे मुझको\nगीत नया दिल में ला (२), उतर आ..."
-      },
-      {
-        "label": "पद 1",
-        "text": "अमृत जल प्रभु मुझको पिला दे\nदिल मेरे की प्यास बुझा दे\nचश्मा बन के उतर आ..."
-      },
-      {
-        "label": "पद 2",
-        "text": "आसमानी रोटी मुझको खिला दे\nकमजोर दिल को तगड़ा बना दे\nभरपूर जीवन दिला..."
-      },
-      {
-        "label": "पद 3",
-        "text": "पाक रूह आ मेरे दिल के अंदर\nबन जाऊँ मैं तेरा मंदिर\nअपनी राह दिखा..."
-      }
-    ]
-  },
-  {
-    "slug": "geet-15-karte-hain-teri-hum-stuti",
-    "number": 15,
-    "title": "गीत नं १५ - करते हैं तेरी हम स्तुति",
-    "title_alt": "Geet No. 15 - Karte Hain Teri Mahima Yehova",
-    "language": "hindi",
-    "tags": [
-      "Worship",
-      "Praise"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "करते हैं तेरी हम स्तुति, हृदय की गहराइयों से (२)\nयीशु तू ही है, तू ही है, हमारा प्रभु (२)\nमहिमा हो तेरी... महिमा हो तेरी\nमहिमा हो तेरी... महिमा हो तेरी"
-      },
-      {
-        "label": "पद 1",
-        "text": "आत्मा और सच्चाई से, तेरी आराधना करें\nऊँचा और ऊँचा, सबसे ऊँचा रहे तेरा नाम\nमहिमा हो तेरी... महिमा हो तेरी\nमहिमा हो तेरी... महिमा हो तेरी"
-      }
-    ]
-  },
-  {
-    "slug": "geet-16-kitna-haseen-waada-kiya-khudavand-ne",
-    "number": 16,
-    "title": "गीत नं १६ - कितना हसीन वादा किया खुदावंद ने",
-    "title_alt": "Geet No. 16 - Kitna Haseen Varda Kiya Khudavand Ne",
-    "language": "hindi",
-    "tags": [
-      "Encouragement",
-      "Promise"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "कितना हसीन वादा ये किया खुदावंद ने\nजहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें (२)"
-      },
-      {
-        "label": "पद 1",
-        "text": "तुझे अकेला ना छोड़ूँ मैं, रूह अपनी भेजूँ\nतुझे अनाथ भी ना छोड़ूँ, एक मददगार भेजूँ\nयीशु के सिवा ये बात कही किसने?\nजहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें"
-      },
-      {
-        "label": "पद 2",
-        "text": "दस्तक वो देता है चाहे हर दिल में आना\nभरता उसको रूह से अपनी, जिसने उसे जाना\nजिसका बने है माली वो, कलियाँ लगे खिलने\nजहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें"
-      },
-      {
-        "label": "पद 3",
-        "text": "रूह-ए-पाक जो हाज़िर है और कहें खुशामदीद\nइज्जत, दौलत, हशमत जिसकी, उसकी करें तमजीद\nरूह के शोले बरसें जब फिर बदन लगे जलने\nजहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें"
-      }
-    ]
-  },
-  {
-    "slug": "geet-17-tujhe-chhodunga-nahi-main-rahunga-tere-saaye-mein",
-    "number": 17,
-    "title": "गीत नं १७ - तुझे छोड़ूँगा नहीं मैं रहूँगा तेरे साये में",
-    "title_alt": "Geet No. 17 - Tujhe Chhodunga Nahi Main Rahunga Tere Saaye Mein",
-    "language": "hindi",
-    "tags": [
-      "Promise",
-      "Comfort"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "तुझे छोड़ूँगा नहीं मैं रहूँगा तेरे साये में\nआएगा वो दिन तेरे लिए भी\nदेखेगा तू सपने सच होते\nतुझे छोड़ूँगा नहीं मैं रहूँगा तेरे साये में (२)"
-      }
-    ]
-  },
-  {
-    "slug": "geet-19-dil-se-jo-pyaar-hota-hai",
-    "number": 19,
-    "title": "गीत नं १९ - दिल से जो प्यार होता है",
-    "title_alt": "Geet No. 19 - Dil Se Jo Pyaar Hota Hai",
-    "language": "hindi",
-    "tags": [
-      "Love",
-      "Worship"
-    ],
-    "stanzas": [
-      {
-        "label": "पद 1",
-        "text": "दिल से जो प्यार होता है, वो जीवन भर साथ रहता है (२)\nमैं तुझे छोड़ूँगा नहीं (२)\nमैं तुझे भूलूँगा नहीं (२)\nतेरी स्तुति गाता रहूँगा, जब तक जीवन रहेगा (२)"
-      }
-    ]
-  },
-  {
-    "slug": "geet-20-tu-dhanya-hai-sarvashreshtha-hai",
-    "number": 20,
-    "title": "गीत नं २० - तू धन्य है... सर्वश्रेष्ठ है",
-    "title_alt": "Geet No. 20 - Tu Dhanya Hai... Sarvashaktiman",
-    "language": "hindi",
-    "tags": [
-      "Worship",
-      "Adoration"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "गहरे प्यार से तूने प्यार किया\nमाँ से गहरा है प्यार तेरा (२)\nतू धन्य है, सर्वश्रेष्ठ है\nतेरे जैसा नहीं और कोई (२)\nहल्लेलूयाह... हल्लेलूयाह... हल्लेलूयाह... हल्लेलूयाह..."
-      },
-      {
-        "label": "पद 1",
-        "text": "तुझे मैं कभी भूलूँगा नहीं\nतुझे मैं कभी छोड़ूँगा नहीं\nतेरे साथ-साथ मैं चलूँगा\nएक नूर के समान रहूँगा"
-      }
-    ]
-  },
-  {
-    "slug": "geet-26-tera-naam-jo-leta-hai",
-    "number": 26,
-    "title": "गीत नं २६ - तेरा नाम जो लेता है",
-    "title_alt": "Geet No. 26 - Tera Naam Jo Leta Hai",
-    "language": "hindi",
-    "tags": [
-      "Praise",
-      "Salvation"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "तेरा नाम जो लेता है, वो ज़िंदगी पाता है\nतेरी राहों पर चलकर, रूह इनाम में पाता है (२)\nतेरी रूह से (२), खुदा की रूह से, मसीह की रूह से\nमेरा जीवन संवर गया, यीशु नाम मिला"
-      }
-    ]
-  },
-  {
-    "slug": "geet-27-yeshu-mera-yeshu-mera",
-    "number": 27,
-    "title": "गीत नं २७ - यीशु मेरा यीशु मेरा",
-    "title_alt": "Geet No. 27 - Yeshu Mera Yeshu Mera",
-    "language": "hindi",
-    "tags": [
-      "Praise",
-      "Devotion"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "यीशु मेरा, यीशु मेरा, नाम लेता हूँ (२)\nजय जयकार करूँ मैं तेरा\nतूने मुझको है बचाया\nअपने लहू से है छुड़ाया\nयीशु मेरा, यीशु मेरा नाम लेता हूँ"
-      }
-    ]
-  },
-  {
-    "slug": "geet-28-tere-bin-main-kuchh-bhi-nahi",
-    "number": 28,
-    "title": "गीत नं २८ - तेरे बिन मैं कुछ भी नहीं",
-    "title_alt": "Geet No. 28 - Tere Bin Main Kuchh Bhi Nahi",
-    "language": "hindi",
-    "tags": [
-      "Worship",
-      "Surrender"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "तेरे बिन मैं कुछ भी नहीं, कुछ भी नहीं (२)\nऐ खुदावंद यीशु तेरे बिन\nओ येशुआ, येशुआ (२), करूँ आराधना (२)\nहाथों को अपने उठाकर तुझे दूँ महिमा (२)"
-      }
-    ]
-  },
-  {
-    "slug": "geet-29-khaali-hoon-bhar-de-mujhko",
-    "number": 29,
-    "title": "गीत नं २९ - खाली हूँ भर दे मुझको",
-    "title_alt": "Geet No. 29 - Khaali Hoon Bhar De Mujhko",
-    "language": "hindi",
-    "tags": [
-      "Prayer",
-      "Holy Spirit"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "खाली हूँ भर दे मुझको, है दुआ तुझसे (२)\nकुछ भी मैं नहीं हूँ बिना तेरे (२)\nओ येशुआ, येशुआ (२), करूँ आराधना (२)\nहाथों को अपने उठाकर तुझे दूँ महिमा (२)"
-      }
-    ]
-  },
-  {
-    "slug": "geet-30-teri-ichchha-poori-ho-jaaye",
-    "number": 30,
-    "title": "गीत नं ३० - तेरी इच्छा पूरी हो जाए",
-    "title_alt": "Geet No. 30 - Teri Ichchha Poori Ho Jaaye",
-    "language": "hindi",
-    "tags": [
-      "Surrender",
-      "Worship"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "तेरी इच्छा पूरी हो जाए\nहाथों में तेरे जीवन है ये\nमैं मिट्टी हूँ, तू है कुम्हार\nमुझको उठा, मुझको बना"
-      },
-      {
-        "label": "पद 1",
-        "text": "अपनी मर्जी पर मैं चलता रहा\nतुझको कभी भी अपना ना कहा\nलेकिन प्रभु आज से मैं\nतेरे क्रूस को ले लेता हूँ"
-      }
-    ]
-  },
-  {
-    "slug": "geet-31-sar-ko-apne-jhukaata-hoon",
-    "number": 31,
-    "title": "गीत नं ३१ - सर को अपने झुकाता हूँ",
-    "title_alt": "Geet No. 31 - Sar Ko Apne Jhukaata Hoon",
-    "language": "hindi",
-    "tags": [
-      "Worship",
-      "Surrender"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "सर को अपने झुकाता हूँ मैं तेरे हुज़ूर (२)\nबन कर क़ुरबानी आता हूँ मेरे हुज़ूर (२)\nओ येशुआ, येशुआ, करूँ आराधना\nहाथों को अपने उठाकर तुझे दूँ महिमा"
-      }
-    ]
-  },
-  {
-    "slug": "geet-32-prabhu-yeshu-tere-charnon-mein",
-    "number": 32,
-    "title": "गीत नं ३२ - प्रभु यीशु तेरे चरणों में",
-    "title_alt": "Geet No. 32 - Prabhu Yeshu Tere Charnon Mein",
-    "language": "hindi",
-    "tags": [
-      "Worship",
-      "Devotion"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "प्रभु यीशु तेरे चरणों में\nलाया हूँ मैं अपना जीवन\nतू ही मेरा जीवन आधार (२)"
-      }
-    ]
-  },
-  {
-    "slug": "geet-33-yeshu-mere-jeevan-mein",
-    "number": 33,
-    "title": "गीत नं ३३ - यीशु मेरे जीवन में",
-    "title_alt": "Geet No. 33 - Yeshu Mere Jeevan Mein",
-    "language": "hindi",
-    "tags": [
-      "Thanksgiving"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "यीशु मेरे जीवन में तूने जो किया है\nउसके लिए मैं तुझे धन्यवाद दूँगा"
-      }
-    ]
-  },
-  {
-    "slug": "geet-34-tu-pavitra-pavitra-hai",
-    "number": 34,
-    "title": "गीत नं ३४ - तू पवित्र... पवित्र है...",
-    "title_alt": "Geet No. 34 - Tu Pavitra... Pavitra Hai...",
-    "language": "hindi",
-    "tags": [
-      "Holy",
-      "Worship"
-    ],
-    "stanzas": [
-      {
-        "label": "पद 1",
-        "text": "तू पवित्र, पवित्र है (२)\nतू सच्चा है प्रभु, तू झूठा नहीं है\nतू पवित्र, पवित्र है"
-      },
-      {
-        "label": "पद 2",
-        "text": "तू समर्थी, भययोग्य है, तू धर्म के मार्गों में है\nतू सच्चा है प्रभु, तू झूठा नहीं है\nतू पवित्र, पवित्र है"
-      },
-      {
-        "label": "पद 3",
-        "text": "तू करुणा निधान है प्रभु, तू अत्यंत महान है प्रभु\nतू सच्चा है प्रभु, तू झूठा नहीं है\nतू पवित्र, पवित्र है"
-      },
-      {
-        "label": "पद 4",
-        "text": "तू अधर्मों को क्षमा करता है\nसारे रोगों को चंगा करता है\nतू सच्चा है प्रभु, तू झूठा नहीं है\nतू पवित्र, पवित्र है"
-      }
-    ]
-  },
-  {
-    "slug": "geet-35-teri-ichchha-poori-ho-jaaye",
-    "number": 35,
-    "title": "गीत नं ३५ - तेरी इच्छा पूरी हो जाए",
-    "title_alt": "Geet No. 35 - Teri Ichchha Poori Ho Jaaye",
-    "language": "hindi",
-    "tags": [
-      "Surrender",
-      "Worship"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "तेरी इच्छा पूरी हो जाए\nहाथों में तेरे जीवन है ये\nमैं मिट्टी हूँ, तू है कुम्हार\nमुझको उठा, मुझको बना"
-      },
-      {
-        "label": "पद 1",
-        "text": "अपनी मर्जी पर मैं चलता रहा\nतुझको कभी भी अपना ना कहा\nलेकिन प्रभु आज से मैं\nतेरे क्रूस को ले लेता हूँ"
-      }
-    ]
-  },
-  {
-    "slug": "geet-36-teri-mahima-ho-mahima",
-    "number": 36,
-    "title": "गीत नं ३६ - तेरी महिमा, हो महिमा",
-    "title_alt": "Geet No. 36 - Teri Mahima, Ho Mahima",
-    "language": "hindi",
-    "tags": [
-      "Praise",
-      "Worship"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "तेरी महिमा, हो महिमा (४)\nमहिमा मिले तुझे स्वर्ग में\nमहिमा मिले तुझे पृथ्वी पर"
-      }
-    ]
-  },
-  {
-    "slug": "geet-37-taareef-taareef-milkar-karo-saare-taareef",
-    "number": 37,
-    "title": "गीत नं ३७ - तारीफ, तारीफ मिलकर करो सारे तारीफ",
-    "title_alt": "Geet No. 37 - Taareef, Taareef Milkar Karo Saare Taareef",
-    "language": "hindi",
-    "tags": [
-      "Praise"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "तारीफ़, तारीफ़ तारीफ़, मिलके करो सारे तारीफ़ (२)\nयीशु की जो है प्यारा मुन्जी (२)"
-      },
-      {
-        "label": "पद 1",
-        "text": "उसने हम सब को है बनाया, जो कुछ दिखता उसने रचाया (२)\nसारे जहाँ का वह शाहनशाह (२)"
-      },
-      {
-        "label": "पद 2",
-        "text": "पापों से वह पाक है करता, सारी खताये माफ है करता (२)\nसारे रोगों को करता चंगा (२)"
-      },
-      {
-        "label": "पद 3",
-        "text": "उसकी मौत से जिन्दगी है पायी, आशा नयी एक उसने दिलायी (२)\nबैठेंगे तख्त पर फतहमन्द हो (२)"
-      },
-      {
-        "label": "पद 4",
-        "text": "हम्द-ओ-सन्ना हम मिलके करेंगे, सदा वहां पर उसको ताकेंगे (२)\nगीत नया वहाँ गायेंगे (२)"
-      }
-    ]
-  },
-  {
-    "slug": "geet-38-tu-mera-sharanasthan",
-    "number": 38,
-    "title": "गीत नं ३८ - तू मेरा शरणस्थान",
-    "title_alt": "Geet No. 38 - Tu Mera Sharanasthan",
-    "language": "hindi",
-    "tags": [
-      "Worship",
-      "Refuge"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "तू मेरा शरणस्थान, तू मेरा गढ़ है\nसंकट में मेरा दोस्त, मेरा प्रभु!\nआराधना करूँ मैं पूरे दिल से, मैं तुझे ढूँढूँगा संपूर्ण जीवन से\nतेरी सेवा करूँगा तन-मन-धन से, मैं हूँ यहाँ प्रभु..."
-      },
-      {
-        "label": "पद 1",
-        "text": "उद्धारक मेरा तू, मेरी चंगाई है\nसंकट में सामर्थ है, मेरा प्रभु..."
-      },
-      {
-        "label": "पद 2",
-        "text": "तू मेरा चरवाहा, संकट में सांत्वना है मेरा दोस्त, मेरा प्रभु..."
-      }
-    ]
-  },
-  {
-    "slug": "geet-39-tere-bin-main-kuchh-bhi-nahi",
-    "number": 39,
-    "title": "गीत नं ३९ - तेरे बिन मैं कुछ भी नहीं",
-    "title_alt": "Geet No. 39 - Tere Bin Main Kuchh Bhi Nahi",
-    "language": "hindi",
-    "tags": [
-      "Worship",
-      "Surrender"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "तेरे बिन मैं कुछ भी नहीं, कुछ भी नहीं (२)\nऐ खुदावंद यीशु तेरे बिन\nओ येशुआ, येशुआ (२), करूँ आराधना (२)\nहाथों को अपने उठाकर तुझे दूँ महिमा (२)"
-      }
-    ]
-  },
-  {
-    "slug": "geet-40-toone-lahoo-ke-kataron-ko",
-    "number": 40,
-    "title": "गीत नं ४० - तूने लहू के कतरों को",
-    "title_alt": "Geet No. 40 - Toone Lahoo Ki Kataron Ko",
-    "language": "hindi",
-    "tags": [
-      "Sacrifice",
-      "Salvation"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "तूने लहू के कतरों को मेरे लिये बहा दिया\nतूने जाँ बदन देकर यीशु मुझको बचा लिया (२)\nतेरे लहू से (२), यीशु के लहू से, मसीह के लहू से\nमेरा जीवन संवर गया, यीशु नाम मिला"
-      }
-    ]
-  },
-  {
-    "slug": "geet-41-taali-bajaake-khushiyaan-manao",
-    "number": 41,
-    "title": "गीत नं ४१ - ताली बजाके खुशियां मनाओ",
-    "title_alt": "Geet No. 41 - Taali Bajaake Khushiyaan Manao",
-    "language": "hindi",
-    "tags": [
-      "Praise",
-      "Joy"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "ताली बजाके खुशियां मनाओ\nप्रभु के सम्मुख आनंद मनाओ (२)\nआनंद मनाओ, आनंद मनाओ\nसब दुःख भूलकर आनंद मनाओ"
-      },
-      {
-        "label": "पद 1",
-        "text": "विनती से, विचारों से, बढ़कर करता है (२)"
-      },
-      {
-        "label": "पद 2",
-        "text": "भयभीत न हो, मैंने छुड़ाया तुझे, तू है मेरा अपना"
-      }
-    ]
-  },
-  {
-    "slug": "geet-42-tu-hai-mera-apna",
-    "number": 42,
-    "title": "गीत नं ४२ - तू है मेरा अपना",
-    "title_alt": "Geet No. 42 - Tu Hai Mera Apna",
-    "language": "hindi",
-    "tags": [
-      "Comfort",
-      "Encouragement"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "तू है मेरा अपना (२)"
-      },
-      {
-        "label": "पद 1",
-        "text": "निश्चय भलाई और करुणा\nजीवन भर साथ है सदा (२)"
-      },
-      {
-        "label": "पद 2",
-        "text": "ज्ञान सिखाता राह बताता\nवचन को देता सदा (२)"
-      },
-      {
-        "label": "पद 3",
-        "text": "संकट में अगर हम दुहाई दें\nछुटकारा देगा हमें (२)"
-      }
-    ]
-  },
-  {
-    "slug": "geet-43-thoda-samay-hai-baaki",
-    "number": 43,
-    "title": "गीत नं ४३ - थोड़ा समय है बाकी",
-    "title_alt": "Geet No. 43 - Thoda Samay Hai Baaki",
-    "language": "hindi",
-    "tags": [
-      "Encouragement",
-      "Service"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "थोड़ा समय है बाकी, सेवा अभी है काफी (२)\nहम रुकें नहीं, पीछे मुड़े नहीं, यीशु है हमारा साथी (२)"
-      },
-      {
-        "label": "पद 1",
-        "text": "संदेश सुनाते जाना, सेवा से नहीं शरमाना\nचाहे जग हमें रोके, आये दुःख के झकोरे (२)\nहमें देगा वो भरपूर शांति (२)"
-      },
-      {
-        "label": "पद 2",
-        "text": "यीशु ने हमें भेजा है, उसका काम दिन ही दिन में करना है\nवो रात आनेवाली, ये हमारी जिम्मेदारी (२)\nयीशु है हमारा न्यायी"
-      },
-      {
-        "label": "पद 3",
-        "text": "प्रतिफल हमें वो देगा, विश्वास में स्थिर करेगा\nउसकी आज्ञा हम मानें, उससे शांति हम पायें (२)"
-      }
-    ]
-  },
-  {
-    "slug": "geet-44-dekho-chali-naiya-meri",
-    "number": 44,
-    "title": "गीत नं ४४ - देखो चली, नैया मेरी",
-    "title_alt": "Geet No. 44 - Dekho Chali, Naiya Meri",
-    "language": "hindi",
-    "tags": [
-      "Trust",
-      "Encouragement"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "देखो चली, नैया मेरी कैसी है ये, झूमती डोली\nदेखो चली रे मोरी नैया है इसका यीशु खिवैया"
-      },
-      {
-        "label": "पद 1",
-        "text": "आ प्रभु आ थाम ले मुझे, अपने कर में जीवन चाहे\nजीवन है यीशु हवाले, चलते हैं तोरे सहारे"
-      },
-      {
-        "label": "पद 2",
-        "text": "बातों पर तोरे ध्यान लगायें, मन में हमारे तू ही समाये\nदुनियाँ के राजा यीशु उजाले, पापों से हमें तू ही संभाले"
-      },
-      {
-        "label": "पद 3",
-        "text": "अब तो मसीह तू ही बचाये, आये हम तो पास में तोरे\nयीशु ही राह दिखाये, जीवन को तू ही बचाये"
-      }
-    ]
-  },
-  {
-    "slug": "geet-45-do-to-tumhe-diya-jayega",
-    "number": 45,
-    "title": "गीत नं ४५ - दो तो तुम्हें दिया जायेगा",
-    "title_alt": "Geet No. 45 - Do To Tumhe Diya Jayega",
-    "language": "hindi",
-    "tags": [
-      "Giving",
-      "Offertory"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "दो तो तुम्हें दिया जायेगा (४)\nजिस नाप से तुम नापते हो\nतुम्हारे लिए भी नापा जायेगा\nदो तो तुम्हें दिया जायेगा (४)"
-      },
-      {
-        "label": "पद 1",
-        "text": "दायाँ अगर देता है तो, बायाँ ये जानने न पाये\nगुप्त में रहे तुम्हारा देना, यही है यहोवा को भाये (२)\nजिस नाप से तुम नापते हो"
-      },
-      {
-        "label": "पद 2",
-        "text": "विधवा के जैसे तुम दान दो, धनवान के जैसे नहीं\nमन को तुम साफ कर देना, कुड़कुड़ाते हुए नहीं (२)\nजिस नाप से तुम नापते हो"
-      },
-      {
-        "label": "पद 3",
-        "text": "जो कुछ तुम पृथ्वी पर बांधोगे, वो स्वर्ग में बंधेगा\nजो कुछ तुम पृथ्वी पर खोलोगे, वो स्वर्ग में खुलेगा"
-      }
-    ]
-  },
-  {
-    "slug": "geet-46-yeshu-tere-charnon-mein",
-    "number": 46,
-    "title": "गीत नं ४६ - यीशु तेरे चरणों में",
-    "title_alt": "Geet No. 46 - Yeshu Tere Charnon Mein",
-    "language": "hindi",
-    "tags": [
-      "Surrender",
-      "Worship"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "यीशु तेरे चरणों में लाया हूँ मैं अपना जीवन\nतू ही मेरा जीवन आधार (२)"
-      }
-    ]
-  },
-  {
-    "slug": "geet-47-pavitra-jeevan-mein-jyoti-jala-de",
-    "number": 47,
-    "title": "गीत नं ४७ - पवित्र जीवन में ज्योति जला दे",
-    "title_alt": "Geet No. 47 - Pavitra Jeevan Mein Jyoti Jala De",
-    "language": "hindi",
-    "tags": [
-      "Prayer",
-      "Holiness"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "पवित्र जीवन में ज्योति जला दे\nतुझ पर लगी है ये आशा मेरी\nपापमय तन को दूर हटा दे (२)\nपूर्ण हो अभिलाषा मेरी\nजीवन के दु:खी और कठिन क्षणों का\nदृढ़ता से सामना करने की शक्ति दे"
-      }
-    ]
-  },
-  {
-    "slug": "geet-48-mahima-mile-tujhe",
-    "number": 48,
-    "title": "गीत नं ४८ - महिमा मिले तुझे",
-    "title_alt": "Geet No. 48 - Mahima Mile Tujhe",
-    "language": "hindi",
-    "tags": [
-      "Worship",
-      "Praise"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "तेरी महिमा, हो महिमा (४)\nमहिमा मिले तुझे स्वर्ग में\nमहिमा मिले तुझे पृथ्वी पर"
-      }
-    ]
-  },
-  {
-    "slug": "geet-49-anokha-pyaar-hai-tera",
-    "number": 49,
-    "title": "गीत नं ४९ - अनोखा प्यार है तेरा",
-    "title_alt": "Geet No. 49 - Anokha Pyaar Hai Tera",
-    "language": "hindi",
-    "tags": [
-      "Love",
-      "Praise"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "अनोखा प्यार है तेरा, करूँगा स्तुति तेरी मैं सर्वदा (२)"
-      },
-      {
-        "label": "पद 1",
-        "text": "जग में आया यीशु स्वर्ग छोड़कर, मेरा सारा दंड सह लिया उसने\nकोड़े खा के क्रूस उठा के यीशु ने, मुझको मुक्ति और चंगाई दे दी है\nअनोखा प्यार है तेरा, करूँगा स्तुति तेरी मैं सर्वदा"
-      }
-    ]
-  },
-  {
-    "slug": "geet-50-ann-vastra-aur-sabhi-aashishen",
-    "number": 50,
-    "title": "गीत नं ५० - अन्न वस्त्र और सभी आशीषें",
-    "title_alt": "Geet No. 50 - An Vachan Aur Mannat Aulad",
-    "language": "hindi",
-    "tags": [
-      "Thanksgiving",
-      "Provision"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "अन्न वस्त्र और सभी आशीषें, दी मुझे उसने भरपूरी से\nखतरों और सब मुसीबतों से, आँख की पुतली जैसे संभाला मुझे\nतेरे प्यार से मुझे मिली, जीवन में पाया नया जीवन मैंने\nपवित्र आत्मा और वचन से भी नया, जीवन में पाया नया जीवन मैंने"
-      }
-    ]
-  },
-  {
-    "slug": "geet-51-yeshu-ka-naam-leta-hai",
-    "number": 51,
-    "title": "गीत नं ५१ - यीशु का नाम लेता है",
-    "title_alt": "Geet No. 51 - Yeshu Ka Naam Leta Hai",
-    "language": "hindi",
-    "tags": [
-      "Praise",
-      "Salvation"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "यीशु का नाम लेता है, वो ज़िंदगी पाता है\nतेरी राहों पर चलकर, रूह इनाम में पाता है (२)\nतेरी रूह से (२), खुदा की रूह से, मसीह की रूह से\nमेरा जीवन संवर गया, यीशु नाम मिला"
-      }
-    ]
-  },
-  {
-    "slug": "geet-52-naam-bada-hai-tera",
-    "number": 52,
-    "title": "गीत नं ५२ - नाम बड़ा है तेरा",
-    "title_alt": "Geet No. 52 - Naam Bada Hai Tera",
-    "language": "hindi",
-    "tags": [
-      "Praise",
-      "Adoration"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "नाम बड़ा है तेरा, यीशु नाम बड़ा है तेरा (२)\nजिसने मेरे जीवन को, नया जीवन दिया है (२)"
-      }
-    ]
-  },
-  {
-    "slug": "geet-53-kya-hai-teri-ichchha-prabhu",
-    "number": 53,
-    "title": "गीत नं ५३ - क्या है तेरी इच्छा प्रभु",
-    "title_alt": "Geet No. 53 - Kya Hai Teri Ichchha Prabhu",
-    "language": "hindi",
-    "tags": [
-      "Guidance",
-      "Prayer"
-    ],
-    "stanzas": [
-      {
-        "label": "पद",
-        "text": "क्या है तेरी इच्छा प्रभु, मुझे बता दे\nमैं तो चलूँगा तेरे पीछे, तेरे संग चलूँगा"
-      }
-    ]
-  },
-  {
-    "slug": "geet-54-making-melody-in-your-heart",
-    "number": 54,
-    "title": "गीत नं ५४ - Making melody in your heart",
-    "title_alt": "Making melody in your heart",
-    "language": "english",
-    "tags": [
-      "Praise",
-      "Worship"
-    ],
-    "stanzas": [
-      {
-        "label": "Chorus",
-        "text": "Making melody in your heart unto the King of Kings\nWorship and adore Him (2)\nMaking melody in your heart unto the King of Kings"
-      },
-      {
-        "label": "Verse 1",
-        "text": "King of kings and Lord of lords (3), glory to His name\nGive to the Lord glory (3), oh give unto the Lord\nHe is the King and Lord (3), महिमा उसकी हो"
-      }
-    ]
-  },
-  {
-    "slug": "geet-55-i-will-praise-you",
-    "number": 55,
-    "title": "गीत नं ५५ - I will praise you",
-    "title_alt": "I will praise you",
-    "language": "english",
-    "tags": [
-      "Worship"
-    ],
+    "tags": [],
     "stanzas": [
       {
         "label": "Verse 1",
-        "text": "I will praise you with all of my life\nI will praise you with all of my strength\nWith all of my life, with all of my strength\nAll of my hope is in you"
+        "text": "तेरे आसन के पास आऊं,\nकृपा मिलती है\nतेरे चरणों के पास बैठूं\nशांति मिलती है\nतेरे मंदिर में मैं आऊं,\nतू मिलता है।"
       },
       {
         "label": "Verse 2",
-        "text": "I will seek you with all of my heart\nI will seek you with all of my mind\nWith all of my heart, with all of my strength\nAll of my hope is in you"
-      }
-    ]
-  },
-  {
-    "slug": "geet-56-seek-ye-first",
-    "number": 56,
-    "title": "गीत नं ५६ - Seek ye first",
-    "title_alt": "Seek ye first",
-    "language": "english",
-    "tags": [
-      "Gospel",
-      "Scripture"
-    ],
-    "stanzas": [
-      {
-        "label": "Verse 1",
-        "text": "Seek ye first the Kingdom of God\nAnd His righteousness,\nAnd all these things shall be added unto you\nHallelu, Hallelujah\nHallelujah, Hallelujah\nHallelujah, Hallelu-Hallelujah"
-      },
-      {
-        "label": "Verse 2",
-        "text": "Ask and it shall be given unto you,\nSeek and you shall find,\nKnock and the door shall be opened unto you\nHallelu, Hallelujah"
+        "text": "१. तू ही है यहोवा शालोम\nप्रभु मेरी शांति\nजो मेरे मन में आई\nमसीहा को जानकर\nतू ही है यहोवा शामा\nप्रभु मेरे करीब है\nवादा किया है मुझसे तेरे\nसाथ रहूं सदा"
       },
       {
         "label": "Verse 3",
-        "text": "Man shall not live by bread alone,\nBut by every word\nThat proceeds from the mouth of God\nHallelu, Hallelujah"
+        "text": "२. तेरे हृदय को छूऊं, प्यार मिलता है\nतेरे हाथों को मैं थामूं\nसहारा मिलता है\nतेरे आंखों में मैं देखूं\nतृप्त होता हूं मैं\nतू ही है यहोवा रोही प्रभु मेरा चरवाहा\nहरी चराई में चराता\nसुखदाई जल पिलाता\nतू ही है यहोवा यिरे\nप्रभु जो मुझे देता है\nजरूरत को पूर्ण करता\nमहिमा के धन से"
       }
     ]
   },
   {
-    "slug": "geet-57-more-love-more-power",
-    "number": 57,
-    "title": "गीत नं ५७ - More love, more power",
-    "title_alt": "More love, more power",
-    "language": "english",
-    "tags": [
-      "Worship",
-      "Prayer"
-    ],
+    "slug": "yeshu-tera-naam-hai",
+    "number": 118,
+    "title": "यीशु तेरा नाम है",
+    "title_alt": "Yeshu Tera Naam Hai",
+    "language": "hindi",
+    "tags": [],
     "stanzas": [
       {
-        "label": "Chorus",
-        "text": "More love, more power\nMore of you in my life (2)"
-      },
-      {
         "label": "Verse 1",
-        "text": "And I will worship you with all of my heart\nAnd I will worship you with all of my mind\nAnd I will worship you with all of my strength\nFor you are my Lord (2)"
+        "text": "यीशु तेरा नाम है कितना सुन्दर\nयीशु तेरा नाम है कितना पावन...२"
       },
       {
         "label": "Verse 2",
-        "text": "I will seek your face with all of my heart\nI will seek your face with all of my mind\nI will seek your face with all of my strength\nFor you are my Lord (2)"
+        "text": "१. तुझमें मिली है हमको क्षमा\nतुझमें मिला है नया जीवन...२"
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. तुझमें मिली है हमको कृपा\nतुझमें हुए है हम पावन...२"
+      },
+      {
+        "label": "Verse 4",
+        "text": "३. तुझमें मिली है हमको शिफा\nतुझमें मिला है अनंत जीवन...२"
       }
     ]
   },
   {
-    "slug": "geet-58-majesty-worship-his-majesty",
-    "number": 58,
-    "title": "गीत नं ५८ - Majesty, worship His majesty",
-    "title_alt": "Majesty, worship His majesty",
-    "language": "english",
-    "tags": [
-      "Worship",
-      "Adoration"
-    ],
+    "slug": "mastake-unch-kara",
+    "number": 119,
+    "title": "मस्तकें ऊंच करा",
+    "title_alt": "Mastake Unch Kara",
+    "language": "marathi",
+    "tags": [],
     "stanzas": [
       {
         "label": "Verse 1",
-        "text": "Majesty, worship His majesty\nUnto Jesus be all glory, power and praise\nMajesty, kingdom authority,\nFlow from His throne unto His own, His anthem raise!"
-      },
+        "text": "मस्तकें उंच करा, येणाया राजाला\nलवून त्याचे नमन करा हो,\nस्तुति गा\nत्याच्या गौरवाला\nतुमची स्तवने असो\nशुद्ध पवित्र गौरव देता\nराजाच्या राजाला"
+      }
+    ]
+  },
+  {
+    "slug": "mi-vechale-phulanna",
+    "number": 120,
+    "title": "मी वेचले फुलांना",
+    "title_alt": "Mi Vechale Phulanna",
+    "language": "marathi",
+    "tags": [],
+    "stanzas": [
       {
-        "label": "Chorus",
-        "text": "So exalt, lift up on high the name of Jesus\nMagnify, come glorify Christ Jesus, the King"
+        "label": "Verse 1",
+        "text": "मी वेचले फुलांना, काटे ख्रिस्ता मिळाले\nजखमी करुनी तुजला, मला सर्व रे मिळाले"
       },
       {
         "label": "Verse 2",
-        "text": "Majesty, worship His majesty,\nJesus who died, now glorified, King of all Kings"
-      }
-    ]
-  },
-  {
-    "slug": "geet-59-when-the-spirit-of-the-lord",
-    "number": 59,
-    "title": "गीत नं ५९ - When the Spirit of the Lord",
-    "title_alt": "When the Spirit of the Lord",
-    "language": "english",
-    "tags": [
-      "Praise",
-      "Holy Spirit"
-    ],
-    "stanzas": [
-      {
-        "label": "Verse 1",
-        "text": "When the Spirit of the Lord moves in my heart\nI will praise like David praised (2)\nI will sing like David sang\nI will clap like David clapped\nI will dance like David danced"
-      }
-    ]
-  },
-  {
-    "slug": "geet-60-there-is-power-power",
-    "number": 60,
-    "title": "गीत नं ६० - There is power, power",
-    "title_alt": "There is power, power",
-    "language": "english",
-    "tags": [
-      "Victory",
-      "Power"
-    ],
-    "stanzas": [
-      {
-        "label": "Chorus",
-        "text": "There is power, power, wonder-working power\nIn the blood of the Lamb\nThere is power, power, wonder-working power\nIn the precious blood of Jesus"
+        "text": "१. हाती पायी खेळ तुझ्या, रुतले खिळे देहारी\nमी रोगमुक्त झालो, फटके तुला मिळाले\nजखमी करुनी तुजला..."
       },
       {
-        "label": "Verse 1",
-        "text": "Victory... Victory to the Blood\nVictory... Victory to the Blood\nVictory... Victory to the Blood of Jesus"
+        "label": "Verse 3",
+        "text": "२. पाहूनी तुजला, धिक्कारिले जगाने\nपावे कृपा मी आता, श्राप तुला मिळाले\nजखमी करुनी तुजला..."
       }
     ]
   },
   {
-    "slug": "geet-125-har-museebat-mein-mujhko-sambhala",
+    "slug": "anande-vajava-tali",
+    "number": 121,
+    "title": "आनंदे वाजवा टाळी",
+    "title_alt": "Anande Vajava Tali",
+    "language": "marathi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "आनंदे वाजवा टाळी,\nचला जाऊ ख्रिस्ताजवळी ...३\nआनंदे वाजवा टाळी,"
+      }
+    ]
+  },
+  {
+    "slug": "haatane-tali",
+    "number": 122,
+    "title": "हाताने टाळी",
+    "title_alt": "Haatane Tali",
+    "language": "marathi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "हाताने टाळी मुखाने जय\nप्रेमाने बोला ख्रिस्ता जय ...३"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. जोराने बोला ख्रिस्ता जय ...३"
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. मोठ्याने बोला ख्रिस्ता जय ...३"
+      }
+    ]
+  },
+  {
+    "slug": "vyaho-tumhi-tali",
+    "number": 123,
+    "title": "व्याहो तुम्ही टाळी",
+    "title_alt": "Vyaho Tumhi Tali",
+    "language": "marathi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "व्याहो तुम्ही टाळी, व्याहो टाळी\nटाळी कशाची देवबापाची\nकरील तो होळी सर्व पापांची"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. टाळी कशाची येशु ख्रिस्ताची\nकरील तो होळी सर्व पापांची"
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. टाळी कशाची पवित्र आत्म्याची\nकरील तो होळी सर्व पापांची"
+      }
+    ]
+  },
+  {
+    "slug": "khristi-bandhavancha-mela",
+    "number": 124,
+    "title": "ख्रिस्ती बांधवांचा मेळा",
+    "title_alt": "Khristi Bandhavancha Mela",
+    "language": "marathi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "ख्रिस्ती बांधवांचा मेळा ...२\nख्रिस्ती बांधवांचा गोड प्रीती मेळा\nभक्तिभाव भोळा\nपाही देवा, पाही देवा रे\nख्रिस्ती बांधवांचा मेळा"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. आवडे तुला रे नाद गायनाचा ...२\nताळ मृदुगाचा नाही वीट,\nनाही वीट\nख्रिस्ती बांधवांचा मेळा"
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. नाचले तुझे ते थोर साधू संत ...२\nतुझ्या कीर्तनात ओढी आम्हा\nओढी आम्हा\nख्रिस्ती बांधवांचा मेळा"
+      },
+      {
+        "label": "Verse 4",
+        "text": "३. रंगू दे आम्हालाए\nरिंगणात गोल ...२\nगाऊ दे अमोल\nप्रेमगीत, प्रेमगीत\nख्रिस्ती बांधवांचा मेळा"
+      },
+      {
+        "label": "Verse 5",
+        "text": "४. गोड गाणी गाता\nहोऊ पायी लीन\nगाऊ या मिळून\nदेवबापा, देवबापा,\nख्रिस्ती बांधवांचा मेळा"
+      }
+    ]
+  },
+  {
+    "slug": "dhanyavaad-yeshula",
     "number": 125,
-    "title": "गीत नं १२५ - हर मुसीबत में मुझको संभाला",
-    "title_alt": "Geet No. 125 - Har Museebat Mein Mujhko Sambhala",
+    "title": "धन्यवाद येशूला",
+    "title_alt": "Dhanyavaad Yeshula",
+    "language": "marathi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "धन्यवाद येशूला (२)\nराजांच्या राजाला, प्रभुंच्या प्रभुला\nधन्यवाद येशूला\nमहिमा हो या त्याला (२)\nराजांच्या राजाला, प्रभुंच्या प्रभुला\nमहिमा हो या त्याला (२)\nगौरव या त्याला (२)\nराजांच्या राजाला, प्रभुंच्या प्रभुला\nधन्यवाद येशूला\nगौरव या त्याला"
+      }
+    ]
+  },
+  {
+    "slug": "har-museebat-mein-mujhko-sambhala",
+    "number": 125,
+    "title": "हर मुसीबत में मुझको संभाला",
+    "title_alt": "Har Museebat Mein Mujhko Sambhala",
     "language": "hindi",
     "tags": [
       "Comfort",
@@ -4260,10 +5218,10 @@
     ]
   },
   {
-    "slug": "geet-126-he-mere-man-yehova-ko-dhanya-dhanya-kaho",
+    "slug": "he-mere-man-yehova-ko-dhanya-dhanya-kaho",
     "number": 126,
-    "title": "गीत नं १२६ - हे मेरे मन यहोवा को धन्य धन्य कहो",
-    "title_alt": "Geet No. 126 - He Mere Man Yehova Ko Dhanya Dhanya Kaho",
+    "title": "हे मेरे मन यहोवा को धन्य धन्य कहो",
+    "title_alt": "He Mere Man Yehova Ko Dhanya Dhanya Kaho",
     "language": "hindi",
     "tags": [
       "Psalms",
@@ -4289,10 +5247,10 @@
     ]
   },
   {
-    "slug": "geet-127-ho-jai-jaikaara-jai-jaikaara-kare",
+    "slug": "ho-jai-jaikaara-jai-jaikaara-kare",
     "number": 127,
-    "title": "गीत नं १२७ - हो जय जयकारा जय जयकारा करे",
-    "title_alt": "Geet No. 127 - Ho Jai Jaikaara Jai Jaikaara Kare",
+    "title": "हो जय जयकारा जय जयकारा करे",
+    "title_alt": "Ho Jai Jaikaara Jai Jaikaara Kare",
     "language": "hindi",
     "tags": [
       "Praise",
@@ -4318,10 +5276,10 @@
     ]
   },
   {
-    "slug": "geet-128-he-hamare-baap-tu-jo-aasman-mein-hai",
+    "slug": "he-hamare-vaap-tu-jo-aasman-mein-hai",
     "number": 128,
-    "title": "गीत नं १२८ - हे हमारे बाप तू जो आसमान में है",
-    "title_alt": "Geet No. 128 - He Hamare Vaap Tu Jo Aasman Mein Hai",
+    "title": "हे हमारे बाप तू जो आसमान में है",
+    "title_alt": "He Hamare Vaap Tu Jo Aasman Mein Hai",
     "language": "hindi",
     "tags": [
       "Our Father",
@@ -4355,10 +5313,10 @@
     ]
   },
   {
-    "slug": "geet-129-haale-haaleluyaah",
+    "slug": "haale-haaleluyaah",
     "number": 129,
-    "title": "गीत नं १२९ - हाले हालेलुयाह",
-    "title_alt": "Geet No. 129 - Haale Haaleluyaah",
+    "title": "हाले हालेलुयाह",
+    "title_alt": "Haale Haaleluyaah",
     "language": "hindi",
     "tags": [
       "Praise",
@@ -4380,10 +5338,10 @@
     ]
   },
   {
-    "slug": "geet-130-hovegi-barkat-ki-baarish",
+    "slug": "hovegi-barkat-ki-baarish",
     "number": 130,
-    "title": "गीत नं १३० - होवेगी बरकत की बारिश",
-    "title_alt": "Geet No. 130 - Hovegi Barkat Ki Baarish",
+    "title": "होवेगी बरकत की बारिश",
+    "title_alt": "Hovegi Barkat Ki Baarish",
     "language": "hindi",
     "tags": [
       "Revival",
@@ -4409,10 +5367,10 @@
     ]
   },
   {
-    "slug": "geet-131-hum-to-khuda-ke-bete-hain",
+    "slug": "hum-to-khuda-ke-bete-hai",
     "number": 131,
-    "title": "गीत नं १३१ - हम तो खुदा के बेटे हैं",
-    "title_alt": "Geet No. 131 - Hum To Khuda Ke Bete Hai",
+    "title": "हम तो खुदा के बेटे हैं",
+    "title_alt": "Hum To Khuda Ke Bete Hai",
     "language": "hindi",
     "tags": [
       "Faith",
@@ -4434,43 +5392,10 @@
     ]
   },
   {
-    "slug": "geet-132-he-jeevit-parameshwar",
-    "number": 132,
-    "title": "गीत नं १३२ - हे जीवित परमेश्वर",
-    "title_alt": "Geet No. 132 - He Jeevit Parameshwar",
-    "language": "hindi",
-    "tags": [
-      "Worship",
-      "Adoration"
-    ],
-    "stanzas": [
-      {
-        "label": "कोरस",
-        "text": "हालेलुयाह होसन्ना (४)"
-      },
-      {
-        "label": "पद 1",
-        "text": "हे जीवित परमेश्वर मैं तेरी आराधना करता हूँ\nजीवन को देने वाले मैं तेरी आराधना करता हूँ\nहालेलुयाह होसन्ना (४)"
-      },
-      {
-        "label": "पद 2",
-        "text": "मृत्यु को जीतने वाले मैं तेरी आराधना करता हूँ\nनरक को जीतने वाले मैं तेरी आराधना करता हूँ\nहालेलुयाह होसन्ना (४)"
-      },
-      {
-        "label": "पद 3",
-        "text": "सृष्टि को रचने वाले मैं तेरी आराधना करता हूँ\nजीवन को देने वाले मैं तेरी आराधना करता हूँ\nहालेलुयाह होसन्ना (४)"
-      },
-      {
-        "label": "पद 4",
-        "text": "चंगाई देने वाले मैं तेरी आराधना करता हूँ\nछुटकारा देने वाले मैं तेरी आराधना करता हूँ\nहालेलुयाह होसन्ना (४)"
-      }
-    ]
-  },
-  {
-    "slug": "geet-133-haaleluyaah-gaayenge",
+    "slug": "haaleluyaah-2-gaayenge",
     "number": 133,
-    "title": "गीत नं १३३ - हालेलुयाह गायेंगे",
-    "title_alt": "Geet No. 133 - Haaleluyaah - 2 Gaayenge",
+    "title": "हालेलुयाह गायेंगे",
+    "title_alt": "Haaleluyaah - 2 Gaayenge",
     "language": "hindi",
     "tags": [
       "Praise",
@@ -4484,6 +5409,412 @@
       {
         "label": "पद 1",
         "text": "भजन करेंगे, स्तुति करेंगे, और प्रशंसा करेंगे\nजब तक हममें सांस रहेगी उसके ही गुण गायेंगे (२)\nहालेलुयाह, हालेलुयाह गायेंगे\nयीशु के वचन सुनायेंगे"
+      }
+    ]
+  },
+  {
+    "slug": "karta-samarpan",
+    "number": 900,
+    "title": "करता समर्पण",
+    "title_alt": "Karta Samarpan",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "करता समर्पण\nआत्मा और जीवन\nतेरी आराधना में\nतन मन धन\nपिता परमेश्वर\nहो धन्यवाद\nहो तेरी स्तुति और आराधना\nप्यारे मसीहा\nहो धन्यवाद\nहो तेरी स्तुति और आराधना\nपवित्र आत्मा\nहो धन्यवाद\nहो तेरी स्तुति और आराधना"
+      }
+    ]
+  },
+  {
+    "slug": "pavitra-ati-pavitra",
+    "number": 901,
+    "title": "पवित्र अति पवित्र",
+    "title_alt": "Pavitra Ati Pavitra",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "पवित्र अति पवित्र ...२ है\nसेनाओं का प्रभु"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. यशायाह ने देखा\nप्रभु को ऊंचाई पर,\nबैठा सिंहासन पर राजाओं का राज\nउसकी महिमा से\nमंदिर भर गया, दूतों ने कहा\nपवित्र अति पवित्र ..."
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. यूहन्ना ने देखा\nप्रभु को टापु पर,\nमुर्दों सा गिर पड़ा\nउसके चरणों पर\nदिपों में दिखा"
+      },
+      {
+        "label": "Verse 3",
+        "text": "मानव पुत्र के समान,\nदूतों ने कहा\nपवित्र अति पवित्र\nपवित्र अति पवित्र है\nसेनाओं का प्रभु"
+      }
+    ]
+  },
+  {
+    "slug": "aaradhana-aaradhana",
+    "number": 902,
+    "title": "आराधना आराधना",
+    "title_alt": "Aaradhana Aaradhana",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "आराधना आराधना\nस्तुति आराधना आराधना\nसुबह के समय, शाम के समय\nआराधना पिता की"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. पवित्र आत्मा तुझे आराधना\nमेरे साथी तुझे आराधना ...२\nस्वर्गीय पिता तुझे आराधना\nमार्गदर्शी तुझे आराधना ...२"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. जीवित बलि तुझे आराधना\nजीवन जल तुझे आराधना ...२\nबादल के खंभे तुझे आराधना\nमेरे मसीह तुझे आराधना ...२"
+      }
+    ]
+  },
+  {
+    "slug": "yeshu-ka-naam-sabase-pyara",
+    "number": 903,
+    "title": "यीशु का नाम सबसे प्यारा",
+    "title_alt": "Yeshu Ka Naam Sabase Pyara",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "यीशु का नाम सबसे प्यारा\nसबसे अलग और सबसे मीठा\nउसका वचन सबसे न्यारा\nसबसे अलग और सबसे मीठा\nगाओ रे गाओ आनंद में\nझूमो नाचो रे आनंद में\nक्योंकि दुनिया में एक ही नाम है"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. स्वर्गदूत भी हर पल हर दिन\nयही नाम लेते हैं\nपाते हैं जो, इस नाम को\nपाते हैं वो एक नई शांति को\nगाओ रे . . ."
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. इस नाम से रोगियों को\nचंगाई मिलती है,\nइस नाम को लेने वालों को\nजिन्दगी मिलती है\nपाते हैं जो, इस नाम को\nपाते हैं वो एक नई शांति को\nगाओ रे . . ."
+      },
+      {
+        "label": "Verse 4",
+        "text": "३. इस नाम से हर पापी को\nछुटकारा मिलता है,\nइस नाम से भटके हुओं को\nनया मार्ग मिलता है\nपाते हैं जो, इस नाम को\nपाते हैं वो एक नई शांति को\nगाओ रे . . ."
+      }
+    ]
+  },
+  {
+    "slug": "jannat-se-aaya-masiha",
+    "number": 904,
+    "title": "जन्नत से आया मसीहा",
+    "title_alt": "Jannat Se Aaya Masiha",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "जन्नत से आया मसीहा,\nउसकी हम स्तुति करे,\nगाए, झूमे, हम नाचे,\nजन्नत के गीत सुनाएं\nहालेलुय्याह ..."
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. आओ हम मिलकर आज खुशियां मनाएं\nउद्धार जो पाया हमने,"
+      },
+      {
+        "label": "Verse 2",
+        "text": "गीतों में डालकर सुनाएं\nजगत ..."
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. खाए कोई यीशु ने सबकी चंगाई के लिए\nबहाया खून जो अपना,\nसभी की मुक्ति के लिए\nजगत ..."
+      },
+      {
+        "label": "Verse 4",
+        "text": "३. हम बचे है जो आज,\nयीशु की दया के कारण\nजीवन बदल गया आज यीशु के वचन\nके कारण\nजगत ..."
+      }
+    ]
+  },
+  {
+    "slug": "ishwar-hoon-main-karoon-changa-tujhe",
+    "number": 905,
+    "title": "ईश्वर हूं मैं, करूं चंगा तुझे",
+    "title_alt": "Ishwar Hoon Main, Karoon Changa Tujhe",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "ईश्वर हूं मैं करूं चंगा तुझे\nप्रभु हूं मैं चंगा करता\nमैंने भेजा वचन,\nकिया चंगा रोगों से\nप्रभु हूं मैं चंगा करता"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. ईश्वर हो तुम, मुझे चंगा करता\nप्रभु हो तुम चंगा करता\nतूने भेजा वचन,\nकिया चंगा रोगों से\nप्रभु हो तुम चंगा करता"
+      }
+    ]
+  },
+  {
+    "slug": "karte-hain-teri-stuti",
+    "number": 906,
+    "title": "करते हैं तेरी स्तुति",
+    "title_alt": "Karte Hain Teri Stuti",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "करते हैं तेरी हम स्तुति\nहृदय की गहराईयों से\nयीशु तू ही है\nतू ही है हमारा प्रभु\nमहिमा हो तेरी....४"
+      }
+    ]
+  },
+  {
+    "slug": "tera-lahoo-tera-lahoo",
+    "number": 907,
+    "title": "तेरा लहू, तेरा लहू",
+    "title_alt": "Tera Lahoo, Tera Lahoo",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "तेरा लहू, तेरा लहू\nतेरा लहू पाक करता है\nतेरा लहू जीवन देता है"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. तेरे लहू की धार से,\nमिटते गुनाह और खिलते है फूल ...२\nतेरा लहू .... २\nधोकर के साफ करता है,\nतेरा लहू, जीवन देता है।"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. तेरे लहू में जो छुपे\nकिसी भी बलासे कभी ना डरे .... २\nतेरा लहू .... २\nतेरा लहू हिम्मत देता है,\nतेरा लहू जीवन देता है।"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. तेरा लहू ढाल और किला,\nसबकी पनाह बस तू आसरा .... २\nतेरा लहू .... २\nदिल में सुकून भरता है\nतेरा लहू जीवन देता है।"
+      },
+      {
+        "label": "Verse 4",
+        "text": "४. तेरे लहू के झरनों से,\nजख्म तो क्या मिटें नासूर भी .... २\nतेरा लहू .... २\nमरहम का काम करता है\nतेरा लहू जीवन देता है।"
+      }
+    ]
+  },
+  {
+    "slug": "har-baaton-mein-dhanyavaad-karo",
+    "number": 908,
+    "title": "हर बातों में धन्यवाद करो",
+    "title_alt": "Har Baaton Mein Dhanyavaad Karo",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "हर बातों में धन्यवाद करो\nक्योंकि प्रभु की इच्छा यही है"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. ताली को बजाओ और धन्यवाद करो।\nहाथों को मिलाओ और धन्यवाद करो।\nक्योंकि प्रभु की इच्छा यही है"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. दुख में सुख में धन्यवाद करो।\nअमीरी और गरीबी में धन्यवाद करो।\nआशीषों में धन्यवाद करो।\nक्योंकि प्रभु की इच्छा यही है"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. हर परिस्थिति में धन्यवाद करो।\nनाचते गाते धन्यवाद करो।\nअपने होठों से धन्यवाद करो।\nक्योंकि प्रभु की इच्छा यही है"
+      }
+    ]
+  },
+  {
+    "slug": "alpha-aur-omega",
+    "number": 909,
+    "title": "अल्फा और ओमेगा",
+    "title_alt": "Alpha Aur Omega",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "अल्फा और ओमेगा\nआदि और अंत\nअनंतकाल का ईश्वर\nतेरी आराधना आराधना\nआराधना हालेलुय्याह"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. यहोवा शालोम तेरा नाम है,\nमुझको शांति देता तू\nयहोवा राफा तेरा नाम है\nमुझको चंगा करता तू,\nमुझको कभी ना छोड़ेगा,\nमुझको कभी ना त्यागेगा ...३\nकैसा प्यारा वादा है"
+      }
+    ]
+  },
+  {
+    "slug": "aaradhana-hum-teri-karenge",
+    "number": 990,
+    "title": "आराधना हम तेरी करेंगे",
+    "title_alt": "Aaradhana Hum Teri Karenge",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "आराधना हम तेरी करेंगे\nजैसी आसमां पर होती है पूरी"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. रोज की रोटी हमें वह देता\nजीवन जल से है तृप्त करता\nहम उसकी महिमा में (२)\nशांति पाए\nआराधना हम तेरी करेंगे"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. अंधियारे से उसने हमें है छुड़ाया\nज्योति में हमको यीशु ने लाया\nहम उसके सदा ही (२)\nवारिस कहलाए\nआराधना हम तेरी करेंगे"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. अनंत जीवन यीशु ने दिया है\nप्यार किया है हमसे गहरा\nपिता से उसने ही (२)\nहमें मिलाया है\nआराधना हम तेरी करेंगे"
+      },
+      {
+        "label": "Verse 4",
+        "text": "४. यहोवा रोही तेरा नाम है,\nमेरा चरवाहा है तू,\nयहोवा यिरे तेरा नाम है\nमेरा उपाय करता तू,\nमुझको ना होगी कोई कमी,\nमुझको ना होगी कोई घटी ...२\nहरी चराईयों में चराता है"
+      },
+      {
+        "label": "Verse 5",
+        "text": "५. यहोवा निस्सी तेरा नाम है,\nमेरे जय का झंडा तू\nयहोवा सिदकेनु तेरा नाम है\nमेरी धार्मिकता है तू,\nमेरे गुनाहों और पापों की\nसारी सजा को तू ने सहा,\nमुझको धर्मी बना दिया"
+      }
+    ]
+  },
+  {
+    "slug": "prabhu-parameshwar-tu-kitna",
+    "number": 992,
+    "title": "प्रभु परमेश्वर, तू कितना",
+    "title_alt": "Prabhu Parameshwar, Tu Kitna",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "प्रभु परमेश्वर, तू कितना भला है\nतेरी भलाई सदा की है\nमेरा दिल तुझे धन्यवाद देता\nमेरा प्राण तुझे स्तुति देता"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. कठिन समय में तू मजबूत गढ़\nअंधेरी राह में तू उजियाला है\nमेरी दोहाई तू सुनता\nमेरा प्रभु कभी नहीं सोता\nमेरा प्राण तुझे स्तुति करता"
+      },
+      {
+        "label": "Verse 3",
+        "text": "२. तू कहता है, नहीं छोड़ूंगा\nतू कहता है, नहीं ठुकराऊंगा\nतेरा हाथ मेरी अगुवाई करता\nतेरा सामर्थ मुझे बल देता"
+      }
+    ]
+  },
+  {
+    "slug": "mera-yeshu-bhala-hai",
+    "number": 993,
+    "title": "मेरा यीशु भला है",
+    "title_alt": "Mera Yeshu Bhala Hai",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "मेरा यीशु भला है,\nहरगिज ना छोड़ेगा\nहरगिज ना त्यागेगा\nजय मिलकर गाएंगे\nशत्रु को हराएंगे,\nदेश को जितेंगे"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. करता मुझपे करम, आराम देता\nमुश्किल में मुझे / हर\nराहत देता है / मुझको ..."
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. आंसू देखता, आहों को सुनता\nकष्टों को सहता / मेरे\nमुझको छुड़ाता / यीशु"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. हर परीक्षा में, मैं न डरूंगा\nहक को पाकर के / मेरे\nराज करूंगा / यीशु"
+      },
+      {
+        "label": "Verse 4",
+        "text": "४. टूटे हुए मन से, सच्चे हृदय से\nयीशु को अपना लो / मेरे\nकमियों को भर देगा / तेरे"
+      }
+    ]
+  },
+  {
+    "slug": "abhishek-kar",
+    "number": 994,
+    "title": "अभिषेक कर",
+    "title_alt": "Abhishek Kar",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "अभिषेक कर, अभिषेक कर...२\nअभिषेक मुझे तू कर"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. जिस तरह हिरण तड़पता है,\nपानी के झरने के लिए\nमेरा मन प्यासा है,\nपवित्र आत्मा मेरे लिए ...२\nमैं प्यासा हूं, मेरी प्यास बुझा\nहिरण की तरह तुझे ढूंढ रहा\nप्रभु, प्यास मेरी बुझा"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. जीवन के बोझ के तले,\nमैं यूं ही दबा रहा\nजीवन के झरनों से,\nप्रभु मैं अनजान रहा\nअपने लहू से मुझे शुद्ध कर\nनए जीवन को मुझमें तू भर\nप्रभु, प्यास मेरी बुझा"
+      }
+    ]
+  },
+  {
+    "slug": "main-yeshu-ka-diwana-hoon",
+    "number": 995,
+    "title": "मैं यीशु का दिवाना हूं",
+    "title_alt": "Main Yeshu Ka Diwana Hoon",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Verse 1",
+        "text": "मैं यीशु का दिवाना हूं\nयीशु दिवाना.... हूं\nहां मैं यीशु का दिवाना हूं\nयीशु दिवाना.... हूं"
+      },
+      {
+        "label": "Verse 2",
+        "text": "१. मसीह में हूं मैं नई सृष्टि\nपुराना चला गया\nदेखो सब नया हुआ है\nबिता कल चला गया\nमेरे सर पे हाथ को रखकर"
+      },
+      {
+        "label": "Verse 3",
+        "text": "कहा तुझसे प्यार करूं\nमत डर तू मेरे बेटे\nतेरे संग रहता हूं ... मैं"
+      },
+      {
+        "label": "Verse 4",
+        "text": "२. अब मेरा जीना मसीह है,\nमरना भी मसीह है\nजीने की है एक आरज़ू\nउसे मैं पहचान लूं\nउसी में मैं पाया जाऊं\nदुखों से सहभागी होऊं\nकिसी तरह मरे हुओं से, जी उठने\nतक पहुंचू मैं ... मैं"
+      }
+    ]
+  },
+  {
+    "slug": "teri-jai-ho-teri-jai-ho",
+    "number": 996,
+    "title": "तेरी जय हो, तेरी जय हो",
+    "title_alt": "Teri Jai Ho, Teri Jai Ho",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "तेरी जय हो, तेरी जय हो\nहर दिन सुबह और शाम\nआज, कल और हरदम ...२"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. तू मृदु कृपालु है, तू बड़ दयालु है...२\nविलंब से क्रोध करता है\nतू करुणा निधान है ...२"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. तू हमारे साथ है, तू बड़ा सामर्थी है\nउद्धार करने में पराक्रमी है\nप्रेम का तू सागर है ...२"
+      },
+      {
+        "label": "Verse 3",
+        "text": "३. तू प्रभु विश्वासू है,\nतू अधर्म को ढोता है\nक्षमा गुनाहों को करता है\nतू प्रभु महान है ...२"
+      }
+    ]
+  },
+  {
+    "slug": "vijayi-hua-vijayi-hua",
+    "number": 999,
+    "title": "विजयी हुआ, विजयी हुआ",
+    "title_alt": "Vijayi Hua, Vijayi Hua",
+    "language": "hindi",
+    "tags": [],
+    "stanzas": [
+      {
+        "label": "Chorus",
+        "text": "विजयी हुआ, विजयी हुआ\nयीशु मेरा विजयी हुआ ...२\nशैतान हारा हुआ\nमेरा यीशु विजयी हुआ"
+      },
+      {
+        "label": "Verse 1",
+        "text": "१. यीशु ने क्रूस पर शैतान के,\nसिर को कुचल दिया ...२\nमृत्यु पर विजयी हौंकर,\nहमें विजयी जीवन दिया...२\nहालेलुय्याह...२\nयीशु मेरा विजयी हुआ ...२"
+      },
+      {
+        "label": "Verse 2",
+        "text": "२. शत्रु की शक्ति पर,\nअधिकार हमें दिया ...२\nयहोवा निस्सी हमारा,\nहै जय देने वाला ...२\nहालेलुय्याह...२\nयीशु मेरा विजयी हुआ ...२"
       }
     ]
   }

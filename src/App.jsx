@@ -5,6 +5,8 @@ import SongManage from './pages/SongManage';
 import SongEditor from './pages/SongEditor';
 import Projector from './pages/Projector';
 import SongViewer from './pages/SongViewer';
+import GroupList from './pages/GroupList';
+import GroupDetail from './pages/GroupDetail';
 import Settings from './pages/Settings';
 
 export default function App() {
@@ -12,6 +14,8 @@ export default function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route path="/" element={<SongList />} />
+        <Route path="/groups" element={<GroupList />} />
+        <Route path="/groups/:id" element={<GroupDetail />} />
         <Route path="/manage" element={<SongManage />} />
         <Route path="/songs/new" element={<SongEditor />} />
         <Route path="/songs/:id/edit" element={<SongEditor />} />

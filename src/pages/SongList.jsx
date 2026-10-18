@@ -1,33 +1,44 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSongs } from '../store/SongContext';
 import { buildIndex, parseQuery, scoreSongMatch } from '../lib/search';
-import { isSeedSong } from '../lib/seed';
 import {
   fetchMissingSongs,
   addMissingSong,
   deleteMissingSong,
 } from '../lib/missingSongs';
+import { fetchIncompleteFlags, isSongIncomplete } from '../lib/songIncomplete';
 import MissingSongModal from '../components/MissingSongModal';
 import {
   Search,
-  Play,
   Music,
   X,
-  SlidersHorizontal,
   Eye,
-  Lock,
   FileQuestion,
   Plus,
-  CheckCircle2
+  CheckCircle2,
+  AlertCircle
 } from 'lucide-react';
+
+const SEARCH_STORAGE_KEY = 'church-songbook:search_query';
 
 export default function SongList() {
   const { songs, loading } = useSongs();
   const navigate = useNavigate();
 
-  const [search, setSearch] = useState('');
+  // Search state preserved in sessionStorage across song view/exit
+  const [search, setSearch] = useState(() => {
+    try {
+      return sessionStorage.getItem(SEARCH_STORAGE_KEY) || '';
+    } catch {
+      return '';
+    }
+  });
+
   const [langFilter, setLangFilter] = useState('all'); // 'all' | 'hindi' | 'marathi' | 'english'
+
+  // Incomplete song flags
+  const [incompleteFlags, setIncompleteFlags] = useState({});
 
   // Missing Songs State
   const [missingSongs, setMissingSongs] = useState([]);
@@ -35,21 +46,33 @@ export default function SongList() {
   const [modalKeyword, setModalKeyword] = useState('');
   const [toastMessage, setToastMessage] = useState(null);
 
-  // Load missing songs on mount from Supabase
+  // Sync search state to sessionStorage
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(SEARCH_STORAGE_KEY, search);
+    } catch (e) {
+      // Ignore sessionStorage errors
+    }
+  }, [search]);
+
+  // Load missing songs and incomplete flags on mount
   useEffect(() => {
     fetchMissingSongs()
       .then((list) => {
         if (Array.isArray(list)) setMissingSongs(list);
       })
       .catch((err) => {
-        console.warn('Could not load missing songs from Supabase:', err.message);
+        console.warn('Could not load missing songs:', err.message);
+      });
+
+    fetchIncompleteFlags()
+      .then((flags) => {
+        if (flags) setIncompleteFlags(flags);
+      })
+      .catch((err) => {
+        console.warn('Could not load incomplete flags:', err.message);
       });
   }, []);
-
-  const handleOpenMissingModal = () => {
-    setModalKeyword('');
-    setIsMissingModalOpen(true);
-  };
 
   const handleQuickReport = async (keywordToReport) => {
     const val = String(keywordToReport || search || '').trim();
@@ -58,12 +81,11 @@ export default function SongList() {
     try {
       const { list } = await addMissingSong(val);
       setMissingSongs(list);
-      setToastMessage(`"${val}" saved to Supabase!`);
+      setToastMessage(`"${val}" saved as requested missing song!`);
       setTimeout(() => setToastMessage(null), 3500);
-      // Only show toast, do not open popup
     } catch (err) {
-      console.error('Error reporting missing song to Supabase:', err);
-      setToastMessage(err.message || `Failed to save "${val}" to Supabase`);
+      console.error('Error reporting missing song:', err);
+      setToastMessage(err.message || `Failed to save "${val}"`);
       setTimeout(() => setToastMessage(null), 4500);
     }
   };
@@ -77,7 +99,7 @@ export default function SongList() {
     try {
       const updated = await deleteMissingSong(id);
       setMissingSongs(updated);
-      setToastMessage('Song removed from Supabase');
+      setToastMessage('Song removed');
       setTimeout(() => setToastMessage(null), 3000);
     } catch (err) {
       setToastMessage(err.message || 'Error deleting from Supabase');
@@ -113,7 +135,7 @@ export default function SongList() {
   }, [indexed, parsedQuery, langFilter]);
 
   return (
-    <div className="space-y-4 pb-20">
+    <div className="space-y-3.5 pb-20 w-full max-w-full overflow-x-hidden">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed top-16 sm:top-20 right-4 left-4 sm:left-auto sm:max-w-md z-50 flex items-center gap-2.5 rounded-2xl bg-slate-900/95 text-white p-3.5 shadow-xl border border-slate-800 backdrop-blur-md text-xs font-bold animate-in fade-in slide-in-from-top-4 duration-200">
@@ -128,60 +150,20 @@ export default function SongList() {
         </div>
       )}
 
-      {/* Top Header */}
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex items-center gap-2 sm:gap-2.5">
-          <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
-            Songbook
-          </h1>
-          <span className="rounded-full bg-emerald-50 border border-emerald-300/80 px-2.5 py-0.5 text-xs font-bold text-emerald-800 shadow-2xs">
-            {filteredSongs.length}
-          </span>
-        </div>
-
-        <div className="flex items-center gap-1.5 sm:gap-2">
-          {/* Button Near Manage Songs to View Missing Songs */}
-          <button
-            type="button"
-            onClick={handleOpenMissingModal}
-            className="flex items-center gap-1.5 rounded-xl border border-amber-200/90 bg-amber-50 hover:bg-amber-100 hover:border-amber-300 px-2.5 sm:px-3 py-1.5 text-xs font-bold text-amber-800 transition-all shadow-2xs active:scale-95"
-            title="View reported missing songs list"
-          >
-            <FileQuestion className="h-3.5 w-3.5 text-amber-600 shrink-0" />
-            <span className="hidden sm:inline">Reported Missing</span>
-            <span className="sm:hidden">Missing</span>
-            {missingSongs.length > 0 && (
-              <span className="rounded-full bg-amber-200/90 px-1.5 py-0.2 text-[10px] font-black text-amber-900 leading-none">
-                {missingSongs.length}
-              </span>
-            )}
-          </button>
-
-          <Link
-            to="/manage"
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200/90 bg-white px-2.5 sm:px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition shadow-xs"
-          >
-            <SlidersHorizontal className="h-3.5 w-3.5 text-slate-500 shrink-0" />
-            <span className="hidden sm:inline">Manage Songs</span>
-            <span className="sm:hidden">Manage</span>
-          </Link>
-        </div>
-      </div>
-
-      {/* Search Bar and Language Filter Pills */}
-      <div className="grid gap-2.5 sm:grid-cols-12">
+      {/* Search Bar and Language Filter Pills - Clean and No Top Bar Clutter */}
+      <div className="grid gap-2.5 sm:grid-cols-12 w-full max-w-full">
         {/* Search Bar */}
-        <div className="relative sm:col-span-7">
-          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+        <div className="relative sm:col-span-7 min-w-0 w-full">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
           <input
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by title, number (#5), or lyrics..."
-            className="w-full rounded-xl border border-slate-200/90 bg-white pl-10 pr-24 sm:pr-28 py-2.5 text-sm font-normal text-slate-800 focus:border-slate-400 focus:outline-none shadow-2xs transition"
+            placeholder="Search songs by title or lyrics..."
+            className="w-full rounded-xl border border-slate-200/90 bg-white pl-10 pr-24 sm:pr-28 py-2.5 text-sm font-normal text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none shadow-2xs transition"
           />
 
-          {/* Action buttons inside / near search bar */}
+          {/* Action buttons inside search bar */}
           <div className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
             {search.trim() && (
               <button
@@ -198,7 +180,12 @@ export default function SongList() {
             {search && (
               <button
                 type="button"
-                onClick={() => setSearch('')}
+                onClick={() => {
+                  setSearch('');
+                  try {
+                    sessionStorage.removeItem(SEARCH_STORAGE_KEY);
+                  } catch (e) {}
+                }}
                 className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition"
                 title="Clear search"
               >
@@ -209,7 +196,7 @@ export default function SongList() {
         </div>
 
         {/* Language Tabs */}
-        <div className="flex rounded-xl border border-slate-200/90 bg-white p-1 sm:col-span-5 shadow-xs overflow-x-auto">
+        <div className="flex rounded-xl border border-slate-200/90 bg-white p-1 sm:col-span-5 shadow-xs overflow-x-auto min-w-0 max-w-full">
           {[
             { id: 'all', label: 'All' },
             { id: 'hindi', label: 'हिन्दी' },
@@ -269,6 +256,9 @@ export default function SongList() {
                 type="button"
                 onClick={() => {
                   setSearch('');
+                  try {
+                    sessionStorage.removeItem(SEARCH_STORAGE_KEY);
+                  } catch (e) {}
                   setLangFilter('all');
                 }}
                 className="inline-flex items-center rounded-xl border border-slate-300 bg-slate-50 px-4 py-2 text-xs font-medium text-slate-700 hover:bg-slate-100 transition"
@@ -276,13 +266,6 @@ export default function SongList() {
                 Clear Filters
               </button>
             )}
-
-            <Link
-              to="/manage"
-              className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-medium text-white hover:bg-emerald-700 shadow-sm shadow-emerald-600/20 transition"
-            >
-              <span>Manage & Import</span>
-            </Link>
           </div>
         </div>
       )}
@@ -298,70 +281,44 @@ export default function SongList() {
         onDeleteMissing={handleDeleteMissingFromModal}
       />
 
-      {/* High-Density Responsive Song Cards Grid */}
+      {/* Pure, Uncluttered Clean List View (No cards, only View button, no seed/number/lang/english clutter) */}
       {!loading && filteredSongs.length > 0 && (
-        <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        <div className="flex flex-col divide-y divide-slate-100 rounded-2xl border border-slate-200/90 bg-white overflow-hidden shadow-2xs w-full max-w-full">
           {filteredSongs.map((song) => {
-            const isSeed = isSeedSong(song);
+            const needsEdit = isSongIncomplete(song, incompleteFlags);
 
             return (
               <div
                 key={song.id}
-                onClick={() => navigate(`/present/${song.id}`)}
-                className="interactive-card group relative flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-3.5 shadow-2xs transition-all hover:border-emerald-400 hover:shadow-md hover:shadow-emerald-600/10 cursor-pointer"
+                onClick={() => navigate(`/view/${song.id}`)}
+                className="group flex items-center justify-between gap-3 px-3.5 py-3 sm:px-5 sm:py-3.5 hover:bg-slate-50/90 active:bg-slate-100/80 transition-colors cursor-pointer"
               >
-                <div className="space-y-1.5">
-                  {/* Badges */}
-                  <div className="flex flex-wrap items-center gap-1">
-                    {isSeed && (
-                      <span className="inline-flex items-center gap-0.5 rounded-md bg-slate-100 border border-slate-200/90 px-1.5 py-0.5 text-[9px] font-semibold text-slate-600 uppercase tracking-wider" title="Seed song · Read-only">
-                        <Lock className="h-2.5 w-2.5 text-slate-500" />
-                        <span>SEED</span>
-                      </span>
-                    )}
-                    <span className="inline-block rounded-md bg-slate-100 border border-slate-200/70 px-1.5 py-0.5 text-[10px] font-semibold text-slate-700">
-                      #{song.number || '•'}
-                    </span>
-                    <span className="rounded-md bg-emerald-50 border border-emerald-200/60 px-1.5 py-0.5 text-[9px] font-semibold text-emerald-800 uppercase tracking-wider">
-                      {song.language === 'marathi' ? 'मराठी' : song.language === 'hindi' ? 'हिन्दी' : 'EN'}
-                    </span>
-                  </div>
-
-                  {/* Song Title */}
-                  <h3 className="font-semibold text-xs sm:text-sm text-slate-900 group-hover:text-emerald-700 line-clamp-2 leading-snug transition-colors">
+                {/* Song Title (Clean & Simple) */}
+                <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                  <span className="font-semibold text-sm sm:text-base text-slate-900 group-hover:text-emerald-700 transition-colors truncate">
                     {song.title}
-                  </h3>
-                  {song.title_alt && (
-                    <p className="text-[11px] text-slate-400 line-clamp-1 italic font-normal">
-                      {song.title_alt}
-                    </p>
+                  </span>
+
+                  {needsEdit && (
+                    <span 
+                      className="inline-flex items-center gap-1 rounded-md bg-amber-50 border border-amber-200/80 px-1.5 py-0.5 text-[10px] font-bold text-amber-800 shrink-0"
+                      title="This song is marked as requiring edit / incomplete"
+                    >
+                      <AlertCircle className="h-3 w-3 text-amber-600" />
+                      <span>Needs Edit</span>
+                    </span>
                   )}
                 </div>
 
-                {/* Action Buttons: Present & View */}
-                <div 
-                  className="mt-3.5 flex items-center justify-between border-t border-slate-100 pt-2.5 gap-1.5"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  {/* Present Button */}
-                  <button
-                    type="button"
-                    onClick={() => navigate(`/present/${song.id}`)}
-                    className="flex-1 flex items-center justify-center gap-1 rounded-lg bg-emerald-600 py-1.5 text-[11px] font-semibold text-white hover:bg-emerald-700 transition shadow-2xs"
-                    title="Launch slide projector"
-                  >
-                    <Play className="h-3 w-3 fill-current" />
-                    <span>Present</span>
-                  </button>
-
-                  {/* View (Scrollable Reader) Button */}
+                {/* Only View Button (No Present button on list) */}
+                <div className="shrink-0 flex items-center" onClick={(e) => e.stopPropagation()}>
                   <button
                     type="button"
                     onClick={() => navigate(`/view/${song.id}`)}
-                    className="flex-1 flex items-center justify-center gap-1 rounded-lg border border-slate-200 bg-slate-50 py-1.5 text-[11px] font-medium text-slate-700 hover:bg-slate-100 hover:border-slate-300 transition"
-                    title="View full scrollable lyrics"
+                    className="flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50/90 px-3 py-1.5 text-xs font-semibold text-slate-700 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition shadow-2xs active:scale-95"
+                    title="View song lyrics"
                   >
-                    <Eye className="h-3 w-3 text-slate-500" />
+                    <Eye className="h-3.5 w-3.5" />
                     <span>View</span>
                   </button>
                 </div>
