@@ -30,9 +30,10 @@ export function loadSeedSongs() {
     if (!song.title || typeof song.title !== 'string') {
       throw new Error(`${where}: missing "title"`);
     }
-    if (!['hindi', 'english', 'marathi'].includes(song.language)) {
-      throw new Error(`${where}: invalid language "${song.language}"`);
-    }
+    const VALID_LANGS = ['hindi', 'english', 'marathi', 'bilingual'];
+    const normalizedLang = String(song.language || 'hindi').toLowerCase().trim();
+    const finalLanguage = VALID_LANGS.includes(normalizedLang) ? normalizedLang : 'hindi';
+
     if (!Array.isArray(song.stanzas) || song.stanzas.length === 0) {
       throw new Error(`${where}: "stanzas" must be a non-empty array`);
     }
@@ -44,6 +45,7 @@ export function loadSeedSongs() {
 
     return normalizeSong({
       ...song,
+      language: finalLanguage,
       id: `seed:${song.slug}`, // stable, prefix-marked ID
       source: 'seed',
       stanzas: song.stanzas.map((s) => ({

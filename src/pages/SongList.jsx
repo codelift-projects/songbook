@@ -124,7 +124,7 @@ export default function SongList() {
         score: scoreSongMatch(index, parsedQuery),
       }))
       .filter(({ song, score }) => {
-        if (langFilter !== 'all' && song.language !== langFilter) return false;
+        if (langFilter !== 'all' && song.language !== langFilter && song.language !== 'bilingual') return false;
         return score > 0;
       })
       .sort((a, b) => {

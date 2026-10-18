@@ -14,7 +14,7 @@ export function SongProvider({ children }) {
       return loadSeedSongs();
     } catch (err) {
       console.error('Failed to load seed songs:', err);
-      throw err;
+      return [];
     }
   }, []);
 
