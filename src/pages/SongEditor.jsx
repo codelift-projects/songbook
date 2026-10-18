@@ -7,21 +7,11 @@ import { isSeedSong } from '../lib/seed';
 import { formatCommaLines, NEXT_LINE_SHIFT_SYMBOL } from '../lib/parse';
 import SongImportModal from '../components/SongImportModal';
 import { 
-  Save, 
   ArrowLeft, 
-  Plus, 
   Trash2, 
-  Play, 
-  Upload, 
   MoveUp, 
   MoveDown,
-  Copy,
-  Eye,
-  Music2,
-  Lock,
-  Sparkles,
-  CornerDownLeft,
-  Check
+  Copy
 } from 'lucide-react';
 
 export default function SongEditor() {
@@ -49,6 +39,7 @@ export default function SongEditor() {
   const [importModalOpen, setImportModalOpen] = useState(false);
   const [previewSlideIdx, setPreviewSlideIdx] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
+  const [mobileTab, setMobileTab] = useState('edit'); // 'edit' | 'preview'
 
   // Initialize from location state if duplicating or from query parameters (e.g. from missing songs)
   useEffect(() => {
@@ -327,8 +318,8 @@ export default function SongEditor() {
   return (
     <div className="mx-auto max-w-5xl pb-16 space-y-5">
       {/* Top Header */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pb-1">
-        <div className="flex items-center gap-2.5">
+      <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between pb-1">
+        <div className="flex items-center gap-2">
           <button
             onClick={() => navigate(-1)}
             className="rounded-xl border border-slate-200 bg-white p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition shadow-2xs active:scale-95"
@@ -336,62 +327,85 @@ export default function SongEditor() {
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
-          <h1 className="text-lg font-black text-slate-900 flex items-center gap-2">
-            <Music2 className="h-5 w-5 text-emerald-600" />
-            <span>{isEdit ? 'Edit Song' : 'New Song'}</span>
+          <h1 className="text-base sm:text-lg font-black text-slate-900">
+            {isEdit ? 'Edit Song' : 'New Song'}
           </h1>
         </div>
 
-        {/* Action Buttons */}
-        <div className="flex flex-wrap items-center gap-2">
+        {/* Action Buttons: Clean text-only buttons */}
+        <div className="grid grid-cols-4 sm:flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto">
           <button
             type="button"
             onClick={() => setImportModalOpen(true)}
-            className="flex items-center gap-1.5 rounded-xl border border-slate-300/80 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-2xs active:scale-95"
+            className="flex items-center justify-center rounded-xl border border-slate-300/80 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-2xs active:scale-95 text-center"
           >
-            <Upload className="h-3.5 w-3.5 text-emerald-600" />
-            <span>Import</span>
+            Import
           </button>
 
-          {isEdit && (
+          {isEdit ? (
             <button
               type="button"
               onClick={handleDuplicateToDb}
-              className="flex items-center gap-1.5 rounded-xl border border-slate-300/80 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-2xs active:scale-95"
+              className="flex items-center justify-center rounded-xl border border-slate-300/80 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-2xs active:scale-95 text-center"
               title="Duplicate into a new song"
             >
-              <Copy className="h-3.5 w-3.5 text-slate-600" />
-              <span>Duplicate</span>
+              Duplicate
             </button>
+          ) : (
+            <div className="sm:hidden" />
           )}
 
           <button
             type="button"
             onClick={(e) => handleSubmit(e, true)}
             disabled={isSaving}
-            className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-slate-800 transition shadow-sm active:scale-95"
+            className="flex items-center justify-center rounded-xl bg-slate-900 px-3 py-1.5 text-xs font-bold text-white hover:bg-slate-800 transition shadow-sm active:scale-95 text-center"
           >
-            <Play className="h-3.5 w-3.5 fill-current" />
-            <span>Present</span>
+            Present
           </button>
 
           <button
             type="button"
             onClick={(e) => handleSubmit(e, false)}
             disabled={isSaving}
-            className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-1.5 text-xs font-black text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 transition active:scale-95"
+            className="flex items-center justify-center rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-black text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 transition active:scale-95 text-center"
           >
-            <Save className="h-3.5 w-3.5" />
-            <span>{isSaving ? 'Saving...' : 'Save'}</span>
+            {isSaving ? 'Saving...' : 'Save'}
           </button>
         </div>
       </div>
 
+      {/* Mobile Tab Switcher (Visible on mobile screens) */}
+      <div className="lg:hidden flex rounded-xl border border-slate-200/90 bg-white p-1 shadow-2xs">
+        <button
+          type="button"
+          onClick={() => setMobileTab('edit')}
+          className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition text-center ${
+            mobileTab === 'edit'
+              ? 'bg-slate-900 text-white shadow-2xs'
+              : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          Edit Lyrics ({stanzas.length})
+        </button>
+        <button
+          type="button"
+          onClick={() => setMobileTab('preview')}
+          className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition text-center ${
+            mobileTab === 'preview'
+              ? 'bg-emerald-600 text-white shadow-2xs'
+              : 'text-slate-600 hover:text-slate-900'
+          }`}
+        >
+          Preview ({previewSlideIdx + 1}/{previewSlides.length})
+        </button>
+      </div>
+
       <div className="grid gap-5 lg:grid-cols-12">
         {/* Left Column: Form Details & Stanzas */}
-        <div className="space-y-5 lg:col-span-7">
+        <div className={`space-y-5 lg:col-span-7 ${mobileTab === 'preview' ? 'hidden lg:block' : 'block'}`}>
           {/* Metadata Card */}
-          <section className="rounded-2xl border border-slate-200/90 bg-white p-5 space-y-4 shadow-xs">
+          <section className="rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 space-y-4 shadow-xs">
             <div className="grid gap-4 sm:grid-cols-12">
               {/* Number (Auto-assigned) */}
               <div className="sm:col-span-4">
@@ -481,28 +495,10 @@ export default function SongEditor() {
 
               {/* Song Type: Praise or Worship */}
               <div className="sm:col-span-4">
-                <div className="flex items-center justify-between mb-1">
-                  <label className="text-xs font-black text-slate-700">
-                    Song Type
-                  </label>
-                  {isSeed && (
-                    <span className="text-[10px] text-emerald-700 font-bold">
-                      Editable
-                    </span>
-                  )}
-                </div>
+                <label className="text-xs font-black text-slate-700 block mb-1">
+                  Song Type
+                </label>
                 <div className="grid grid-cols-2 gap-1.5">
-                  <button
-                    type="button"
-                    onClick={() => setSongType('praise')}
-                    className={`rounded-xl border py-2 text-xs font-black transition-all ${
-                      songType === 'praise'
-                        ? 'border-indigo-600 bg-indigo-50 text-indigo-800 ring-1 ring-indigo-600 shadow-2xs'
-                        : 'border-slate-200/90 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                    }`}
-                  >
-                    Praise
-                  </button>
                   <button
                     type="button"
                     onClick={() => setSongType('worship')}
@@ -514,60 +510,39 @@ export default function SongEditor() {
                   >
                     Worship
                   </button>
+                  <button
+                    type="button"
+                    onClick={() => setSongType('praise')}
+                    className={`rounded-xl border py-2 text-xs font-black transition-all ${
+                      songType === 'praise'
+                        ? 'border-indigo-600 bg-indigo-50 text-indigo-800 ring-1 ring-indigo-600 shadow-2xs'
+                        : 'border-slate-200/90 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    }`}
+                  >
+                    Praise
+                  </button>
                 </div>
               </div>
 
-              {/* Beat / Time Signature */}
+              {/* Beat: Simple text / int input (no prebuilt buttons) */}
               <div className="sm:col-span-4">
-                <div className="flex items-center justify-between mb-1">
-                  <label className="text-xs font-black text-slate-700">
-                    Beat / Signature
-                  </label>
-                  {isSeed && (
-                    <span className="text-[10px] text-emerald-700 font-bold">
-                      Editable
-                    </span>
-                  )}
-                </div>
-                <div className="space-y-1.5">
-                  <input
-                    type="text"
-                    placeholder="e.g. 13, 31, 37, 49, 55, 68, NA"
-                    value={beat}
-                    onChange={(e) => setBeat(e.target.value)}
-                    className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs bg-slate-50/70 focus:bg-white"
-                  />
-                  <div className="flex flex-wrap gap-1">
-                    {['13', '31', '37', '49', '55', '68', 'NA'].map((b) => (
-                      <button
-                        key={b}
-                        type="button"
-                        onClick={() => setBeat(b)}
-                        className={`rounded-lg border px-1.5 py-0.5 text-[10px] font-bold transition ${
-                          beat === b
-                            ? 'bg-emerald-600 text-white border-emerald-600'
-                            : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-                        }`}
-                      >
-                        {b}
-                      </button>
-                    ))}
-                  </div>
-                </div>
+                <label className="text-xs font-black text-slate-700 block mb-1">
+                  Beat
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. 13, 31, 37..."
+                  value={beat}
+                  onChange={(e) => setBeat(e.target.value)}
+                  className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs bg-slate-50/70 focus:bg-white"
+                />
               </div>
 
-              {/* Tempo (BPM) */}
+              {/* Tempo: Simple integer number input (no slider) */}
               <div className="sm:col-span-4">
-                <div className="flex items-center justify-between mb-1">
-                  <label className="text-xs font-black text-slate-700">
-                    Tempo (BPM)
-                  </label>
-                  {isSeed && (
-                    <span className="text-[10px] text-emerald-700 font-bold">
-                      Editable
-                    </span>
-                  )}
-                </div>
+                <label className="text-xs font-black text-slate-700 block mb-1">
+                  Tempo (BPM)
+                </label>
                 <div className="flex items-center gap-1.5">
                   <input
                     type="number"
@@ -617,7 +592,6 @@ export default function SongEditor() {
                   className="rounded-lg border border-slate-300/80 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100 transition shadow-2xs"
                   title="Insert duplicate of Chorus at the end"
                 >
-                  <Copy className="inline mr-1 h-3 w-3 text-emerald-600" />
                   Repeat Chorus
                 </button>
 
@@ -632,10 +606,9 @@ export default function SongEditor() {
                 <button
                   type="button"
                   onClick={() => handleAddStanza()}
-                  className="flex items-center gap-1 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-black text-white hover:bg-emerald-700 transition shadow-xs"
+                  className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-black text-white hover:bg-emerald-700 transition shadow-xs"
                 >
-                  <Plus className="h-3.5 w-3.5" />
-                  <span>+ {language === 'marathi' ? 'चरण' : language === 'hindi' ? 'पद' : 'Verse'}</span>
+                  + {language === 'marathi' ? 'चरण' : language === 'hindi' ? 'पद' : 'Verse'}
                 </button>
               </div>
             </div>
@@ -652,7 +625,7 @@ export default function SongEditor() {
                 return (
                   <div
                     key={stanza.id || idx}
-                    className={`rounded-2xl border p-4 transition-all duration-150 ${
+                    className={`rounded-2xl border p-3.5 sm:p-4 transition-all duration-150 ${
                       isChorus
                         ? 'border-emerald-300/80 bg-emerald-50/40 shadow-xs'
                         : 'border-slate-200/90 bg-white hover:border-slate-300 shadow-2xs'
@@ -725,7 +698,6 @@ export default function SongEditor() {
                         className="inline-flex items-center gap-1 rounded-lg border border-teal-300 bg-teal-50 px-2.5 py-1 text-[11px] font-black text-teal-800 hover:bg-teal-100 transition shadow-2xs"
                         title="Insert next-line shift symbol (//) at cursor. In reader view and projector, following words shift to the next line."
                       >
-                        <CornerDownLeft className="h-3.5 w-3.5 text-teal-600" />
                         <span>↵ Next Line Shift (//)</span>
                       </button>
                       <span className="text-[10px] text-slate-400 font-medium">
@@ -758,12 +730,11 @@ export default function SongEditor() {
         </div>
 
         {/* Right Column: Live Projector Slide Preview */}
-        <div className="space-y-4 lg:col-span-5">
+        <div className={`space-y-4 lg:col-span-5 ${mobileTab === 'edit' ? 'hidden lg:block' : 'block'}`}>
           <div className="sticky top-20 space-y-3">
             <div className="flex items-center justify-between">
-              <h2 className="text-xs font-black uppercase tracking-wider text-slate-700 flex items-center gap-1.5">
-                <Eye className="h-4 w-4 text-emerald-600" />
-                <span>Live Projector Preview</span>
+              <h2 className="text-xs font-black uppercase tracking-wider text-slate-700">
+                Live Projector Preview
               </h2>
 
               <span className="text-[11px] font-black text-slate-500">
