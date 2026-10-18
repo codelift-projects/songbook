@@ -409,8 +409,42 @@
     "tempo": 104
   },
   {
+    "slug": "aaya-masih-charni-mein-tu",
+    "title": "आया मसीह चरणी में तू",
+    "title_alt": "Aaya Masih Charni Mein Tu",
+    "language": "hindi",
+    "tags": [
+      "Carol",
+      "Christmas",
+      "Praise",
+      "Joy"
+    ],
+    "type": "praise",
+    "beat": "4/4",
+    "tempo": 105,
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "आया मसीह चरणी में तू..\nआया मसीह चरणी में तू..\nपापियों को बचाने, मुक्ति दिलाने..\nआया मसीह चरणी में तू.."
+      },
+      {
+        "label": "पद 1",
+        "text": "छोड़ के अपना स्वर्गीय धाम..\nलिया उसने मनुष्य का नाम..\nदीन बना हीन बना..\nप्रेम का सागर बहाने को.."
+      },
+      {
+        "label": "पद 2",
+        "text": "चरवाहों ने सन्देश सुना..\nदूतों का मधुर तराना सुना..\nशान्ति मिले मुक्ति मिले..\nयीशु मसीह के आने से.."
+      },
+      {
+        "label": "पद 3",
+        "text": "पूरब से आए ज्ञानी जन..\nभेंट चढ़ाई तन और मन..\nसोना लोबान और गंधरस..\nराजाधिराज को अर्पण किया.."
+      }
+    ],
+    "number": 15
+  },
+  {
     "slug": "aaye-prabhu-ham-tere-dwaar",
-    "number": 15,
+    "number": 16,
     "title": "आये प्रभु हम तेरे द्वार",
     "title_alt": "Aaye prabhu ham tere dwaar",
     "language": "hindi",
@@ -445,7 +479,7 @@
   },
   {
     "slug": "aaye-hain-hum-tere-charnon-me",
-    "number": 16,
+    "number": 17,
     "title": "आये हैं हम, तेरे चरणों मे",
     "title_alt": "Aaye Hain Hum, Tere Charnon Me",
     "language": "hindi",
@@ -481,7 +515,7 @@
   },
   {
     "slug": "aaradhana-aaradhana",
-    "number": 17,
+    "number": 18,
     "title": "आराधना आराधना",
     "title_alt": "Aaradhana Aaradhana",
     "language": "hindi",
@@ -506,7 +540,7 @@
   },
   {
     "slug": "aaradhana-mein-hai-chhutkara-aaradhana-mein-hai-changai",
-    "number": 18,
+    "number": 19,
     "title": "आराधना में है छुटकारा, आराधना में है चंगाई",
     "title_alt": "Aaradhana Mein Hai Chhutkara, Aaradhana Mein Hai Changai",
     "language": "hindi",
@@ -534,7 +568,7 @@
   },
   {
     "slug": "aaradhana-hum-teri-karenge",
-    "number": 19,
+    "number": 20,
     "title": "आराधना हम तेरी करेंगे",
     "title_alt": "Aaradhana Hum Teri Karenge",
     "language": "hindi",
@@ -571,7 +605,7 @@
   },
   {
     "slug": "aawaaz-uthayenge",
-    "number": 20,
+    "number": 21,
     "title": "आवाज़ उठाएंगे",
     "title_alt": "Aawaaz uthayenge",
     "language": "hindi",
@@ -603,7 +637,7 @@
   },
   {
     "slug": "aawaz-uthayenge-hum-saaz-bajayenge",
-    "number": 21,
+    "number": 22,
     "title": "आवाज उठायेंगे, हम साज बजायेंगे",
     "title_alt": "Aawaz Uthayenge, Hum Saaz Bajayenge",
     "language": "hindi",
@@ -635,7 +669,7 @@
   },
   {
     "slug": "asha-meri",
-    "number": 22,
+    "number": 23,
     "title": "आशा मेरी",
     "title_alt": "Asha meri",
     "language": "hindi",
@@ -695,7 +729,7 @@
   },
   {
     "slug": "aashish-tum-se-chahte-hai",
-    "number": 23,
+    "number": 24,
     "title": "आशीष तुम से चाहते हैं",
     "title_alt": "Aashish Tum Se Chahte Hai",
     "language": "hindi",
@@ -726,8 +760,37 @@
     "tempo": 74
   },
   {
+    "slug": "aasmaan-pe-chamka-taara",
+    "title": "आसमान पे चमका तारा",
+    "title_alt": "Aasmaan Pe Chamka Taara",
+    "language": "hindi",
+    "tags": [
+      "Carol",
+      "Christmas",
+      "Praise"
+    ],
+    "type": "praise",
+    "beat": "4/4",
+    "tempo": 106,
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "आसमान पे चमका तारा..\nप्यारा तारा, जगमग तारा..\nबता रहा है जगत को यह..\nजन्मा है उद्धारकर्ता हमारा.."
+      },
+      {
+        "label": "पद 1",
+        "text": "चमका तारा ज्ञानियों को राह दिखाई..\nबेतलेहेम की ओर ले आई..\nझुक कर किया उन्होंने प्रणाम..\nधन्य हुआ हर प्राणी का नाम.."
+      },
+      {
+        "label": "पद 2",
+        "text": "खुशियां मनाओ, बाजे बजाओ..\nयीशु राजा के गुण गाओ..\nआया जगत में प्रेम सिखाने..\nपापों के बंधन से छुड़ाने.."
+      }
+    ],
+    "number": 25
+  },
+  {
     "slug": "ishwar-hoon-main-karoon-changa-tujhe",
-    "number": 24,
+    "number": 26,
     "title": "ईश्वर हूं मैं, करूं चंगा तुझे",
     "title_alt": "Ishwar Hoon Main, Karoon Changa Tujhe",
     "language": "hindi",
@@ -748,7 +811,7 @@
   },
   {
     "slug": "uthte-hain-tera-naam-teri-stuti-karte-hue",
-    "number": 25,
+    "number": 27,
     "title": "उठाते हैं तेरा नाम, तेरी स्तुति करते हुए",
     "title_alt": "Uthte Hain Tera Naam, Teri Stuti Karte Hue",
     "language": "hindi",
@@ -772,7 +835,7 @@
   },
   {
     "slug": "uth-aa-uth-aa-uth-aa",
-    "number": 26,
+    "number": 28,
     "title": "उतर आ, उतर आ, ऐ रूह-ए-पाक उतर आ",
     "title_alt": "Uth Aa, Uth Aa, Uth Aa",
     "language": "hindi",
@@ -804,7 +867,7 @@
   },
   {
     "slug": "aur-paas-tere-aana-chahta-hoon",
-    "number": 27,
+    "number": 29,
     "title": "और पास तेरे आना चाहता हूं",
     "title_alt": "Aur Paas Tere Aana Chahta Hoon",
     "language": "hindi",
@@ -821,7 +884,7 @@
   },
   {
     "slug": "karta-samarpan",
-    "number": 28,
+    "number": 30,
     "title": "करता समर्पण",
     "title_alt": "Karta Samarpan",
     "language": "hindi",
@@ -838,7 +901,7 @@
   },
   {
     "slug": "karte-hain-teri-stuti",
-    "number": 29,
+    "number": 31,
     "title": "करते हैं तेरी स्तुति",
     "title_alt": "Karte Hain Teri Stuti",
     "language": "hindi",
@@ -855,7 +918,7 @@
   },
   {
     "slug": "karte-hain-teri-mahima-yehova",
-    "number": 30,
+    "number": 32,
     "title": "करते हैं तेरी हम स्तुति",
     "title_alt": "Karte Hain Teri Mahima Yehova",
     "language": "hindi",
@@ -879,7 +942,7 @@
   },
   {
     "slug": "kehta-hai-dil-mera-dhanyavaad-prabhu",
-    "number": 31,
+    "number": 33,
     "title": "कहता है दिल मेरा",
     "title_alt": "Kehta hai dil mera dhanyavaad prabhu",
     "language": "hindi",
@@ -906,7 +969,7 @@
   },
   {
     "slug": "kitna-pyara-hai-yeshu-naam",
-    "number": 32,
+    "number": 34,
     "title": "कितना प्यारा है यीशु नाम",
     "title_alt": "Kitna Pyara Hai Yeshu Naam",
     "language": "hindi",
@@ -934,7 +997,7 @@
   },
   {
     "slug": "kitna-haseen-varda-kiya-khudavand-ne",
-    "number": 33,
+    "number": 35,
     "title": "कितना हसीन वादा किया खुदावंद ने",
     "title_alt": "Kitna Haseen Varda Kiya Khudavand Ne",
     "language": "hindi",
@@ -966,7 +1029,7 @@
   },
   {
     "slug": "kya-hai-teri-ichchha-prabhu",
-    "number": 34,
+    "number": 36,
     "title": "क्या है तेरी इच्छा प्रभु",
     "title_alt": "Kya Hai Teri Ichchha Prabhu",
     "language": "hindi",
@@ -986,7 +1049,7 @@
   },
   {
     "slug": "khaali-hoon-bhar-de-mujhko",
-    "number": 35,
+    "number": 37,
     "title": "खाली हूँ भर दे मुझको",
     "title_alt": "Khaali Hoon Bhar De Mujhko",
     "language": "hindi",
@@ -1014,7 +1077,7 @@
   },
   {
     "slug": "khushi-manao-gaao-re",
-    "number": 36,
+    "number": 38,
     "title": "ख़ुशी मनाओ गाओ रे",
     "title_alt": "Khushi manao gaao re",
     "language": "hindi",
@@ -1042,7 +1105,7 @@
   },
   {
     "slug": "khrist-marr-gaye",
-    "number": 37,
+    "number": 39,
     "title": "ख्रीस्त मर गये",
     "title_alt": "Khrist marr gaye",
     "language": "hindi",
@@ -1061,7 +1124,7 @@
   },
   {
     "slug": "gaane-ka-dil",
-    "number": 38,
+    "number": 40,
     "title": "गाने का दिल",
     "title_alt": "Gaane Ka Dil",
     "language": "hindi",
@@ -1090,7 +1153,7 @@
   },
   {
     "slug": "changa-karta-hai",
-    "number": 39,
+    "number": 41,
     "title": "चंगा करता है",
     "title_alt": "Changa karta hai",
     "language": "hindi",
@@ -1125,7 +1188,7 @@
   },
   {
     "slug": "chattan",
-    "number": 40,
+    "number": 42,
     "title": "चट्टान",
     "title_alt": "Chattan",
     "language": "hindi",
@@ -1159,8 +1222,41 @@
     "tempo": 74
   },
   {
+    "slug": "chamka-ek-sitara",
+    "title": "चमका एक सितारा",
+    "title_alt": "Chamka Ek Sitara",
+    "language": "hindi",
+    "tags": [
+      "Carol",
+      "Christmas",
+      "Praise"
+    ],
+    "type": "praise",
+    "beat": "4/4",
+    "tempo": 100,
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "चमका एक सितारा, पूरब दिशा में..\nआया जगत का उद्धारकर्ता..\nगाओ खुशी के गीत सभी जन..\nआया मसीह हमारा.."
+      },
+      {
+        "label": "पद 1",
+        "text": "रात सुहानी, बेतलेहेम में..\nदूतों ने जय जयकार किया..\nसर्वोच्च में महिमा प्रभु की..\nधरती पर शांति का पैगाम दिया.."
+      },
+      {
+        "label": "पद 2",
+        "text": "चरवाहे दौड़े चरणी की ओर..\nबालक यीशु को देखा वहां..\nकपड़ों में लिपटा, चरणी में लेटा..\nराजाओं का राजा, प्रभु का जहां.."
+      },
+      {
+        "label": "पद 3",
+        "text": "ज्योति जगी है सारे जगत में..\nदूर हुआ अज्ञान का तम..\nमुक्ति मिली है, जीवन मिला है..\nजय यीशु की गाएंगे हम.."
+      }
+    ],
+    "number": 43
+  },
+  {
     "slug": "chhodo-chhodo-ye-tera-naam",
-    "number": 41,
+    "number": 44,
     "title": "छोड़ो छोड़ो ये तेरा नाम",
     "title_alt": "Chhodo Chhodo Ye Tera Naam",
     "language": "hindi",
@@ -1185,7 +1281,7 @@
   },
   {
     "slug": "jannat-se-aaya-masiha",
-    "number": 42,
+    "number": 45,
     "title": "जन्नत से आया मसीहा",
     "title_alt": "Jannat Se Aaya Masiha",
     "language": "hindi",
@@ -1218,7 +1314,7 @@
   },
   {
     "slug": "jab-jab-ham-gayenge",
-    "number": 43,
+    "number": 46,
     "title": "जब जब हम गायेंगे",
     "title_alt": "Jab jab ham gayenge",
     "language": "hindi",
@@ -1249,7 +1345,7 @@
   },
   {
     "slug": "jab-se-pyaara-yeshu-aaya",
-    "number": 44,
+    "number": 47,
     "title": "जब से प्यारा येसु आया",
     "title_alt": "Jab se pyaara Yeshu aaya",
     "language": "hindi",
@@ -1276,7 +1372,7 @@
   },
   {
     "slug": "jai-jai-naam",
-    "number": 45,
+    "number": 48,
     "title": "जय जय नाम",
     "title_alt": "Jai Jai Naam",
     "language": "hindi",
@@ -1307,7 +1403,7 @@
   },
   {
     "slug": "jay-jay-prabhu-yeshu-ki",
-    "number": 46,
+    "number": 49,
     "title": "जय जय प्रभु यीशु की",
     "title_alt": "Jay Jay Prabhu Yeshu Ki",
     "language": "hindi",
@@ -1338,7 +1434,7 @@
   },
   {
     "slug": "jay-jay-yeshu-jay-jay-yeshu",
-    "number": 47,
+    "number": 50,
     "title": "जय जय यीशु, जय जय यीशु",
     "title_alt": "Jay Jay Yeshu, Jay Jay Yeshu",
     "language": "hindi",
@@ -1372,8 +1468,42 @@
     "tempo": 104
   },
   {
+    "slug": "jhoomo-nacho-khushi-se-aaj",
+    "title": "झूमो नाचो खुशी से आज",
+    "title_alt": "Jhoomo Nacho Khushi Se Aaj",
+    "language": "hindi",
+    "tags": [
+      "Carol",
+      "Christmas",
+      "Praise",
+      "Joy"
+    ],
+    "type": "praise",
+    "beat": "4/4",
+    "tempo": 110,
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "झूमो नाचो खुशी से आज..\nयीशु पैदा हुआ..\nदेने मुक्ति और उद्धार..\nयीशु पैदा हुआ..\nहालेलुयाह हालेलुयाह हालेलुयाह..\nहालेलुयाह हालेलुयाह हालेलुयाह.."
+      },
+      {
+        "label": "पद 1",
+        "text": "बेतलेहेम की छोटी नगरिया..\nचमका एक सितारा..\nअंधियारी इस रात में देखो..\nफैला नूर हमारा.."
+      },
+      {
+        "label": "पद 2",
+        "text": "स्वर्ग के दूतों ने भी गाया..\nखुशियों का यह गाना..\nशांति हो इस धरती पर अब..\nआया है तारणहारा.."
+      },
+      {
+        "label": "पद 3",
+        "text": "आओ मिलकर शीश झुकाएं..\nउस राजा के आगे..\nदिल की सारी खुशियां लेकर..\nउसके चरणों में आएं.."
+      }
+    ],
+    "number": 51
+  },
+  {
     "slug": "taareef-taareef-milkar-karo-saare-taareef",
-    "number": 48,
+    "number": 52,
     "title": "तारीफ, तारीफ मिलकर करो सारे तारीफ",
     "title_alt": "Taareef, Taareef Milkar Karo Saare Taareef",
     "language": "hindi",
@@ -1408,7 +1538,7 @@
   },
   {
     "slug": "taali-bajaakar-khushiyan-manao",
-    "number": 49,
+    "number": 53,
     "title": "ताली बजाकर खुशियां मनाओ",
     "title_alt": "Taali Bajaakar Khushiyan Manao",
     "language": "hindi",
@@ -1445,7 +1575,7 @@
   },
   {
     "slug": "tujhe-chhodunga-nahi-main-rahunga-tere-saaye-mein",
-    "number": 50,
+    "number": 54,
     "title": "तुझे छोड़ूँगा नहीं मैं रहूँगा तेरे साये में",
     "title_alt": "Tujhe Chhodunga Nahi Main Rahunga Tere Saaye Mein",
     "language": "hindi",
@@ -1465,7 +1595,7 @@
   },
   {
     "slug": "tu-dil-mai-prabhu-madhur",
-    "number": 51,
+    "number": 55,
     "title": "तू दिल में हैं प्रभु मधूर",
     "title_alt": "Tu dil mai prabhu madhur",
     "language": "hindi",
@@ -1500,7 +1630,7 @@
   },
   {
     "slug": "tu-dhanya-hai-sarvashaktiman",
-    "number": 52,
+    "number": 56,
     "title": "तू धन्य है, सर्वश्रेष्ठ है",
     "title_alt": "Tu Dhanya Hai, Sarvashaktiman",
     "language": "hindi",
@@ -1524,7 +1654,7 @@
   },
   {
     "slug": "tu-pavitra-pavitra-hai",
-    "number": 53,
+    "number": 57,
     "title": "तू पवित्र पवित्र है",
     "title_alt": "Tu Pavitra Pavitra Hai",
     "language": "hindi",
@@ -1555,7 +1685,7 @@
   },
   {
     "slug": "tu-pyaar-ka-sagar-hai",
-    "number": 54,
+    "number": 58,
     "title": "तू प्यार का सागर है",
     "title_alt": "Tu Pyaar Ka Sagar Hai",
     "language": "hindi",
@@ -1580,7 +1710,7 @@
   },
   {
     "slug": "tu-mera-geet-hai",
-    "number": 55,
+    "number": 59,
     "title": "तू मेरा गीत है",
     "title_alt": "Tu mera Geet hai",
     "language": "hindi",
@@ -1611,7 +1741,7 @@
   },
   {
     "slug": "tu-mera-sharanasthan",
-    "number": 56,
+    "number": 60,
     "title": "तू मेरा शरणस्थान",
     "title_alt": "Tu Mera Sharanasthan",
     "language": "hindi",
@@ -1639,7 +1769,7 @@
   },
   {
     "slug": "tu-hi-to-hak-aur-tu-hi-raasta",
-    "number": 57,
+    "number": 61,
     "title": "तू ही तो हक और तू ही रास्ता",
     "title_alt": "Tu Hi To Hak Aur Tu Hi Raasta",
     "language": "hindi",
@@ -1668,7 +1798,7 @@
   },
   {
     "slug": "tu-hai-mera-apna",
-    "number": 58,
+    "number": 62,
     "title": "तू है मेरा अपना",
     "title_alt": "Tu Hai Mera Apna",
     "language": "hindi",
@@ -1700,7 +1830,7 @@
   },
   {
     "slug": "tu-hai-mera-parameshwar-pita",
-    "number": 59,
+    "number": 63,
     "title": "तू है मेरा परमेश्वर पिता",
     "title_alt": "Tu Hai Mera Parameshwar Pita",
     "language": "hindi",
@@ -1725,7 +1855,7 @@
   },
   {
     "slug": "tune-mujhe-aage-peeche",
-    "number": 60,
+    "number": 64,
     "title": "तूने मुझे आगे पीछे घेरा है",
     "title_alt": "Tune Mujhe Aage Peeche Ghera Hai",
     "language": "hindi",
@@ -1753,7 +1883,7 @@
   },
   {
     "slug": "toone-lahoo-ki-kataron-ko",
-    "number": 61,
+    "number": 65,
     "title": "तूने लहू के कतरों को",
     "title_alt": "Toone Lahoo Ki Kataron Ko",
     "language": "hindi",
@@ -1785,7 +1915,7 @@
   },
   {
     "slug": "tera-lahoo-tera-lahoo",
-    "number": 62,
+    "number": 66,
     "title": "तेरा लहू, तेरा लहू",
     "title_alt": "Tera Lahoo, Tera Lahoo",
     "language": "hindi",
@@ -1846,11 +1976,11 @@
         "text": "सृष्टि के हर एक कण-कण में\nछाया है तेरी ही महिमा का राज\nपक्षी भी करते हैं तेरी प्रशंसा\nहर पल सुनाते हैं आनंद का राग\nतू है महान, सर्वशक्तिमान"
       }
     ],
-    "number": 63
+    "number": 67
   },
   {
     "slug": "teri-ichchha-poori-ho-jaaye",
-    "number": 64,
+    "number": 68,
     "title": "तेरी इच्छा पूरी हो जाए",
     "title_alt": "Teri Ichchha Poori Ho Jaaye",
     "language": "hindi",
@@ -1874,7 +2004,7 @@
   },
   {
     "slug": "teri-jai-ho-teri-jai-ho",
-    "number": 65,
+    "number": 69,
     "title": "तेरी जय हो, तेरी जय हो",
     "title_alt": "Teri Jai Ho, Teri Jai Ho",
     "language": "hindi",
@@ -1903,7 +2033,7 @@
   },
   {
     "slug": "teri-mahima-ho-mahima",
-    "number": 66,
+    "number": 70,
     "title": "तेरी महिमा, हो महिमा",
     "title_alt": "Teri Mahima, Ho Mahima",
     "language": "hindi",
@@ -1923,7 +2053,7 @@
   },
   {
     "slug": "tere-aasan-ke-paas-aaun",
-    "number": 67,
+    "number": 71,
     "title": "तेरे आसन के पास आऊं",
     "title_alt": "Tere Aasan Ke Paas Aaun",
     "language": "hindi",
@@ -1948,7 +2078,7 @@
   },
   {
     "slug": "tere-geet-gaun",
-    "number": 68,
+    "number": 72,
     "title": "तेरे गीत गाऊँ",
     "title_alt": "Tere geet gaun",
     "language": "hindi",
@@ -1979,7 +2109,7 @@
   },
   {
     "slug": "tere-bin-main-kuchh-bhi-nahi",
-    "number": 69,
+    "number": 73,
     "title": "तेरे बिन मैं कुछ भी नहीं",
     "title_alt": "Tere Bin Main Kuchh Bhi Nahi",
     "language": "hindi",
@@ -1999,7 +2129,7 @@
   },
   {
     "slug": "thoda-samay-hai-baaki",
-    "number": 70,
+    "number": 74,
     "title": "थोड़ा समय है बाकी",
     "title_alt": "Thoda Samay Hai Baaki",
     "language": "hindi",
@@ -2035,7 +2165,7 @@
   },
   {
     "slug": "daya-karo-bhagwan-kripa-karo-bhagwan",
-    "number": 71,
+    "number": 75,
     "title": "दया करो भगवन",
     "title_alt": "Daya karo bhagwan kripa karo bhagwan",
     "language": "hindi",
@@ -2054,7 +2184,7 @@
   },
   {
     "slug": "dil-ke-daag-ko-dhove-kaun",
-    "number": 72,
+    "number": 76,
     "title": "दिल के दाग को धोवे कौन",
     "title_alt": "Dil Ke Daag Ko Dhove Kaun",
     "language": "hindi",
@@ -2095,7 +2225,7 @@
   },
   {
     "slug": "dil-se-jo-pyaar-hota-hai",
-    "number": 73,
+    "number": 77,
     "title": "दिल से जो प्यार होता है",
     "title_alt": "Dil Se Jo Pyaar Hota Hai",
     "language": "hindi",
@@ -2114,8 +2244,42 @@
     "tempo": 74
   },
   {
+    "slug": "doot-sena-swarg-se-utar-ke",
+    "title": "दूत सेना स्वर्ग से उतर के",
+    "title_alt": "Doot Sena Swarg Se Utar Ke",
+    "language": "hindi",
+    "tags": [
+      "Carol",
+      "Christmas",
+      "Gloria",
+      "Praise"
+    ],
+    "type": "praise",
+    "beat": "4/4",
+    "tempo": 108,
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "दूत सेना स्वर्ग से उतर के गाती है..\nग्लोरिया इन एक्सेलसिस देओ..\nग्लोरिया इन एक्सेलसिस देओ.."
+      },
+      {
+        "label": "पद 1",
+        "text": "मैदानों में चरवाहे जब..\nभेड़ों की रखवाली करें..\nअचानक ज्योति चमकी भारी..\nदूतों का स्वर गूंज उठे.."
+      },
+      {
+        "label": "पद 2",
+        "text": "डरो नहीं मैं लाया हूं..\nबड़ी खुशी का समाचार..\nदाऊद के नगर में जन्मा..\nजगत का मुक्तिदाता आज.."
+      },
+      {
+        "label": "पद 3",
+        "text": "चरणी में वो बालक देखो..\nसादा सा बिछौना है..\nस्वर्ग का राजा दीन बना है..\nहम सबका उद्धार वही है.."
+      }
+    ],
+    "number": 78
+  },
+  {
     "slug": "dekho-chali-naiya-meri",
-    "number": 74,
+    "number": 79,
     "title": "देखो चली, नैया मेरी",
     "title_alt": "Dekho Chali, Naiya Meri",
     "language": "hindi",
@@ -2147,7 +2311,7 @@
   },
   {
     "slug": "dekho-pita-ne-kaisa-mahaan",
-    "number": 75,
+    "number": 80,
     "title": "देखो पिता ने कैसा महान",
     "title_alt": "Dekho Pita Ne Kaisa Mahaan",
     "language": "hindi",
@@ -2172,7 +2336,7 @@
   },
   {
     "slug": "do-to-tumhe-diya-jayega",
-    "number": 76,
+    "number": 81,
     "title": "दो तो तुम्हें दिया जायेगा",
     "title_alt": "Do To Tumhe Diya Jayega",
     "language": "hindi",
@@ -2204,7 +2368,7 @@
   },
   {
     "slug": "dhanyavaad-karte-hue",
-    "number": 77,
+    "number": 82,
     "title": "धन्यवाद करते हुए",
     "title_alt": "Dhanyavaad Karte Hue",
     "language": "hindi",
@@ -2224,7 +2388,7 @@
   },
   {
     "slug": "naa-darunga",
-    "number": 78,
+    "number": 83,
     "title": "ना डरूंगा",
     "title_alt": "Naa Darunga",
     "language": "hindi",
@@ -2294,7 +2458,7 @@
   },
   {
     "slug": "naam-bada-hai-tera",
-    "number": 79,
+    "number": 84,
     "title": "नाम बड़ा है तेरा",
     "title_alt": "Naam Bada Hai Tera",
     "language": "hindi",
@@ -2314,7 +2478,7 @@
   },
   {
     "slug": "naare-lagao-aur-gao-re",
-    "number": 80,
+    "number": 85,
     "title": "नारे लगाओ और गाओ रे",
     "title_alt": "Naare Lagao Aur Gao Re",
     "language": "hindi",
@@ -2345,7 +2509,7 @@
   },
   {
     "slug": "neele-aasman-ke-paar-jayenge",
-    "number": 81,
+    "number": 86,
     "title": "नीले आसमान के पार जाएंगे",
     "title_alt": "Neele aasman ke paar jayenge",
     "language": "hindi",
@@ -2421,7 +2585,7 @@
   },
   {
     "slug": "param-pita-aaya",
-    "number": 82,
+    "number": 87,
     "title": "परम पिता आया",
     "title_alt": "Param Pita Aaya",
     "language": "hindi",
@@ -2446,7 +2610,7 @@
   },
   {
     "slug": "parameshwar-mera-mahaan-hai",
-    "number": 83,
+    "number": 88,
     "title": "परमेश्वर मेरा महान है",
     "title_alt": "Parameshwar Mera Mahaan Hai",
     "language": "hindi",
@@ -2475,7 +2639,7 @@
   },
   {
     "slug": "parvaton-ko-dekhunga-main",
-    "number": 84,
+    "number": 89,
     "title": "पर्वतों को देखूंगा मैं",
     "title_alt": "Parvaton Ko Dekhunga Main",
     "language": "hindi",
@@ -2500,7 +2664,7 @@
   },
   {
     "slug": "pavitra-ati-pavitra",
-    "number": 85,
+    "number": 90,
     "title": "पवित्र अति पवित्र",
     "title_alt": "Pavitra Ati Pavitra",
     "language": "hindi",
@@ -2529,7 +2693,7 @@
   },
   {
     "slug": "pavitra-aatma-aa",
-    "number": 86,
+    "number": 91,
     "title": "पवित्र आत्मा आ",
     "title_alt": "Pavitra Aatma Aa",
     "language": "hindi",
@@ -2557,7 +2721,7 @@
   },
   {
     "slug": "pavitra-jeevan-mein-jyoti-jala-de",
-    "number": 87,
+    "number": 92,
     "title": "पवित्र जीवन में ज्योति जला दे",
     "title_alt": "Pavitra Jeevan Mein Jyoti Jala De",
     "language": "hindi",
@@ -2581,7 +2745,7 @@
   },
   {
     "slug": "pavitra-tu-hi-to-hai",
-    "number": 88,
+    "number": 93,
     "title": "पवित्र तू ही तो है",
     "title_alt": "Pavitra Tu Hi To Hai",
     "language": "hindi",
@@ -2606,7 +2770,7 @@
   },
   {
     "slug": "papa-by-bridge-music",
-    "number": 89,
+    "number": 94,
     "title": "पापा",
     "title_alt": "Papa by Bridge music",
     "language": "hindi",
@@ -2655,7 +2819,7 @@
   },
   {
     "slug": "pawan-aatma-aa",
-    "number": 90,
+    "number": 95,
     "title": "पावन आत्मा आ",
     "title_alt": "Pawan Aatma Aa",
     "language": "hindi",
@@ -2683,7 +2847,7 @@
   },
   {
     "slug": "paavan-paavan-paavan-eshwar",
-    "number": 91,
+    "number": 96,
     "title": "पावन पावन ईश्वर",
     "title_alt": "Paavan paavan paavan Eshwar",
     "language": "hindi",
@@ -2730,11 +2894,11 @@
         "text": "प्रभु की महिमा अपरंपार, जग का वो है तारणहार\nमानो उसे अपना आधार, उसकी जय जयकार करो\nजय हो, जय हो, जय हो..."
       }
     ],
-    "number": 92
+    "number": 97
   },
   {
     "slug": "paavan-ati-paavan-prabhu-eshwar-akhileshwar",
-    "number": 93,
+    "number": 98,
     "title": "पावन, अति पावन",
     "title_alt": "Paavan ati paavan prabhu Eshwar akhileshwar",
     "language": "hindi",
@@ -2761,7 +2925,7 @@
   },
   {
     "slug": "pita-hamare-tu-jo-karta-swarg-dham-mein-vaas",
-    "number": 94,
+    "number": 99,
     "title": "पिता हमारे",
     "title_alt": "Pita hamare tu jo karta swarg dham mein vaas",
     "language": "hindi",
@@ -2792,7 +2956,7 @@
   },
   {
     "slug": "pyaar-ka-sagar-hai-tu",
-    "number": 95,
+    "number": 100,
     "title": "प्यार का सागर है तू",
     "title_alt": "Pyaar ka sagar hai tu",
     "language": "hindi",
@@ -2827,7 +2991,7 @@
   },
   {
     "slug": "pyar-milta-hai",
-    "number": 96,
+    "number": 101,
     "title": "प्यार मिलता है",
     "title_alt": "Pyar Milta Hai",
     "language": "hindi",
@@ -2853,8 +3017,37 @@
     "tempo": 74
   },
   {
+    "slug": "pyaari-raat-paavan-raat",
+    "title": "प्यारी रात, पावन रात",
+    "title_alt": "Pyaari Raat Paavan Raat",
+    "language": "hindi",
+    "tags": [
+      "Carol",
+      "Christmas",
+      "Worship"
+    ],
+    "type": "worship",
+    "beat": "3/4",
+    "tempo": 72,
+    "stanzas": [
+      {
+        "label": "पद 1",
+        "text": "प्यारी रात, पावन रात..\nसब हैं शांत, सब हैं शांत..\nमाता और बालक जागे हैं..\nपवित्र बालक अति कोमल है..\nस्वर्गीय शांति में सो..\nस्वर्गीय शांति में सो.."
+      },
+      {
+        "label": "पद 2",
+        "text": "प्यारी रात, पावन रात..\nचरवाहे डर गए जब..\nस्वर्ग से ज्योति चमकी महान..\nदूतों ने गाया जयगान..\nमसीह उद्धारकर्ता जन्मा..\nमसीह उद्धारकर्ता जन्मा.."
+      },
+      {
+        "label": "पद 3",
+        "text": "प्यारी रात, पावन रात..\nईश्वर का पुत्र, प्रेम की बात..\nतेरे मुखड़े से ज्योति बहे..\nमुक्ति का दिन यह कहे..\nयीशु, प्रभु का जन्म..\nयीशु, प्रभु का जन्म.."
+      }
+    ],
+    "number": 102
+  },
+  {
     "slug": "pyaasa-hiran",
-    "number": 97,
+    "number": 103,
     "title": "प्यासा हिरन",
     "title_alt": "Pyaasa hiran",
     "language": "hindi",
@@ -2885,7 +3078,7 @@
   },
   {
     "slug": "prabhu-ka-aanand-hai",
-    "number": 98,
+    "number": 104,
     "title": "प्रभु का आनंद है",
     "title_alt": "Prabhu Ka Aanand Hai",
     "language": "hindi",
@@ -2916,7 +3109,7 @@
   },
   {
     "slug": "prabhu-ko-ham-bhet-chadaye",
-    "number": 99,
+    "number": 105,
     "title": "प्रभु को हम भेंट चढ़ायें",
     "title_alt": "Prabhu ko ham bhet chadaye",
     "language": "hindi",
@@ -2947,7 +3140,7 @@
   },
   {
     "slug": "prabhu-tere-hi-mandir-mai",
-    "number": 100,
+    "number": 106,
     "title": "प्रभु तेरे ही मन्दिर में",
     "title_alt": "Prabhu tere hi mandir mai",
     "language": "hindi",
@@ -2974,7 +3167,7 @@
   },
   {
     "slug": "prabhu-parameshwar-tu-kitna",
-    "number": 101,
+    "number": 107,
     "title": "प्रभु परमेश्वर, तू कितना",
     "title_alt": "Prabhu Parameshwar, Tu Kitna",
     "language": "hindi",
@@ -2999,7 +3192,7 @@
   },
   {
     "slug": "prabhu-yeshu-tere-charnon-mein",
-    "number": 102,
+    "number": 108,
     "title": "प्रभु यीशु तेरे चरणों में",
     "title_alt": "Prabhu Yeshu Tere Charnon Mein",
     "language": "hindi",
@@ -3019,7 +3212,7 @@
   },
   {
     "slug": "phir-se-wo-aag-barasa-de",
-    "number": 103,
+    "number": 109,
     "title": "फिर से वो आग बरसा दे",
     "title_alt": "Phir Se Wo Aag Barasa De",
     "language": "hindi",
@@ -3043,8 +3236,42 @@
     "tempo": 74
   },
   {
+    "slug": "bethlehem-ki-nagari-mein",
+    "title": "बेतलेहेम की नगरी में",
+    "title_alt": "Bethlehem Ki Nagari Mein",
+    "language": "hindi",
+    "tags": [
+      "Carol",
+      "Christmas",
+      "Praise",
+      "Joy"
+    ],
+    "type": "praise",
+    "beat": "4/4",
+    "tempo": 102,
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "बेतलेहेम की नगरी में, देखो कौन आया है..\nप्यार का सागर, शांति का दाता, यीशु मसीह आया है..\nहालेलुयाह बोलो, हालेलुयाह बोलो..\nयीशु राजा आया है.."
+      },
+      {
+        "label": "पद 1",
+        "text": "ना कोई महल, ना कोई सिंहासन..\nचरणी में जन्मा प्रभु महान..\nदीन-दुखियों का आंसू पोंछने..\nलेकर आया नया विहान.."
+      },
+      {
+        "label": "पद 2",
+        "text": "ज्ञानियों ने देखा तारा गगन में..\nढूंढते पहुंचे उस द्वार पर..\nभेंट समर्पित की चरणों में..\nसजदा किया उस बाल पर.."
+      },
+      {
+        "label": "पद 3",
+        "text": "आओ मिलकर स्तुति करें हम..\nप्रभु के पवित्र नाम की..\nजीवन अपना सौंपें उसको..\nजय बोलो राजाओं के राजा की.."
+      }
+    ],
+    "number": 110
+  },
+  {
     "slug": "bhusiyon-yehova-ki-stuti-karo",
-    "number": 104,
+    "number": 111,
     "title": "भूसियों यहोवा की स्तुति करो",
     "title_alt": "Bhusiyon Yehova Ki Stuti Karo",
     "language": "hindi",
@@ -3069,7 +3296,7 @@
   },
   {
     "slug": "man-mandir-mein-yeshu-aaya",
-    "number": 105,
+    "number": 112,
     "title": "मन मंदिर में यीशु आया",
     "title_alt": "Man Mandir Mein Yeshu Aaya",
     "language": "hindi",
@@ -3090,7 +3317,7 @@
   },
   {
     "slug": "mera-tu-hi-sahara-hai",
-    "number": 106,
+    "number": 113,
     "title": "मेरा तू ही सहारा है",
     "title_alt": "Mera tu hi sahara hai",
     "language": "hindi",
@@ -3121,7 +3348,7 @@
   },
   {
     "slug": "mera-yeshu-bhala-hai",
-    "number": 107,
+    "number": 114,
     "title": "मेरा यीशु भला है",
     "title_alt": "Mera Yeshu Bhala Hai",
     "language": "hindi",
@@ -3154,7 +3381,7 @@
   },
   {
     "slug": "mere-jeevan-mein-yeshu-tera-naam",
-    "number": 108,
+    "number": 115,
     "title": "मेरे जीवन में यीशु तेरा नाम",
     "title_alt": "Mere Jeevan Mein Yeshu Tera Naam",
     "language": "hindi",
@@ -3185,7 +3412,7 @@
   },
   {
     "slug": "kehta-hai-tumse-vo-ek-baat",
-    "number": 109,
+    "number": 116,
     "title": "मेरे तुम",
     "title_alt": "Kehta hai tumse vo ek baat",
     "language": "hindi",
@@ -3224,7 +3451,7 @@
   },
   {
     "slug": "mere-masiha",
-    "number": 110,
+    "number": 117,
     "title": "मेरे मसीहा",
     "title_alt": "Mere Masiha",
     "language": "hindi",
@@ -3253,7 +3480,7 @@
   },
   {
     "slug": "mere-yeshu-mai-swagat-karu",
-    "number": 111,
+    "number": 118,
     "title": "मेरे येसु मैं स्वागत करूँ",
     "title_alt": "Mere Yeshu mai swagat karu",
     "language": "hindi",
@@ -3284,7 +3511,7 @@
   },
   {
     "slug": "main-aankhen-apni-parvat-ki-aur-uthaunga",
-    "number": 112,
+    "number": 119,
     "title": "मैं आंखें अपनी पर्वत की ओर उठाऊंगा",
     "title_alt": "Main Aankhen Apni Parvat Ki Aur Uthaunga",
     "language": "hindi",
@@ -3309,7 +3536,7 @@
   },
   {
     "slug": "main-khush-hoon-chhudaya-yeshu-ne",
-    "number": 113,
+    "number": 120,
     "title": "मैं खुश हूं छुड़ाया यीशु ने",
     "title_alt": "Main Khush Hoon Chhudaya Yeshu Ne",
     "language": "hindi",
@@ -3334,7 +3561,7 @@
   },
   {
     "slug": "main-dhundta-raha-hun-tumko-hey-prabhu",
-    "number": 114,
+    "number": 121,
     "title": "मैं ढूढ़ता रहा हूँ",
     "title_alt": "Main dhundta raha hun tumko hey prabhu",
     "language": "hindi",
@@ -3365,7 +3592,7 @@
   },
   {
     "slug": "main-yeshu-ka-diwana-hoon",
-    "number": 115,
+    "number": 122,
     "title": "मैं यीशु का दिवाना हूं",
     "title_alt": "Main Yeshu Ka Diwana Hoon",
     "language": "hindi",
@@ -3394,7 +3621,7 @@
   },
   {
     "slug": "yehi-diwas-hai-jise-banaya",
-    "number": 116,
+    "number": 123,
     "title": "यही दिवस है जिसे बनाया",
     "title_alt": "Yehi diwas hai jise banaya",
     "language": "hindi",
@@ -3425,7 +3652,7 @@
   },
   {
     "slug": "yehova-ka-tum-dhanyavaad-karo",
-    "number": 117,
+    "number": 124,
     "title": "यहोवा का तुम धन्यवाद करो",
     "title_alt": "Yehova Ka Tum Dhanyavaad Karo",
     "language": "hindi",
@@ -3450,7 +3677,7 @@
   },
   {
     "slug": "yehova-nissi",
-    "number": 118,
+    "number": 125,
     "title": "यहोवा निस्सी",
     "title_alt": "Yehova Nissi",
     "language": "hindi",
@@ -3479,7 +3706,7 @@
   },
   {
     "slug": "yehova-yehova-yehova-yehova",
-    "number": 119,
+    "number": 126,
     "title": "यहोवा यहोवा यहोवा यहोवा",
     "title_alt": "Yehova Yehova Yehova Yehova",
     "language": "hindi",
@@ -3508,7 +3735,7 @@
   },
   {
     "slug": "yeshu-ka-naam-leta-hai",
-    "number": 120,
+    "number": 127,
     "title": "यीशु का नाम लेता है",
     "title_alt": "Yeshu Ka Naam Leta Hai",
     "language": "hindi",
@@ -3528,7 +3755,7 @@
   },
   {
     "slug": "yeshu-ka-naam-sabase-pyara",
-    "number": 121,
+    "number": 128,
     "title": "यीशु का नाम सबसे प्यारा",
     "title_alt": "Yeshu Ka Naam Sabase Pyara",
     "language": "hindi",
@@ -3557,7 +3784,7 @@
   },
   {
     "slug": "yeshu-ka-lahoo-saare-paapon-se",
-    "number": 122,
+    "number": 129,
     "title": "यीशु का लहू सारे पापों से",
     "title_alt": "Yeshu Ka Lahoo Saare Paapon Se",
     "language": "hindi",
@@ -3586,7 +3813,7 @@
   },
   {
     "slug": "yeshu-ke-sang-tu-chalta-chal",
-    "number": 123,
+    "number": 130,
     "title": "यीशु के संग तू चलता चल",
     "title_alt": "Yeshu Ke Sang Tu Chalta Chal",
     "language": "hindi",
@@ -3615,7 +3842,7 @@
   },
   {
     "slug": "yeshu-tu-hai-mahaan",
-    "number": 124,
+    "number": 131,
     "title": "यीशु तू है महान",
     "title_alt": "Yeshu Tu Hai Mahaan",
     "language": "hindi",
@@ -3642,7 +3869,7 @@
   },
   {
     "slug": "yeshu-tera-naam-hai",
-    "number": 125,
+    "number": 132,
     "title": "यीशु तेरा नाम है",
     "title_alt": "Yeshu Tera Naam Hai",
     "language": "hindi",
@@ -3671,7 +3898,7 @@
   },
   {
     "slug": "yeshu-ne-mujhe-pyaar-kiya-hai",
-    "number": 126,
+    "number": 133,
     "title": "यीशु ने मुझे प्यार किया है",
     "title_alt": "Yeshu Ne Mujhe Pyaar Kiya Hai",
     "language": "hindi",
@@ -3708,7 +3935,7 @@
   },
   {
     "slug": "yeshu-masih-tere-jaisa-koi-nahi",
-    "number": 127,
+    "number": 134,
     "title": "यीशु मसीह तेरे जैसा कोई नहीं",
     "title_alt": "Yeshu Masih Tere Jaisa Koi Nahi",
     "language": "hindi",
@@ -3736,7 +3963,7 @@
   },
   {
     "slug": "yeshu-mera-yeshu-mera",
-    "number": 128,
+    "number": 135,
     "title": "यीशु मेरा यीशु मेरा",
     "title_alt": "Yeshu Mera Yeshu Mera",
     "language": "hindi",
@@ -3756,7 +3983,7 @@
   },
   {
     "slug": "yeshu-mera-raja",
-    "number": 129,
+    "number": 136,
     "title": "यीशु मेरा राजा",
     "title_alt": "Yeshu Mera Raja",
     "language": "hindi",
@@ -3781,7 +4008,7 @@
   },
   {
     "slug": "yeshu-mere-koi-nahi-tere-jaisa",
-    "number": 130,
+    "number": 137,
     "title": "यीशु मेरे कोई नहीं तेरे जैसा",
     "title_alt": "Yeshu Mere Koi Nahi Tere Jaisa",
     "language": "hindi",
@@ -3806,7 +4033,7 @@
   },
   {
     "slug": "yeshu-mere-jeevan-mein",
-    "number": 131,
+    "number": 138,
     "title": "यीशु मेरे जीवन में",
     "title_alt": "Yeshu Mere Jeevan Mein",
     "language": "hindi",
@@ -3825,7 +4052,7 @@
   },
   {
     "slug": "yeshu-hai-sachcha-gadiya",
-    "number": 132,
+    "number": 139,
     "title": "यीशु है सच्चा गड़रिया",
     "title_alt": "Yeshu Hai Sachcha Gadiya",
     "language": "hindi",
@@ -3854,7 +4081,7 @@
   },
   {
     "slug": "yeshu-tu-mera-meet",
-    "number": 133,
+    "number": 140,
     "title": "येसु तू मेरा मीत",
     "title_alt": "Yeshu tu mera meet",
     "language": "hindi",
@@ -3881,7 +4108,7 @@
   },
   {
     "slug": "raja-mahan-hai-tu-prabhu",
-    "number": 134,
+    "number": 141,
     "title": "राजा महान है तू प्रभु",
     "title_alt": "Raja Mahan Hai Tu Prabhu",
     "language": "hindi",
@@ -3909,7 +4136,7 @@
   },
   {
     "slug": "raja-yeshu-aaya",
-    "number": 135,
+    "number": 142,
     "title": "राजा यीशु आया",
     "title_alt": "Raja Yeshu Aaya",
     "language": "hindi",
@@ -3940,7 +4167,7 @@
   },
   {
     "slug": "rajaon-ka-raja-hai",
-    "number": 136,
+    "number": 143,
     "title": "राजाओं का राजा है",
     "title_alt": "Rajaon Ka Raja Hai",
     "language": "hindi",
@@ -3965,7 +4192,7 @@
   },
   {
     "slug": "rishta-lahoo-ka",
-    "number": 137,
+    "number": 144,
     "title": "रिश्ता लहू का",
     "title_alt": "Rishta Lahoo Ka",
     "language": "hindi",
@@ -3994,7 +4221,7 @@
   },
   {
     "slug": "lahoo-lahoo-yeshu-ka-lahoo",
-    "number": 138,
+    "number": 145,
     "title": "लहू लहू यीशु का लहू",
     "title_alt": "Lahoo Lahoo Yeshu Ka Lahoo",
     "language": "hindi",
@@ -4027,7 +4254,7 @@
   },
   {
     "slug": "vachan-tera-hai-prabhu-jeevan-ki-jyoti-hai",
-    "number": 139,
+    "number": 146,
     "title": "वचन तेरा हे प्रभु जीवन की ज्याति है",
     "title_alt": "Vachan tera hai prabhu jeevan ki jyoti hai",
     "language": "hindi",
@@ -4054,7 +4281,7 @@
   },
   {
     "slug": "wahan-halleluya-hardam-hoega",
-    "number": 140,
+    "number": 147,
     "title": "वहाँ हल्लेलुया",
     "title_alt": "Wahan halleluya hardam hoega",
     "language": "hindi",
@@ -4089,7 +4316,7 @@
   },
   {
     "slug": "vijayi-hua-vijayi-hua",
-    "number": 141,
+    "number": 148,
     "title": "विजयी हुआ, विजयी हुआ",
     "title_alt": "Vijayi Hua, Vijayi Hua",
     "language": "hindi",
@@ -4114,7 +4341,7 @@
   },
   {
     "slug": "wo-sab-se-bada-sagar",
-    "number": 142,
+    "number": 149,
     "title": "वो सब से बड़ा सागर",
     "title_alt": "Wo Sab Se Bada Sagar",
     "language": "hindi",
@@ -4139,7 +4366,7 @@
   },
   {
     "slug": "sang-tere",
-    "number": 143,
+    "number": 150,
     "title": "संग तेरे",
     "title_alt": "Sang Tere",
     "language": "hindi",
@@ -4196,7 +4423,7 @@
   },
   {
     "slug": "sandesh-sunate-jaana",
-    "number": 144,
+    "number": 151,
     "title": "संदेश सुनाते जाना",
     "title_alt": "Sandesh Sunate Jaana",
     "language": "hindi",
@@ -4225,7 +4452,7 @@
   },
   {
     "slug": "sajda-karoon",
-    "number": 145,
+    "number": 152,
     "title": "सजदा करूँ मैं तेरे हुज़ूर में",
     "title_alt": "Sajda Karoon",
     "language": "hindi",
@@ -4253,7 +4480,7 @@
   },
   {
     "slug": "sada-mai-stuti-karunga",
-    "number": 146,
+    "number": 153,
     "title": "सदा मैं स्तुति करूंगा",
     "title_alt": "Sada Mai Stuti Karunga",
     "language": "hindi",
@@ -4288,7 +4515,7 @@
   },
   {
     "slug": "sab-se-bada-sagar",
-    "number": 147,
+    "number": 154,
     "title": "सब से बड़ा सागर",
     "title_alt": "Sab Se Bada Sagar",
     "language": "hindi",
@@ -4313,7 +4540,7 @@
   },
   {
     "slug": "sar-ko-apne-jhukaata-hoon",
-    "number": 148,
+    "number": 155,
     "title": "सर को अपने झुकाता हूँ",
     "title_alt": "Sar Ko Apne Jhukaata Hoon",
     "language": "hindi",
@@ -4333,7 +4560,7 @@
   },
   {
     "slug": "samarthi-kitna-hai-yeshu-tu-mahaan",
-    "number": 149,
+    "number": 156,
     "title": "सामर्थी कितना है यीशु तू महान",
     "title_alt": "Samarthi Kitna Hai Yeshu Tu Mahaan",
     "language": "hindi",
@@ -4362,7 +4589,7 @@
   },
   {
     "slug": "saare-jahaan-ka-raja-hai",
-    "number": 150,
+    "number": 157,
     "title": "सारे जहान का राजा है",
     "title_alt": "Saare Jahaan Ka Raja Hai",
     "language": "hindi",
@@ -4387,7 +4614,7 @@
   },
   {
     "slug": "srishti-hai-teri-kavita",
-    "number": 151,
+    "number": 158,
     "title": "सृष्टि है तेरी कविता",
     "title_alt": "Srishti hai teri kavita",
     "language": "hindi",
@@ -4423,7 +4650,7 @@
   },
   {
     "slug": "mahima-mahima-mahima-ho",
-    "number": 152,
+    "number": 159,
     "title": "स्वर्ग में महिमा",
     "title_alt": "Mahima mahima mahima ho",
     "language": "hindi",
@@ -4482,7 +4709,7 @@
   },
   {
     "slug": "sweekar-lo-bhagwan",
-    "number": 153,
+    "number": 160,
     "title": "स्वीकार लो भगवन्",
     "title_alt": "Sweekar lo bhagwan",
     "language": "hindi",
@@ -4513,7 +4740,7 @@
   },
   {
     "slug": "hum-to-khuda-ke-bete-hai",
-    "number": 154,
+    "number": 161,
     "title": "हम तो खुदा के बेटे हैं",
     "title_alt": "Hum To Khuda Ke Bete Hai",
     "language": "hindi",
@@ -4541,7 +4768,7 @@
   },
   {
     "slug": "har-baaton-mein-dhanyavaad-karo",
-    "number": 155,
+    "number": 162,
     "title": "हर बातों में धन्यवाद करो",
     "title_alt": "Har Baaton Mein Dhanyavaad Karo",
     "language": "hindi",
@@ -4570,7 +4797,7 @@
   },
   {
     "slug": "har-museebat-mein-mujhko-sambhala",
-    "number": 156,
+    "number": 163,
     "title": "हर मुसीबत में मुझको संभाला",
     "title_alt": "Har Museebat Mein Mujhko Sambhala",
     "language": "hindi",
@@ -4606,7 +4833,7 @@
   },
   {
     "slug": "haale-haaleluyaah",
-    "number": 157,
+    "number": 164,
     "title": "हाले हालेलुयाह",
     "title_alt": "Haale Haaleluyaah",
     "language": "hindi",
@@ -4634,7 +4861,7 @@
   },
   {
     "slug": "haaleluyaah-2-gaayenge",
-    "number": 158,
+    "number": 165,
     "title": "हालेलुयाह गायेंगे",
     "title_alt": "Haaleluyaah - 2 Gaayenge",
     "language": "hindi",
@@ -4658,7 +4885,7 @@
   },
   {
     "slug": "hey-eshwar-ke-balit-memane-tum-har-lete",
-    "number": 159,
+    "number": 166,
     "title": "हे ईश्वर के बलित मेमने",
     "title_alt": "Hey Eshwar ke balit memane tum har lete",
     "language": "hindi",
@@ -4677,7 +4904,7 @@
   },
   {
     "slug": "he-jeevit-parameshwar",
-    "number": 160,
+    "number": 167,
     "title": "हे जीवित परमेश्वर",
     "title_alt": "He Jeevit Parameshwar",
     "language": "hindi",
@@ -4705,7 +4932,7 @@
   },
   {
     "slug": "he-duniya-ke-logon",
-    "number": 161,
+    "number": 168,
     "title": "हे दुनिया के लोगों",
     "title_alt": "He Duniya Ke Logon",
     "language": "hindi",
@@ -4730,7 +4957,7 @@
   },
   {
     "slug": "he-mere-man-yehova-ko-dhanya-dhanya-kaho",
-    "number": 162,
+    "number": 169,
     "title": "हे मेरे मन यहोवा को धन्य धन्य कहो",
     "title_alt": "He Mere Man Yehova Ko Dhanya Dhanya Kaho",
     "language": "hindi",
@@ -4762,7 +4989,7 @@
   },
   {
     "slug": "hey-vishwa-ke-udharkarta-hamara-udhaar-kar",
-    "number": 163,
+    "number": 170,
     "title": "हे विश्व के उद्धारकर्ता",
     "title_alt": "Hey vishwa ke udharkarta hamara udhaar kar",
     "language": "hindi",
@@ -4781,7 +5008,7 @@
   },
   {
     "slug": "he-hamare-vaap-tu-jo-aasman-mein-hai",
-    "number": 164,
+    "number": 171,
     "title": "हे हमारे बाप तू जो आसमान में है",
     "title_alt": "He Hamare Vaap Tu Jo Aasman Mein Hai",
     "language": "hindi",
@@ -4821,7 +5048,7 @@
   },
   {
     "slug": "hai-di-awaaz",
-    "number": 165,
+    "number": 172,
     "title": "है दी आवाज़",
     "title_alt": "Hai di awaaz",
     "language": "hindi",
@@ -4853,7 +5080,7 @@
   },
   {
     "slug": "ho-jai-jaikaara-jai-jaikaara-kare",
-    "number": 166,
+    "number": 173,
     "title": "हो जय जयकारा जय जयकारा करे",
     "title_alt": "Ho Jai Jaikaara Jai Jaikaara Kare",
     "language": "hindi",
@@ -4885,7 +5112,7 @@
   },
   {
     "slug": "hovegi-barkat-ki-baarish",
-    "number": 167,
+    "number": 174,
     "title": "होवेगी बरकत की बारिश",
     "title_alt": "Hovegi Barkat Ki Baarish",
     "language": "hindi",
@@ -4917,7 +5144,7 @@
   },
   {
     "slug": "hosanna-hosanna-prabhuvar-teri",
-    "number": 168,
+    "number": 175,
     "title": "होसन्ना होसन्ना",
     "title_alt": "Hosanna Hosanna prabhuvar teri",
     "language": "hindi",
@@ -4935,8 +5162,72 @@
     "tempo": 74
   },
   {
+    "slug": "aanand-jhaala-yeshu-raaja-janmala",
+    "title": "आनंद झाला आनंद झाला येशू राजा जन्मला",
+    "title_alt": "Aanand Jhaala Yeshu Raaja Janmala",
+    "language": "marathi",
+    "tags": [
+      "Carol",
+      "Christmas",
+      "Praise",
+      "Joy"
+    ],
+    "type": "praise",
+    "beat": "4/4",
+    "tempo": 112,
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "आनंद झाला आनंद झाला..\nयेशू राजा जन्मला..\nस्वर्गातून आला भूमीवरी..\nतारण्या मानवाला..\nहो.. आनंद झाला आनंद झाला.."
+      },
+      {
+        "label": "पद 1",
+        "text": "मेंढपाळांना दूत म्हणाले..\nभिऊ नका आनंदाने..\nदाविदाच्या नगरामध्ये..\nतारक जन्मा आला प्रेमाने.."
+      },
+      {
+        "label": "पद 2",
+        "text": "नव्हती जागा धर्मशाळेत..\nगोठ्यात जागा मिळाली..\nमारीयेच्या कुशीत बाळ..\nधन्य धन्य ती माऊली.."
+      },
+      {
+        "label": "पद 3",
+        "text": "टाळ्या वाजवा, गाणी गा..\nप्रभूचे उपकार स्मरा..\nयेशू आमचा तारणहारा..\nत्याचा जयजयकार करा.."
+      }
+    ],
+    "number": 176
+  },
+  {
+    "slug": "aanandi-aanand-gaauya-khrist-janmacha",
+    "title": "आनंदी आनंद गाऊया ख्रिस्त जन्माचा",
+    "title_alt": "Aanandi Aanand Gaauya Khrist Janmacha",
+    "language": "marathi",
+    "tags": [
+      "Carol",
+      "Christmas",
+      "Praise",
+      "Joy"
+    ],
+    "type": "praise",
+    "beat": "4/4",
+    "tempo": 108,
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "आनंदी आनंद गाऊया..\nख्रिस्त जन्माचा दिवस आला..\nपापाच्या अंधारातून..\nमुक्त करण्या प्रभुजी आला.."
+      },
+      {
+        "label": "पद 1",
+        "text": "दूतसेना गाती स्वर्गात..\nमहिमा सर्वोच्च देवाला..\nसद्भावना मनुष्यांमध्ये..\nशांतीचा संदेश दिला.."
+      },
+      {
+        "label": "पद 2",
+        "text": "सोन्या-चांदीची नको भेट..\nहृदयाचे समर्पण हवे..\nयेशू राजाच्या सेवेमध्ये..\nजीवन आपले जावे.."
+      }
+    ],
+    "number": 177
+  },
+  {
     "slug": "anande-vajava-tali",
-    "number": 169,
+    "number": 178,
     "title": "आनंदे वाजवा टाळी",
     "title_alt": "Anande Vajava Tali",
     "language": "marathi",
@@ -4953,7 +5244,7 @@
   },
   {
     "slug": "khristi-bandhavancha-mela",
-    "number": 170,
+    "number": 179,
     "title": "ख्रिस्ती बांधवांचा मेळा",
     "title_alt": "Khristi Bandhavancha Mela",
     "language": "marathi",
@@ -4985,8 +5276,42 @@
     "tempo": 74
   },
   {
+    "slug": "gaaichya-gothyaat-khrist-janmala",
+    "title": "गाईच्या गोठ्यात ख्रिस्त जन्मला",
+    "title_alt": "Gaaichya Gothyaat Khrist Janmala",
+    "language": "marathi",
+    "tags": [
+      "Carol",
+      "Christmas",
+      "Praise",
+      "Joy"
+    ],
+    "type": "praise",
+    "beat": "4/4",
+    "tempo": 104,
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "गाईच्या गोठ्यात ख्रिस्त जन्मला..\nआनंद झाला जगाला..\nमानवजातीचा तारणहार..\nदीन रूपात आला.."
+      },
+      {
+        "label": "पद 1",
+        "text": "नाही मिळाला महाल त्याला..\nनाही रेशमी बिछाना..\nगव्हाणीमध्ये निजविला बाळ..\nदेवाचा तो कोवळा पाळणा.."
+      },
+      {
+        "label": "पद 2",
+        "text": "देवदूतांनी आनंदाने..\nस्वर्गीचे गाणे गायिले..\nउंच स्वर्गात देवाला महिमा..\nपृथ्वीवर शांती आणि भले.."
+      },
+      {
+        "label": "पद 3",
+        "text": "रानातल्या त्या मेंढपाळांनी..\nपाहिला स्वर्गीय प्रकाश..\nधावत गेले बेथलेहेमी..\nपाहिला प्रभूचा वास.."
+      }
+    ],
+    "number": 180
+  },
+  {
     "slug": "tarak-to-samarth-to",
-    "number": 171,
+    "number": 181,
     "title": "तारक तो सामर्थ तो",
     "title_alt": "Tarak To Samarth To",
     "language": "marathi",
@@ -5014,8 +5339,37 @@
     "tempo": 74
   },
   {
+    "slug": "taaranaara-janmala-aahe",
+    "title": "तारणारा जन्मला आहे",
+    "title_alt": "Taaranaara Janmala Aahe",
+    "language": "marathi",
+    "tags": [
+      "Carol",
+      "Christmas",
+      "Praise"
+    ],
+    "type": "praise",
+    "beat": "4/4",
+    "tempo": 102,
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "तारणारा जन्मला आहे..\nबेथलेहेम नगरीत..\nआनंदाची वार्ता आली..\nसारे गाऊया गीतात..\nहालेलुया हालेलुया..\nहालेलुया प्रभूला.."
+      },
+      {
+        "label": "पद 1",
+        "text": "पाप्यांचे पाप धुण्यास्तव..\nदेवपुत्र भूवरी आला..\nअंधाराला दूर सारून..\nसत्याचा दीप लावला.."
+      },
+      {
+        "label": "पद 2",
+        "text": "चला चला रे दर्शना जाऊ..\nत्या राजाच्या बाळाला..\nहृदयाचे हे मंदिर करूनी..\nअर्पू आपले जीवन त्याला.."
+      }
+    ],
+    "number": 182
+  },
+  {
     "slug": "dhanyavaad-yeshula",
-    "number": 172,
+    "number": 183,
     "title": "धन्यवाद येशूला",
     "title_alt": "Dhanyavaad Yeshula",
     "language": "marathi",
@@ -5031,8 +5385,41 @@
     "tempo": 74
   },
   {
+    "slug": "bethlehemachya-gaavi-ek-baal-janmale",
+    "title": "बेथलेहेमाच्या गावी एक बाळ जन्मले",
+    "title_alt": "Bethlehemachya Gaavi Ek Baal Janmale",
+    "language": "marathi",
+    "tags": [
+      "Carol",
+      "Christmas",
+      "Praise"
+    ],
+    "type": "praise",
+    "beat": "4/4",
+    "tempo": 100,
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "बेथलेहेमाच्या गावी, एक बाळ जन्मले..\nमानवाच्या उद्धारास्तव, देवपुत्र आले..\nगाऊ जयजयकार, गाऊ जयजयकार..\nयेशू राजा आला आज.."
+      },
+      {
+        "label": "पद 1",
+        "text": "थंडीच्या त्या रात्रीमध्ये..\nगोठ्यात जागा झाली..\nगव्हाणीतल्या गवतावरती..\nमूर्ती ती निजली.."
+      },
+      {
+        "label": "पद 2",
+        "text": "स्वर्गातून दूत आले..\nआनंदाची वार्ता दिली..\nपृथ्वीवरती शांती नांदावी..\nहीच घोषणा केली.."
+      },
+      {
+        "label": "पद 3",
+        "text": "आला राजा तारक आमचा..\nजीवन नवे देण्या..\nचला जाऊया चरणीपाशी..\nत्याचे नमन करण्या.."
+      }
+    ],
+    "number": 184
+  },
+  {
     "slug": "mastake-unch-kara",
-    "number": 173,
+    "number": 185,
     "title": "मस्तकें ऊंच करा",
     "title_alt": "Mastake Unch Kara",
     "language": "marathi",
@@ -5049,7 +5436,7 @@
   },
   {
     "slug": "mi-vechale-phulanna",
-    "number": 174,
+    "number": 186,
     "title": "मी वेचले फुलांना",
     "title_alt": "Mi Vechale Phulanna",
     "language": "marathi",
@@ -5073,8 +5460,42 @@
     "tempo": 74
   },
   {
+    "slug": "yeta-yeta-ka-bethlehema",
+    "title": "येता येता का बेथेलहेमा",
+    "title_alt": "Yeta Yeta Ka Bethlehemi",
+    "language": "marathi",
+    "tags": [
+      "Carol",
+      "Christmas",
+      "Joy",
+      "Worship"
+    ],
+    "type": "worship",
+    "beat": "3/4",
+    "tempo": 84,
+    "stanzas": [
+      {
+        "label": "कोरस",
+        "text": "येता येता का बेथेलहेमा?..\nपाहण्या येशू बाळ..\nस्वर्गाचा जो अधिपती..\nझाला दीन सकळ.."
+      },
+      {
+        "label": "पद 1",
+        "text": "तारा चमके पूर्व दिशेला..\nज्ञानीजन चालले..\nसोने, गंध आणि लोबान..\nभेट म्हणून आणिले.."
+      },
+      {
+        "label": "पद 2",
+        "text": "चरणीमध्ये निजला राजा..\nमहिमा त्याचा गाऊ..\nप्रभू येशूच्या चरणावरती..\nमस्तक आपण ठेवू.."
+      },
+      {
+        "label": "पद 3",
+        "text": "शांती, प्रीती, दया तयाची..\nजगाला आज कळाली..\nख्रिस्त येशूच्या आगमनाने..\nनवी पहाट झाली.."
+      }
+    ],
+    "number": 187
+  },
+  {
     "slug": "vyaho-tumhi-tali",
-    "number": 175,
+    "number": 188,
     "title": "व्याहो तुम्ही टाळी",
     "title_alt": "Vyaho Tumhi Tali",
     "language": "marathi",
@@ -5098,8 +5519,37 @@
     "tempo": 74
   },
   {
+    "slug": "shant-raatra-pavitra-raatra",
+    "title": "शांत रात्र, पवित्र रात्र",
+    "title_alt": "Shant Raatra Pavitra Raatra",
+    "language": "marathi",
+    "tags": [
+      "Carol",
+      "Christmas",
+      "Worship"
+    ],
+    "type": "worship",
+    "beat": "3/4",
+    "tempo": 72,
+    "stanzas": [
+      {
+        "label": "पद 1",
+        "text": "शांत रात्र, पवित्र रात्र..\nसर्व शांत, सर्व मग्न..\nपवित्र माता, पवित्र बाळ..\nशांत झोपेमध्ये गोड मुखडा..\nस्वर्गीय शांततेत झोप..\nस्वर्गीय शांततेत झोप.."
+      },
+      {
+        "label": "पद 2",
+        "text": "शांत रात्र, पवित्र रात्र..\nमेंढपाळ चकित झाले..\nस्वर्गातून तेज फाकले..\nदूतगण गाऊ लागले..\nख्रिस्त तारणहार जन्मला..\nख्रिस्त तारणहार जन्मला.."
+      },
+      {
+        "label": "पद 3",
+        "text": "शांत रात्र, पवित्र रात्र..\nदेवाचा पुत्र, प्रेमाचा झरा..\nतुझ्या मुखावरी दिव्य कृपा..\nतारणाची ही नवी आशा..\nयेशू प्रभू, जन्मला..\nयेशू प्रभू, जन्मला.."
+      }
+    ],
+    "number": 189
+  },
+  {
     "slug": "haatane-tali",
-    "number": 176,
+    "number": 190,
     "title": "हाताने टाळी",
     "title_alt": "Haatane Tali",
     "language": "marathi",
@@ -5124,7 +5574,7 @@
   },
   {
     "slug": "pray-for-india",
-    "number": 177,
+    "number": 191,
     "title": "Pray For India",
     "title_alt": "Pray For India",
     "language": "bilingual",
@@ -5165,7 +5615,7 @@
   },
   {
     "slug": "all-to-jesus-i-surrender",
-    "number": 178,
+    "number": 192,
     "title": "All to Jesus I surrender",
     "title_alt": null,
     "language": "english",
@@ -5200,7 +5650,7 @@
   },
   {
     "slug": "alleluia-speak-lord",
-    "number": 179,
+    "number": 193,
     "title": "Alleluia, Speak Lord",
     "title_alt": null,
     "language": "english",
@@ -5227,7 +5677,7 @@
   },
   {
     "slug": "amazing-love",
-    "number": 180,
+    "number": 194,
     "title": "Amazing Love",
     "title_alt": null,
     "language": "english",
@@ -5250,7 +5700,7 @@
   },
   {
     "slug": "as-the-deer",
-    "number": 181,
+    "number": 195,
     "title": "As the deer",
     "title_alt": null,
     "language": "english",
@@ -5281,7 +5731,7 @@
   },
   {
     "slug": "as-we-gather-in-this-place-today",
-    "number": 182,
+    "number": 196,
     "title": "As we gather in this place today",
     "title_alt": null,
     "language": "english",
@@ -5313,7 +5763,7 @@
   },
   {
     "slug": "awesome-god",
-    "number": 183,
+    "number": 197,
     "title": "Awesome God",
     "title_alt": null,
     "language": "english",
@@ -5360,7 +5810,7 @@
   },
   {
     "slug": "because-he-lives",
-    "number": 184,
+    "number": 198,
     "title": "Because He lives",
     "title_alt": null,
     "language": "english",
@@ -5396,7 +5846,7 @@
   },
   {
     "slug": "bless-the-lord-o-my-soul",
-    "number": 185,
+    "number": 199,
     "title": "Bless the Lord O My Soul",
     "title_alt": null,
     "language": "english",
@@ -5415,7 +5865,7 @@
   },
   {
     "slug": "blest-are-you-lord",
-    "number": 186,
+    "number": 200,
     "title": "Blest are You Lord",
     "title_alt": null,
     "language": "english",
@@ -5442,7 +5892,7 @@
   },
   {
     "slug": "come-holy-spirit-fall-on-me",
-    "number": 187,
+    "number": 201,
     "title": "Come Holy Spirit (Fall on me)",
     "title_alt": null,
     "language": "english",
@@ -5474,7 +5924,7 @@
   },
   {
     "slug": "feliz-navidad",
-    "number": 188,
+    "number": 202,
     "title": "Feliz Navidad",
     "title_alt": null,
     "language": "english",
@@ -5498,7 +5948,7 @@
   },
   {
     "slug": "give-me-joy-in-my-heart",
-    "number": 189,
+    "number": 203,
     "title": "Give me Joy in my heart",
     "title_alt": null,
     "language": "english",
@@ -5525,7 +5975,7 @@
   },
   {
     "slug": "give-thanks",
-    "number": 190,
+    "number": 204,
     "title": "Give thanks",
     "title_alt": null,
     "language": "english",
@@ -5554,7 +6004,7 @@
   },
   {
     "slug": "glory-glory-to-god-in-the-highest",
-    "number": 191,
+    "number": 205,
     "title": "Glory, glory to God in the highest",
     "title_alt": null,
     "language": "english",
@@ -5589,7 +6039,7 @@
   },
   {
     "slug": "great-indeed-are-your-works-o-lord",
-    "number": 192,
+    "number": 206,
     "title": "Great indeed are your works O lord",
     "title_alt": null,
     "language": "english",
@@ -5617,7 +6067,7 @@
   },
   {
     "slug": "heart-of-worship",
-    "number": 193,
+    "number": 207,
     "title": "Heart of Worship",
     "title_alt": null,
     "language": "english",
@@ -5637,7 +6087,7 @@
   },
   {
     "slug": "holy-holy-lord-god-of-hosts",
-    "number": 194,
+    "number": 208,
     "title": "Holy, Holy Lord God of hosts",
     "title_alt": null,
     "language": "english",
@@ -5660,7 +6110,7 @@
   },
   {
     "slug": "i-wander-far-away-from-god",
-    "number": 195,
+    "number": 209,
     "title": "I wander far away from God",
     "title_alt": null,
     "language": "english",
@@ -5701,7 +6151,7 @@
   },
   {
     "slug": "i-will-praise-you",
-    "number": 196,
+    "number": 210,
     "title": "I will praise you",
     "title_alt": "I will praise you",
     "language": "english",
@@ -5724,7 +6174,7 @@
   },
   {
     "slug": "i-will-sing-of-the-mercices",
-    "number": 197,
+    "number": 211,
     "title": "I will sing of the mercices",
     "title_alt": null,
     "language": "english",
@@ -5747,7 +6197,7 @@
   },
   {
     "slug": "i-the-lord-of-sea-and-sky",
-    "number": 198,
+    "number": 212,
     "title": "I, the Lord of sea and sky",
     "title_alt": null,
     "language": "english",
@@ -5794,7 +6244,7 @@
   },
   {
     "slug": "in-his-time",
-    "number": 199,
+    "number": 213,
     "title": "In his time",
     "title_alt": null,
     "language": "english",
@@ -5825,7 +6275,7 @@
   },
   {
     "slug": "lamb-of-god-sins-of-all-the-world",
-    "number": 200,
+    "number": 214,
     "title": "Lamb of God - sins of all the world",
     "title_alt": null,
     "language": "english",
@@ -5852,7 +6302,7 @@
   },
   {
     "slug": "lamb-of-god-o-jesus-christ",
-    "number": 201,
+    "number": 215,
     "title": "Lamb of God, O Jesus Christ",
     "title_alt": null,
     "language": "english",
@@ -5875,7 +6325,7 @@
   },
   {
     "slug": "lord-have-mercy",
-    "number": 202,
+    "number": 216,
     "title": "Lord have mercy",
     "title_alt": null,
     "language": "english",
@@ -5902,7 +6352,7 @@
   },
   {
     "slug": "majesty-worship-his-majesty",
-    "number": 203,
+    "number": 217,
     "title": "Majesty, worship His majesty",
     "title_alt": "Majesty, worship His majesty",
     "language": "english",
@@ -5930,7 +6380,7 @@
   },
   {
     "slug": "make-me-a-channel-of-your-peace",
-    "number": 204,
+    "number": 218,
     "title": "Make me a channel of your peace",
     "title_alt": null,
     "language": "english",
@@ -5961,7 +6411,7 @@
   },
   {
     "slug": "making-melody-in-your-heart",
-    "number": 205,
+    "number": 219,
     "title": "Making melody in your heart",
     "title_alt": "Making melody in your heart",
     "language": "english",
@@ -5985,7 +6435,7 @@
   },
   {
     "slug": "more-love-more-power",
-    "number": 206,
+    "number": 220,
     "title": "More love, more power",
     "title_alt": "More love, more power",
     "language": "english",
@@ -6013,7 +6463,7 @@
   },
   {
     "slug": "seek-ye-first",
-    "number": 207,
+    "number": 221,
     "title": "Seek ye first",
     "title_alt": "Seek ye first",
     "language": "english",
@@ -6041,7 +6491,7 @@
   },
   {
     "slug": "shepherd-of-my-soul",
-    "number": 208,
+    "number": 222,
     "title": "Shepherd of my soul",
     "title_alt": null,
     "language": "english",
@@ -6081,7 +6531,7 @@
   },
   {
     "slug": "shine-jesus-shine",
-    "number": 209,
+    "number": 223,
     "title": "Shine Jesus shine",
     "title_alt": null,
     "language": "english",
@@ -6108,7 +6558,7 @@
   },
   {
     "slug": "shout-to-the-lord",
-    "number": 210,
+    "number": 224,
     "title": "Shout to the Lord",
     "title_alt": null,
     "language": "english",
@@ -6156,7 +6606,7 @@
   },
   {
     "slug": "silent-night",
-    "number": 211,
+    "number": 225,
     "title": "Silent night",
     "title_alt": null,
     "language": "english",
@@ -6184,7 +6634,7 @@
   },
   {
     "slug": "the-king-of-glory",
-    "number": 212,
+    "number": 226,
     "title": "The King of glory",
     "title_alt": null,
     "language": "english",
@@ -6224,7 +6674,7 @@
   },
   {
     "slug": "there-is-no-problem-too-big",
-    "number": 213,
+    "number": 227,
     "title": "There is no problem too big",
     "title_alt": null,
     "language": "english",
@@ -6248,7 +6698,7 @@
   },
   {
     "slug": "there-is-power-power",
-    "number": 214,
+    "number": 228,
     "title": "There is power, power",
     "title_alt": "There is power, power",
     "language": "english",
@@ -6272,7 +6722,7 @@
   },
   {
     "slug": "thy-word",
-    "number": 215,
+    "number": 229,
     "title": "Thy Word",
     "title_alt": null,
     "language": "english",
@@ -6291,7 +6741,7 @@
   },
   {
     "slug": "way-maker",
-    "number": 216,
+    "number": 230,
     "title": "Way Maker",
     "title_alt": null,
     "language": "english",
@@ -6331,7 +6781,7 @@
   },
   {
     "slug": "we-are-gathering-together-unto-him",
-    "number": 217,
+    "number": 231,
     "title": "We are gathering together unto Him",
     "title_alt": null,
     "language": "english",
@@ -6362,7 +6812,7 @@
   },
   {
     "slug": "we-three-kings",
-    "number": 218,
+    "number": 232,
     "title": "We three Kings",
     "title_alt": null,
     "language": "english",
@@ -6421,7 +6871,7 @@
   },
   {
     "slug": "we-wish-you-a-merry-christmas",
-    "number": 219,
+    "number": 233,
     "title": "We wish you a Merry Christmas",
     "title_alt": null,
     "language": "english",
@@ -6445,7 +6895,7 @@
   },
   {
     "slug": "welcome-holy-spirit",
-    "number": 220,
+    "number": 234,
     "title": "Welcome Holy Spirit",
     "title_alt": null,
     "language": "english",
@@ -6499,7 +6949,7 @@
   },
   {
     "slug": "what-a-beautiful-name",
-    "number": 221,
+    "number": 235,
     "title": "What a beautiful name",
     "title_alt": null,
     "language": "english",
@@ -6559,7 +7009,7 @@
   },
   {
     "slug": "what-a-friend-we-have-in-jesus",
-    "number": 222,
+    "number": 236,
     "title": "What a friend we have in Jesus",
     "title_alt": null,
     "language": "english",
@@ -6587,7 +7037,7 @@
   },
   {
     "slug": "when-the-spirit-of-the-lord",
-    "number": 223,
+    "number": 237,
     "title": "When the Spirit of the Lord",
     "title_alt": "When the Spirit of the Lord",
     "language": "english",
@@ -6607,7 +7057,7 @@
   },
   {
     "slug": "when-we-eat-this-bread",
-    "number": 224,
+    "number": 238,
     "title": "When we eat this bread",
     "title_alt": null,
     "language": "english",
@@ -6626,7 +7076,7 @@
   },
   {
     "slug": "you-are-my-all-in-all",
-    "number": 225,
+    "number": 239,
     "title": "You are my all in all",
     "title_alt": null,
     "language": "english",
