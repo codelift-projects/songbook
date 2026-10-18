@@ -89,7 +89,11 @@ export default function SongEditor() {
         setTempo(existing.tempo != null ? String(existing.tempo) : '75');
         setStanzas(
           existing.stanzas && existing.stanzas.length > 0
-            ? existing.stanzas
+            ? existing.stanzas.map((st, idx) => ({
+                id: st.id || `st-${idx}-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
+                label: st.label || `Slide ${idx + 1}`,
+                text: st.text || '',
+              }))
             : [{ id: 'st-1', label: 'Verse 1', text: '' }]
         );
         setIsSeed(isSeedSong(existing));
@@ -295,6 +299,9 @@ export default function SongEditor() {
 
       if (launchProjector && targetId) {
         navigate(`/present/${targetId}`);
+      } else if (targetId) {
+        const groupQuery = location.state?.groupId ? `?groupId=${location.state.groupId}` : '';
+        navigate(`/view/${targetId}${groupQuery}`);
       } else {
         navigate('/');
       }

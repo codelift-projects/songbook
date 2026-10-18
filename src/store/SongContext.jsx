@@ -198,6 +198,12 @@ export function SongProvider({ children }) {
     // 1. Update client cache & state immediately
     setSongs((prev) => {
       const next = prev.map((s) => (String(s.id) === songId ? { ...s, ...updated } : s));
+      next.sort((a, b) => {
+        const an = a.number ?? Number.MAX_SAFE_INTEGER;
+        const bn = b.number ?? Number.MAX_SAFE_INTEGER;
+        if (an !== bn) return an - bn;
+        return (a.title || '').localeCompare(b.title || '', ['hi', 'en', 'mr']);
+      });
       saveCachedLibrary(next);
       return next;
     });

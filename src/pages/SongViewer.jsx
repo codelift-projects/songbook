@@ -26,7 +26,8 @@ import {
   Flag,
   Layers,
   Music2,
-  Sliders
+  Sliders,
+  Edit3
 } from 'lucide-react';
 
 export default function SongViewer() {
@@ -286,6 +287,21 @@ export default function SongViewer() {
               <span className="hidden xs:inline">Group</span>
             </button>
 
+            {/* Edit Song Button */}
+            <button
+              onClick={() => navigate(`/songs/${song.id}/edit`, { state: { from: 'view', groupId } })}
+              className="flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-bold transition shadow-xs active:scale-95"
+              style={{
+                background: hexA(settings.textColor, 0.10),
+                color: settings.textColor
+              }}
+              title="Edit song lyrics and details"
+              aria-label="Edit song"
+            >
+              <Edit3 className="h-3.5 w-3.5" />
+              <span className="hidden xs:inline">Edit</span>
+            </button>
+
             {/* Flag as Incomplete button */}
             <button
               onClick={() => {
@@ -339,13 +355,22 @@ export default function SongViewer() {
                 </p>
               </div>
             </div>
-            <button
-              onClick={handleUnmarkIncomplete}
-              disabled={submittingFlag}
-              className="shrink-0 rounded-xl bg-amber-600 hover:bg-amber-700 text-white px-2.5 py-1 text-xs font-bold transition active:scale-95 shadow-2xs"
-            >
-              Resolve
-            </button>
+            <div className="flex items-center gap-1.5 shrink-0">
+              <button
+                onClick={() => navigate(`/songs/${song.id}/edit`, { state: { from: 'view', groupId } })}
+                className="rounded-xl border border-amber-300 bg-amber-100 hover:bg-amber-200 text-amber-900 px-2.5 py-1 text-xs font-bold transition active:scale-95"
+                title="Edit lyrics and stanzas"
+              >
+                Edit
+              </button>
+              <button
+                onClick={handleUnmarkIncomplete}
+                disabled={submittingFlag}
+                className="rounded-xl bg-amber-600 hover:bg-amber-700 text-white px-2.5 py-1 text-xs font-bold transition active:scale-95 shadow-2xs"
+              >
+                Resolve
+              </button>
+            </div>
           </div>
         )}
 
