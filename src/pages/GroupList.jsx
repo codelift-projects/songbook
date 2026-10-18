@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useSongs } from '../store/SongContext';
 import {
@@ -19,12 +19,14 @@ import {
   ChevronRight,
   X,
   CheckCircle2,
+  Search,
 } from 'lucide-react';
 
 export default function GroupList() {
   const navigate = useNavigate();
   const { songs } = useSongs();
   const [groups, setGroups] = useState([]);
+  const [search, setSearch] = useState('');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newGroupName, setNewGroupName] = useState('');
   const [newGroupDesc, setNewGroupDesc] = useState('');
@@ -35,6 +37,16 @@ export default function GroupList() {
     const unsubscribe = subscribeGroups((updated) => setGroups(updated));
     return unsubscribe;
   }, []);
+
+  const filteredGroups = useMemo(() => {
+    if (!search.trim()) return groups;
+    const q = search.trim().toLowerCase();
+    return groups.filter(
+      (g) =>
+        (g.name || '').toLowerCase().includes(q) ||
+        (g.description || '').toLowerCase().includes(q)
+    );
+  }, [groups, search]);
 
   const handleCreateGroup = (e) => {
     e.preventDefault();
@@ -74,7 +86,7 @@ export default function GroupList() {
   };
 
   return (
-    <div className="space-y-5 pb-20 w-full max-w-full overflow-x-hidden">
+    <div className="space-y-3.5 pb-20 w-full max-w-full overflow-x-hidden">
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed top-16 sm:top-20 right-4 left-4 sm:left-auto sm:max-w-md z-50 flex items-center gap-2.5 rounded-2xl bg-slate-900/95 text-white p-3.5 shadow-xl border border-slate-800 backdrop-blur-md text-xs font-bold animate-in fade-in slide-in-from-top-4 duration-200">
@@ -90,9 +102,9 @@ export default function GroupList() {
       )}
 
       {/* Compact Top Action Bar */}
-      <div className="flex items-center justify-between pb-1">
+      <div className="flex items-center justify-between gap-2 pb-0.5">
         <span className="text-xs font-bold text-slate-500">
-          {groups.length} {groups.length === 1 ? 'Collection' : 'Collections'}
+          {filteredGroups.length} of {groups.length} {groups.length === 1 ? 'Collection' : 'Collections'}
         </span>
 
         <button
@@ -104,6 +116,28 @@ export default function GroupList() {
           <span>New Group</span>
         </button>
       </div>
+
+      {/* Search Input when multiple groups exist */}
+      {groups.length > 2 && (
+        <div className="relative w-full">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search collections by name..."
+            className="w-full rounded-xl border border-slate-200/90 bg-white pl-10 pr-9 py-2 text-sm font-normal text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none shadow-2xs transition"
+          />
+          {search && (
+            <button
+              onClick={() => setSearch('')}
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1 rounded-lg"
+            >
+              <X className="h-3.5 w-3.5" />
+            </button>
+          )}
+        </div>
+      )}
 
       {/* Empty state */}
       {groups.length === 0 && (
@@ -124,94 +158,67 @@ export default function GroupList() {
         </div>
       )}
 
-      {/* Groups Grid / List */}
+      {/* Compact Groups List View (Matching SongList.jsx) */}
       {groups.length > 0 && (
-        <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-          {groups.map((group) => {
+        <div className="flex flex-col divide-y divide-slate-100 rounded-2xl border border-slate-200/90 bg-white overflow-hidden shadow-2xs w-full max-w-full">
+          {filteredGroups.map((group) => {
             const songCount = group.songIds.length;
-            const previewSongs = group.songIds
-              .slice(0, 3)
-              .map((id) => songs.find((s) => s.id === id))
-              .filter(Boolean);
 
             return (
               <div
                 key={group.id}
                 onClick={() => navigate(`/groups/${group.id}`)}
-                className="group relative flex flex-col justify-between rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 shadow-2xs hover:shadow-md hover:border-emerald-300 transition-all cursor-pointer overflow-hidden"
+                className="group flex items-center justify-between gap-3 px-3.5 py-3 sm:px-5 sm:py-3.5 transition-colors cursor-pointer hover:bg-slate-50/90 active:bg-slate-100/80"
               >
-                <div>
-                  {/* Top Bar of Card */}
-                  <div className="flex items-start justify-between gap-2 mb-2">
-                    <div className="flex items-center gap-2 min-w-0">
-                      <span className="grid h-8 w-8 place-items-center rounded-xl bg-emerald-50 text-emerald-700 font-bold shrink-0">
-                        <Layers className="h-4 w-4" />
-                      </span>
-                      <h3 className="font-bold text-base text-slate-900 group-hover:text-emerald-700 transition-colors truncate">
-                        {group.name}
-                      </h3>
-                    </div>
+                {/* Left: Icon, Group Name, Song Count, Description */}
+                <div className="flex items-center gap-3 min-w-0 flex-1">
+                  <span className="grid h-8 w-8 place-items-center rounded-xl bg-emerald-50 text-emerald-700 font-bold shrink-0 group-hover:scale-105 transition-transform">
+                    <Layers className="h-4 w-4" />
+                  </span>
 
-                    <span className="rounded-full bg-slate-100 border border-slate-200/70 px-2.5 py-0.5 text-[11px] font-bold text-slate-700 shrink-0">
-                      {songCount} {songCount === 1 ? 'song' : 'songs'}
+                  <div className="min-w-0 flex-1 flex flex-col sm:flex-row sm:items-center sm:gap-2.5">
+                    <span className="font-semibold text-sm sm:text-base text-slate-900 group-hover:text-emerald-700 transition-colors truncate">
+                      {group.name}
                     </span>
+
+                    {group.description && (
+                      <span className="hidden md:inline text-xs text-slate-400 font-normal truncate max-w-md">
+                        · {group.description}
+                      </span>
+                    )}
                   </div>
 
-                  {/* Description */}
-                  {group.description && (
-                    <p className="text-xs text-slate-500 line-clamp-2 mb-3">
-                      {group.description}
-                    </p>
-                  )}
-
-                  {/* Songs preview */}
-                  {previewSongs.length > 0 && (
-                    <div className="space-y-1 mb-4 mt-2">
-                      {previewSongs.map((s, idx) => (
-                        <div key={s.id} className="text-xs text-slate-600 truncate flex items-center gap-1.5">
-                          <span className="text-[10px] font-mono text-slate-400 w-3">{idx + 1}.</span>
-                          <span className="truncate">{s.title}</span>
-                        </div>
-                      ))}
-                      {songCount > 3 && (
-                        <p className="text-[11px] text-slate-400 font-medium pl-4.5">
-                          +{songCount - 3} more...
-                        </p>
-                      )}
-                    </div>
-                  )}
+                  <span className="rounded-full bg-slate-100 border border-slate-200/70 px-2.5 py-0.5 text-[11px] font-bold text-slate-700 shrink-0">
+                    {songCount} {songCount === 1 ? 'song' : 'songs'}
+                  </span>
                 </div>
 
-                {/* Bottom Actions */}
-                <div className="border-t border-slate-100 pt-3 flex items-center justify-between gap-2 mt-2">
-                  {songCount > 0 ? (
+                {/* Right: Actions */}
+                <div className="shrink-0 flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                  {songCount > 0 && (
                     <button
                       type="button"
                       onClick={(e) => handlePresentGroup(e, group)}
-                      className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-50 text-emerald-700 border border-emerald-200 hover:bg-emerald-600 hover:text-white px-3 py-1.5 text-xs font-bold transition shadow-2xs active:scale-95"
+                      className="inline-flex items-center gap-1 rounded-xl bg-slate-900 text-white hover:bg-slate-800 px-2.5 py-1.5 text-xs font-bold transition shadow-2xs active:scale-95"
                       title="Present songs in this group"
                     >
                       <Play className="h-3 w-3 fill-current" />
-                      <span>Present</span>
+                      <span className="hidden sm:inline">Present</span>
                     </button>
-                  ) : (
-                    <span className="text-xs text-slate-400 italic">Empty group</span>
                   )}
 
-                  <div className="flex items-center gap-1">
-                    <button
-                      type="button"
-                      onClick={(e) => handleDeleteGroup(e, group.id, group.name)}
-                      className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition"
-                      title="Delete group"
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </button>
+                  <button
+                    type="button"
+                    onClick={(e) => handleDeleteGroup(e, group.id, group.name)}
+                    className="p-1.5 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-xl transition active:scale-95"
+                    title="Delete group"
+                  >
+                    <Trash2 className="h-3.5 w-3.5" />
+                  </button>
 
-                    <span className="p-1 text-slate-400 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all">
-                      <ChevronRight className="h-4 w-4" />
-                    </span>
-                  </div>
+                  <span className="p-1 text-slate-300 group-hover:text-emerald-600 group-hover:translate-x-0.5 transition-all">
+                    <ChevronRight className="h-4 w-4" />
+                  </span>
                 </div>
               </div>
             );
