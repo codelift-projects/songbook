@@ -4,14 +4,18 @@ import { X } from 'lucide-react';
 export default function BeatTempoModal({ open, song, onClose, onSave }) {
   if (!open || !song) return null;
 
-  const [songType, setSongType] = useState(song.type === 'praise' ? 'praise' : 'worship');
+  const [songType, setSongType] = useState(
+    song.type === 'praise' ? 'praise' : song.type === 'carol' ? 'carol' : 'worship'
+  );
   const [beat, setBeat] = useState(song.beat || '');
   const [tempo, setTempo] = useState(song.tempo != null ? Math.round(Number(song.tempo)) : 75);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     if (song) {
-      setSongType(song.type === 'praise' ? 'praise' : 'worship');
+      setSongType(
+        song.type === 'praise' ? 'praise' : song.type === 'carol' ? 'carol' : 'worship'
+      );
       setBeat(song.beat || '');
       setTempo(song.tempo != null ? Math.round(Number(song.tempo)) : 75);
     }
@@ -60,18 +64,18 @@ export default function BeatTempoModal({ open, song, onClose, onSave }) {
 
         {/* Simple Form */}
         <form onSubmit={handleSave} className="space-y-3.5">
-          {/* Type Selection: Worship and Praise */}
+          {/* Type Selection: Worship, Praise, and Carol */}
           <div>
             <label className="block text-xs font-bold text-slate-700 mb-1.5">
               Type
             </label>
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-3 gap-1.5">
               <button
                 type="button"
                 onClick={() => setSongType('worship')}
-                className={`py-2 px-3 rounded-xl border text-xs font-bold transition ${
+                className={`py-2 px-1 text-center rounded-xl border text-xs font-bold transition ${
                   songType === 'worship'
-                    ? 'border-emerald-600 bg-emerald-50 text-emerald-800'
+                    ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600 shadow-2xs'
                     : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
                 }`}
               >
@@ -80,13 +84,24 @@ export default function BeatTempoModal({ open, song, onClose, onSave }) {
               <button
                 type="button"
                 onClick={() => setSongType('praise')}
-                className={`py-2 px-3 rounded-xl border text-xs font-bold transition ${
+                className={`py-2 px-1 text-center rounded-xl border text-xs font-bold transition ${
                   songType === 'praise'
-                    ? 'border-indigo-600 bg-indigo-50 text-indigo-800'
+                    ? 'border-indigo-600 bg-indigo-50 text-indigo-800 ring-1 ring-indigo-600 shadow-2xs'
                     : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
                 }`}
               >
                 Praise
+              </button>
+              <button
+                type="button"
+                onClick={() => setSongType('carol')}
+                className={`py-2 px-1 text-center rounded-xl border text-xs font-bold transition ${
+                  songType === 'carol'
+                    ? 'border-amber-600 bg-amber-50 text-amber-800 ring-1 ring-amber-600 shadow-2xs'
+                    : 'border-slate-200 bg-white text-slate-600 hover:bg-slate-50'
+                }`}
+              >
+                Carol
               </button>
             </div>
           </div>

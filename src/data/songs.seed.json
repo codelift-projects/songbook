@@ -192,7 +192,7 @@
         "text": "आने वाला है वो हम पापियों को,\nजीवन मुक्ति खुशी देने को (2)"
       }
     ],
-    "type": "worship",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 74
   },
@@ -299,7 +299,7 @@
       "Joy",
       "Praise"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 104,
     "stanzas": [
@@ -453,7 +453,7 @@
       "Praise",
       "Joy"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 105,
     "stanzas": [
@@ -665,7 +665,7 @@
         "text": "न देख सका हमको तू पाप के सागर में\nऔर बनके मनुष्य आया आकाश में सागर में\nमुक्ति का तू दाता है दुनिया को बतायेंगे।\nहे येसु महान..."
       }
     ],
-    "type": "worship",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 74
   },
@@ -803,7 +803,7 @@
       "Christmas",
       "Praise"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 106,
     "stanzas": [
@@ -1072,7 +1072,7 @@
       "Praise",
       "Joy"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 106,
     "stanzas": [
@@ -1171,7 +1171,7 @@
         "text": "ख़ुशी मनाओ गाओ रे\nजन्मा है येसु राजा"
       }
     ],
-    "type": "worship",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 74
   },
@@ -1303,7 +1303,7 @@
       "Christmas",
       "Praise"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 100,
     "stanzas": [
@@ -1337,7 +1337,7 @@
       "Praise",
       "Joy"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 110,
     "stanzas": [
@@ -1588,7 +1588,7 @@
       "Praise",
       "Joy"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 110,
     "stanzas": [
@@ -1656,7 +1656,7 @@
       "Praise",
       "Joy"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 110,
     "stanzas": [
@@ -1690,7 +1690,7 @@
       "Praise",
       "Joy"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 112,
     "stanzas": [
@@ -2458,7 +2458,7 @@
       "Gloria",
       "Praise"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 108,
     "stanzas": [
@@ -2549,7 +2549,7 @@
       "Worship",
       "Adoration"
     ],
-    "type": "worship",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 84,
     "stanzas": [
@@ -3260,7 +3260,7 @@
       "Christmas",
       "Worship"
     ],
-    "type": "worship",
+    "type": "carol",
     "beat": "3/4",
     "tempo": 72,
     "stanzas": [
@@ -3480,7 +3480,7 @@
       "Praise",
       "Joy"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 108,
     "stanzas": [
@@ -3510,7 +3510,7 @@
       "Praise",
       "Joy"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 102,
     "stanzas": [
@@ -4639,7 +4639,7 @@
       "Praise",
       "Joy"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 108,
     "stanzas": [
@@ -5372,7 +5372,7 @@
         "text": "3. हमारे वास्ते वो आसमानी प्यार लाया है\nनया जीवन नए राहे नया संसार लाया है\nकभी जो खत्म ना हो आया ऐसी दास्तान बनके\nउतर आया जहाँ में....."
       }
     ],
-    "type": "worship",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 74
   },
@@ -5470,7 +5470,7 @@
       "Praise",
       "Joy"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 112,
     "stanzas": [
@@ -5504,7 +5504,7 @@
       "Praise",
       "Joy"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 106,
     "stanzas": [
@@ -5538,7 +5538,7 @@
       "Praise",
       "Joy"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 108,
     "stanzas": [
@@ -5618,7 +5618,7 @@
       "Praise",
       "Joy"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 104,
     "stanzas": [
@@ -5680,7 +5680,7 @@
       "Christmas",
       "Praise"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 102,
     "stanzas": [
@@ -5726,7 +5726,7 @@
       "Christmas",
       "Praise"
     ],
-    "type": "praise",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 100,
     "stanzas": [
@@ -5802,7 +5802,7 @@
       "Joy",
       "Worship"
     ],
-    "type": "worship",
+    "type": "carol",
     "beat": "3/4",
     "tempo": 84,
     "stanzas": [
@@ -5860,7 +5860,7 @@
       "Christmas",
       "Worship"
     ],
-    "type": "worship",
+    "type": "carol",
     "beat": "3/4",
     "tempo": 72,
     "stanzas": [
@@ -6274,7 +6274,7 @@
         "text": "We wanna wish you a merry Christmas!\nWe wanna wish you a merry Christmas!\nWe wanna wish you a merry Christmas!\nFrom the bottom of our hearts (2)"
       }
     ],
-    "type": "worship",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 74
   },
@@ -6960,7 +6960,7 @@
         "text": "Silent night, holy night\nSon of God, love's pure light\nRadiant beams from Thy holy face\nWith the dawn of redeeming grace\nJesus Lord, at Thy birth\nJesus Lord, at Thy birth"
       }
     ],
-    "type": "worship",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 74
   },
@@ -7197,7 +7197,7 @@
         "text": "O star of wonder, star of night,\nStar with royal beauty bright,\nWestward leading, still proceeding,\nGuide us to thy perfect Light."
       }
     ],
-    "type": "worship",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 74
   },
@@ -7221,7 +7221,7 @@
         "text": "Good tidings we bring to you and your kin,\nWe wish you a merry Christmas\nAnd a happy new year!"
       }
     ],
-    "type": "worship",
+    "type": "carol",
     "beat": "4/4",
     "tempo": 74
   },

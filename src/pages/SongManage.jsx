@@ -429,12 +429,18 @@ export default function SongManage() {
             )}
 
             {typeFilter !== 'all' && (
-              <span className="inline-flex items-center gap-1 rounded-lg bg-indigo-50 text-indigo-800 border border-indigo-200 pl-2 pr-1 py-0.5 text-xs font-bold animate-in fade-in zoom-in-95">
+              <span className={`inline-flex items-center gap-1 rounded-lg pl-2 pr-1 py-0.5 text-xs font-bold animate-in fade-in zoom-in-95 border ${
+                typeFilter === 'carol'
+                  ? 'bg-amber-50 text-amber-900 border-amber-200'
+                  : typeFilter === 'praise'
+                    ? 'bg-indigo-50 text-indigo-800 border-indigo-200'
+                    : 'bg-emerald-50 text-emerald-800 border-emerald-200'
+              }`}>
                 <span className="capitalize">{typeFilter}</span>
                 <button
                   type="button"
                   onClick={() => setTypeFilter('all')}
-                  className="text-indigo-700 hover:text-indigo-950 rounded p-0.5 hover:bg-indigo-200/60 transition"
+                  className="rounded p-0.5 hover:bg-black/10 transition"
                   title="Remove type filter"
                 >
                   <X className="h-3 w-3" />
@@ -523,11 +529,12 @@ export default function SongManage() {
 
           <div className="h-4 w-px bg-slate-200/80 shrink-0 mx-0.5" />
 
-          {/* Type of Song: Worship / Praise */}
+          {/* Type of Song: Worship / Praise / Carol */}
           <div className="flex items-center rounded-xl border border-slate-200/90 bg-white p-1 shadow-2xs shrink-0">
             {[
               { id: 'worship', label: 'Worship' },
               { id: 'praise', label: 'Praise' },
+              { id: 'carol', label: 'Carol' },
             ].map((tab) => {
               const active = typeFilter === tab.id;
               return (
@@ -539,7 +546,9 @@ export default function SongManage() {
                     active
                       ? tab.id === 'praise'
                         ? 'bg-indigo-600 text-white shadow-2xs'
-                        : 'bg-emerald-600 text-white shadow-2xs'
+                        : tab.id === 'carol'
+                          ? 'bg-amber-600 text-white shadow-2xs'
+                          : 'bg-emerald-600 text-white shadow-2xs'
                       : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
                   }`}
                   title={active ? `Filter active: ${tab.label}. Click to unselect` : `Filter by ${tab.label}`}

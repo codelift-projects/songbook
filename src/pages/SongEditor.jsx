@@ -27,7 +27,7 @@ export default function SongEditor() {
   const [title, setTitle] = useState('');
   const [titleAlt, setTitleAlt] = useState('');
   const [language, setLanguage] = useState('hindi'); // 'hindi' | 'marathi' | 'english'
-  const [songType, setSongType] = useState('worship'); // 'praise' | 'worship'
+  const [songType, setSongType] = useState('worship'); // 'worship' | 'praise' | 'carol'
   const [beat, setBeat] = useState('13');
   const [tempo, setTempo] = useState('75');
   const [stanzas, setStanzas] = useState([
@@ -84,7 +84,7 @@ export default function SongEditor() {
         setTitle(existing.title || '');
         setTitleAlt(existing.title_alt || '');
         setLanguage(existing.language || 'hindi');
-        setSongType(existing.type === 'praise' ? 'praise' : 'worship');
+        setSongType(existing.type === 'praise' ? 'praise' : existing.type === 'carol' ? 'carol' : 'worship');
         setBeat(existing.beat || '4/4');
         setTempo(existing.tempo != null ? String(existing.tempo) : '75');
         setStanzas(
@@ -267,7 +267,7 @@ export default function SongEditor() {
       title: title.trim(),
       title_alt: titleAlt.trim() || null,
       language,
-      type: songType === 'praise' ? 'praise' : 'worship',
+      type: songType === 'praise' ? 'praise' : songType === 'carol' ? 'carol' : 'worship',
       beat: beat ? String(beat).trim() : null,
       tempo: tempo ? parseInt(tempo, 10) : null,
       stanzas: validStanzas,
@@ -504,7 +504,7 @@ export default function SongEditor() {
                 <label className="text-xs font-black text-slate-700 block mb-1">
                   Type
                 </label>
-                <div className="grid grid-cols-2 gap-1">
+                <div className="grid grid-cols-3 gap-1">
                   <button
                     type="button"
                     onClick={() => setSongType('worship')}
@@ -526,6 +526,17 @@ export default function SongEditor() {
                     }`}
                   >
                     Praise
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setSongType('carol')}
+                    className={`rounded-xl border py-1.5 text-[11px] font-black transition-all text-center ${
+                      songType === 'carol'
+                        ? 'border-amber-600 bg-amber-50 text-amber-800 ring-1 ring-amber-600 shadow-2xs'
+                        : 'border-slate-200/90 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    }`}
+                  >
+                    Carol
                   </button>
                 </div>
               </div>

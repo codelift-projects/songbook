@@ -391,13 +391,16 @@ export default function SongViewer() {
             <button
               type="button"
               onClick={() => setIsBeatTempoOpen(true)}
-              className={`rounded-full px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider transition hover:opacity-90 active:scale-95 cursor-pointer ${song.type === 'praise'
-                ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30'
-                : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-                }`}
-              title="Click to change Song Type (Praise/Worship) or Beat/Tempo"
+              className={`rounded-full px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider transition hover:opacity-90 active:scale-95 cursor-pointer ${
+                song.type === 'carol'
+                  ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                  : song.type === 'praise'
+                    ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30'
+                    : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+              }`}
+              title="Click to change Song Type (Praise/Worship/Carol) or Beat/Tempo"
             >
-              {song.type === 'praise' ? 'Praise' : 'Worship'}
+              {song.type === 'carol' ? 'Carol' : song.type === 'praise' ? 'Praise' : 'Worship'}
             </button>
 
             <button
