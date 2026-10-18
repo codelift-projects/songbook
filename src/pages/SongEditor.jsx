@@ -38,7 +38,7 @@ export default function SongEditor() {
   const [titleAlt, setTitleAlt] = useState('');
   const [language, setLanguage] = useState('hindi'); // 'hindi' | 'marathi' | 'english'
   const [songType, setSongType] = useState('worship'); // 'praise' | 'worship'
-  const [beat, setBeat] = useState('4/4');
+  const [beat, setBeat] = useState('13');
   const [tempo, setTempo] = useState('75');
   const [stanzas, setStanzas] = useState([
     { id: 'st-1', label: 'Verse 1', text: '' },
@@ -529,21 +529,21 @@ export default function SongEditor() {
                     </span>
                   )}
                 </div>
-                <div className="flex gap-1.5 items-center">
+                <div className="space-y-1.5">
                   <input
                     type="text"
-                    placeholder="4/4"
+                    placeholder="e.g. 13, 31, 37, 49, 55, 68, NA"
                     value={beat}
                     onChange={(e) => setBeat(e.target.value)}
                     className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs bg-slate-50/70 focus:bg-white"
                   />
-                  <div className="flex gap-1">
-                    {['4/4', '3/4', '6/8'].map((b) => (
+                  <div className="flex flex-wrap gap-1">
+                    {['13', '31', '37', '49', '55', '68', 'NA'].map((b) => (
                       <button
                         key={b}
                         type="button"
                         onClick={() => setBeat(b)}
-                        className={`rounded-lg border px-1.5 py-1 text-[10px] font-bold transition ${
+                        className={`rounded-lg border px-1.5 py-0.5 text-[10px] font-bold transition ${
                           beat === b
                             ? 'bg-emerald-600 text-white border-emerald-600'
                             : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
@@ -573,9 +573,13 @@ export default function SongEditor() {
                     type="number"
                     min="30"
                     max="260"
+                    step="1"
                     placeholder="75"
                     value={tempo}
-                    onChange={(e) => setTempo(e.target.value)}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value, 10);
+                      setTempo(isNaN(val) ? '' : String(val));
+                    }}
                     className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs bg-slate-50/70 focus:bg-white"
                   />
                   <span className="text-[11px] font-bold text-slate-500 shrink-0">BPM</span>

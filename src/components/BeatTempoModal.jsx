@@ -1,14 +1,14 @@
 import { useState, useEffect, useRef } from 'react';
 import { X, Check, Activity, Music, Sparkles } from 'lucide-react';
 
-const COMMON_BEATS = ['4/4', '3/4', '6/8', '2/4'];
+const BEAT_PRESETS = ['13', '31', '37', '49', '55', '68', 'NA'];
 
 export default function BeatTempoModal({ open, song, onClose, onSave }) {
   if (!open || !song) return null;
 
   const [songType, setSongType] = useState(song.type === 'praise' ? 'praise' : 'worship');
-  const [beat, setBeat] = useState(song.beat || '4/4');
-  const [tempo, setTempo] = useState(song.tempo != null ? Number(song.tempo) : 75);
+  const [beat, setBeat] = useState(song.beat || '13');
+  const [tempo, setTempo] = useState(song.tempo != null ? Math.round(Number(song.tempo)) : 75);
   const [saving, setSaving] = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
@@ -19,8 +19,8 @@ export default function BeatTempoModal({ open, song, onClose, onSave }) {
   useEffect(() => {
     if (song) {
       setSongType(song.type === 'praise' ? 'praise' : 'worship');
-      setBeat(song.beat || '4/4');
-      setTempo(song.tempo != null ? Number(song.tempo) : 75);
+      setBeat(song.beat || '');
+      setTempo(song.tempo != null ? Math.round(Number(song.tempo)) : 75);
       setSaveSuccess(false);
       tapTimesRef.current = [];
       setTapDisplay(null);
@@ -142,13 +142,13 @@ export default function BeatTempoModal({ open, song, onClose, onSave }) {
               </span>
             </div>
 
-            <div className="grid grid-cols-4 gap-1.5 mb-2">
-              {COMMON_BEATS.map((b) => (
+            <div className="grid grid-cols-4 sm:grid-cols-7 gap-1.5 mb-2">
+              {BEAT_PRESETS.map((b) => (
                 <button
                   key={b}
                   type="button"
                   onClick={() => setBeat(b)}
-                  className={`rounded-xl border py-2 text-xs font-black transition ${
+                  className={`rounded-xl border py-1.5 px-1 text-xs font-black transition ${
                     beat === b
                       ? 'border-emerald-600 bg-emerald-600 text-white shadow-2xs'
                       : 'border-slate-200 bg-white text-slate-700 hover:bg-slate-50'
@@ -161,41 +161,45 @@ export default function BeatTempoModal({ open, song, onClose, onSave }) {
 
             <input
               type="text"
-              placeholder="Or custom beat (e.g. 12/8, 2/4)..."
+              placeholder="Or add custom beat (e.g. 13, 31, 4/4)..."
               value={beat}
               onChange={(e) => setBeat(e.target.value)}
               className="w-full rounded-xl border border-slate-200/90 bg-slate-50/60 px-3 py-2 text-xs font-bold text-slate-800 focus:bg-white focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600"
             />
           </div>
 
-          {/* Tempo (BPM) */}
+          {/* Tempo (BPM) - Integer Number */}
           <div>
             <div className="flex items-center justify-between mb-1.5">
               <label className="block text-xs font-black text-slate-700">
                 Tempo (BPM)
               </label>
               <span className="text-xs font-black text-emerald-700 flex items-center gap-1">
-                ♩ {tempo} BPM
+                ♩ {tempo ? Math.round(Number(tempo)) : '--'} BPM
               </span>
             </div>
 
-            {/* Slider and direct input */}
+            {/* Slider and direct integer input */}
             <div className="flex items-center gap-3">
               <input
                 type="range"
                 min="40"
-                max="200"
+                max="220"
                 step="1"
-                value={tempo}
-                onChange={(e) => setTempo(Number(e.target.value))}
+                value={tempo || 75}
+                onChange={(e) => setTempo(Math.round(Number(e.target.value)))}
                 className="w-full accent-emerald-600 cursor-pointer"
               />
               <input
                 type="number"
                 min="30"
                 max="260"
+                step="1"
                 value={tempo}
-                onChange={(e) => setTempo(Number(e.target.value))}
+                onChange={(e) => {
+                  const val = parseInt(e.target.value, 10);
+                  setTempo(isNaN(val) ? '' : Math.max(0, Math.min(300, val)));
+                }}
                 className="w-16 rounded-xl border border-slate-200 text-center py-1.5 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none"
               />
             </div>
@@ -207,7 +211,7 @@ export default function BeatTempoModal({ open, song, onClose, onSave }) {
                   <button
                     key={delta}
                     type="button"
-                    onClick={() => setTempo((t) => Math.max(30, Math.min(260, t + delta)))}
+                    onClick={() => setTempo((t) => Math.max(30, Math.min(260, Math.round((Number(t) || 75) + delta))))}
                     className="rounded-lg border border-slate-200 bg-white px-2 py-1 text-[11px] font-bold text-slate-700 hover:bg-slate-50 transition"
                   >
                     {delta > 0 ? `+${delta}` : delta}

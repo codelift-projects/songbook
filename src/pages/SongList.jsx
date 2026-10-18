@@ -17,9 +17,7 @@ import {
   FileQuestion,
   Plus,
   CheckCircle2,
-  AlertCircle,
-  Maximize2,
-  Minimize2
+  AlertCircle
 } from 'lucide-react';
 
 const SEARCH_STORAGE_KEY = 'church-songbook:search_query';
@@ -39,7 +37,7 @@ export default function SongList() {
 
   const [langFilter, setLangFilter] = useState('all'); // 'all' | 'hindi' | 'marathi' | 'english'
   const [typeFilter, setTypeFilter] = useState('all'); // 'all' | 'worship' | 'praise'
-  const [beatFilter, setBeatFilter] = useState('all'); // 'all' | '4/4' | '3/4' | '6/8' | '2/4'
+  const [beatFilter, setBeatFilter] = useState('all'); // 'all' | '13' | '31' | '37' | '49' | '55' | '68' | 'NA'
 
   // Incomplete song flags
   const [incompleteFlags, setIncompleteFlags] = useState({});
@@ -49,41 +47,6 @@ export default function SongList() {
   const [isMissingModalOpen, setIsMissingModalOpen] = useState(false);
   const [modalKeyword, setModalKeyword] = useState('');
   const [toastMessage, setToastMessage] = useState(null);
-
-  // Fullscreen state synced with document for the entire application
-  const [isFullscreen, setIsFullscreen] = useState(() => Boolean(document.fullscreenElement));
-
-  useEffect(() => {
-    const handleFsChange = () => {
-      setIsFullscreen(Boolean(document.fullscreenElement));
-    };
-    document.addEventListener('fullscreenchange', handleFsChange);
-    document.addEventListener('webkitfullscreenchange', handleFsChange);
-    return () => {
-      document.removeEventListener('fullscreenchange', handleFsChange);
-      document.removeEventListener('webkitfullscreenchange', handleFsChange);
-    };
-  }, []);
-
-  const toggleAppFullscreen = async () => {
-    try {
-      if (!document.fullscreenElement) {
-        if (document.documentElement.requestFullscreen) {
-          await document.documentElement.requestFullscreen();
-        } else if (document.documentElement.webkitRequestFullscreen) {
-          await document.documentElement.webkitRequestFullscreen();
-        }
-      } else {
-        if (document.exitFullscreen) {
-          await document.exitFullscreen();
-        } else if (document.webkitExitFullscreen) {
-          await document.webkitExitFullscreen();
-        }
-      }
-    } catch (err) {
-      console.warn('Fullscreen toggle failed:', err.message);
-    }
-  };
 
   // Sync search state to sessionStorage
   useEffect(() => {
@@ -169,8 +132,16 @@ export default function SongList() {
           if (sType !== typeFilter) return false;
         }
         if (beatFilter !== 'all') {
-          const sBeat = (song.beat || '').trim();
-          if (sBeat !== beatFilter) return false;
+          const rawBeat = String(song.beat || '').trim();
+          if (beatFilter === 'NA') {
+            const isNa = !rawBeat || rawBeat.toUpperCase() === 'NA' || rawBeat === '-' || rawBeat.toLowerCase() === 'none';
+            if (!isNa) return false;
+          } else {
+            const bLower = rawBeat.toLowerCase();
+            const target = beatFilter.toLowerCase();
+            const matches = bLower === target || bLower.split(/[\s,/-]+/).includes(target) || bLower.includes(target);
+            if (!matches) return false;
+          }
         }
         return score > 0;
       })
@@ -197,81 +168,55 @@ export default function SongList() {
         </div>
       )}
 
-      {/* Search Bar and Filters: Language, Type (Worship/Praise), Beat */}
-      <div className="space-y-2 w-full max-w-full">
-        {/* Row 1: Search Bar & Fullscreen Toggle */}
-        <div className="flex items-center gap-2 w-full max-w-full">
-          <div className="relative flex-1 min-w-0">
-            <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
-            <input
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder="Search songs by title or lyrics..."
-              className="w-full rounded-xl border border-slate-200/90 bg-white pl-10 pr-24 sm:pr-28 py-2.5 text-sm font-normal text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none shadow-2xs transition"
-            />
+      {/* Search Bar and Prebuilt Filters */}
+      <div className="space-y-2.5 w-full max-w-full">
+        {/* Row 1: Full-Width Search Input */}
+        <div className="relative w-full">
+          <Search className="absolute left-3.5 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 pointer-events-none" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search songs by title or lyrics..."
+            className="w-full rounded-xl border border-slate-200/90 bg-white pl-10 pr-24 sm:pr-28 py-2.5 text-sm font-normal text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none shadow-2xs transition"
+          />
 
-            {/* Action buttons inside search bar */}
-            <div className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
-              {search.trim() && (
-                <button
-                  type="button"
-                  onClick={() => handleQuickReport(search)}
-                  className="flex items-center gap-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 px-2 py-1 text-[11px] font-bold transition shadow-2xs active:scale-95"
-                  title={`Report "${search}" as missing song`}
-                >
-                  <Plus className="h-3 w-3 text-amber-700" />
-                  <span>Report</span>
-                </button>
-              )}
-
-              {search && (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSearch('');
-                    try {
-                      sessionStorage.removeItem(SEARCH_STORAGE_KEY);
-                    } catch (e) {}
-                  }}
-                  className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition"
-                  title="Clear search"
-                >
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              )}
-            </div>
-          </div>
-
-          {/* Fullscreen Toggle Button on Home Page */}
-          <button
-            type="button"
-            onClick={toggleAppFullscreen}
-            className={`shrink-0 flex items-center gap-1.5 rounded-xl border px-2.5 sm:px-3 py-2.5 text-xs font-bold transition shadow-xs active:scale-95 ${
-              isFullscreen
-                ? 'border-emerald-600 bg-emerald-600 text-white shadow-emerald-600/20'
-                : 'border-slate-200/90 bg-white text-slate-700 hover:bg-slate-50 hover:text-emerald-700'
-            }`}
-            title={isFullscreen ? 'Exit Fullscreen Mode' : 'Make Entire App Fullscreen'}
-          >
-            {isFullscreen ? (
-              <>
-                <Minimize2 className="h-3.5 w-3.5" />
-                <span className="hidden md:inline">Exit Fullscreen</span>
-              </>
-            ) : (
-              <>
-                <Maximize2 className="h-3.5 w-3.5 text-slate-500" />
-                <span className="hidden md:inline">Fullscreen</span>
-              </>
+          {/* Action buttons inside search bar */}
+          <div className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
+            {search.trim() && (
+              <button
+                type="button"
+                onClick={() => handleQuickReport(search)}
+                className="flex items-center gap-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 px-2 py-1 text-[11px] font-bold transition shadow-2xs active:scale-95"
+                title={`Report "${search}" as missing song`}
+              >
+                <Plus className="h-3 w-3 text-amber-700" />
+                <span>Report</span>
+              </button>
             )}
-          </button>
+
+            {search && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSearch('');
+                  try {
+                    sessionStorage.removeItem(SEARCH_STORAGE_KEY);
+                  } catch (e) {}
+                }}
+                className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition"
+                title="Clear search"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
         </div>
 
-        {/* Row 2: Filter Tabs (Language, Type of Song: Worship/Praise, Beat) */}
-        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 pt-0.5">
-          {/* Language Tabs */}
-          <div className="flex rounded-xl border border-slate-200/90 bg-white p-1 shadow-2xs overflow-x-auto">
+        {/* Row 2: Prebuilt Quick Filters Strip: Language | Worship/Praise | Beats (13, 31, 37, 49, 55, 68, NA) */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 pt-0.5 select-none text-xs">
+          {/* Language Group */}
+          <div className="flex items-center rounded-xl border border-slate-200/90 bg-white p-1 shadow-2xs shrink-0">
             {[
               { id: 'all', label: 'All' },
               { id: 'hindi', label: 'हिन्दी' },
@@ -280,8 +225,9 @@ export default function SongList() {
             ].map((tab) => (
               <button
                 key={tab.id}
+                type="button"
                 onClick={() => setLangFilter(tab.id)}
-                className={`shrink-0 rounded-lg py-1 px-2.5 text-xs font-semibold transition-all ${
+                className={`shrink-0 rounded-lg py-1 px-2.5 text-xs font-bold transition-all ${
                   langFilter === tab.id
                     ? 'bg-emerald-600 text-white shadow-2xs'
                     : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
@@ -292,52 +238,63 @@ export default function SongList() {
             ))}
           </div>
 
-          {/* Type of Song Filter: Worship / Praise */}
-          <div className="flex rounded-xl border border-slate-200/90 bg-white p-1 shadow-2xs overflow-x-auto">
+          <div className="h-4 w-px bg-slate-200/80 shrink-0 mx-0.5" />
+
+          {/* Type of Song: Worship / Praise */}
+          <div className="flex items-center rounded-xl border border-slate-200/90 bg-white p-1 shadow-2xs shrink-0">
             {[
-              { id: 'all', label: 'All Types' },
               { id: 'worship', label: 'Worship' },
               { id: 'praise', label: 'Praise' },
-            ].map((tab) => (
-              <button
-                key={tab.id}
-                onClick={() => setTypeFilter(tab.id)}
-                className={`shrink-0 rounded-lg py-1 px-2.5 text-xs font-semibold transition-all ${
-                  typeFilter === tab.id
-                    ? tab.id === 'praise'
-                      ? 'bg-indigo-600 text-white shadow-2xs'
-                      : tab.id === 'worship'
-                      ? 'bg-emerald-600 text-white shadow-2xs'
-                      : 'bg-slate-900 text-white shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                }`}
-              >
-                {tab.label}
-              </button>
-            ))}
+            ].map((tab) => {
+              const active = typeFilter === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  type="button"
+                  onClick={() => setTypeFilter((prev) => (prev === tab.id ? 'all' : tab.id))}
+                  className={`shrink-0 rounded-lg py-1 px-2.5 text-xs font-bold transition-all ${
+                    active
+                      ? tab.id === 'praise'
+                        ? 'bg-indigo-600 text-white shadow-2xs'
+                        : 'bg-emerald-600 text-white shadow-2xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  }`}
+                  title={active ? `Filter active: ${tab.label}. Click to unselect` : `Filter by ${tab.label}`}
+                >
+                  {tab.label}
+                </button>
+              );
+            })}
           </div>
 
-          {/* Beat Filter */}
-          <div className="flex rounded-xl border border-slate-200/90 bg-white p-1 shadow-2xs overflow-x-auto items-center">
-            <span className="text-[10px] font-bold text-slate-400 px-1.5 uppercase tracking-wider hidden sm:inline">
+          <div className="h-4 w-px bg-slate-200/80 shrink-0 mx-0.5" />
+
+          {/* Beats: 13, 31, 37, 49, 55, 68, NA */}
+          <div className="flex items-center rounded-xl border border-slate-200/90 bg-white p-1 shadow-2xs shrink-0">
+            <span className="text-[10px] font-extrabold uppercase text-slate-400 px-1.5 tracking-wider hidden sm:inline">
               Beat:
             </span>
-            {['all', '4/4', '3/4', '6/8', '2/4'].map((b) => (
-              <button
-                key={b}
-                onClick={() => setBeatFilter(b)}
-                className={`shrink-0 rounded-lg py-1 px-2 text-xs font-semibold transition-all ${
-                  beatFilter === b
-                    ? 'bg-slate-900 text-white shadow-2xs'
-                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                }`}
-              >
-                {b === 'all' ? 'All' : b}
-              </button>
-            ))}
+            {['13', '31', '37', '49', '55', '68', 'NA'].map((b) => {
+              const active = beatFilter === b;
+              return (
+                <button
+                  key={b}
+                  type="button"
+                  onClick={() => setBeatFilter((prev) => (prev === b ? 'all' : b))}
+                  className={`shrink-0 rounded-lg py-1 px-2 text-xs font-bold transition-all ${
+                    active
+                      ? 'bg-slate-900 text-white shadow-2xs'
+                      : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  }`}
+                  title={active ? `Beat ${b} active. Click to unselect` : `Filter by beat ${b}`}
+                >
+                  {b}
+                </button>
+              );
+            })}
           </div>
 
-          {/* Reset all filters button if any filter is active */}
+          {/* Reset Filters button */}
           {(langFilter !== 'all' || typeFilter !== 'all' || beatFilter !== 'all') && (
             <button
               type="button"
@@ -346,10 +303,11 @@ export default function SongList() {
                 setTypeFilter('all');
                 setBeatFilter('all');
               }}
-              className="rounded-lg px-2 py-1 text-xs font-bold text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition shadow-2xs active:scale-95"
+              className="flex items-center gap-1 shrink-0 rounded-xl border border-rose-200 bg-rose-50 hover:bg-rose-100 text-rose-700 px-2.5 py-1.5 text-xs font-bold transition active:scale-95 shadow-2xs"
               title="Reset all filters"
             >
-              Reset
+              <X className="h-3 w-3" />
+              <span>Reset</span>
             </button>
           )}
         </div>

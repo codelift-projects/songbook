@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { NavLink, Outlet } from 'react-router-dom';
 import { isSupabaseConfigured } from '../lib/supabase';
 import { useSongs } from '../store/SongContext';
@@ -8,11 +9,46 @@ import {
   SlidersHorizontal, 
   Play, 
   Layers, 
-  RefreshCw 
+  RefreshCw,
+  Maximize2,
+  Minimize2
 } from 'lucide-react';
 
 export default function Layout() {
   const { syncing, syncProgress, syncWithCloud, lastSyncTime } = useSongs();
+  const [isFullscreen, setIsFullscreen] = useState(() => Boolean(document.fullscreenElement));
+
+  useEffect(() => {
+    const handleFsChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+    document.addEventListener('fullscreenchange', handleFsChange);
+    document.addEventListener('webkitfullscreenchange', handleFsChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFsChange);
+      document.removeEventListener('webkitfullscreenchange', handleFsChange);
+    };
+  }, []);
+
+  const toggleAppFullscreen = async () => {
+    try {
+      if (!document.fullscreenElement) {
+        if (document.documentElement.requestFullscreen) {
+          await document.documentElement.requestFullscreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+          await document.documentElement.webkitRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          await document.webkitExitFullscreen();
+        }
+      }
+    } catch (err) {
+      console.warn('Fullscreen toggle failed:', err.message);
+    }
+  };
 
   const formattedLastSync = lastSyncTime
     ? new Date(lastSyncTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
@@ -88,6 +124,27 @@ export default function Layout() {
               <RefreshCw className={`h-3.5 w-3.5 text-emerald-600 ${syncing ? 'animate-spin' : ''}`} />
               <span className="font-extrabold text-[11px] sm:text-xs">
                 {syncing ? `${syncProgress}%` : 'Sync'}
+              </span>
+            </button>
+
+            {/* Fullscreen Toggle Button */}
+            <button
+              type="button"
+              onClick={toggleAppFullscreen}
+              className={`flex items-center gap-1.5 rounded-xl border px-2.5 py-1.5 sm:px-3 sm:py-2 text-xs font-black transition-all shadow-2xs active:scale-95 ${
+                isFullscreen
+                  ? 'border-emerald-600 bg-emerald-600 text-white shadow-emerald-600/20'
+                  : 'border-slate-200/90 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-900 hover:border-slate-300'
+              }`}
+              title={isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'}
+            >
+              {isFullscreen ? (
+                <Minimize2 className="h-3.5 w-3.5" />
+              ) : (
+                <Maximize2 className="h-3.5 w-3.5 text-slate-600" />
+              )}
+              <span className="hidden sm:inline font-extrabold text-[11px] sm:text-xs">
+                {isFullscreen ? 'Exit' : 'Full'}
               </span>
             </button>
 
