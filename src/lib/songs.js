@@ -9,6 +9,12 @@ export function uid() {
 }
 
 export function normalizeSong(song) {
+  const songType = song.type
+    ? String(song.type).toLowerCase().trim()
+    : (Array.isArray(song.tags) && song.tags.some((t) => String(t).toLowerCase() === 'praise'))
+    ? 'praise'
+    : 'worship';
+
   return {
     id: song.id || `song-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
     slug: song.slug || null,
@@ -16,6 +22,9 @@ export function normalizeSong(song) {
     title: song.title || '',
     title_alt: song.title_alt || null,
     language: song.language || 'hindi',
+    type: songType === 'praise' ? 'praise' : 'worship',
+    beat: song.beat || song.beat_number || null,
+    tempo: song.tempo != null && song.tempo !== '' ? Number(song.tempo) : null,
     tags: Array.isArray(song.tags) ? song.tags : [],
     stanzas: Array.isArray(song.stanzas) ? song.stanzas : [],
     source: song.source || 'db',
@@ -121,12 +130,21 @@ export async function bulkCreateSongs(songList) {
       if (num >= nextNum) nextNum = num + 1;
     }
 
+    const itemType = item.type
+      ? String(item.type).toLowerCase().trim()
+      : (Array.isArray(item.tags) && item.tags.some((t) => String(t).toLowerCase() === 'praise'))
+      ? 'praise'
+      : 'worship';
+
     return {
       id: item.id || `song-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
       number: num,
       title: item.title || 'Untitled Song',
       title_alt: item.title_alt || null,
       language: item.language || 'hindi',
+      type: itemType === 'praise' ? 'praise' : 'worship',
+      beat: item.beat || item.beat_number || null,
+      tempo: item.tempo != null && item.tempo !== '' ? Number(item.tempo) : null,
       stanzas: Array.isArray(item.stanzas) ? item.stanzas : [],
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),

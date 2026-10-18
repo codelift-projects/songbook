@@ -307,7 +307,8 @@ export default function SongManage() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-slate-200/90 bg-white pl-10 pr-9 py-2.5 text-sm font-normal text-slate-800 focus:border-slate-400 focus:outline-none shadow-2xs transition"
+            placeholder="Search songs to manage, edit, or delete..."
+            className="w-full rounded-xl border border-slate-200/90 bg-white pl-10 pr-9 py-2.5 text-sm font-normal text-slate-800 focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 focus:outline-none shadow-2xs transition"
           />
           {search && (
             <button
@@ -400,130 +401,115 @@ export default function SongManage() {
         </div>
       )}
 
-      {/* Management Song List Table */}
+      {/* Management Song List - Simple & Clean Like Song List */}
       {!loading && filteredSongs.length > 0 && (
-        <div className="overflow-hidden rounded-2xl border border-slate-200/90 bg-white shadow-xs">
-          <div className="divide-y divide-slate-100">
-            {filteredSongs.map((song) => {
-              const isSeed = isSeedSong(song);
-              const isSelected = selected.has(song.id);
-              const stanzaCount = (song.stanzas || []).length;
+        <div className="flex flex-col divide-y divide-slate-100 rounded-2xl border border-slate-200/90 bg-white overflow-hidden shadow-2xs w-full max-w-full">
+          {filteredSongs.map((song) => {
+            const isSeed = isSeedSong(song);
+            const isSelected = selected.has(song.id);
 
-              return (
-                <div
-                  key={song.id}
-                  className={`flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 transition duration-150 ${
-                    isSelected ? 'bg-emerald-50/30' : 'hover:bg-slate-50/90'
-                  }`}
-                >
-                  {/* Left info: Lock view on the leftmost position */}
-                  <div className="flex items-start gap-2.5 min-w-0">
-                    {/* Leftmost: Lock badge if Seed, or Checkbox if DB */}
+            return (
+              <div
+                key={song.id}
+                onClick={() => navigate(isSeed ? `/view/${song.id}` : `/songs/${song.id}/edit`)}
+                className={`group flex items-center justify-between gap-3 px-3.5 py-3 sm:px-5 sm:py-3.5 transition-colors cursor-pointer ${
+                  isSelected ? 'bg-emerald-50/40' : 'hover:bg-slate-50/90 active:bg-slate-100/80'
+                }`}
+              >
+                {/* Left: Selection check/lock, Title, Type & Tempo Badges */}
+                <div className="flex items-center gap-2.5 min-w-0 flex-1">
+                  {/* Selection Checkbox (or subtle Lock if Seed) */}
+                  <div className="shrink-0 flex items-center" onClick={(e) => e.stopPropagation()}>
                     {isSeed ? (
-                      <span className="shrink-0 inline-flex items-center gap-1 rounded-lg bg-slate-100 border border-slate-200/90 px-2 py-1 text-xs font-semibold text-slate-600 shadow-2xs" title="Seed song · Read-only">
-                        <Lock className="h-3 w-3 text-slate-500" />
+                      <span
+                        className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold text-slate-500 border border-slate-200/80 shadow-2xs"
+                        title="Seed song · Read-only"
+                      >
+                        <Lock className="h-2.5 w-2.5 text-slate-400" />
                         <span>SEED</span>
                       </span>
                     ) : (
                       <button
                         type="button"
                         onClick={(e) => toggleSelect(song.id, e)}
-                        className="shrink-0 mt-1 text-slate-400 hover:text-slate-700 transition"
+                        className="text-slate-400 hover:text-emerald-600 transition p-0.5"
                         title={isSelected ? 'Deselect song' : 'Select song'}
                       >
                         {isSelected ? (
                           <CheckSquare className="h-4 w-4 text-emerald-600" />
                         ) : (
-                          <Square className="h-4 w-4 text-slate-400" />
+                          <Square className="h-4 w-4 text-slate-300 hover:text-slate-500" />
                         )}
                       </button>
                     )}
+                  </div>
 
-                    <span className="shrink-0 inline-flex items-center justify-center rounded-xl bg-slate-100 border border-slate-200/80 px-2 py-1 text-xs font-semibold text-slate-700 min-w-8 text-center shadow-2xs">
-                      #{song.number || '•'}
+                  {/* Song Title (Clean & Simple) */}
+                  <span className="font-semibold text-sm sm:text-base text-slate-900 group-hover:text-emerald-700 transition-colors truncate">
+                    {song.title}
+                  </span>
+
+                  {/* Song Type Badge */}
+                  {song.type && (
+                    <span 
+                      className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider shrink-0 ${
+                        song.type === 'praise'
+                          ? 'bg-indigo-50 text-indigo-700 border border-indigo-200/70'
+                          : 'bg-emerald-50 text-emerald-800 border border-emerald-200/70'
+                      }`}
+                    >
+                      {song.type === 'praise' ? 'Praise' : 'Worship'}
                     </span>
+                  )}
 
-                    <div className="min-w-0">
-                      <div className="flex items-center gap-2">
-                        <h3 className="font-semibold text-sm sm:text-base text-slate-900 truncate">
-                          {song.title}
-                        </h3>
-                        <span className="shrink-0 rounded-md bg-emerald-50 px-1.5 py-0.5 text-[10px] font-semibold text-emerald-800 uppercase border border-emerald-200/60">
-                          {song.language === 'marathi' ? 'मराठी' : song.language === 'hindi' ? 'हिन्दी' : 'English'}
-                        </span>
-                      </div>
-
-                      <div className="flex items-center gap-3 text-xs text-slate-400 mt-0.5 font-normal">
-                        {song.title_alt && (
-                          <span className="italic truncate max-w-xs">{song.title_alt}</span>
-                        )}
-                        <span>{stanzaCount} stanza{stanzaCount === 1 ? '' : 's'}</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Right Action buttons */}
-                  <div className="flex items-center gap-1.5 self-end sm:self-auto shrink-0">
-                    {/* Project / Present Button */}
-                    <button
-                      type="button"
-                      onClick={() => navigate(`/present/${song.id}`)}
-                      className="flex items-center gap-1 rounded-lg bg-emerald-600 px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-emerald-700 shadow-2xs transition"
-                      title="Launch live slide projector"
-                    >
-                      <Play className="h-3 w-3 fill-current" />
-                      <span>Project</span>
-                    </button>
-
-                    {/* View (Scrollable Reader) Button */}
-                    <button
-                      type="button"
-                      onClick={() => navigate(`/view/${song.id}`)}
-                      className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition shadow-2xs"
-                      title="View full scrollable lyrics"
-                    >
-                      <Eye className="h-3.5 w-3.5 text-slate-500" />
-                      <span>View</span>
-                    </button>
-
-                    {/* Edit Button (hidden or disabled for seed) */}
-                    {isSeed ? (
-                      <Link
-                        to={`/songs/${song.id}/edit`}
-                        className="flex items-center gap-1 rounded-lg border border-slate-200 bg-slate-50 px-2.5 py-1.5 text-xs font-medium text-slate-500 hover:bg-slate-100 transition shadow-2xs"
-                        title="View seed song or duplicate"
-                      >
-                        <Lock className="h-3.5 w-3.5 text-slate-400" />
-                        <span className="hidden xs:inline">Locked</span>
-                      </Link>
-                    ) : (
-                      <Link
-                        to={`/songs/${song.id}/edit`}
-                        className="flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition shadow-2xs"
-                        title="Edit song lyrics & stanzas"
-                      >
-                        <Edit3 className="h-3.5 w-3.5 text-slate-600" />
-                        <span className="hidden xs:inline">Edit</span>
-                      </Link>
-                    )}
-
-                    {/* Delete Button (hidden for seed songs, password protected for DB songs) */}
-                    {!isSeed && (
-                      <button
-                        type="button"
-                        onClick={() => openDeleteModal([song.id])}
-                        className="flex items-center gap-1 rounded-lg border border-rose-200 bg-rose-50/50 px-2.5 py-1.5 text-xs font-medium text-rose-700 hover:bg-rose-100 hover:border-rose-300 transition"
-                        title="Delete song from songbook (password protected)"
-                      >
-                        <Trash2 className="h-3.5 w-3.5 text-rose-600" />
-                        <span className="hidden xs:inline">Delete</span>
-                      </button>
-                    )}
-                  </div>
+                  {/* Beat & Tempo Badge (if present) */}
+                  {(song.beat || song.tempo) && (
+                    <span className="hidden sm:inline-flex items-center gap-1 rounded-md bg-slate-50 border border-slate-200/70 px-1.5 py-0.5 text-[10px] font-medium text-slate-500 shrink-0">
+                      {song.beat && <span>{song.beat}</span>}
+                      {song.beat && song.tempo && <span>·</span>}
+                      {song.tempo && <span>{song.tempo} bpm</span>}
+                    </span>
+                  )}
                 </div>
-              );
-            })}
-          </div>
+
+                {/* Right: Clean minimal action buttons */}
+                <div className="shrink-0 flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
+                  {/* Edit or Duplicate Button */}
+                  {isSeed ? (
+                    <Link
+                      to={`/songs/${song.id}/edit`}
+                      className="flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-2xs"
+                      title="View / Duplicate Seed Song"
+                    >
+                      <Lock className="h-3 w-3 text-slate-400" />
+                      <span>View</span>
+                    </Link>
+                  ) : (
+                    <Link
+                      to={`/songs/${song.id}/edit`}
+                      className="flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition shadow-2xs active:scale-95"
+                      title="Edit song lyrics & stanzas"
+                    >
+                      <Edit3 className="h-3 w-3" />
+                      <span>Edit</span>
+                    </Link>
+                  )}
+
+                  {/* Delete Button (DB songs only) */}
+                  {!isSeed && (
+                    <button
+                      type="button"
+                      onClick={() => openDeleteModal([song.id])}
+                      className="flex items-center justify-center h-7 w-7 rounded-xl border border-rose-200 bg-rose-50/50 text-rose-600 hover:bg-rose-100 hover:text-rose-700 hover:border-rose-300 transition active:scale-95 shadow-2xs"
+                      title="Delete song"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  )}
+                </div>
+              </div>
+            );
+          })}
         </div>
       )}
 

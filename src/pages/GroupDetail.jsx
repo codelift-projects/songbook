@@ -331,7 +331,7 @@ export default function GroupDetail() {
 
                   <div className="min-w-0 flex-1">
                     <p
-                      onClick={() => navigate(`/view/${song.id}`)}
+                      onClick={() => navigate(`/view/${song.id}?groupId=${group.id}`)}
                       className="font-semibold text-sm sm:text-base text-slate-900 hover:text-emerald-700 transition-colors truncate cursor-pointer"
                     >
                       {song.title}
@@ -366,7 +366,7 @@ export default function GroupDetail() {
                   {/* View Button */}
                   <button
                     type="button"
-                    onClick={() => navigate(`/view/${song.id}`)}
+                    onClick={() => navigate(`/view/${song.id}?groupId=${group.id}`)}
                     className="flex items-center gap-1 rounded-xl border border-slate-200 bg-slate-50/90 px-2.5 py-1 text-xs font-semibold text-slate-700 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition shadow-2xs active:scale-95"
                     title="View lyrics"
                   >

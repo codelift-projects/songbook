@@ -17,7 +17,9 @@ import {
   FileQuestion,
   Plus,
   CheckCircle2,
-  AlertCircle
+  AlertCircle,
+  Maximize2,
+  Minimize2
 } from 'lucide-react';
 
 const SEARCH_STORAGE_KEY = 'church-songbook:search_query';
@@ -45,6 +47,41 @@ export default function SongList() {
   const [isMissingModalOpen, setIsMissingModalOpen] = useState(false);
   const [modalKeyword, setModalKeyword] = useState('');
   const [toastMessage, setToastMessage] = useState(null);
+
+  // Fullscreen state synced with document for the entire application
+  const [isFullscreen, setIsFullscreen] = useState(() => Boolean(document.fullscreenElement));
+
+  useEffect(() => {
+    const handleFsChange = () => {
+      setIsFullscreen(Boolean(document.fullscreenElement));
+    };
+    document.addEventListener('fullscreenchange', handleFsChange);
+    document.addEventListener('webkitfullscreenchange', handleFsChange);
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFsChange);
+      document.removeEventListener('webkitfullscreenchange', handleFsChange);
+    };
+  }, []);
+
+  const toggleAppFullscreen = async () => {
+    try {
+      if (!document.fullscreenElement) {
+        if (document.documentElement.requestFullscreen) {
+          await document.documentElement.requestFullscreen();
+        } else if (document.documentElement.webkitRequestFullscreen) {
+          await document.documentElement.webkitRequestFullscreen();
+        }
+      } else {
+        if (document.exitFullscreen) {
+          await document.exitFullscreen();
+        } else if (document.webkitExitFullscreen) {
+          await document.webkitExitFullscreen();
+        }
+      }
+    } catch (err) {
+      console.warn('Fullscreen toggle failed:', err.message);
+    }
+  };
 
   // Sync search state to sessionStorage
   useEffect(() => {
@@ -195,26 +232,52 @@ export default function SongList() {
           </div>
         </div>
 
-        {/* Language Tabs */}
-        <div className="flex rounded-xl border border-slate-200/90 bg-white p-1 sm:col-span-5 shadow-xs overflow-x-auto min-w-0 max-w-full">
-          {[
-            { id: 'all', label: 'All' },
-            { id: 'hindi', label: 'हिन्दी' },
-            { id: 'marathi', label: 'मराठी' },
-            { id: 'english', label: 'English' },
-          ].map((tab) => (
-            <button
-              key={tab.id}
-              onClick={() => setLangFilter(tab.id)}
-              className={`flex-1 shrink-0 rounded-lg py-1.5 px-2 text-xs font-semibold transition-all duration-150 ${
-                langFilter === tab.id
-                  ? 'bg-emerald-600 text-white shadow-xs'
-                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-              }`}
-            >
-              {tab.label}
-            </button>
-          ))}
+        {/* Language Tabs & Home Page Fullscreen Button */}
+        <div className="flex items-center gap-2 sm:col-span-5 min-w-0 max-w-full">
+          <div className="flex-1 flex rounded-xl border border-slate-200/90 bg-white p-1 shadow-xs overflow-x-auto min-w-0 max-w-full">
+            {[
+              { id: 'all', label: 'All' },
+              { id: 'hindi', label: 'हिन्दी' },
+              { id: 'marathi', label: 'मराठी' },
+              { id: 'english', label: 'English' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setLangFilter(tab.id)}
+                className={`flex-1 shrink-0 rounded-lg py-1.5 px-2 text-xs font-semibold transition-all duration-150 ${
+                  langFilter === tab.id
+                    ? 'bg-emerald-600 text-white shadow-xs'
+                    : 'text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Fullscreen Toggle Button on Home Page */}
+          <button
+            type="button"
+            onClick={toggleAppFullscreen}
+            className={`shrink-0 flex items-center gap-1.5 rounded-xl border px-2.5 sm:px-3 py-2 text-xs font-bold transition shadow-xs active:scale-95 ${
+              isFullscreen
+                ? 'border-emerald-600 bg-emerald-600 text-white shadow-emerald-600/20'
+                : 'border-slate-200/90 bg-white text-slate-700 hover:bg-slate-50 hover:text-emerald-700'
+            }`}
+            title={isFullscreen ? 'Exit Fullscreen Mode' : 'Make Entire App Fullscreen'}
+          >
+            {isFullscreen ? (
+              <>
+                <Minimize2 className="h-3.5 w-3.5" />
+                <span className="hidden md:inline">Exit Fullscreen</span>
+              </>
+            ) : (
+              <>
+                <Maximize2 className="h-3.5 w-3.5 text-slate-500" />
+                <span className="hidden md:inline">Fullscreen</span>
+              </>
+            )}
+          </button>
         </div>
       </div>
 
@@ -298,6 +361,18 @@ export default function SongList() {
                   <span className="font-semibold text-sm sm:text-base text-slate-900 group-hover:text-emerald-700 transition-colors truncate">
                     {song.title}
                   </span>
+
+                  {song.type && (
+                    <span 
+                      className={`inline-flex items-center rounded-md px-1.5 py-0.5 text-[10px] font-bold uppercase tracking-wider shrink-0 ${
+                        song.type === 'praise'
+                          ? 'bg-indigo-50 text-indigo-700 border border-indigo-200/70'
+                          : 'bg-emerald-50 text-emerald-800 border border-emerald-200/70'
+                      }`}
+                    >
+                      {song.type === 'praise' ? 'Praise' : 'Worship'}
+                    </span>
+                  )}
 
                   {needsEdit && (
                     <span 

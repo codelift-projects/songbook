@@ -56,7 +56,15 @@ export default function Projector() {
   const [index, setIndex] = useState(0);
   const [showUi, setShowUi] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(false);
-  const [portraitHintDismissed, setPortraitHintDismissed] = useState(false);
+
+  // Attempt automatic orientation lock via code without annoying overlays
+  useEffect(() => {
+    try {
+      if (screen?.orientation?.lock) {
+        screen.orientation.lock('landscape').catch(() => {});
+      }
+    } catch (e) {}
+  }, []);
 
   const [sizeRef, size] = useContainerSize();
   const hideTimer = useRef(null);
@@ -259,7 +267,6 @@ export default function Projector() {
 
   const theme = projectorStyle(settings);
   const fontFamily = theme.fontFamily;
-  const showPortraitHint = orientation === 'portrait' && !portraitHintDismissed && !isFullscreen;
 
   return (
     <div
@@ -527,39 +534,7 @@ export default function Projector() {
         </div>
       </div>
 
-      {/* ROTATE-TO-LANDSCAPE MOBILE OVERLAY (Dismissable) */}
-      {showPortraitHint && (
-        <div 
-          className="absolute inset-0 z-40 grid place-items-center px-6" 
-          style={{ background: settings.background }}
-        >
-          <div className="max-w-sm text-center" style={{ color: settings.textColor, fontFamily }}>
-            <div className="mb-4 text-5xl">📱 ↻</div>
-            <h3 className="text-xl font-black">Rotate your phone</h3>
-            <p className="mt-2 text-xs opacity-70">
-              Landscape mode maximizes text size and fills the full projector screen.
-            </p>
-            <div className="mt-6 flex justify-center gap-3">
-              <button
-                type="button"
-                onClick={() => { enterFullscreen(); setPortraitHintDismissed(true); }}
-                className="rounded-xl px-4 py-2.5 text-xs font-black shadow-md active:scale-95"
-                style={{ background: settings.accentColor, color: '#ffffff' }}
-              >
-                Fullscreen Mode
-              </button>
-              <button
-                type="button"
-                onClick={() => setPortraitHintDismissed(true)}
-                className="rounded-xl px-4 py-2.5 text-xs font-bold active:scale-95"
-                style={{ background: `${settings.textColor}15`, color: settings.textColor }}
-              >
-                Continue
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       {/* RESPONSIVE FLOATING SIDEBAR / BOTTOM DRAWER SETTINGS (LIVE SLIDE PREVIEW) */}
       <SimpleSettingsModal

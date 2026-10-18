@@ -92,14 +92,12 @@ export function parseLyrics(rawText) {
 }
 
 /**
- * Dynamically breaks lines at commas so text after comma appears on next line
+ * Formats stanza text, preserving the author's intended line breaks without forcing
+ * awkward line splits at commas.
  */
 export function formatCommaLines(text) {
   if (!text) return '';
-  return String(text)
-    .split('\n')
-    .map((line) => line.replace(/([,，])\s*(?=\S)/g, '$1\n'))
-    .join('\n');
+  return String(text);
 }
 
 /**

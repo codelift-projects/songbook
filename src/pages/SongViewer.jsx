@@ -1,9 +1,10 @@
 import { useState, useMemo, useEffect } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import { useSongs } from '../store/SongContext';
 import { useSettings } from '../store/SettingsContext';
 import { projectorStyle, hexA } from '../lib/theme';
 import { formatCommaLines } from '../lib/parse';
+import { getGroup } from '../lib/groups';
 import {
   fetchIncompleteFlags,
   markSongIncomplete,
@@ -27,11 +28,16 @@ import {
 
 export default function SongViewer() {
   const { id } = useParams();
+  const [searchParams] = useSearchParams();
+  const groupId = searchParams.get('groupId');
   const navigate = useNavigate();
   const { songs, loading } = useSongs();
   const { settings, update: updateSettings } = useSettings();
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [isAddToGroupOpen, setIsAddToGroupOpen] = useState(false);
+
+  // Group context if opened within a group/collection
+  const group = useMemo(() => (groupId ? getGroup(groupId) : null), [groupId]);
 
   // Incomplete Flagging state
   const [incompleteFlags, setIncompleteFlags] = useState({});
@@ -40,11 +46,32 @@ export default function SongViewer() {
   const [submittingFlag, setSubmittingFlag] = useState(false);
   const [toastMessage, setToastMessage] = useState(null);
 
-  // Find current song and calculate prev/next songs
+  // Find current song
   const currentIndex = useMemo(() => songs.findIndex((s) => s.id === id), [songs, id]);
   const song = songs[currentIndex];
-  const prevSong = currentIndex > 0 ? songs[currentIndex - 1] : null;
-  const nextSong = currentIndex >= 0 && currentIndex < songs.length - 1 ? songs[currentIndex + 1] : null;
+
+  // Group-specific prev / next song calculation
+  const groupSongIndex = useMemo(() => {
+    if (!group || !song) return -1;
+    return group.songIds.indexOf(song.id);
+  }, [group, song]);
+
+  const prevGroupSong = useMemo(() => {
+    if (!group || groupSongIndex <= 0) return null;
+    const prevId = group.songIds[groupSongIndex - 1];
+    return songs.find((s) => s.id === prevId) || null;
+  }, [group, groupSongIndex, songs]);
+
+  const nextGroupSong = useMemo(() => {
+    if (!group || groupSongIndex < 0 || groupSongIndex >= group.songIds.length - 1) return null;
+    const nextId = group.songIds[groupSongIndex + 1];
+    return songs.find((s) => s.id === nextId) || null;
+  }, [group, groupSongIndex, songs]);
+
+  // Always scroll to top immediately when song opens or switches
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+  }, [id]);
 
   // Load incomplete flags on mount
   useEffect(() => {
@@ -154,7 +181,7 @@ export default function SongViewer() {
         <div className="mx-auto flex max-w-2xl items-center justify-between gap-2">
           {/* Back Button */}
           <button
-            onClick={() => navigate(-1)}
+            onClick={() => (groupId ? navigate(`/groups/${groupId}`) : navigate(-1))}
             className="flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-xs font-bold transition shadow-2xs active:scale-95"
             style={{ 
               background: hexA(settings.textColor, 0.10),
@@ -165,25 +192,33 @@ export default function SongViewer() {
             <span>Back</span>
           </button>
 
-          {/* Clean Center: Song number or mode */}
-          <div className="flex items-center gap-1.5">
-            {song.number && (
-              <span 
-                className="rounded-lg px-2.5 py-1 text-xs font-black shadow-2xs"
+          {/* Clean Center: Group collection pill or Reader View (no song number) */}
+          <div className="flex items-center gap-1.5 min-w-0">
+            {group ? (
+              <button
+                type="button"
+                onClick={() => navigate(`/groups/${group.id}`)}
+                className="flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-black shadow-2xs transition hover:opacity-90 max-w-[200px] truncate"
                 style={{ 
                   background: hexA(settings.accentColor, 0.16),
                   color: settings.accentColor 
                 }}
+                title={`Collection: ${group.name}`}
               >
-                #{song.number}
+                <Layers className="h-3 w-3 shrink-0" />
+                <span className="truncate">{group.name}</span>
+                <span className="opacity-70 text-[10px] shrink-0 font-normal">
+                  ({groupSongIndex + 1}/{group.songIds.length})
+                </span>
+              </button>
+            ) : (
+              <span 
+                className="text-xs font-extrabold opacity-60 uppercase tracking-wider"
+                style={{ color: settings.textColor }}
+              >
+                Reader View
               </span>
             )}
-            <span 
-              className="text-xs font-extrabold opacity-60 uppercase tracking-wider hidden xs:inline"
-              style={{ color: settings.textColor }}
-            >
-              Reader View
-            </span>
           </div>
 
           {/* Actions: Size A-, A+, Present, Flag Incomplete, Settings */}
@@ -214,7 +249,7 @@ export default function SongViewer() {
 
             {/* Quick Switch to Slide Projector */}
             <button
-              onClick={() => navigate(`/present/${song.id}`)}
+              onClick={() => navigate(`/present/${song.id}${groupId ? `?groupId=${groupId}` : ''}`)}
               className="flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-black transition shadow-xs active:scale-95"
               style={{ 
                 background: settings.accentColor,
@@ -325,16 +360,45 @@ export default function SongViewer() {
             </p>
           )}
 
-          <div className="flex items-center justify-center gap-2 pt-1 text-xs font-bold opacity-60">
+          <div className="flex flex-wrap items-center justify-center gap-2 pt-1 text-xs font-bold opacity-60">
             <span>{(song.stanzas || []).length} stanzas</span>
-            <span>•</span>
-            <button
-              onClick={() => setIsFlagModalOpen(true)}
-              className="hover:underline flex items-center gap-1 font-semibold text-amber-600"
+          </div>
+
+          {/* Badges for Type, Beat, Tempo */}
+          <div className="flex flex-wrap items-center justify-center gap-1.5 pt-1.5">
+            <span
+              className={`rounded-full px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider ${
+                song.type === 'praise'
+                  ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30'
+                  : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+              }`}
             >
-              <Flag className="h-3 w-3" />
-              <span>{markedIncomplete ? 'Edit incomplete notes' : 'Flag as incomplete'}</span>
-            </button>
+              {song.type === 'praise' ? 'Praise' : 'Worship'}
+            </span>
+            {song.beat && (
+              <span 
+                className="rounded-full px-2 py-0.5 text-[11px] font-bold border opacity-90"
+                style={{ 
+                  background: hexA(settings.textColor, 0.06),
+                  borderColor: hexA(settings.textColor, 0.15),
+                  color: settings.textColor 
+                }}
+              >
+                Beat: {song.beat}
+              </span>
+            )}
+            {song.tempo && (
+              <span 
+                className="rounded-full px-2 py-0.5 text-[11px] font-bold border opacity-90"
+                style={{ 
+                  background: hexA(settings.textColor, 0.06),
+                  borderColor: hexA(settings.textColor, 0.15),
+                  color: settings.textColor 
+                }}
+              >
+                ♩ {song.tempo} BPM
+              </span>
+            )}
           </div>
         </div>
 
@@ -376,49 +440,66 @@ export default function SongViewer() {
           })}
         </div>
 
-        {/* Bottom Prev / Next Song Navigation */}
-        <div 
-          className="border-t pt-6 flex items-center justify-between gap-3 text-xs font-bold"
-          style={{ borderColor: hexA(settings.textColor, 0.12) }}
-        >
-          {prevSong ? (
-            <button
-              onClick={() => navigate(`/view/${prevSong.id}`)}
-              className="flex items-center gap-1.5 rounded-xl px-3 py-2 transition"
-              style={{ 
-                background: hexA(settings.textColor, 0.08),
-                color: settings.textColor 
-              }}
-            >
-              <ChevronLeft className="h-4 w-4" />
-              <div className="text-left">
-                <span className="text-[10px] opacity-60 block">Previous</span>
-                <span className="truncate max-w-[120px] sm:max-w-[180px] block font-extrabold">
-                  {prevSong.title}
-                </span>
-              </div>
-            </button>
-          ) : <div />}
+        {/* Bottom Group Navigation - Only shown when viewing within a group */}
+        {group && (
+          <div 
+            className="border-t pt-6 flex items-center justify-between gap-3 text-xs font-bold"
+            style={{ borderColor: hexA(settings.textColor, 0.12) }}
+          >
+            {prevGroupSong ? (
+              <button
+                type="button"
+                onClick={() => navigate(`/view/${prevGroupSong.id}?groupId=${group.id}`)}
+                className="flex items-center gap-1.5 rounded-xl px-3 py-2 transition shadow-2xs active:scale-95 text-left"
+                style={{ 
+                  background: hexA(settings.textColor, 0.08),
+                  color: settings.textColor 
+                }}
+              >
+                <ChevronLeft className="h-4 w-4" />
+                <div className="text-left">
+                  <span className="text-[10px] opacity-60 block">Previous</span>
+                  <span className="truncate max-w-[120px] sm:max-w-[180px] block font-extrabold">
+                    {prevGroupSong.title}
+                  </span>
+                </div>
+              </button>
+            ) : <div />}
 
-          {nextSong ? (
             <button
-              onClick={() => navigate(`/view/${nextSong.id}`)}
-              className="flex items-center gap-1.5 rounded-xl px-3 py-2 transition text-right"
+              type="button"
+              onClick={() => navigate(`/groups/${group.id}`)}
+              className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition hover:opacity-85 shadow-2xs"
               style={{ 
-                background: hexA(settings.textColor, 0.08),
+                background: hexA(settings.textColor, 0.06),
                 color: settings.textColor 
               }}
             >
-              <div className="text-right">
-                <span className="text-[10px] opacity-60 block">Next</span>
-                <span className="truncate max-w-[120px] sm:max-w-[180px] block font-extrabold">
-                  {nextSong.title}
-                </span>
-              </div>
-              <ChevronRight className="h-4 w-4" />
+              <Layers className="h-3.5 w-3.5" />
+              <span>{group.name} ({groupSongIndex + 1}/{group.songIds.length})</span>
             </button>
-          ) : <div />}
-        </div>
+
+            {nextGroupSong ? (
+              <button
+                type="button"
+                onClick={() => navigate(`/view/${nextGroupSong.id}?groupId=${group.id}`)}
+                className="flex items-center gap-1.5 rounded-xl px-3 py-2 transition shadow-2xs active:scale-95 text-right"
+                style={{ 
+                  background: hexA(settings.textColor, 0.08),
+                  color: settings.textColor 
+                }}
+              >
+                <div className="text-right">
+                  <span className="text-[10px] opacity-60 block">Next</span>
+                  <span className="truncate max-w-[120px] sm:max-w-[180px] block font-extrabold">
+                    {nextGroupSong.title}
+                  </span>
+                </div>
+                <ChevronRight className="h-4 w-4" />
+              </button>
+            ) : <div />}
+          </div>
+        )}
       </main>
 
       {/* Flag Incomplete Song Modal */}

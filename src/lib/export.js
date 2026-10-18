@@ -24,6 +24,9 @@ export function exportSongsToJson(songs, filename = 'church-songbook-all-songs.j
     title: s.title || '',
     title_alt: s.title_alt || '',
     language: s.language || 'hindi',
+    type: s.type || 'worship',
+    beat: s.beat || null,
+    tempo: s.tempo != null ? Number(s.tempo) : null,
     stanzas: (s.stanzas || []).map((st) => ({
       label: st.label || 'Verse',
       text: st.text || '',

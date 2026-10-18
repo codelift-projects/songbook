@@ -34,6 +34,9 @@ export default function SongEditor() {
   const [title, setTitle] = useState('');
   const [titleAlt, setTitleAlt] = useState('');
   const [language, setLanguage] = useState('hindi'); // 'hindi' | 'marathi' | 'english'
+  const [songType, setSongType] = useState('worship'); // 'praise' | 'worship'
+  const [beat, setBeat] = useState('4/4');
+  const [tempo, setTempo] = useState('75');
   const [stanzas, setStanzas] = useState([
     { id: 'st-1', label: 'Verse 1', text: '' },
     { id: 'st-2', label: 'Chorus', text: '' },
@@ -51,6 +54,9 @@ export default function SongEditor() {
         if (location.state.title) setTitle(location.state.title);
         if (location.state.title_alt) setTitleAlt(location.state.title_alt);
         if (location.state.language) setLanguage(location.state.language);
+        if (location.state.type) setSongType(location.state.type);
+        if (location.state.beat) setBeat(location.state.beat);
+        if (location.state.tempo) setTempo(String(location.state.tempo));
         if (location.state.stanzas && location.state.stanzas.length) {
           setStanzas(location.state.stanzas);
         }
@@ -84,6 +90,9 @@ export default function SongEditor() {
         setTitle(existing.title || '');
         setTitleAlt(existing.title_alt || '');
         setLanguage(existing.language || 'hindi');
+        setSongType(existing.type === 'praise' ? 'praise' : 'worship');
+        setBeat(existing.beat || '4/4');
+        setTempo(existing.tempo != null ? String(existing.tempo) : '75');
         setStanzas(
           existing.stanzas && existing.stanzas.length > 0
             ? existing.stanzas
@@ -100,6 +109,9 @@ export default function SongEditor() {
         title: `${title} (copy)`,
         title_alt: titleAlt ? `${titleAlt} (copy)` : '',
         language,
+        type: songType,
+        beat,
+        tempo,
         stanzas: stanzas.map((st) => ({
           id: `st-${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
           label: st.label,
@@ -237,6 +249,9 @@ export default function SongEditor() {
       title: title.trim(),
       title_alt: titleAlt.trim() || null,
       language,
+      type: songType === 'praise' ? 'praise' : 'worship',
+      beat: beat ? String(beat).trim() : null,
+      tempo: tempo ? parseInt(tempo, 10) : null,
       stanzas: validStanzas,
       source: 'db',
     };
@@ -485,6 +500,97 @@ export default function SongEditor() {
                     isSeed ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : 'bg-slate-50/70 focus:bg-white'
                   }`}
                 />
+              </div>
+
+              {/* Song Type: Praise or Worship */}
+              <div className="sm:col-span-4">
+                <label className="mb-1 block text-xs font-black text-slate-700">
+                  Song Type
+                </label>
+                <div className="grid grid-cols-2 gap-1.5">
+                  <button
+                    type="button"
+                    disabled={isSeed}
+                    onClick={() => setSongType('praise')}
+                    className={`rounded-xl border py-2 text-xs font-black transition-all ${
+                      songType === 'praise'
+                        ? 'border-indigo-600 bg-indigo-50 text-indigo-800 ring-1 ring-indigo-600 shadow-2xs'
+                        : 'border-slate-200/90 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    } ${isSeed ? 'cursor-not-allowed opacity-80' : ''}`}
+                  >
+                    Praise
+                  </button>
+                  <button
+                    type="button"
+                    disabled={isSeed}
+                    onClick={() => setSongType('worship')}
+                    className={`rounded-xl border py-2 text-xs font-black transition-all ${
+                      songType === 'worship'
+                        ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600 shadow-2xs'
+                        : 'border-slate-200/90 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                    } ${isSeed ? 'cursor-not-allowed opacity-80' : ''}`}
+                  >
+                    Worship
+                  </button>
+                </div>
+              </div>
+
+              {/* Beat / Time Signature */}
+              <div className="sm:col-span-4">
+                <label className="mb-1 block text-xs font-black text-slate-700">
+                  Beat / Signature
+                </label>
+                <div className="flex gap-1.5 items-center">
+                  <input
+                    type="text"
+                    disabled={isSeed}
+                    placeholder="4/4"
+                    value={beat}
+                    onChange={(e) => setBeat(e.target.value)}
+                    className={`w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs ${
+                      isSeed ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : 'bg-slate-50/70 focus:bg-white'
+                    }`}
+                  />
+                  <div className="flex gap-1">
+                    {['4/4', '3/4', '6/8'].map((b) => (
+                      <button
+                        key={b}
+                        type="button"
+                        disabled={isSeed}
+                        onClick={() => setBeat(b)}
+                        className={`rounded-lg border px-1.5 py-1 text-[10px] font-bold transition ${
+                          beat === b
+                            ? 'bg-emerald-600 text-white border-emerald-600'
+                            : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
+                        }`}
+                      >
+                        {b}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Tempo (BPM) */}
+              <div className="sm:col-span-4">
+                <label className="mb-1 block text-xs font-black text-slate-700">
+                  Tempo (BPM)
+                </label>
+                <div className="flex items-center gap-1.5">
+                  <input
+                    type="number"
+                    min="30"
+                    max="260"
+                    disabled={isSeed}
+                    placeholder="75"
+                    value={tempo}
+                    onChange={(e) => setTempo(e.target.value)}
+                    className={`w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs ${
+                      isSeed ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : 'bg-slate-50/70 focus:bg-white'
+                    }`}
+                  />
+                  <span className="text-[11px] font-bold text-slate-500 shrink-0">BPM</span>
+                </div>
               </div>
             </div>
           </section>
