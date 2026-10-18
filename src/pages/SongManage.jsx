@@ -433,26 +433,15 @@ export default function SongManage() {
 
                 {/* Right: Clean minimal action buttons */}
                 <div className="shrink-0 flex items-center gap-1.5" onClick={(e) => e.stopPropagation()}>
-                  {/* Edit or Duplicate Button */}
-                  {isSeed ? (
-                    <Link
-                      to={`/songs/${song.id}/edit`}
-                      className="flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-2xs"
-                      title="View / Duplicate Seed Song"
-                    >
-                      <Eye className="h-3 w-3 text-slate-500" />
-                      <span>View</span>
-                    </Link>
-                  ) : (
-                    <Link
-                      to={`/songs/${song.id}/edit`}
-                      className="flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition shadow-2xs active:scale-95"
-                      title="Edit song lyrics & stanzas"
-                    >
-                      <Edit3 className="h-3 w-3" />
-                      <span>Edit</span>
-                    </Link>
-                  )}
+                  {/* Edit Button */}
+                  <Link
+                    to={`/songs/${song.id}/edit`}
+                    className="flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-emerald-600 hover:text-white hover:border-emerald-600 transition shadow-2xs active:scale-95"
+                    title="Edit song lyrics, next-line breaks & stanzas"
+                  >
+                    <Edit3 className="h-3 w-3" />
+                    <span>Edit</span>
+                  </Link>
 
                   {/* Delete Button (DB songs only) */}
                   {!isSeed && (

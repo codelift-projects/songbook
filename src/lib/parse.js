@@ -91,13 +91,19 @@ export function parseLyrics(rawText) {
   });
 }
 
+export const NEXT_LINE_SHIFT_SYMBOL = '//';
+
 /**
- * Formats stanza text, preserving the author's intended line breaks without forcing
- * awkward line splits at commas.
+ * Formats stanza text, preserving the author's intended line breaks and converting
+ * next-line shift symbols ('//', '↵', ' | ') into line breaks for projector & reader view.
  */
 export function formatCommaLines(text) {
   if (!text) return '';
-  return String(text);
+  return String(text)
+    .replace(/\r\n/g, '\n')
+    .replace(/\r/g, '\n')
+    .replace(/\s*(?:\/\/|↵)\s*/g, '\n')
+    .replace(/\s+\|\s+/g, '\n');
 }
 
 /**

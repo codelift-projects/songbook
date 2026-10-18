@@ -4,6 +4,7 @@ import { useSongs } from '../store/SongContext';
 import { useSettings } from '../store/SettingsContext';
 import { projectorStyle, FONT_STACKS } from '../lib/theme';
 import { isSeedSong } from '../lib/seed';
+import { formatCommaLines, NEXT_LINE_SHIFT_SYMBOL } from '../lib/parse';
 import SongImportModal from '../components/SongImportModal';
 import { 
   Save, 
@@ -18,7 +19,9 @@ import {
   Eye,
   Music2,
   Lock,
-  Sparkles
+  Sparkles,
+  CornerDownLeft,
+  Check
 } from 'lucide-react';
 
 export default function SongEditor() {
@@ -84,7 +87,7 @@ export default function SongEditor() {
   // Load existing song if editing
   useEffect(() => {
     if (isEdit && songs.length > 0) {
-      const existing = songs.find((s) => s.id === id);
+      const existing = songs.find((s) => String(s.id) === String(id));
       if (existing) {
         setNumber(existing.number != null ? String(existing.number) : '');
         setTitle(existing.title || '');
@@ -122,7 +125,6 @@ export default function SongEditor() {
   };
 
   const handleAddStanza = (labelPreset = '') => {
-    if (isSeed) return;
     let label = labelPreset;
 
     if (!label) {
@@ -147,7 +149,6 @@ export default function SongEditor() {
   };
 
   const handleDuplicateChorus = () => {
-    if (isSeed) return;
     const chorusStanza = stanzas.find(
       (s) => 
         s.label.toLowerCase().includes('chorus') || 
@@ -171,7 +172,6 @@ export default function SongEditor() {
   };
 
   const handleDuplicateStanza = (index) => {
-    if (isSeed) return;
     const target = stanzas[index];
     if (!target) return;
     const duplicated = {
@@ -187,7 +187,6 @@ export default function SongEditor() {
   };
 
   const handleUpdateStanza = (index, field, value) => {
-    if (isSeed) return;
     setStanzas((prev) => {
       const updated = [...prev];
       updated[index] = { ...updated[index], [field]: value };
@@ -195,8 +194,34 @@ export default function SongEditor() {
     });
   };
 
+  /**
+   * Inserts the next-line shift symbol (//) at the cursor position
+   * in the specified stanza's textarea.
+   */
+  const handleInsertNextLineShift = (index) => {
+    const el = document.getElementById(`stanza-textarea-${index}`);
+    const currentText = stanzas[index]?.text || '';
+    const symbol = ' // ';
+
+    if (!el) {
+      handleUpdateStanza(index, 'text', currentText + symbol);
+      return;
+    }
+
+    const start = el.selectionStart ?? currentText.length;
+    const end = el.selectionEnd ?? currentText.length;
+    const nextText = currentText.slice(0, start) + symbol + currentText.slice(end);
+
+    handleUpdateStanza(index, 'text', nextText);
+
+    setTimeout(() => {
+      el.focus();
+      const newPos = start + symbol.length;
+      el.setSelectionRange(newPos, newPos);
+    }, 0);
+  };
+
   const handleRemoveStanza = (index) => {
-    if (isSeed) return;
     if (stanzas.length <= 1) {
       alert('A song must have at least one stanza.');
       return;
@@ -206,7 +231,6 @@ export default function SongEditor() {
   };
 
   const handleMoveStanza = (index, direction) => {
-    if (isSeed) return;
     const targetIndex = index + direction;
     if (targetIndex < 0 || targetIndex >= stanzas.length) return;
     setStanzas((prev) => {
@@ -218,7 +242,7 @@ export default function SongEditor() {
   };
 
   const handleImportModalResult = (importedSongs) => {
-    if (isSeed || !importedSongs || importedSongs.length === 0) return;
+    if (!importedSongs || importedSongs.length === 0) return;
     const first = importedSongs[0];
     if (first.title) setTitle(first.title);
     if (first.title_alt) setTitleAlt(first.title_alt);
@@ -229,10 +253,6 @@ export default function SongEditor() {
 
   const handleSubmit = async (e, launchProjector = false) => {
     if (e) e.preventDefault();
-    if (isSeed) {
-      alert('Seed songs cannot be saved. Duplicate it to make your own version.');
-      return;
-    }
     if (!title.trim()) {
       alert('Please enter a song title');
       return;
@@ -291,34 +311,16 @@ export default function SongEditor() {
     }
   };
 
-  const handleSaveSeedBeatTempo = async () => {
-    const existing = songs.find((s) => s.id === id);
-    if (!existing) return;
-    try {
-      setIsSaving(true);
-      await updateSongBeatTempo(existing, {
-        type: songType,
-        beat: beat ? String(beat).trim() : null,
-        tempo: tempo ? parseInt(tempo, 10) : null,
-      });
-      alert('Beat & tempo saved to Supabase successfully!');
-    } catch (err) {
-      alert(`Error saving beat & tempo to Supabase: ${err.message}`);
-    } finally {
-      setIsSaving(false);
-    }
-  };
-
   const previewSlides = useMemo(() => {
     return [
       { kind: 'title', label: 'TITLE SLIDE', title: title || 'Song Title Preview', subtitle: '', number },
       ...stanzas.map((s, idx) => ({
         kind: 'stanza',
         label: s.label || `Slide ${idx + 1}`,
-        lines: s.text ? s.text.split('\n') : ['[Enter stanza lyrics...]'],
+        lines: s.text ? formatCommaLines(s.text).split('\n') : ['[Enter stanza lyrics...]'],
       })),
     ];
-  }, [title, titleAlt, number, stanzas]);
+  }, [title, number, stanzas]);
 
   const activeSlide = previewSlides[previewSlideIdx] || previewSlides[0];
 
@@ -336,107 +338,75 @@ export default function SongEditor() {
           <div>
             <h1 className="text-xl font-black text-slate-900 flex items-center gap-2">
               <Music2 className="h-5 w-5 text-emerald-600" />
-              <span>{isSeed ? 'Seed Song (Read-Only)' : isEdit ? 'Edit Song' : 'Create New Song'}</span>
+              <span>{isEdit ? 'Edit Song & Slides' : 'Create New Song'}</span>
             </h1>
             <p className="text-xs text-slate-500 font-medium">
-              {isSeed ? 'Bundled seed song · Duplicate to create an editable copy' : 'Song numbers are auto-assigned automatically.'}
+              Saves instantly to your offline cache and Supabase cloud DB.
             </p>
           </div>
         </div>
 
         {/* Action Buttons */}
         <div className="flex flex-wrap items-center gap-2">
-          {isSeed ? (
-            <>
-              <button
-                type="button"
-                onClick={handleSaveSeedBeatTempo}
-                disabled={isSaving}
-                className="flex items-center gap-1.5 rounded-xl border border-emerald-600 bg-emerald-50 px-3.5 py-2 text-xs font-black text-emerald-800 hover:bg-emerald-100 shadow-2xs transition"
-                title="Save Beat and Tempo to Supabase without duplicating"
-              >
-                <Save className="h-3.5 w-3.5 text-emerald-600" />
-                <span>{isSaving ? 'Saving...' : 'Save Beat/Tempo (Supabase)'}</span>
-              </button>
+          <button
+            type="button"
+            onClick={() => setImportModalOpen(true)}
+            className="flex items-center gap-1.5 rounded-xl border border-slate-300/80 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-xs"
+          >
+            <Upload className="h-3.5 w-3.5 text-emerald-600" />
+            <span>Import JSON / Lyrics</span>
+          </button>
 
-              <button
-                type="button"
-                onClick={() => navigate(`/present/${id}`)}
-                className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white hover:bg-slate-800 transition shadow-sm"
-              >
-                <Play className="h-3.5 w-3.5 fill-current" />
-                <span>Present</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={handleDuplicateToDb}
-                className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-5 py-2 text-xs font-black text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 transition"
-              >
-                <Copy className="h-4 w-4" />
-                <span>Duplicate & Edit</span>
-              </button>
-            </>
-          ) : (
-            <>
-              <button
-                type="button"
-                onClick={() => setImportModalOpen(true)}
-                className="flex items-center gap-1.5 rounded-xl border border-slate-300/80 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-xs"
-              >
-                <Upload className="h-3.5 w-3.5 text-emerald-600" />
-                <span>Import JSON / Lyrics</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={(e) => handleSubmit(e, true)}
-                disabled={isSaving}
-                className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white hover:bg-slate-800 transition shadow-sm"
-              >
-                <Play className="h-3.5 w-3.5 fill-current" />
-                <span>Save & Present</span>
-              </button>
-
-              <button
-                type="button"
-                onClick={(e) => handleSubmit(e, false)}
-                disabled={isSaving}
-                className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-5 py-2 text-xs font-black text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 transition"
-              >
-                <Save className="h-4 w-4" />
-                <span>{isSaving ? 'Saving...' : 'Save Song'}</span>
-              </button>
-            </>
+          {isEdit && (
+            <button
+              type="button"
+              onClick={handleDuplicateToDb}
+              className="flex items-center gap-1.5 rounded-xl border border-slate-300/80 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-xs"
+              title="Duplicate into a new song"
+            >
+              <Copy className="h-3.5 w-3.5 text-slate-600" />
+              <span>Duplicate</span>
+            </button>
           )}
-        </div>
-      </div>
-
-      {/* Read-Only Seed Banner */}
-      {isSeed && (
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-amber-200 bg-amber-50/90 p-4 text-xs text-amber-900 shadow-xs">
-          <div className="flex items-center gap-2.5">
-            <span className="grid h-8 w-8 place-items-center rounded-xl bg-amber-100 border border-amber-300 text-amber-700 shrink-0">
-              <Lock className="h-4 w-4" />
-            </span>
-            <div>
-              <p className="font-black text-amber-950">
-                This is a seed song and cannot be edited.
-              </p>
-              <p className="text-amber-800 font-medium">
-                Duplicate it to make your own custom editable version in your library.
-              </p>
-            </div>
-          </div>
 
           <button
             type="button"
-            onClick={handleDuplicateToDb}
-            className="shrink-0 flex items-center gap-1.5 rounded-xl bg-amber-600 px-4 py-2 text-xs font-black text-white hover:bg-amber-700 shadow-2xs transition"
+            onClick={(e) => handleSubmit(e, true)}
+            disabled={isSaving}
+            className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white hover:bg-slate-800 transition shadow-sm"
           >
-            <Copy className="h-3.5 w-3.5" />
-            <span>Duplicate Song</span>
+            <Play className="h-3.5 w-3.5 fill-current" />
+            <span>Save & Present</span>
           </button>
+
+          <button
+            type="button"
+            onClick={(e) => handleSubmit(e, false)}
+            disabled={isSaving}
+            className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-5 py-2 text-xs font-black text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 transition"
+          >
+            <Save className="h-4 w-4" />
+            <span>{isSaving ? 'Saving...' : 'Save Song'}</span>
+          </button>
+        </div>
+      </div>
+
+      {/* Helpful Info Banner */}
+      {isSeed && (
+        <div className="flex items-center justify-between gap-3 rounded-2xl border border-emerald-200 bg-emerald-50/80 p-3.5 text-xs text-emerald-900 shadow-xs">
+          <div className="flex items-center gap-2.5">
+            <span className="grid h-7 w-7 place-items-center rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-800 shrink-0 font-bold">
+              ✓
+            </span>
+            <div>
+              <p className="font-black text-emerald-950">
+                Editing Bundled Hymn
+              </p>
+              <p className="text-emerald-800 font-medium">
+                Edits to lyrics, next-line breaks, beat, or tempo will be saved to your local offline library and cloud DB.
+              </p>
+            </div>
+          </div>
         </div>
       )}
 
@@ -444,7 +414,7 @@ export default function SongEditor() {
         {/* Left Column: Form Details & Stanzas */}
         <div className="space-y-5 lg:col-span-7">
           {/* Metadata Card */}
-          <section className={`rounded-2xl border border-slate-200/90 bg-white p-5 space-y-4 shadow-xs ${isSeed ? 'opacity-90' : ''}`}>
+          <section className="rounded-2xl border border-slate-200/90 bg-white p-5 space-y-4 shadow-xs">
             <div className="grid gap-4 sm:grid-cols-12">
               {/* Number (Auto-assigned) */}
               <div className="sm:col-span-4">
@@ -455,12 +425,9 @@ export default function SongEditor() {
                 <input
                   type="number"
                   placeholder="Auto"
-                  disabled={isSeed}
                   value={number}
                   onChange={(e) => setNumber(e.target.value)}
-                  className={`w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs ${
-                    isSeed ? 'bg-slate-100 text-slate-500 cursor-not-allowed' : 'bg-slate-50/70 focus:bg-white'
-                  }`}
+                  className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs bg-slate-50/70 focus:bg-white"
                 />
               </div>
 
@@ -472,37 +439,34 @@ export default function SongEditor() {
                 <div className="grid grid-cols-3 gap-1.5">
                   <button
                     type="button"
-                    disabled={isSeed}
                     onClick={() => setLanguage('hindi')}
                     className={`rounded-xl border py-2 text-xs font-black transition-all ${
                       language === 'hindi'
                         ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600 shadow-2xs'
                         : 'border-slate-200/90 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                    } ${isSeed ? 'cursor-not-allowed opacity-80' : ''}`}
+                    }`}
                   >
                     हिन्दी
                   </button>
                   <button
                     type="button"
-                    disabled={isSeed}
                     onClick={() => setLanguage('marathi')}
                     className={`rounded-xl border py-2 text-xs font-black transition-all ${
                       language === 'marathi'
                         ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600 shadow-2xs'
                         : 'border-slate-200/90 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                    } ${isSeed ? 'cursor-not-allowed opacity-80' : ''}`}
+                    }`}
                   >
                     मराठी
                   </button>
                   <button
                     type="button"
-                    disabled={isSeed}
                     onClick={() => setLanguage('english')}
                     className={`rounded-xl border py-2 text-xs font-black transition-all ${
                       language === 'english'
                         ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600 shadow-2xs'
                         : 'border-slate-200/90 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50'
-                    } ${isSeed ? 'cursor-not-allowed opacity-80' : ''}`}
+                    }`}
                   >
                     English
                   </button>
@@ -517,13 +481,10 @@ export default function SongEditor() {
                 <input
                   type="text"
                   required
-                  disabled={isSeed}
                   placeholder={language === 'marathi' ? "उदा. गा देवाचे उपकार" : language === 'hindi' ? "उदा. तेरी स्तुति" : "e.g. Amazing Grace"}
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
-                  className={`w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs text-slate-900 font-black focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs ${
-                    isSeed ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : 'bg-slate-50/70 focus:bg-white'
-                  }`}
+                  className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs text-slate-900 font-black focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs bg-slate-50/70 focus:bg-white"
                 />
               </div>
 
@@ -534,13 +495,10 @@ export default function SongEditor() {
                 </label>
                 <input
                   type="text"
-                  disabled={isSeed}
                   placeholder={language === 'marathi' ? "Ga Devache Upakar" : "Teri Stuti Aur Aradhana"}
                   value={titleAlt}
                   onChange={(e) => setTitleAlt(e.target.value)}
-                  className={`w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs text-slate-900 font-semibold focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs ${
-                    isSeed ? 'bg-slate-100 text-slate-600 cursor-not-allowed' : 'bg-slate-50/70 focus:bg-white'
-                  }`}
+                  className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs text-slate-900 font-semibold focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs bg-slate-50/70 focus:bg-white"
                 />
               </div>
 
@@ -657,50 +615,48 @@ export default function SongEditor() {
                   <span>Stanzas & Slides ({stanzas.length})</span>
                 </h2>
                 <p className="text-xs text-slate-500 font-medium">
-                  Each stanza creates a slide in projector view.
+                  Each stanza creates a slide. Use <span className="font-mono font-bold text-teal-700">//</span> or <span className="font-bold text-teal-700">↵ Next Line Shift</span> to break lines without creating a new stanza.
                 </p>
               </div>
 
-              {/* Quick Action Buttons (Only when not seed) */}
-              {!isSeed && (
-                <div className="flex flex-wrap items-center gap-1.5">
-                  <button
-                    type="button"
-                    onClick={() => handleAddStanza(language === 'marathi' ? 'ध्रुवपद' : language === 'hindi' ? 'कोरस' : 'Chorus')}
-                    className="rounded-lg border border-emerald-300 bg-emerald-50 px-2.5 py-1.5 text-xs font-black text-emerald-800 hover:bg-emerald-100 transition shadow-2xs"
-                    title="Add Chorus slide"
-                  >
-                    + {language === 'marathi' ? 'ध्रुवपद' : language === 'hindi' ? 'कोरस' : 'Chorus'}
-                  </button>
+              {/* Quick Action Buttons */}
+              <div className="flex flex-wrap items-center gap-1.5">
+                <button
+                  type="button"
+                  onClick={() => handleAddStanza(language === 'marathi' ? 'ध्रुवपद' : language === 'hindi' ? 'कोरस' : 'Chorus')}
+                  className="rounded-lg border border-emerald-300 bg-emerald-50 px-2.5 py-1.5 text-xs font-black text-emerald-800 hover:bg-emerald-100 transition shadow-2xs"
+                  title="Add Chorus slide"
+                >
+                  + {language === 'marathi' ? 'ध्रुवपद' : language === 'hindi' ? 'कोरस' : 'Chorus'}
+                </button>
 
-                  <button
-                    type="button"
-                    onClick={handleDuplicateChorus}
-                    className="rounded-lg border border-slate-300/80 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100 transition shadow-2xs"
-                    title="Insert duplicate of Chorus at the end"
-                  >
-                    <Copy className="inline mr-1 h-3 w-3 text-emerald-600" />
-                    Repeat Chorus
-                  </button>
+                <button
+                  type="button"
+                  onClick={handleDuplicateChorus}
+                  className="rounded-lg border border-slate-300/80 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100 transition shadow-2xs"
+                  title="Insert duplicate of Chorus at the end"
+                >
+                  <Copy className="inline mr-1 h-3 w-3 text-emerald-600" />
+                  Repeat Chorus
+                </button>
 
-                  <button
-                    type="button"
-                    onClick={() => handleAddStanza(language === 'marathi' ? 'सेतु (Bridge)' : language === 'hindi' ? 'सेतु (Bridge)' : 'Bridge')}
-                    className="rounded-lg border border-slate-300/80 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100 transition shadow-2xs"
-                  >
-                    + Bridge
-                  </button>
+                <button
+                  type="button"
+                  onClick={() => handleAddStanza(language === 'marathi' ? 'सेतु (Bridge)' : language === 'hindi' ? 'सेतु (Bridge)' : 'Bridge')}
+                  className="rounded-lg border border-slate-300/80 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100 transition shadow-2xs"
+                >
+                  + Bridge
+                </button>
 
-                  <button
-                    type="button"
-                    onClick={() => handleAddStanza()}
-                    className="flex items-center gap-1 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-black text-white hover:bg-emerald-700 transition shadow-xs"
-                  >
-                    <Plus className="h-3.5 w-3.5" />
-                    <span>+ {language === 'marathi' ? 'चरण' : language === 'hindi' ? 'पद' : 'Verse'}</span>
-                  </button>
-                </div>
-              )}
+                <button
+                  type="button"
+                  onClick={() => handleAddStanza()}
+                  className="flex items-center gap-1 rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-black text-white hover:bg-emerald-700 transition shadow-xs"
+                >
+                  <Plus className="h-3.5 w-3.5" />
+                  <span>+ {language === 'marathi' ? 'चरण' : language === 'hindi' ? 'पद' : 'Verse'}</span>
+                </button>
+              </div>
             </div>
 
             {/* Stanzas List */}
@@ -730,7 +686,6 @@ export default function SongEditor() {
 
                         <input
                           type="text"
-                          disabled={isSeed}
                           value={stanza.label}
                           onChange={(e) => handleUpdateStanza(idx, 'label', e.target.value)}
                           placeholder="Label (e.g. Verse 1, ध्रुवपद)"
@@ -738,76 +693,86 @@ export default function SongEditor() {
                             isChorus
                               ? 'border-emerald-300 bg-white text-emerald-800 focus:border-emerald-600'
                               : 'border-slate-200 bg-slate-50/70 text-slate-900 focus:border-emerald-600'
-                          } ${isSeed ? 'cursor-not-allowed opacity-80' : ''}`}
+                          }`}
                         />
                       </div>
 
-                      {/* Stanza Action Buttons (hidden if seed) */}
-                      {!isSeed && (
-                        <div className="flex items-center gap-1">
-                          <button
-                            type="button"
-                            onClick={() => handleDuplicateStanza(idx)}
-                            className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition"
-                            title="Duplicate Stanza"
-                          >
-                            <Copy className="h-3.5 w-3.5" />
-                          </button>
-                          <button
-                            type="button"
-                            disabled={idx === 0}
-                            onClick={() => handleMoveStanza(idx, -1)}
-                            className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-900 disabled:opacity-30 transition"
-                            title="Move Up"
-                          >
-                            <MoveUp className="h-3.5 w-3.5" />
-                          </button>
-                          <button
-                            type="button"
-                            disabled={idx === stanzas.length - 1}
-                            onClick={() => handleMoveStanza(idx, 1)}
-                            className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-900 disabled:opacity-30 transition"
-                            title="Move Down"
-                          >
-                            <MoveDown className="h-3.5 w-3.5" />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => handleRemoveStanza(idx)}
-                            className="rounded-lg p-1.5 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition"
-                            title="Delete Stanza"
-                          >
-                            <Trash2 className="h-3.5 w-3.5" />
-                          </button>
-                        </div>
-                      )}
+                      {/* Stanza Action Buttons */}
+                      <div className="flex items-center gap-1">
+                        <button
+                          type="button"
+                          onClick={() => handleDuplicateStanza(idx)}
+                          className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition"
+                          title="Duplicate Stanza"
+                        >
+                          <Copy className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          disabled={idx === 0}
+                          onClick={() => handleMoveStanza(idx, -1)}
+                          className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-900 disabled:opacity-30 transition"
+                          title="Move Up"
+                        >
+                          <MoveUp className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          disabled={idx === stanzas.length - 1}
+                          onClick={() => handleMoveStanza(idx, 1)}
+                          className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-900 disabled:opacity-30 transition"
+                          title="Move Down"
+                        >
+                          <MoveDown className="h-3.5 w-3.5" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveStanza(idx)}
+                          className="rounded-lg p-1.5 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition"
+                          title="Delete Stanza"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Quick Stanza Toolbar: Next Line Shift Button */}
+                    <div className="mb-2 flex items-center justify-between">
+                      <button
+                        type="button"
+                        onClick={() => handleInsertNextLineShift(idx)}
+                        className="inline-flex items-center gap-1 rounded-lg border border-teal-300 bg-teal-50 px-2.5 py-1 text-[11px] font-black text-teal-800 hover:bg-teal-100 transition shadow-2xs"
+                        title="Insert next-line shift symbol (//) at cursor. In reader view and projector, following words shift to the next line."
+                      >
+                        <CornerDownLeft className="h-3.5 w-3.5 text-teal-600" />
+                        <span>↵ Next Line Shift (//)</span>
+                      </button>
+                      <span className="text-[10px] text-slate-400 font-medium">
+                        Use <code className="bg-slate-100 px-1 py-0.5 rounded text-slate-700 font-mono font-bold">//</code> to break line
+                      </span>
                     </div>
 
                     {/* Stanza Textarea */}
                     <textarea
+                      id={`stanza-textarea-${idx}`}
                       rows={4}
-                      disabled={isSeed}
                       value={stanza.text}
                       onChange={(e) => handleUpdateStanza(idx, 'text', e.target.value)}
-                      placeholder="Enter lyrics for this slide (each line break is preserved in projector)..."
-                      className={`w-full rounded-xl border border-slate-200/90 p-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 leading-relaxed font-sans shadow-2xs ${
-                        isSeed ? 'bg-slate-50 text-slate-700 cursor-not-allowed' : 'bg-white'
-                      }`}
+                      placeholder="Enter lyrics for this slide (press ↵ Next Line Shift or type // to break line)..."
+                      className="w-full rounded-xl border border-slate-200/90 p-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 leading-relaxed font-sans shadow-2xs bg-white"
                     />
                   </div>
                 );
               })}
             </div>
 
-            {!isSeed && (
-              <button
-                type="button"
-                onClick={() => handleAddStanza()}
-                className="w-full rounded-2xl border-2 border-dashed border-slate-300 bg-white/60 py-3 text-xs font-black text-slate-600 hover:border-emerald-600 hover:text-emerald-700 transition"
-              >
-                + Add Stanza / Slide
-              </button>
-            )}
+            <button
+              type="button"
+              onClick={() => handleAddStanza()}
+              className="w-full rounded-2xl border-2 border-dashed border-slate-300 bg-white/60 py-3 text-xs font-black text-slate-600 hover:border-emerald-600 hover:text-emerald-700 transition"
+            >
+              + Add Stanza / Slide
+            </button>
           </section>
         </div>
 

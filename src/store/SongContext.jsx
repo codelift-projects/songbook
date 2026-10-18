@@ -1,95 +1,83 @@
 import { createContext, useContext, useEffect, useState, useMemo, useCallback } from 'react';
 import { supabase, isSupabaseConfigured } from '../lib/supabase';
-import { fetchAllSongs, createSong, bulkCreateSongs, updateSong, deleteSong } from '../lib/songs';
-import { loadSeedSongs, isSeedSong } from '../lib/seed';
-import { mergeSongs } from '../lib/merge';
+import { loadSeedSongs } from '../lib/seed';
 import { verifyDeletePassword } from '../lib/deleteAuth';
 import {
-  fetchSongMetadata,
   saveSongMetadata,
   getLocalSongMeta,
 } from '../lib/songMetadata';
+import {
+  getCachedLibrary,
+  saveCachedLibrary,
+  saveSongToDb,
+  deleteSongFromDb,
+  syncSongsFromDb,
+  getLastSyncTime,
+} from '../lib/songDbSync';
 
 const SongContext = createContext(null);
 
 export function SongProvider({ children }) {
-  // Load seeds synchronously — available immediately on first render
-  const seedSongs = useMemo(() => {
+  // Load entire song library synchronously from client cache — 0ms immediate startup, ZERO blocking calls
+  const [songs, setSongs] = useState(() => {
     try {
-      return loadSeedSongs();
+      return getCachedLibrary();
     } catch (err) {
-      console.error('Failed to load seed songs:', err);
-      return [];
+      console.error('Failed to load initial cached library:', err);
+      return loadSeedSongs();
     }
-  }, []);
+  });
 
-  const [dbSongs, setDbSongs] = useState([]);
-  const [songMeta, setSongMeta] = useState(() => getLocalSongMeta());
-  const [loading, setLoading] = useState(true);
+  const [syncing, setSyncing] = useState(false);
+  const [syncProgress, setSyncProgress] = useState(0);
+  const [lastSyncTime, setLastSyncTime] = useState(() => getLastSyncTime());
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // Merged array sorted by number -> title with Supabase songMeta overrides (beat, tempo, type) applied
-  const songs = useMemo(() => {
-    const rawList = mergeSongs(seedSongs, dbSongs);
-    if (!songMeta || Object.keys(songMeta).length === 0) return rawList;
-
-    return rawList.map((s) => {
-      const override =
-        (s.id && songMeta[String(s.id)]) ||
-        (s.title && songMeta[s.title.trim().toLowerCase()]) ||
-        null;
-
-      if (!override) return s;
-
-      return {
-        ...s,
-        beat: override.beat !== undefined && override.beat !== null ? override.beat : s.beat,
-        tempo: override.tempo !== undefined && override.tempo !== null ? override.tempo : s.tempo,
-        type: override.type !== undefined && override.type !== null ? override.type : s.type,
-      };
-    });
-  }, [seedSongs, dbSongs, songMeta]);
-
-  const loadSongs = useCallback(async () => {
+  /**
+   * Sync songs with Supabase DB.
+   * Progressively tracks 0% -> 100% and updates both client cache and local React state.
+   */
+  const syncWithCloud = useCallback(async (silent = false) => {
+    if (syncing) return;
     try {
-      setLoading(true);
-      setError(null);
-      const data = await fetchAllSongs();
-      setDbSongs(data || []);
-    } catch (err) {
-      console.warn('DB songs fetch skipped or failed, using seed/local library:', err.message);
-      setDbSongs([]);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+      setSyncing(true);
+      if (!silent) setSyncProgress(5);
 
-  useEffect(() => {
-    loadSongs();
-
-    // Fetch beat, tempo, type metadata from Supabase
-    fetchSongMetadata()
-      .then((meta) => {
-        if (meta && Object.keys(meta).length > 0) {
-          setSongMeta(meta);
-        }
-      })
-      .catch((err) => {
-        console.warn('Could not load song metadata overrides:', err.message);
+      const freshSongs = await syncSongsFromDb((pct) => {
+        setSyncProgress(pct);
       });
 
-    // Supabase Realtime subscription
+      if (Array.isArray(freshSongs) && freshSongs.length > 0) {
+        setSongs(freshSongs);
+        saveCachedLibrary(freshSongs);
+      }
+      setLastSyncTime(getLastSyncTime());
+      setError(null);
+    } catch (err) {
+      console.error('Sync failed:', err);
+      setError(err.message);
+    } finally {
+      // Hold at 100% briefly for visual delight
+      setTimeout(() => {
+        setSyncing(false);
+        setSyncProgress(0);
+      }, 600);
+    }
+  }, [syncing]);
+
+  // Realtime updates from Supabase
+  useEffect(() => {
     let channel;
     if (isSupabaseConfigured && supabase) {
       channel = supabase
-        .channel('public:songbook_realtime')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'songs' }, () => {
-          loadSongs();
-        })
+        .channel('public:songbook_realtime_sync')
         .on('postgres_changes', { event: '*', schema: 'public', table: 'missing_songs' }, () => {
-          fetchSongMetadata().then((meta) => {
-            if (meta) setSongMeta(meta);
-          });
+          // Re-sync silently in background
+          syncWithCloud(true);
+        })
+        .on('postgres_changes', { event: '*', schema: 'public', table: 'songs' }, () => {
+          syncWithCloud(true);
         })
         .subscribe();
     }
@@ -99,44 +87,146 @@ export function SongProvider({ children }) {
         supabase.removeChannel(channel);
       }
     };
-  }, [loadSongs]);
+  }, [syncWithCloud]);
 
+  /**
+   * Add a new song: updates client-side JSON cache immediately and persists to Supabase DB.
+   */
   const addSong = useCallback(async (songData) => {
-    if (isSeedSong(songData)) {
-      throw new Error('Seed songs are read-only. Duplicate it to make your own version.');
+    const songId = songData.id || `song-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    
+    // Auto-assign number if missing
+    let assignedNumber = songData.number;
+    if (assignedNumber == null || assignedNumber === '' || isNaN(Number(assignedNumber))) {
+      const maxNum = songs.reduce((max, s) => {
+        const n = typeof s.number === 'number' ? s.number : parseInt(s.number, 10);
+        return !isNaN(n) && n > max ? n : max;
+      }, 0);
+      assignedNumber = maxNum + 1;
+    } else {
+      assignedNumber = Number(assignedNumber);
     }
-    const created = await createSong(songData);
-    await loadSongs();
-    return created;
-  }, [loadSongs]);
 
+    const newSong = {
+      ...songData,
+      id: songId,
+      number: assignedNumber,
+      source: 'db',
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString(),
+    };
+
+    // 1. Immediately update client cache & state
+    setSongs((prev) => {
+      const next = [newSong, ...prev].sort((a, b) => {
+        const an = a.number ?? Number.MAX_SAFE_INTEGER;
+        const bn = b.number ?? Number.MAX_SAFE_INTEGER;
+        if (an !== bn) return an - bn;
+        return (a.title || '').localeCompare(b.title || '', ['hi', 'en', 'mr']);
+      });
+      saveCachedLibrary(next);
+      return next;
+    });
+
+    // 2. Dual-save to Supabase DB
+    saveSongToDb(newSong).catch((err) => {
+      console.warn('Background DB save error on addSong:', err);
+    });
+
+    return newSong;
+  }, [songs]);
+
+  /**
+   * Bulk add songs: updates client-side JSON cache and Supabase DB.
+   */
   const addBulkSongs = useCallback(async (songList) => {
-    const created = await bulkCreateSongs(songList);
-    await loadSongs();
-    return created;
-  }, [loadSongs]);
+    if (!Array.isArray(songList) || songList.length === 0) return [];
+    
+    let maxNum = songs.reduce((max, s) => {
+      const n = typeof s.number === 'number' ? s.number : parseInt(s.number, 10);
+      return !isNaN(n) && n > max ? n : max;
+    }, 0);
 
+    const prepared = songList.map((item) => {
+      let num = item.number;
+      if (num == null || num === '' || isNaN(Number(num))) {
+        num = ++maxNum;
+      } else {
+        num = Number(num);
+        if (num > maxNum) maxNum = num;
+      }
+
+      return {
+        ...item,
+        id: item.id || `song-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        number: num,
+        source: 'db',
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
+      };
+    });
+
+    setSongs((prev) => {
+      const next = [...prev, ...prepared].sort((a, b) => {
+        const an = a.number ?? Number.MAX_SAFE_INTEGER;
+        const bn = b.number ?? Number.MAX_SAFE_INTEGER;
+        if (an !== bn) return an - bn;
+        return (a.title || '').localeCompare(b.title || '', ['hi', 'en', 'mr']);
+      });
+      saveCachedLibrary(next);
+      return next;
+    });
+
+    // Dual-save each to Supabase in background
+    Promise.allSettled(prepared.map((s) => saveSongToDb(s))).catch(() => {});
+
+    return prepared;
+  }, [songs]);
+
+  /**
+   * Edit ANY song (both seed songs and user created songs).
+   * Updates client-side JSON cache immediately and persists to Supabase DB.
+   */
   const editSong = useCallback(async (id, songData) => {
-    if (String(id).startsWith('seed:') || songData?.source === 'seed') {
-      throw new Error('Seed songs are read-only. Duplicate it to edit.');
-    }
-    const updated = await updateSong(id, songData);
-    await loadSongs();
-    return updated;
-  }, [loadSongs]);
+    const songId = String(id);
+    const updated = {
+      ...songData,
+      id: songId,
+      updated_at: new Date().toISOString(),
+    };
 
+    // 1. Update client cache & state immediately
+    setSongs((prev) => {
+      const next = prev.map((s) => (String(s.id) === songId ? { ...s, ...updated } : s));
+      saveCachedLibrary(next);
+      return next;
+    });
+
+    // 2. Dual-save to Supabase DB
+    await saveSongToDb(updated);
+
+    return updated;
+  }, []);
+
+  /**
+   * Remove a song: updates client-side JSON cache and Supabase DB.
+   */
   const removeSong = useCallback(async (id) => {
-    if (String(id).startsWith('seed:')) {
-      throw new Error('Seed songs cannot be deleted.');
-    }
-    await deleteSong(id);
-    setDbSongs((prev) => prev.filter((s) => s.id !== id));
+    const songId = String(id);
+
+    // 1. Remove from client cache
+    setSongs((prev) => {
+      const next = prev.filter((s) => String(s.id) !== songId);
+      saveCachedLibrary(next);
+      return next;
+    });
+
+    // 2. Dual-delete from Supabase DB
+    await deleteSongFromDb(songId);
   }, []);
 
   /**
    * Bulk delete with password gate.
-   * Returns { deleted: string[], failed: string[], skipped: number }.
-   * Throws if the password check fails.
    */
   const deleteMany = useCallback(async (ids, password) => {
     const { ok, reason } = verifyDeletePassword(password);
@@ -150,24 +240,24 @@ export function SongProvider({ children }) {
       throw err;
     }
 
-    const deletable = ids.filter((id) => !String(id).startsWith('seed:'));
-    const skipped = ids.length - deletable.length;
+    const idSet = new Set(ids.map(String));
 
-    const results = await Promise.allSettled(deletable.map((id) => deleteSong(id)));
-    const deleted = [];
-    const failed = [];
-    results.forEach((r, i) => {
-      if (r.status === 'fulfilled') deleted.push(deletable[i]);
-      else failed.push(deletable[i]);
+    // Update client cache
+    setSongs((prev) => {
+      const next = prev.filter((s) => !idSet.has(String(s.id)));
+      saveCachedLibrary(next);
+      return next;
     });
 
-    setDbSongs((prev) => prev.filter((s) => !deleted.includes(s.id)));
-    return { deleted, failed, skipped };
+    // Remove from Supabase DB
+    await Promise.allSettled(ids.map((id) => deleteSongFromDb(id)));
+
+    return { deleted: ids, failed: [], skipped: 0 };
   }, []);
 
   /**
-   * Update beat, tempo, and type for ANY song (both seed and DB songs),
-   * persisting immediately to Supabase and local cache.
+   * Update beat, tempo, and type for ANY song,
+   * updating client cache and persisting to Supabase.
    */
   const updateSongBeatTempo = useCallback(async (songOrId, updates) => {
     let targetSong =
@@ -179,27 +269,43 @@ export function SongProvider({ children }) {
       throw new Error('Song not found');
     }
 
-    const saved = await saveSongMetadata(targetSong, updates);
+    const updatedSong = {
+      ...targetSong,
+      beat: updates.beat !== undefined ? updates.beat : targetSong.beat,
+      tempo: updates.tempo !== undefined ? updates.tempo : targetSong.tempo,
+      type: updates.type !== undefined ? updates.type : targetSong.type,
+      updated_at: new Date().toISOString(),
+    };
 
-    setSongMeta((prev) => {
-      const next = { ...prev };
-      if (targetSong.id) next[String(targetSong.id)] = saved;
-      if (targetSong.title) next[targetSong.title.trim().toLowerCase()] = saved;
+    // 1. Update client cache & state immediately
+    setSongs((prev) => {
+      const next = prev.map((s) => (String(s.id) === String(targetSong.id) ? updatedSong : s));
+      saveCachedLibrary(next);
       return next;
     });
 
-    return saved;
+    // 2. Save metadata override & song item to Supabase DB
+    try {
+      await saveSongMetadata(targetSong, updates);
+      await saveSongToDb(updatedSong);
+    } catch (err) {
+      console.warn('Error syncing beat/tempo to DB:', err);
+    }
+
+    return updatedSong;
   }, [songs]);
 
   return (
     <SongContext.Provider
       value={{
         songs,
-        dbSongs,
-        seedSongs,
         loading,
         error,
-        refreshSongs: loadSongs,
+        syncing,
+        syncProgress,
+        lastSyncTime,
+        syncWithCloud,
+        refreshSongs: syncWithCloud,
         addSong,
         addBulkSongs,
         editSong,
@@ -220,3 +326,4 @@ export function useSongs() {
   }
   return context;
 }
+
