@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo, useEffect, useRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSongs } from '../store/SongContext';
 import { buildIndex, parseQuery, scoreSongMatch } from '../lib/search';
@@ -11,6 +11,7 @@ import DeletePasswordModal from '../components/DeletePasswordModal';
 import SelectionToolbar from '../components/SelectionToolbar';
 import MissingSongModal from '../components/MissingSongModal';
 import BeatTempoModal from '../components/BeatTempoModal';
+import { useVoiceSearch } from '../hooks/useVoiceSearch';
 import {
   Search,
   Play,
@@ -27,7 +28,8 @@ import {
   Square,
   Lock,
   FileQuestion,
-  Activity
+  Activity,
+  Mic
 } from 'lucide-react';
 
 export default function SongManage() {
@@ -41,6 +43,19 @@ export default function SongManage() {
   const [isImportModalOpen, setIsImportModalOpen] = useState(false);
   const [isExportModalOpen, setIsExportModalOpen] = useState(false);
   const [editingBeatTempoSong, setEditingBeatTempoSong] = useState(null);
+
+  const searchInputRef = useRef(null);
+
+  const {
+    isListening,
+    toggleListening,
+  } = useVoiceSearch({
+    inputRef: searchInputRef,
+    onResult: (text) => {
+      setSearch(text);
+    },
+    defaultLang: langFilter === 'marathi' ? 'mr-IN' : langFilter === 'english' ? 'en-US' : 'hi-IN',
+  });
 
   // Missing songs state
   const [missingSongs, setMissingSongs] = useState([]);
@@ -336,21 +351,44 @@ export default function SongManage() {
             )}
 
             <input
+              ref={searchInputRef}
               type="text"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder={
-                langFilter !== 'all' || typeFilter !== 'all' || beatFilter !== 'all'
+                isListening
+                  ? "🎙️ Listening... speak song name or lyrics..."
+                  : langFilter !== 'all' || typeFilter !== 'all' || beatFilter !== 'all'
                   ? "Filter active · search within results..."
                   : "Search songs to manage, edit, or delete..."
               }
               className="flex-1 min-w-[130px] bg-transparent py-1 text-sm font-normal text-slate-800 focus:outline-none"
             />
+
+            {/* Voice Search Button */}
+            <button
+              type="button"
+              onClick={() => toggleListening(langFilter)}
+              className={`p-1.5 rounded-lg transition active:scale-95 flex items-center justify-center shrink-0 ${
+                isListening
+                  ? 'bg-rose-500 text-white animate-pulse shadow-sm shadow-rose-500/30 ring-2 ring-rose-400'
+                  : 'text-slate-400 hover:text-emerald-700 hover:bg-emerald-50'
+              }`}
+              title={
+                isListening
+                  ? 'Listening... click to stop'
+                  : 'Voice search (Tap mic and speak)'
+              }
+              aria-label="Voice search"
+            >
+              <Mic className={`h-4 w-4 ${isListening ? 'animate-bounce' : ''}`} />
+            </button>
+
             {search && (
               <button
                 type="button"
                 onClick={() => setSearch('')}
-                className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition ml-auto"
+                className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition"
               >
                 <X className="h-3.5 w-3.5" />
               </button>
