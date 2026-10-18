@@ -91,19 +91,18 @@ export function parseLyrics(rawText) {
   });
 }
 
-export const NEXT_LINE_SHIFT_SYMBOL = '//';
+export const NEXT_LINE_SHIFT_SYMBOL = '..';
 
 /**
  * Formats stanza text, preserving the author's intended line breaks and converting
- * next-line shift symbols ('//', '↵', ' | ') into line breaks for projector & reader view.
+ * next-line shift symbols ('..', '//', '↵', ' | ') into line breaks for projector & reader view.
  */
 export function formatCommaLines(text) {
   if (!text) return '';
   return String(text)
     .replace(/\r\n/g, '\n')
     .replace(/\r/g, '\n')
-    .replace(/\s*(?:\/\/|↵)\s*/g, '\n')
-    .replace(/\s+\|\s+/g, '\n');
+    .replace(/(?:\s*(?:\/\/|↵)\s*|\s*\.{2,}\s*|\s+\|\s+)/g, '\n');
 }
 
 /**

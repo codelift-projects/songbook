@@ -6,10 +6,10 @@ import { projectorStyle, FONT_STACKS } from '../lib/theme';
 import { isSeedSong } from '../lib/seed';
 import { formatCommaLines, NEXT_LINE_SHIFT_SYMBOL } from '../lib/parse';
 import SongImportModal from '../components/SongImportModal';
-import { 
-  ArrowLeft, 
-  Trash2, 
-  MoveUp, 
+import {
+  ArrowLeft,
+  Trash2,
+  MoveUp,
   MoveDown,
   Copy
 } from 'lucide-react';
@@ -119,10 +119,10 @@ export default function SongEditor() {
     let label = labelPreset;
 
     if (!label) {
-      const verseMatches = stanzas.filter(s => 
-        s.label.toLowerCase().includes('verse') || 
-        s.label.includes('पद') || 
-        s.label.includes('चरण') || 
+      const verseMatches = stanzas.filter(s =>
+        s.label.toLowerCase().includes('verse') ||
+        s.label.includes('पद') ||
+        s.label.includes('चरण') ||
         s.label.includes('कडवे')
       );
       const nextNum = verseMatches.length + 1;
@@ -141,10 +141,10 @@ export default function SongEditor() {
 
   const handleDuplicateChorus = () => {
     const chorusStanza = stanzas.find(
-      (s) => 
-        s.label.toLowerCase().includes('chorus') || 
-        s.label.includes('कोरस') || 
-        s.label.includes('ध्रुवपद') || 
+      (s) =>
+        s.label.toLowerCase().includes('chorus') ||
+        s.label.includes('कोरस') ||
+        s.label.includes('ध्रुवपद') ||
         s.label.includes('स्थायी')
     );
     if (chorusStanza) {
@@ -186,13 +186,13 @@ export default function SongEditor() {
   };
 
   /**
-   * Inserts the next-line shift symbol (//) at the cursor position
+   * Inserts the next-line shift symbol (..) at the cursor position
    * in the specified stanza's textarea.
    */
   const handleInsertNextLineShift = (index) => {
     const el = document.getElementById(`stanza-textarea-${index}`);
     const currentText = stanzas[index]?.text || '';
-    const symbol = ' // ';
+    const symbol = ' .. ';
 
     if (!el) {
       handleUpdateStanza(index, 'text', currentText + symbol);
@@ -319,50 +319,48 @@ export default function SongEditor() {
   const activeSlide = previewSlides[previewSlideIdx] || previewSlides[0];
 
   return (
-    <div className="mx-auto max-w-5xl pb-16 space-y-5">
+    <div className="mx-auto max-w-5xl pb-16 space-y-4 w-full max-w-full overflow-x-hidden">
       {/* Top Header */}
       <div className="flex flex-col gap-2.5 sm:flex-row sm:items-center sm:justify-between pb-1">
         <div className="flex items-center gap-2">
           <button
             onClick={() => navigate(-1)}
-            className="rounded-xl border border-slate-200 bg-white p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition shadow-2xs active:scale-95"
+            className="rounded-xl border border-slate-200 bg-white p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition shadow-2xs active:scale-95 shrink-0"
             title="Go back"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
-          <h1 className="text-base sm:text-lg font-black text-slate-900">
+          <h1 className="text-base sm:text-lg font-black text-slate-900 truncate">
             {isEdit ? 'Edit Song' : 'New Song'}
           </h1>
         </div>
 
         {/* Action Buttons: Clean text-only buttons */}
-        <div className="grid grid-cols-4 sm:flex items-center gap-1.5 sm:gap-2 w-full sm:w-auto">
+        <div className="flex items-center gap-1.5 w-full sm:w-auto">
           <button
             type="button"
             onClick={() => setImportModalOpen(true)}
-            className="flex items-center justify-center rounded-xl border border-slate-300/80 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-2xs active:scale-95 text-center"
+            className="flex-1 sm:flex-none flex items-center justify-center rounded-xl border border-slate-300/80 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-2xs active:scale-95 text-center"
           >
             Import
           </button>
 
-          {isEdit ? (
+          {isEdit && (
             <button
               type="button"
               onClick={handleDuplicateToDb}
-              className="flex items-center justify-center rounded-xl border border-slate-300/80 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-2xs active:scale-95 text-center"
+              className="flex-1 sm:flex-none flex items-center justify-center rounded-xl border border-slate-300/80 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-2xs active:scale-95 text-center"
               title="Duplicate into a new song"
             >
               Duplicate
             </button>
-          ) : (
-            <div className="sm:hidden" />
           )}
 
           <button
             type="button"
             onClick={(e) => handleSubmit(e, true)}
             disabled={isSaving}
-            className="flex items-center justify-center rounded-xl bg-slate-900 px-3 py-1.5 text-xs font-bold text-white hover:bg-slate-800 transition shadow-sm active:scale-95 text-center"
+            className="flex-1 sm:flex-none flex items-center justify-center rounded-xl bg-slate-900 px-3 py-1.5 text-xs font-bold text-white hover:bg-slate-800 transition shadow-sm active:scale-95 text-center"
           >
             Present
           </button>
@@ -371,7 +369,7 @@ export default function SongEditor() {
             type="button"
             onClick={(e) => handleSubmit(e, false)}
             disabled={isSaving}
-            className="flex items-center justify-center rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-black text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 transition active:scale-95 text-center"
+            className="flex-1 sm:flex-none flex items-center justify-center rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-black text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 transition active:scale-95 text-center"
           >
             {isSaving ? 'Saving...' : 'Save'}
           </button>
@@ -383,50 +381,62 @@ export default function SongEditor() {
         <button
           type="button"
           onClick={() => setMobileTab('edit')}
-          className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition text-center ${
-            mobileTab === 'edit'
-              ? 'bg-slate-900 text-white shadow-2xs'
-              : 'text-slate-600 hover:text-slate-900'
-          }`}
+          className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition text-center ${mobileTab === 'edit'
+            ? 'bg-slate-900 text-white shadow-2xs'
+            : 'text-slate-600 hover:text-slate-900'
+            }`}
         >
           Edit Lyrics ({stanzas.length})
         </button>
         <button
           type="button"
           onClick={() => setMobileTab('preview')}
-          className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition text-center ${
-            mobileTab === 'preview'
-              ? 'bg-emerald-600 text-white shadow-2xs'
-              : 'text-slate-600 hover:text-slate-900'
-          }`}
+          className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition text-center ${mobileTab === 'preview'
+            ? 'bg-emerald-600 text-white shadow-2xs'
+            : 'text-slate-600 hover:text-slate-900'
+            }`}
         >
           Preview ({previewSlideIdx + 1}/{previewSlides.length})
         </button>
       </div>
 
-      <div className="grid gap-5 lg:grid-cols-12">
+      <div className="grid gap-4 lg:grid-cols-12">
         {/* Left Column: Form Details & Stanzas */}
-        <div className={`space-y-5 lg:col-span-7 ${mobileTab === 'preview' ? 'hidden lg:block' : 'block'}`}>
+        <div className={`space-y-4 lg:col-span-7 ${mobileTab === 'preview' ? 'hidden lg:block' : 'block'}`}>
           {/* Metadata Card */}
-          <section className="rounded-2xl border border-slate-200/90 bg-white p-4 sm:p-5 space-y-4 shadow-xs">
-            <div className="grid gap-4 sm:grid-cols-12">
-              {/* Number (Auto-assigned) */}
-              <div className="sm:col-span-4">
-                <label className="mb-1 flex items-center justify-between text-xs font-black text-slate-700">
-                  <span>Song Number</span>
-                  <span className="text-[10px] text-emerald-700 font-extrabold">(Auto)</span>
+          <section className="rounded-2xl border border-slate-200/90 bg-white p-3.5 sm:p-5 space-y-3 shadow-xs">
+            <div className="grid grid-cols-2 sm:grid-cols-12 gap-2.5 sm:gap-3.5">
+              {/* Main Title */}
+              <div className="col-span-2 sm:col-span-6">
+                <label className="mb-1 block text-xs font-black text-slate-700">
+                  Main Title <span className="text-rose-500">*</span>
                 </label>
                 <input
-                  type="number"
-                  placeholder="Auto"
-                  value={number}
-                  onChange={(e) => setNumber(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs bg-slate-50/70 focus:bg-white"
+                  type="text"
+                  required
+                  placeholder={language === 'marathi' ? "उदा. गा देवाचे उपकार" : language === 'hindi' ? "उदा. तेरी स्तुति" : "e.g. Amazing Grace"}
+                  value={title}
+                  onChange={(e) => setTitle(e.target.value)}
+                  className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs text-slate-900 font-black focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 transition shadow-2xs bg-slate-50/70 focus:bg-white"
                 />
               </div>
 
-              {/* Language Selector with Hindi, Marathi, and English */}
-              <div className="sm:col-span-8">
+              {/* Alt Title */}
+              <div className="col-span-2 sm:col-span-6">
+                <label className="mb-1 block text-xs font-black text-slate-700">
+                  Alternate Title / Transliteration
+                </label>
+                <input
+                  type="text"
+                  placeholder={language === 'marathi' ? "Ga Devache Upakar" : "Teri Stuti Aur Aradhana"}
+                  value={titleAlt}
+                  onChange={(e) => setTitleAlt(e.target.value)}
+                  className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs text-slate-900 font-semibold focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 transition shadow-2xs bg-slate-50/70 focus:bg-white"
+                />
+              </div>
+
+              {/* Primary Language */}
+              <div className="col-span-2 sm:col-span-5">
                 <label className="mb-1 block text-xs font-black text-slate-700">
                   Primary Language
                 </label>
@@ -434,7 +444,7 @@ export default function SongEditor() {
                   <button
                     type="button"
                     onClick={() => setLanguage('hindi')}
-                    className={`rounded-xl border py-2 text-xs font-black transition-all ${
+                    className={`rounded-xl border py-1.5 text-xs font-black transition-all ${
                       language === 'hindi'
                         ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600 shadow-2xs'
                         : 'border-slate-200/90 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50'
@@ -445,7 +455,7 @@ export default function SongEditor() {
                   <button
                     type="button"
                     onClick={() => setLanguage('marathi')}
-                    className={`rounded-xl border py-2 text-xs font-black transition-all ${
+                    className={`rounded-xl border py-1.5 text-xs font-black transition-all ${
                       language === 'marathi'
                         ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600 shadow-2xs'
                         : 'border-slate-200/90 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50'
@@ -456,7 +466,7 @@ export default function SongEditor() {
                   <button
                     type="button"
                     onClick={() => setLanguage('english')}
-                    className={`rounded-xl border py-2 text-xs font-black transition-all ${
+                    className={`rounded-xl border py-1.5 text-xs font-black transition-all ${
                       language === 'english'
                         ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600 shadow-2xs'
                         : 'border-slate-200/90 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50'
@@ -467,45 +477,31 @@ export default function SongEditor() {
                 </div>
               </div>
 
-              {/* Title */}
-              <div className="sm:col-span-6">
-                <label className="mb-1 block text-xs font-black text-slate-700">
-                  Main Title <span className="text-rose-500">*</span>
+              {/* Number */}
+              <div className="col-span-1 sm:col-span-2">
+                <label className="mb-1 flex items-center justify-between text-xs font-black text-slate-700">
+                  <span>Number</span>
+                  <span className="text-[10px] text-emerald-700 font-extrabold">(Auto)</span>
                 </label>
                 <input
-                  type="text"
-                  required
-                  placeholder={language === 'marathi' ? "उदा. गा देवाचे उपकार" : language === 'hindi' ? "उदा. तेरी स्तुति" : "e.g. Amazing Grace"}
-                  value={title}
-                  onChange={(e) => setTitle(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs text-slate-900 font-black focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs bg-slate-50/70 focus:bg-white"
+                  type="number"
+                  placeholder="Auto"
+                  value={number}
+                  onChange={(e) => setNumber(e.target.value)}
+                  className="w-full rounded-xl border border-slate-200/90 px-3 py-1.5 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 transition shadow-2xs bg-slate-50/70 focus:bg-white"
                 />
               </div>
 
-              {/* Alt Title */}
-              <div className="sm:col-span-6">
-                <label className="mb-1 block text-xs font-black text-slate-700">
-                  Alternate Title / Transliteration
-                </label>
-                <input
-                  type="text"
-                  placeholder={language === 'marathi' ? "Ga Devache Upakar" : "Teri Stuti Aur Aradhana"}
-                  value={titleAlt}
-                  onChange={(e) => setTitleAlt(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs text-slate-900 font-semibold focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs bg-slate-50/70 focus:bg-white"
-                />
-              </div>
-
-              {/* Song Type: Praise or Worship */}
-              <div className="sm:col-span-4">
+              {/* Song Type */}
+              <div className="col-span-1 sm:col-span-2">
                 <label className="text-xs font-black text-slate-700 block mb-1">
-                  Song Type
+                  Type
                 </label>
-                <div className="grid grid-cols-2 gap-1.5">
+                <div className="grid grid-cols-2 gap-1">
                   <button
                     type="button"
                     onClick={() => setSongType('worship')}
-                    className={`rounded-xl border py-2 text-xs font-black transition-all ${
+                    className={`rounded-xl border py-1.5 text-[11px] font-black transition-all text-center ${
                       songType === 'worship'
                         ? 'border-emerald-600 bg-emerald-50 text-emerald-800 ring-1 ring-emerald-600 shadow-2xs'
                         : 'border-slate-200/90 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50'
@@ -516,7 +512,7 @@ export default function SongEditor() {
                   <button
                     type="button"
                     onClick={() => setSongType('praise')}
-                    className={`rounded-xl border py-2 text-xs font-black transition-all ${
+                    className={`rounded-xl border py-1.5 text-[11px] font-black transition-all text-center ${
                       songType === 'praise'
                         ? 'border-indigo-600 bg-indigo-50 text-indigo-800 ring-1 ring-indigo-600 shadow-2xs'
                         : 'border-slate-200/90 bg-white text-slate-600 hover:text-slate-900 hover:bg-slate-50'
@@ -527,26 +523,26 @@ export default function SongEditor() {
                 </div>
               </div>
 
-              {/* Beat: Simple text / int input (no prebuilt buttons) */}
-              <div className="sm:col-span-4">
+              {/* Beat */}
+              <div className="col-span-1 sm:col-span-1.5">
                 <label className="text-xs font-black text-slate-700 block mb-1">
                   Beat
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. 13, 31, 37..."
+                  placeholder="13, 31..."
                   value={beat}
                   onChange={(e) => setBeat(e.target.value)}
-                  className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs bg-slate-50/70 focus:bg-white"
+                  className="w-full rounded-xl border border-slate-200/90 px-2.5 py-1.5 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 transition shadow-2xs bg-slate-50/70 focus:bg-white"
                 />
               </div>
 
-              {/* Tempo: Simple integer number input (no slider) */}
-              <div className="sm:col-span-4">
+              {/* Tempo */}
+              <div className="col-span-1 sm:col-span-1.5">
                 <label className="text-xs font-black text-slate-700 block mb-1">
-                  Tempo (BPM)
+                  Tempo
                 </label>
-                <div className="flex items-center gap-1.5">
+                <div className="flex items-center gap-1">
                   <input
                     type="number"
                     min="30"
@@ -558,9 +554,9 @@ export default function SongEditor() {
                       const val = parseInt(e.target.value, 10);
                       setTempo(isNaN(val) ? '' : String(val));
                     }}
-                    className="w-full rounded-xl border border-slate-200/90 px-3 py-2 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 transition shadow-2xs bg-slate-50/70 focus:bg-white"
+                    className="w-full rounded-xl border border-slate-200/90 px-2 py-1.5 text-xs font-black text-slate-900 focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 transition shadow-2xs bg-slate-50/70 focus:bg-white"
                   />
-                  <span className="text-[11px] font-bold text-slate-500 shrink-0">BPM</span>
+                  <span className="text-[10px] font-bold text-slate-400 shrink-0">BPM</span>
                 </div>
               </div>
             </div>
@@ -568,22 +564,26 @@ export default function SongEditor() {
 
           {/* Stanzas & Slides Section */}
           <section className="space-y-3">
+            {/* Instruction on top: double dot .. for next-line shift */}
+            <div className="flex items-start sm:items-center gap-2 rounded-xl border border-teal-200/90 bg-teal-50/80 px-3 py-2 text-xs text-teal-900 shadow-2xs">
+              <span className="shrink-0 text-sm">💡</span>
+              <p className="leading-snug">
+                <span className="font-extrabold text-teal-950">Next Line Shift: </span>
+                Type <code className="bg-white px-1.5 py-0.5 rounded border border-teal-200 font-mono font-black text-teal-800">..</code> (double dot) or press Enter to shift lyrics to the next line within a slide.
+              </p>
+            </div>
+
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <div>
-                <h2 className="text-sm font-black text-slate-900 flex items-center gap-2">
-                  <span>Stanzas & Slides ({stanzas.length})</span>
-                </h2>
-                <p className="text-xs text-slate-500 font-medium">
-                  Each stanza creates a slide. Use <span className="font-mono font-bold text-teal-700">//</span> or <span className="font-bold text-teal-700">↵ Next Line Shift</span> to break lines without creating a new stanza.
-                </p>
-              </div>
+              <h2 className="text-sm font-black text-slate-900">
+                Stanzas & Slides ({stanzas.length})
+              </h2>
 
               {/* Quick Action Buttons */}
               <div className="flex flex-wrap items-center gap-1.5">
                 <button
                   type="button"
                   onClick={() => handleAddStanza(language === 'marathi' ? 'ध्रुवपद' : language === 'hindi' ? 'कोरस' : 'Chorus')}
-                  className="rounded-lg border border-emerald-300 bg-emerald-50 px-2.5 py-1.5 text-xs font-black text-emerald-800 hover:bg-emerald-100 transition shadow-2xs"
+                  className="rounded-lg border border-emerald-300 bg-emerald-50 px-2 py-1 text-xs font-black text-emerald-800 hover:bg-emerald-100 transition shadow-2xs"
                   title="Add Chorus slide"
                 >
                   + {language === 'marathi' ? 'ध्रुवपद' : language === 'hindi' ? 'कोरस' : 'Chorus'}
@@ -592,7 +592,7 @@ export default function SongEditor() {
                 <button
                   type="button"
                   onClick={handleDuplicateChorus}
-                  className="rounded-lg border border-slate-300/80 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100 transition shadow-2xs"
+                  className="rounded-lg border border-slate-300/80 bg-white px-2 py-1 text-xs font-bold text-slate-700 hover:bg-slate-100 transition shadow-2xs"
                   title="Insert duplicate of Chorus at the end"
                 >
                   Repeat Chorus
@@ -601,7 +601,7 @@ export default function SongEditor() {
                 <button
                   type="button"
                   onClick={() => handleAddStanza(language === 'marathi' ? 'सेतु (Bridge)' : language === 'hindi' ? 'सेतु (Bridge)' : 'Bridge')}
-                  className="rounded-lg border border-slate-300/80 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-100 transition shadow-2xs"
+                  className="rounded-lg border border-slate-300/80 bg-white px-2 py-1 text-xs font-bold text-slate-700 hover:bg-slate-100 transition shadow-2xs"
                 >
                   + Bridge
                 </button>
@@ -609,7 +609,7 @@ export default function SongEditor() {
                 <button
                   type="button"
                   onClick={() => handleAddStanza()}
-                  className="rounded-lg bg-emerald-600 px-3 py-1.5 text-xs font-black text-white hover:bg-emerald-700 transition shadow-xs"
+                  className="rounded-lg bg-emerald-600 px-2.5 py-1 text-xs font-black text-white hover:bg-emerald-700 transition shadow-xs"
                 >
                   + {language === 'marathi' ? 'चरण' : language === 'hindi' ? 'पद' : 'Verse'}
                 </button>
@@ -617,7 +617,7 @@ export default function SongEditor() {
             </div>
 
             {/* Stanzas List */}
-            <div className="space-y-3">
+            <div className="space-y-2.5">
               {stanzas.map((stanza, idx) => {
                 const isChorus =
                   stanza.label.toLowerCase().includes('chorus') ||
@@ -628,16 +628,16 @@ export default function SongEditor() {
                 return (
                   <div
                     key={stanza.id || idx}
-                    className={`rounded-2xl border p-3.5 sm:p-4 transition-all duration-150 ${
+                    className={`rounded-2xl border p-3 sm:p-4 transition-all duration-150 ${
                       isChorus
                         ? 'border-emerald-300/80 bg-emerald-50/40 shadow-xs'
                         : 'border-slate-200/90 bg-white hover:border-slate-300 shadow-2xs'
                     }`}
                   >
                     {/* Stanza Header Row */}
-                    <div className="mb-2.5 flex items-center justify-between gap-3">
-                      <div className="flex items-center gap-2">
-                        <span className="grid h-6 w-6 place-items-center rounded-lg bg-slate-100 border border-slate-200/80 text-[11px] font-black text-slate-700">
+                    <div className="mb-2 flex items-center justify-between gap-1.5 min-w-0">
+                      <div className="flex items-center gap-1.5 flex-1 min-w-0">
+                        <span className="grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-slate-100 border border-slate-200/80 text-[11px] font-black text-slate-700">
                           {idx + 1}
                         </span>
 
@@ -645,8 +645,8 @@ export default function SongEditor() {
                           type="text"
                           value={stanza.label}
                           onChange={(e) => handleUpdateStanza(idx, 'label', e.target.value)}
-                          placeholder="Label (e.g. Verse 1, ध्रुवपद)"
-                          className={`rounded-lg border px-2.5 py-1 text-xs font-black focus:outline-none ${
+                          placeholder="Label (e.g. Verse 1)"
+                          className={`w-full min-w-0 max-w-[140px] sm:max-w-[220px] rounded-lg border px-2 py-1 text-xs font-black focus:outline-none truncate ${
                             isChorus
                               ? 'border-emerald-300 bg-white text-emerald-800 focus:border-emerald-600'
                               : 'border-slate-200 bg-slate-50/70 text-slate-900 focus:border-emerald-600'
@@ -655,7 +655,7 @@ export default function SongEditor() {
                       </div>
 
                       {/* Stanza Action Buttons */}
-                      <div className="flex items-center gap-1">
+                      <div className="flex items-center gap-0.5 shrink-0">
                         <button
                           type="button"
                           onClick={() => handleDuplicateStanza(idx)}
@@ -693,29 +693,14 @@ export default function SongEditor() {
                       </div>
                     </div>
 
-                    {/* Quick Stanza Toolbar: Next Line Shift Button */}
-                    <div className="mb-2 flex items-center justify-between">
-                      <button
-                        type="button"
-                        onClick={() => handleInsertNextLineShift(idx)}
-                        className="inline-flex items-center gap-1 rounded-lg border border-teal-300 bg-teal-50 px-2.5 py-1 text-[11px] font-black text-teal-800 hover:bg-teal-100 transition shadow-2xs"
-                        title="Insert next-line shift symbol (//) at cursor. In reader view and projector, following words shift to the next line."
-                      >
-                        <span>↵ Next Line Shift (//)</span>
-                      </button>
-                      <span className="text-[10px] text-slate-400 font-medium">
-                        Use <code className="bg-slate-100 px-1 py-0.5 rounded text-slate-700 font-mono font-bold">//</code> to break line
-                      </span>
-                    </div>
-
-                    {/* Stanza Textarea */}
+                    {/* Stanza Textarea - Direct, fast, clean */}
                     <textarea
                       id={`stanza-textarea-${idx}`}
-                      rows={4}
+                      rows={3}
                       value={stanza.text}
                       onChange={(e) => handleUpdateStanza(idx, 'text', e.target.value)}
-                      placeholder="Enter lyrics for this slide (press ↵ Next Line Shift or type // to break line)..."
-                      className="w-full rounded-xl border border-slate-200/90 p-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:border-emerald-600 focus:outline-none focus:ring-2 focus:ring-emerald-600/15 leading-relaxed font-sans shadow-2xs bg-white"
+                      placeholder="Type lyrics here (use .. for next line)..."
+                      className="w-full rounded-xl border border-slate-200/90 p-2.5 sm:p-3 text-sm font-semibold text-slate-900 placeholder-slate-400 focus:border-emerald-600 focus:outline-none focus:ring-1 focus:ring-emerald-600 leading-relaxed font-sans shadow-2xs bg-white"
                     />
                   </div>
                 );
@@ -725,135 +710,135 @@ export default function SongEditor() {
             <button
               type="button"
               onClick={() => handleAddStanza()}
-              className="w-full rounded-2xl border-2 border-dashed border-slate-300 bg-white/60 py-3 text-xs font-black text-slate-600 hover:border-emerald-600 hover:text-emerald-700 transition"
+              className="w-full rounded-2xl border-2 border-dashed border-slate-300 bg-white/60 py-2.5 text-xs font-black text-slate-600 hover:border-emerald-600 hover:text-emerald-700 transition"
             >
               + Add Stanza / Slide
             </button>
           </section>
         </div>
 
-        {/* Right Column: Live Projector Slide Preview */}
-        <div className={`space-y-4 lg:col-span-5 ${mobileTab === 'edit' ? 'hidden lg:block' : 'block'}`}>
-          <div className="sticky top-20 space-y-3">
-            <div className="flex items-center justify-between">
-              <h2 className="text-xs font-black uppercase tracking-wider text-slate-700">
-                Live Projector Preview
-              </h2>
+        {/* Right Column: Live Projector Slide Preview */ }
+  <div className={`space-y-4 lg:col-span-5 ${mobileTab === 'edit' ? 'hidden lg:block' : 'block'}`}>
+    <div className="sticky top-20 space-y-3">
+      <div className="flex items-center justify-between">
+        <h2 className="text-xs font-black uppercase tracking-wider text-slate-700">
+          Live Projector Preview
+        </h2>
 
-              <span className="text-[11px] font-black text-slate-500">
-                Slide {previewSlideIdx + 1} / {previewSlides.length}
-              </span>
-            </div>
-
-            {/* Simulated 16:9 Projector Screen */}
-            <div
-              className="relative aspect-video w-full rounded-2xl border border-slate-200/90 p-6 flex flex-col items-center justify-center text-center shadow-lg overflow-hidden select-none transition-all duration-200"
-              style={{
-                background: settings.background,
-                color: settings.textColor,
-                fontFamily: FONT_STACKS[settings.fontFamily] || FONT_STACKS.sans,
-              }}
-            >
-              {activeSlide.kind === 'title' ? (
-                <div>
-                  {activeSlide.number && (
-                    <div
-                      className="text-[11px] font-black tracking-[0.25em] opacity-40 mb-1"
-                      style={{ color: settings.textColor }}
-                    >
-                      SONG #{activeSlide.number}
-                    </div>
-                  )}
-                  <h3 className="text-xl font-black leading-tight">
-                    {activeSlide.title}
-                  </h3>
-                  {activeSlide.subtitle && (
-                    <p className="text-xs opacity-60 mt-1 italic font-semibold">
-                      {activeSlide.subtitle}
-                    </p>
-                  )}
-                </div>
-              ) : (
-                <div className="w-full px-2">
-                  <div
-                    className="text-[10px] font-black uppercase tracking-[0.25em] mb-1.5"
-                    style={{ color: settings.accentColor }}
-                  >
-                    {activeSlide.label}
-                  </div>
-                  <p
-                    className="text-base font-black leading-tight whitespace-pre-line"
-                    style={{ lineHeight: settings.lineHeight }}
-                  >
-                    {activeSlide.lines.join('\n')}
-                  </p>
-                </div>
-              )}
-
-              {settings.showProgressDots && previewSlides.length > 1 && (
-                <div className="absolute bottom-2 flex justify-center gap-1">
-                  {previewSlides.map((_, i) => (
-                    <span
-                      key={i}
-                      className="h-1 rounded-full transition-all duration-150"
-                      style={{
-                        width: i === previewSlideIdx ? 16 : 4,
-                        background: i === previewSlideIdx ? settings.accentColor : settings.textColor,
-                        opacity: i === previewSlideIdx ? 0.95 : 0.25,
-                      }}
-                    />
-                  ))}
-                </div>
-              )}
-            </div>
-
-            {/* Slide Navigator Buttons */}
-            <div className="flex items-center justify-between gap-2">
-              <button
-                type="button"
-                disabled={previewSlideIdx === 0}
-                onClick={() => setPreviewSlideIdx((p) => Math.max(0, p - 1))}
-                className="flex-1 rounded-xl border border-slate-300/80 bg-white py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-30 shadow-xs transition"
-              >
-                ← Prev Slide
-              </button>
-              <button
-                type="button"
-                disabled={previewSlideIdx === previewSlides.length - 1}
-                onClick={() => setPreviewSlideIdx((p) => Math.min(previewSlides.length - 1, p + 1))}
-                className="flex-1 rounded-xl border border-slate-300/80 bg-white py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-30 shadow-xs transition"
-              >
-                Next Slide →
-              </button>
-            </div>
-
-            {/* Quick Carousel */}
-            <div className="flex gap-1.5 overflow-x-auto pb-2">
-              {previewSlides.map((s, idx) => (
-                <button
-                  key={idx}
-                  type="button"
-                  onClick={() => setPreviewSlideIdx(idx)}
-                  className={`shrink-0 rounded-lg px-2.5 py-1 text-[11px] font-black transition ${
-                    idx === previewSlideIdx
-                      ? 'bg-emerald-600 text-white shadow-xs'
-                      : 'bg-white border border-slate-200/90 text-slate-600 hover:text-slate-900'
-                  }`}
-                >
-                  {s.kind === 'title' ? 'Title' : s.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
+        <span className="text-[11px] font-black text-slate-500">
+          Slide {previewSlideIdx + 1} / {previewSlides.length}
+        </span>
       </div>
 
-      {/* Song Import Modal */}
-      <SongImportModal
-        isOpen={importModalOpen}
-        onClose={() => setImportModalOpen(false)}
-        onImportSongs={handleImportModalResult}
-      />
+      {/* Simulated 16:9 Projector Screen */}
+      <div
+        className="relative aspect-video w-full rounded-2xl border border-slate-200/90 p-6 flex flex-col items-center justify-center text-center shadow-lg overflow-hidden select-none transition-all duration-200"
+        style={{
+          background: settings.background,
+          color: settings.textColor,
+          fontFamily: FONT_STACKS[settings.fontFamily] || FONT_STACKS.sans,
+        }}
+      >
+        {activeSlide.kind === 'title' ? (
+          <div>
+            {activeSlide.number && (
+              <div
+                className="text-[11px] font-black tracking-[0.25em] opacity-40 mb-1"
+                style={{ color: settings.textColor }}
+              >
+                SONG #{activeSlide.number}
+              </div>
+            )}
+            <h3 className="text-xl font-black leading-tight">
+              {activeSlide.title}
+            </h3>
+            {activeSlide.subtitle && (
+              <p className="text-xs opacity-60 mt-1 italic font-semibold">
+                {activeSlide.subtitle}
+              </p>
+            )}
+          </div>
+        ) : (
+          <div className="w-full px-2">
+            <div
+              className="text-[10px] font-black uppercase tracking-[0.25em] mb-1.5"
+              style={{ color: settings.accentColor }}
+            >
+              {activeSlide.label}
+            </div>
+            <p
+              className="text-base font-black leading-tight whitespace-pre-line"
+              style={{ lineHeight: settings.lineHeight }}
+            >
+              {activeSlide.lines.join('\n')}
+            </p>
+          </div>
+        )}
+
+        {settings.showProgressDots && previewSlides.length > 1 && (
+          <div className="absolute bottom-2 flex justify-center gap-1">
+            {previewSlides.map((_, i) => (
+              <span
+                key={i}
+                className="h-1 rounded-full transition-all duration-150"
+                style={{
+                  width: i === previewSlideIdx ? 16 : 4,
+                  background: i === previewSlideIdx ? settings.accentColor : settings.textColor,
+                  opacity: i === previewSlideIdx ? 0.95 : 0.25,
+                }}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+
+      {/* Slide Navigator Buttons */}
+      <div className="flex items-center justify-between gap-2">
+        <button
+          type="button"
+          disabled={previewSlideIdx === 0}
+          onClick={() => setPreviewSlideIdx((p) => Math.max(0, p - 1))}
+          className="flex-1 rounded-xl border border-slate-300/80 bg-white py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-30 shadow-xs transition"
+        >
+          ← Prev Slide
+        </button>
+        <button
+          type="button"
+          disabled={previewSlideIdx === previewSlides.length - 1}
+          onClick={() => setPreviewSlideIdx((p) => Math.min(previewSlides.length - 1, p + 1))}
+          className="flex-1 rounded-xl border border-slate-300/80 bg-white py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 disabled:opacity-30 shadow-xs transition"
+        >
+          Next Slide →
+        </button>
+      </div>
+
+      {/* Quick Carousel */}
+      <div className="flex gap-1.5 overflow-x-auto pb-2">
+        {previewSlides.map((s, idx) => (
+          <button
+            key={idx}
+            type="button"
+            onClick={() => setPreviewSlideIdx(idx)}
+            className={`shrink-0 rounded-lg px-2.5 py-1 text-[11px] font-black transition ${idx === previewSlideIdx
+              ? 'bg-emerald-600 text-white shadow-xs'
+              : 'bg-white border border-slate-200/90 text-slate-600 hover:text-slate-900'
+              }`}
+          >
+            {s.kind === 'title' ? 'Title' : s.label}
+          </button>
+        ))}
+      </div>
     </div>
+  </div>
+      </div >
+
+    {/* Song Import Modal */ }
+    < SongImportModal
+  isOpen = { importModalOpen }
+  onClose = {() => setImportModalOpen(false)
+}
+onImportSongs = { handleImportModalResult }
+  />
+    </div >
   );
 }

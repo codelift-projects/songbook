@@ -14,11 +14,11 @@ import {
 import SimpleSettingsModal from '../components/SimpleSettingsModal';
 import AddToGroupModal from '../components/AddToGroupModal';
 import BeatTempoModal from '../components/BeatTempoModal';
-import { 
-  ArrowLeft, 
-  Play, 
-  Settings as SettingsIcon, 
-  ChevronLeft, 
+import {
+  ArrowLeft,
+  Play,
+  Settings as SettingsIcon,
+  ChevronLeft,
   ChevronRight,
   AlertCircle,
   CheckCircle2,
@@ -170,7 +170,7 @@ export default function SongViewer() {
   const baseFontSize = Math.max(16, Math.min(22 * (settings.fontSizeScale || 1.0), 68));
 
   return (
-    <div 
+    <div
       className="min-h-screen flex flex-col selection:bg-emerald-200/40 select-text w-full max-w-full overflow-x-hidden"
       style={{ ...theme }}
     >
@@ -189,9 +189,9 @@ export default function SongViewer() {
       )}
 
       {/* Sticky Reader Top Bar */}
-      <header 
+      <header
         className="sticky top-0 z-30 border-b backdrop-blur-md px-3 py-2.5 transition-colors duration-200 w-full"
-        style={{ 
+        style={{
           background: hexA(settings.background, 0.95),
           borderColor: hexA(settings.textColor, 0.12)
         }}
@@ -201,9 +201,9 @@ export default function SongViewer() {
           <button
             onClick={() => (groupId ? navigate(`/groups/${groupId}`) : navigate(-1))}
             className="flex items-center gap-1 rounded-xl px-2.5 py-1.5 text-xs font-bold transition shadow-2xs active:scale-95"
-            style={{ 
+            style={{
               background: hexA(settings.textColor, 0.10),
-              color: settings.textColor 
+              color: settings.textColor
             }}
           >
             <ArrowLeft className="h-4 w-4" />
@@ -217,9 +217,9 @@ export default function SongViewer() {
                 type="button"
                 onClick={() => navigate(`/groups/${group.id}`)}
                 className="flex items-center gap-1.5 rounded-lg px-2.5 py-1 text-xs font-black shadow-2xs transition hover:opacity-90 max-w-[200px] truncate"
-                style={{ 
+                style={{
                   background: hexA(settings.accentColor, 0.16),
-                  color: settings.accentColor 
+                  color: settings.accentColor
                 }}
                 title={`Collection: ${group.name}`}
               >
@@ -237,9 +237,9 @@ export default function SongViewer() {
             <button
               onClick={() => updateSettings({ fontSizeScale: Math.max(0.5, +(settings.fontSizeScale - 0.05).toFixed(2)) })}
               className="rounded-lg px-2 py-1 text-xs font-bold transition"
-              style={{ 
+              style={{
                 background: hexA(settings.textColor, 0.10),
-                color: settings.textColor 
+                color: settings.textColor
               }}
               title="Decrease text size"
             >
@@ -249,9 +249,9 @@ export default function SongViewer() {
             <button
               onClick={() => updateSettings({ fontSizeScale: Math.min(2.5, +(settings.fontSizeScale + 0.05).toFixed(2)) })}
               className="rounded-lg px-2 py-1 text-xs font-bold transition"
-              style={{ 
+              style={{
                 background: hexA(settings.textColor, 0.10),
-                color: settings.textColor 
+                color: settings.textColor
               }}
               title="Increase text size"
             >
@@ -262,7 +262,7 @@ export default function SongViewer() {
             <button
               onClick={() => navigate(`/present/${song.id}${groupId ? `?groupId=${groupId}` : ''}`)}
               className="flex items-center gap-1 rounded-lg px-2.5 py-1 text-xs font-black transition shadow-xs active:scale-95"
-              style={{ 
+              style={{
                 background: settings.accentColor,
                 color: '#ffffff'
               }}
@@ -276,9 +276,9 @@ export default function SongViewer() {
             <button
               onClick={() => setIsAddToGroupOpen(true)}
               className="flex items-center gap-1 rounded-lg px-2 py-1 text-xs font-bold transition shadow-xs active:scale-95"
-              style={{ 
+              style={{
                 background: hexA(settings.textColor, 0.10),
-                color: settings.textColor 
+                color: settings.textColor
               }}
               title="Add to group or collection"
             >
@@ -295,12 +295,11 @@ export default function SongViewer() {
                   setIsFlagModalOpen(true);
                 }
               }}
-              className={`rounded-lg p-1.5 text-xs font-bold transition active:scale-95 ${
-                markedIncomplete ? 'ring-1 ring-amber-400 bg-amber-500/20 text-amber-500' : ''
-              }`}
-              style={{ 
+              className={`rounded-lg p-1.5 text-xs font-bold transition active:scale-95 ${markedIncomplete ? 'ring-1 ring-amber-400 bg-amber-500/20 text-amber-500' : ''
+                }`}
+              style={{
                 background: markedIncomplete ? 'rgba(245, 158, 11, 0.2)' : hexA(settings.textColor, 0.10),
-                color: markedIncomplete ? '#f59e0b' : settings.textColor 
+                color: markedIncomplete ? '#f59e0b' : settings.textColor
               }}
               title={markedIncomplete ? 'Song is marked as incomplete. Click to resolve.' : 'Mark this song as incomplete / requires edit'}
             >
@@ -311,9 +310,9 @@ export default function SongViewer() {
             <button
               onClick={() => setSettingsOpen(true)}
               className="rounded-lg p-1.5 text-xs font-bold transition"
-              style={{ 
+              style={{
                 background: hexA(settings.textColor, 0.10),
-                color: settings.textColor 
+                color: settings.textColor
               }}
               title="Theme settings"
             >
@@ -351,11 +350,11 @@ export default function SongViewer() {
         )}
 
         {/* Single Primary Song Header Info */}
-        <div 
+        <div
           className="border-b pb-4 text-center space-y-2"
           style={{ borderColor: hexA(settings.textColor, 0.12) }}
         >
-          <h1 
+          <h1
             className="text-2xl sm:text-3xl font-black tracking-tight leading-tight"
             style={{ fontFamily, color: settings.textColor }}
           >
@@ -367,11 +366,10 @@ export default function SongViewer() {
             <button
               type="button"
               onClick={() => setIsBeatTempoOpen(true)}
-              className={`rounded-full px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider transition hover:opacity-90 active:scale-95 cursor-pointer ${
-                song.type === 'praise'
-                  ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30'
-                  : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
-              }`}
+              className={`rounded-full px-2.5 py-0.5 text-[11px] font-black uppercase tracking-wider transition hover:opacity-90 active:scale-95 cursor-pointer ${song.type === 'praise'
+                ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30'
+                : 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                }`}
               title="Click to change Song Type (Praise/Worship) or Beat/Tempo"
             >
               {song.type === 'praise' ? 'Praise' : 'Worship'}
@@ -381,10 +379,10 @@ export default function SongViewer() {
               type="button"
               onClick={() => setIsBeatTempoOpen(true)}
               className="rounded-full px-2.5 py-0.5 text-[11px] font-bold border transition hover:opacity-100 opacity-90 active:scale-95 cursor-pointer flex items-center gap-1"
-              style={{ 
+              style={{
                 background: hexA(settings.textColor, 0.08),
                 borderColor: hexA(settings.textColor, 0.18),
-                color: settings.textColor 
+                color: settings.textColor
               }}
               title="Click to update Beat"
             >
@@ -395,10 +393,10 @@ export default function SongViewer() {
               type="button"
               onClick={() => setIsBeatTempoOpen(true)}
               className="rounded-full px-2.5 py-0.5 text-[11px] font-bold border transition hover:opacity-100 opacity-90 active:scale-95 cursor-pointer flex items-center gap-1"
-              style={{ 
+              style={{
                 background: hexA(settings.textColor, 0.08),
                 borderColor: hexA(settings.textColor, 0.18),
-                color: settings.textColor 
+                color: settings.textColor
               }}
               title="Click to update Tempo (BPM)"
             >
@@ -409,10 +407,10 @@ export default function SongViewer() {
               type="button"
               onClick={() => setIsBeatTempoOpen(true)}
               className="rounded-full p-1 border transition hover:opacity-100 opacity-70 active:scale-95 cursor-pointer"
-              style={{ 
+              style={{
                 background: hexA(settings.textColor, 0.06),
                 borderColor: hexA(settings.textColor, 0.15),
-                color: settings.textColor 
+                color: settings.textColor
               }}
               title="Edit Beat, Tempo & Type (Saves to Supabase)"
             >
@@ -426,16 +424,16 @@ export default function SongViewer() {
           {(song.stanzas || []).map((stanza, idx) => {
             const formattedText = formatCommaLines(stanza.text || '');
             return (
-              <section 
+              <section
                 key={stanza.id || idx}
                 className="rounded-2xl p-4 sm:p-5 transition-colors duration-150"
-                style={{ 
+                style={{
                   background: hexA(settings.textColor, 0.04),
                   border: `1px solid ${hexA(settings.textColor, 0.08)}`
                 }}
               >
                 {stanza.label && (
-                  <div 
+                  <div
                     className="text-xs font-black uppercase tracking-[0.2em] mb-2.5"
                     style={{ color: settings.accentColor, fontFamily }}
                   >
@@ -443,9 +441,9 @@ export default function SongViewer() {
                   </div>
                 )}
 
-                <p 
+                <p
                   className="whitespace-pre-line font-bold tracking-normal"
-                  style={{ 
+                  style={{
                     fontFamily,
                     fontSize: `${baseFontSize}px`,
                     lineHeight: settings.lineHeight || 1.35,
@@ -461,7 +459,7 @@ export default function SongViewer() {
 
         {/* Bottom Group Navigation - Only shown when viewing within a group */}
         {group && (
-          <div 
+          <div
             className="border-t pt-6 flex items-center justify-between gap-3 text-xs font-bold"
             style={{ borderColor: hexA(settings.textColor, 0.12) }}
           >
@@ -470,9 +468,9 @@ export default function SongViewer() {
                 type="button"
                 onClick={() => navigate(`/view/${prevGroupSong.id}?groupId=${group.id}`)}
                 className="flex items-center gap-1.5 rounded-xl px-3 py-2 transition shadow-2xs active:scale-95 text-left"
-                style={{ 
+                style={{
                   background: hexA(settings.textColor, 0.08),
-                  color: settings.textColor 
+                  color: settings.textColor
                 }}
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -489,9 +487,9 @@ export default function SongViewer() {
               type="button"
               onClick={() => navigate(`/groups/${group.id}`)}
               className="flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-bold transition hover:opacity-85 shadow-2xs"
-              style={{ 
+              style={{
                 background: hexA(settings.textColor, 0.06),
-                color: settings.textColor 
+                color: settings.textColor
               }}
             >
               <Layers className="h-3.5 w-3.5" />
@@ -503,9 +501,9 @@ export default function SongViewer() {
                 type="button"
                 onClick={() => navigate(`/view/${nextGroupSong.id}?groupId=${group.id}`)}
                 className="flex items-center gap-1.5 rounded-xl px-3 py-2 transition shadow-2xs active:scale-95 text-right"
-                style={{ 
+                style={{
                   background: hexA(settings.textColor, 0.08),
-                  color: settings.textColor 
+                  color: settings.textColor
                 }}
               >
                 <div className="text-right">
@@ -537,11 +535,6 @@ export default function SongViewer() {
                 <X className="h-4 w-4" />
               </button>
             </div>
-
-            <p className="text-xs text-slate-600 leading-relaxed">
-              Flag <strong>"{song.title}"</strong> as requiring edit. This will be recorded and retained in Supabase so editors know which stanzas or lyrics need correction.
-            </p>
-
             <div className="space-y-1.5">
               <label className="text-xs font-bold text-slate-700">
                 Notes on what needs edit (optional):
