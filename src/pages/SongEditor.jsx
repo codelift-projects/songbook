@@ -327,23 +327,19 @@ export default function SongEditor() {
   return (
     <div className="mx-auto max-w-5xl pb-16 space-y-5">
       {/* Top Header */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-        <div className="flex items-center gap-3">
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between pb-1">
+        <div className="flex items-center gap-2.5">
           <button
             onClick={() => navigate(-1)}
-            className="rounded-xl border border-slate-200 bg-white p-2.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition shadow-xs"
+            className="rounded-xl border border-slate-200 bg-white p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition shadow-2xs active:scale-95"
+            title="Go back"
           >
             <ArrowLeft className="h-4 w-4" />
           </button>
-          <div>
-            <h1 className="text-xl font-black text-slate-900 flex items-center gap-2">
-              <Music2 className="h-5 w-5 text-emerald-600" />
-              <span>{isEdit ? 'Edit Song & Slides' : 'Create New Song'}</span>
-            </h1>
-            <p className="text-xs text-slate-500 font-medium">
-              Saves instantly to your offline cache and Supabase cloud DB.
-            </p>
-          </div>
+          <h1 className="text-lg font-black text-slate-900 flex items-center gap-2">
+            <Music2 className="h-5 w-5 text-emerald-600" />
+            <span>{isEdit ? 'Edit Song' : 'New Song'}</span>
+          </h1>
         </div>
 
         {/* Action Buttons */}
@@ -351,17 +347,17 @@ export default function SongEditor() {
           <button
             type="button"
             onClick={() => setImportModalOpen(true)}
-            className="flex items-center gap-1.5 rounded-xl border border-slate-300/80 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-xs"
+            className="flex items-center gap-1.5 rounded-xl border border-slate-300/80 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-2xs active:scale-95"
           >
             <Upload className="h-3.5 w-3.5 text-emerald-600" />
-            <span>Import JSON / Lyrics</span>
+            <span>Import</span>
           </button>
 
           {isEdit && (
             <button
               type="button"
               onClick={handleDuplicateToDb}
-              className="flex items-center gap-1.5 rounded-xl border border-slate-300/80 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-xs"
+              className="flex items-center gap-1.5 rounded-xl border border-slate-300/80 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-2xs active:scale-95"
               title="Duplicate into a new song"
             >
               <Copy className="h-3.5 w-3.5 text-slate-600" />
@@ -373,42 +369,23 @@ export default function SongEditor() {
             type="button"
             onClick={(e) => handleSubmit(e, true)}
             disabled={isSaving}
-            className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-4 py-2 text-xs font-bold text-white hover:bg-slate-800 transition shadow-sm"
+            className="flex items-center gap-1.5 rounded-xl bg-slate-900 px-3.5 py-1.5 text-xs font-bold text-white hover:bg-slate-800 transition shadow-sm active:scale-95"
           >
             <Play className="h-3.5 w-3.5 fill-current" />
-            <span>Save & Present</span>
+            <span>Present</span>
           </button>
 
           <button
             type="button"
             onClick={(e) => handleSubmit(e, false)}
             disabled={isSaving}
-            className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-5 py-2 text-xs font-black text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 transition"
+            className="flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-1.5 text-xs font-black text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 transition active:scale-95"
           >
-            <Save className="h-4 w-4" />
-            <span>{isSaving ? 'Saving...' : 'Save Song'}</span>
+            <Save className="h-3.5 w-3.5" />
+            <span>{isSaving ? 'Saving...' : 'Save'}</span>
           </button>
         </div>
       </div>
-
-      {/* Helpful Info Banner */}
-      {isSeed && (
-        <div className="flex items-center justify-between gap-3 rounded-2xl border border-emerald-200 bg-emerald-50/80 p-3.5 text-xs text-emerald-900 shadow-xs">
-          <div className="flex items-center gap-2.5">
-            <span className="grid h-7 w-7 place-items-center rounded-xl bg-emerald-100 border border-emerald-300 text-emerald-800 shrink-0 font-bold">
-              ✓
-            </span>
-            <div>
-              <p className="font-black text-emerald-950">
-                Editing Bundled Hymn
-              </p>
-              <p className="text-emerald-800 font-medium">
-                Edits to lyrics, next-line breaks, beat, or tempo will be saved to your local offline library and cloud DB.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
 
       <div className="grid gap-5 lg:grid-cols-12">
         {/* Left Column: Form Details & Stanzas */}

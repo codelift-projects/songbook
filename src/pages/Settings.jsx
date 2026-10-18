@@ -7,16 +7,14 @@ export default function Settings() {
 
   return (
     <div className="mx-auto max-w-xl pb-16 space-y-5">
-      {/* Header */}
-      <div className="flex items-center justify-between border-b border-slate-200 pb-3">
-        <div>
-          <h1 className="text-xl sm:text-2xl font-black tracking-tight text-slate-900">
-            Display Settings
-          </h1>
-        </div>
+      {/* Compact Top Action Bar */}
+      <div className="flex items-center justify-between pb-1">
+        <span className="text-xs font-bold text-slate-500">
+          Projector Theme & Font Settings
+        </span>
         <button
           onClick={reset}
-          className="flex items-center gap-1.5 rounded-xl border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-slate-400 transition shadow-xs"
+          className="flex items-center gap-1.5 rounded-xl border border-slate-300/80 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 hover:border-slate-400 transition shadow-2xs active:scale-95"
         >
           <RotateCcw className="h-3.5 w-3.5" />
           <span>Reset</span>

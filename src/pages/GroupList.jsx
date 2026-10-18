@@ -89,21 +89,18 @@ export default function GroupList() {
         </div>
       )}
 
-      {/* Header section */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-200/80 pb-4">
-        <div>
-          <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2.5">
-            <Layers className="h-6 w-6 text-emerald-600" />
-            <span>Song Collections</span>
-          </h1>
-        </div>
+      {/* Compact Top Action Bar */}
+      <div className="flex items-center justify-between pb-1">
+        <span className="text-xs font-bold text-slate-500">
+          {groups.length} {groups.length === 1 ? 'Collection' : 'Collections'}
+        </span>
 
         <button
           type="button"
           onClick={() => setIsModalOpen(true)}
-          className="inline-flex items-center gap-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-4 py-2.5 text-xs font-bold text-white shadow-sm shadow-emerald-600/25 transition active:scale-95 shrink-0 self-start sm:self-auto"
+          className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 px-3.5 py-2 text-xs font-bold text-white shadow-xs transition active:scale-95"
         >
-          <Plus className="h-4 w-4" />
+          <Plus className="h-3.5 w-3.5" />
           <span>New Group</span>
         </button>
       </div>
