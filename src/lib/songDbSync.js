@@ -1,7 +1,7 @@
 import { supabase, isSupabaseConfigured } from './supabase.js';
 import { loadSeedSongs } from './seed.js';
 
-const LIBRARY_CACHE_KEY = 'church-songbook:library_cache:v4';
+const LIBRARY_CACHE_KEY = 'church-songbook:library_cache:v5';
 const LAST_SYNC_KEY = 'church-songbook:last_sync_timestamp';
 
 /**

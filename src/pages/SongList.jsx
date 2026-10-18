@@ -9,7 +9,6 @@ import {
 } from '../lib/missingSongs';
 import { fetchIncompleteFlags, isSongIncomplete } from '../lib/songIncomplete';
 import MissingSongModal from '../components/MissingSongModal';
-import { useVoiceSearch } from '../hooks/useVoiceSearch';
 import {
   Search,
   Music,
@@ -19,7 +18,6 @@ import {
   Plus,
   CheckCircle2,
   AlertCircle,
-  Mic
 } from 'lucide-react';
 
 const SEARCH_STORAGE_KEY = 'church-songbook:search_query';
@@ -42,20 +40,6 @@ export default function SongList() {
   const [beatFilter, setBeatFilter] = useState('all'); // 'all' | '13' | '31' | '37' | '49' | '55' | '68' | 'NA'
 
   const searchInputRef = useRef(null);
-
-  const {
-    isListening,
-    toggleListening,
-  } = useVoiceSearch({
-    inputRef: searchInputRef,
-    onResult: (text) => {
-      setSearch(text);
-      try {
-        sessionStorage.setItem(SEARCH_STORAGE_KEY, text);
-      } catch (e) {}
-    },
-    defaultLang: langFilter === 'marathi' ? 'mr-IN' : langFilter === 'english' ? 'en-US' : 'hi-IN',
-  });
 
   // Incomplete song flags
   const [incompleteFlags, setIncompleteFlags] = useState({});
@@ -242,35 +226,15 @@ export default function SongList() {
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             placeholder={
-              isListening
-                ? "🎙️ Listening... speak song name or lyrics..."
-                : langFilter !== 'all' || typeFilter !== 'all' || beatFilter !== 'all'
+              langFilter !== 'all' || typeFilter !== 'all' || beatFilter !== 'all'
                 ? "Filter active · search within results..."
                 : "Search songs by title or lyrics..."
             }
             className="flex-1 min-w-[130px] bg-transparent py-1 text-sm font-normal text-slate-800 focus:outline-none"
           />
 
-          {/* Action buttons inside search bar (Voice Mic + Report + Clear) */}
+          {/* Action buttons inside search bar (Report + Clear) */}
           <div className="flex items-center gap-1 ml-auto shrink-0">
-            {/* Voice Search Button */}
-            <button
-              type="button"
-              onClick={() => toggleListening(langFilter)}
-              className={`p-1.5 rounded-lg transition active:scale-95 flex items-center justify-center ${
-                isListening
-                  ? 'bg-rose-500 text-white animate-pulse shadow-sm shadow-rose-500/30 ring-2 ring-rose-400'
-                  : 'text-slate-400 hover:text-emerald-700 hover:bg-emerald-50'
-              }`}
-              title={
-                isListening
-                  ? 'Listening... click to stop'
-                  : 'Voice search (Tap mic and speak)'
-              }
-              aria-label="Voice search"
-            >
-              <Mic className={`h-4 w-4 ${isListening ? 'animate-bounce' : ''}`} />
-            </button>
             {search.trim() && (
               <button
                 type="button"
