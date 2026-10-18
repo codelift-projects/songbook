@@ -12,6 +12,12 @@ import SelectionToolbar from '../components/SelectionToolbar';
 import MissingSongModal from '../components/MissingSongModal';
 import BeatTempoModal from '../components/BeatTempoModal';
 import {
+  isManageAuthenticated,
+  verifyManagePassword,
+  saveManagePassword,
+  clearManagePassword,
+} from '../lib/manageAuth';
+import {
   Search,
   Play,
   Edit3,
@@ -23,6 +29,7 @@ import {
   X,
   SlidersHorizontal,
   Eye,
+  EyeOff,
   CheckSquare,
   Square,
   Lock,
@@ -33,6 +40,31 @@ import {
 export default function SongManage() {
   const { songs, loading, addBulkSongs, deleteMany, updateSongBeatTempo } = useSongs();
   const navigate = useNavigate();
+
+  // Manage Authentication Gate
+  const [isAuthenticated, setIsAuthenticated] = useState(() => isManageAuthenticated());
+  const [passwordInput, setPasswordInput] = useState('');
+  const [passwordError, setPasswordError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+
+  const handlePasswordSubmit = (e) => {
+    if (e) e.preventDefault();
+    if (verifyManagePassword(passwordInput)) {
+      saveManagePassword(passwordInput);
+      setIsAuthenticated(true);
+      setPasswordError('');
+      setPasswordInput('');
+    } else {
+      setPasswordError('Incorrect password. Please try again.');
+    }
+  };
+
+  const handleLock = () => {
+    clearManagePassword();
+    setIsAuthenticated(false);
+    setPasswordInput('');
+    setPasswordError('');
+  };
 
   const [search, setSearch] = useState('');
   const [langFilter, setLangFilter] = useState('all'); // 'all' | 'hindi' | 'marathi' | 'english'
@@ -242,6 +274,81 @@ export default function SongManage() {
     }
   };
 
+  if (!isAuthenticated) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center px-4 py-8">
+        <div className="w-full max-w-sm rounded-3xl border border-slate-200/90 bg-white p-6 sm:p-7 shadow-xl shadow-slate-200/40 text-center animate-in fade-in zoom-in-95 duration-200">
+          <div className="mx-auto mb-3.5 grid h-13 w-13 place-items-center rounded-2xl bg-emerald-50 border border-emerald-100/80 text-emerald-600 shadow-2xs">
+            <Lock className="h-6 w-6" />
+          </div>
+
+          <h2 className="text-xl font-black text-slate-900 tracking-tight">
+            Manage Songs Locked
+          </h2>
+          <p className="mt-1 text-xs text-slate-500 font-medium">
+            Enter admin password to access song management.
+          </p>
+
+          <form onSubmit={handlePasswordSubmit} className="mt-5 space-y-3.5">
+            <div className="relative text-left">
+              <label className="block text-xs font-bold text-slate-700 mb-1">
+                Password
+              </label>
+              <div className="relative">
+                <input
+                  type={showPassword ? 'text' : 'password'}
+                  value={passwordInput}
+                  onChange={(e) => {
+                    setPasswordInput(e.target.value);
+                    if (passwordError) setPasswordError('');
+                  }}
+                  autoFocus
+                  placeholder="Enter password"
+                  autoComplete="current-password"
+                  className={`w-full rounded-xl border px-3 py-2 text-sm font-semibold transition focus:outline-none pr-9 ${
+                    passwordError
+                      ? 'border-rose-400 bg-rose-50/50 text-rose-900 focus:ring-2 focus:ring-rose-400'
+                      : 'border-slate-200 bg-slate-50/50 text-slate-900 focus:border-emerald-600 focus:bg-white focus:ring-2 focus:ring-emerald-500/20'
+                  }`}
+                />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 p-1 rounded-lg"
+                  title={showPassword ? 'Hide password' : 'Show password'}
+                  tabIndex={-1}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
+              </div>
+              {passwordError && (
+                <p className="mt-1.5 text-xs font-semibold text-rose-600 animate-in fade-in">
+                  {passwordError}
+                </p>
+              )}
+            </div>
+
+            <div className="flex gap-2 pt-1">
+              <button
+                type="button"
+                onClick={() => navigate('/')}
+                className="w-1/2 rounded-xl border border-slate-200 bg-white py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 transition active:scale-95 shadow-2xs"
+              >
+                Back to Songs
+              </button>
+              <button
+                type="submit"
+                className="w-1/2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-2 text-xs font-black transition active:scale-95 shadow-sm shadow-emerald-600/20"
+              >
+                Unlock
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4 pb-20">
       {/* Toast Notification */}
@@ -253,37 +360,49 @@ export default function SongManage() {
         </div>
       )}
 
-      {/* Top 4 Action Buttons in a Single Line - No icons to avoid scrollbar */}
-      <div className="grid grid-cols-4 gap-1.5 w-full">
-        <Link
-          to="/songs/new"
-          className="flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-1 text-center text-xs font-bold transition shadow-xs active:scale-95 truncate"
-        >
-          New Song
-        </Link>
+      {/* Top 4 Action Buttons in a Single Line + Quick Lock button */}
+      <div className="flex items-center gap-1.5 w-full">
+        <div className="grid grid-cols-4 gap-1.5 flex-1 min-w-0">
+          <Link
+            to="/songs/new"
+            className="flex items-center justify-center rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white py-2 px-1 text-center text-xs font-bold transition shadow-xs active:scale-95 truncate"
+          >
+            New Song
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => setIsImportModalOpen(true)}
+            className="flex items-center justify-center rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 py-2 px-1 text-center text-xs font-bold transition shadow-2xs active:scale-95 truncate"
+          >
+            Import
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsExportModalOpen(true)}
+            className="flex items-center justify-center rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 py-2 px-1 text-center text-xs font-bold transition shadow-2xs active:scale-95 truncate"
+          >
+            Export
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setIsMissingModalOpen(true)}
+            className="flex items-center justify-center rounded-xl border border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-900 py-2 px-1 text-center text-xs font-bold transition shadow-2xs active:scale-95 truncate"
+          >
+            Missing ({missingSongs.length})
+          </button>
+        </div>
 
         <button
           type="button"
-          onClick={() => setIsImportModalOpen(true)}
-          className="flex items-center justify-center rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 py-2 px-1 text-center text-xs font-bold transition shadow-2xs active:scale-95 truncate"
+          onClick={handleLock}
+          className="shrink-0 rounded-xl border border-slate-200/90 bg-white hover:bg-rose-50 hover:border-rose-200 hover:text-rose-600 text-slate-400 p-2 transition shadow-2xs active:scale-95"
+          title="Lock Manage page and sign out"
+          aria-label="Lock Manage page"
         >
-          Import
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setIsExportModalOpen(true)}
-          className="flex items-center justify-center rounded-xl border border-slate-200/90 bg-white hover:bg-slate-50 text-slate-700 py-2 px-1 text-center text-xs font-bold transition shadow-2xs active:scale-95 truncate"
-        >
-          Export
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setIsMissingModalOpen(true)}
-          className="flex items-center justify-center rounded-xl border border-amber-200 bg-amber-50 hover:bg-amber-100 text-amber-900 py-2 px-1 text-center text-xs font-bold transition shadow-2xs active:scale-95 truncate"
-        >
-          Missing ({missingSongs.length})
+          <Lock className="h-4 w-4" />
         </button>
       </div>
 

@@ -1,4 +1,4 @@
-const ENV_PASSWORD = import.meta.env.VITE_DELETE_PASSWORD;
+const ENV_PASSWORD = import.meta.env.VITE_DELETE_PASSWORD || 'youngistan';
 
 /**
  * Verify a password against the env-stored value.

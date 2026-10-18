@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { isDeletePasswordConfigured } from '../lib/deleteAuth';
+import { getStoredManagePassword } from '../lib/manageAuth';
 import { ShieldAlert, KeyRound, X, AlertCircle } from 'lucide-react';
 
 export default function DeletePasswordModal({
@@ -16,7 +17,8 @@ export default function DeletePasswordModal({
 
   useEffect(() => {
     if (open) {
-      setPassword('');
+      const stored = getStoredManagePassword();
+      setPassword(stored || '');
       setTimeout(() => inputRef.current?.focus(), 50);
     }
   }, [open]);
