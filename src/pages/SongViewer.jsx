@@ -192,9 +192,9 @@ export default function SongViewer() {
             <span>Back</span>
           </button>
 
-          {/* Clean Center: Group collection pill or Reader View (no song number) */}
+          {/* Clean Center: Group collection pill (if viewing from a collection) */}
           <div className="flex items-center gap-1.5 min-w-0">
-            {group ? (
+            {group && (
               <button
                 type="button"
                 onClick={() => navigate(`/groups/${group.id}`)}
@@ -211,13 +211,6 @@ export default function SongViewer() {
                   ({groupSongIndex + 1}/{group.songIds.length})
                 </span>
               </button>
-            ) : (
-              <span 
-                className="text-xs font-extrabold opacity-60 uppercase tracking-wider"
-                style={{ color: settings.textColor }}
-              >
-                Reader View
-              </span>
             )}
           </div>
 
