@@ -129,14 +129,21 @@ export async function addMissingSong(keyword, notes = '') {
 /**
  * Delete a missing song from Supabase and LocalStorage.
  */
-export async function deleteMissingSong(id) {
+export async function deleteMissingSong(idOrKeyword) {
   const localList = getLocalMissingSongs();
-  const filtered = localList.filter((item) => item.id !== id && item.keyword !== id);
+  const target = localList.find((item) => item.id === idOrKeyword || item.keyword === idOrKeyword);
+  const filtered = localList.filter((item) => item.id !== idOrKeyword && item.keyword !== idOrKeyword);
   saveLocalMissingSongs(filtered);
 
   if (isSupabaseConfigured && supabase) {
     try {
-      await supabase.from('missing_songs').delete().eq('id', id);
+      if (target && target.id && !String(target.id).startsWith('missing-')) {
+        await supabase.from('missing_songs').delete().eq('id', target.id);
+      } else if (target && target.keyword) {
+        await supabase.from('missing_songs').delete().eq('keyword', target.keyword);
+      } else {
+        await supabase.from('missing_songs').delete().eq('id', idOrKeyword);
+      }
     } catch (err) {
       console.warn('Supabase missing_songs delete error:', err.message);
     }

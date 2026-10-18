@@ -42,29 +42,25 @@ export default function SongList() {
     });
   }, []);
 
-  const handleOpenMissingModal = (keyword = '') => {
-    setModalKeyword(keyword || search || '');
+  const handleOpenMissingModal = () => {
+    setModalKeyword('');
     setIsMissingModalOpen(true);
   };
 
   const handleQuickReport = async (keywordToReport) => {
     const val = String(keywordToReport || search || '').trim();
-    if (!val) {
-      handleOpenMissingModal('');
-      return;
-    }
+    if (!val) return;
 
     try {
-      const { entry, list } = await addMissingSong(val);
+      const { list } = await addMissingSong(val);
       setMissingSongs(list);
-      setToastMessage(`"${val}" added to missing songs!`);
+      setToastMessage(`"${val}" reported as missing!`);
       setTimeout(() => setToastMessage(null), 3500);
-      // Open modal so user sees the word added in the list as requested
-      setModalKeyword('');
-      setIsMissingModalOpen(true);
+      // Only show toast, do not open popup
     } catch (err) {
       console.error('Error reporting missing song:', err);
-      handleOpenMissingModal(val);
+      setToastMessage(`Error reporting "${val}"`);
+      setTimeout(() => setToastMessage(null), 3500);
     }
   };
 
@@ -76,6 +72,8 @@ export default function SongList() {
   const handleDeleteMissingFromModal = async (id) => {
     const updated = await deleteMissingSong(id);
     setMissingSongs(updated);
+    setToastMessage('Song removed from missing list');
+    setTimeout(() => setToastMessage(null), 3000);
   };
 
   // Precompute normalised search index per song
@@ -132,15 +130,15 @@ export default function SongList() {
         </div>
 
         <div className="flex items-center gap-1.5 sm:gap-2">
-          {/* Button Near Manage Songs to Report Missing */}
+          {/* Button Near Manage Songs to View Missing Songs */}
           <button
             type="button"
-            onClick={() => handleOpenMissingModal(search)}
+            onClick={handleOpenMissingModal}
             className="flex items-center gap-1.5 rounded-xl border border-amber-200/90 bg-amber-50 hover:bg-amber-100 hover:border-amber-300 px-2.5 sm:px-3 py-1.5 text-xs font-bold text-amber-800 transition-all shadow-2xs active:scale-95"
-            title="Report missing song"
+            title="View reported missing songs list"
           >
             <FileQuestion className="h-3.5 w-3.5 text-amber-600 shrink-0" />
-            <span className="hidden sm:inline">Report Missing</span>
+            <span className="hidden sm:inline">Reported Missing</span>
             <span className="sm:hidden">Missing</span>
             {missingSongs.length > 0 && (
               <span className="rounded-full bg-amber-200/90 px-1.5 py-0.2 text-[10px] font-black text-amber-900 leading-none">
@@ -283,6 +281,7 @@ export default function SongList() {
       <MissingSongModal
         open={isMissingModalOpen}
         initialKeyword={modalKeyword}
+        initialTab="list"
         missingList={missingSongs}
         onClose={() => setIsMissingModalOpen(false)}
         onAddMissing={handleAddMissingFromModal}

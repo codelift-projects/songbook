@@ -44,17 +44,23 @@ export default function SongEditor() {
   const [previewSlideIdx, setPreviewSlideIdx] = useState(0);
   const [isSaving, setIsSaving] = useState(false);
 
-  // Initialize from location state if duplicating
+  // Initialize from location state if duplicating or from query parameters (e.g. from missing songs)
   useEffect(() => {
-    if (!isEdit && location.state) {
-      if (location.state.title) setTitle(location.state.title);
-      if (location.state.title_alt) setTitleAlt(location.state.title_alt);
-      if (location.state.language) setLanguage(location.state.language);
-      if (location.state.stanzas && location.state.stanzas.length) {
-        setStanzas(location.state.stanzas);
+    if (!isEdit) {
+      if (location.state) {
+        if (location.state.title) setTitle(location.state.title);
+        if (location.state.title_alt) setTitleAlt(location.state.title_alt);
+        if (location.state.language) setLanguage(location.state.language);
+        if (location.state.stanzas && location.state.stanzas.length) {
+          setStanzas(location.state.stanzas);
+        }
+      } else if (location.search) {
+        const params = new URLSearchParams(location.search);
+        const queryTitle = params.get('title');
+        if (queryTitle) setTitle(queryTitle);
       }
     }
-  }, [isEdit, location.state]);
+  }, [isEdit, location.state, location.search]);
 
   // Auto suggest next song number for new songs
   useEffect(() => {
