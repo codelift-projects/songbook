@@ -107,21 +107,24 @@ Request ID: ${u}`),c){let p=`
 Resources:`;for(const g of c){if(!g||typeof g!="string")throw new Error(`@supabase/auth-js: Invalid SIWE message field "resources". Every resource must be a valid string. Provided value: ${g}`);p+=`
 - ${g}`}y+=p}return`${k}
 ${y}`}class Ce extends Error{constructor({message:e,code:n,cause:r,name:s}){var a;super(e,{cause:r}),this.__isWebAuthnError=!0,this.name=(a=s??(r instanceof Error?r.name:void 0))!==null&&a!==void 0?a:"Unknown Error",this.code=n}toJSON(){return{name:this.name,message:this.message,code:this.code}}}class _i extends Ce{constructor(e,n){super({code:"ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY",cause:n,message:e}),this.name="WebAuthnUnknownError",this.originalError=n}}function Zv({error:t,options:e}){var n,r,s;const{publicKey:a}=e;if(!a)throw Error("options was missing required publicKey property");if(t.name==="AbortError"){if(e.signal instanceof AbortSignal)return new Ce({message:"Registration ceremony was sent an abort signal",code:"ERROR_CEREMONY_ABORTED",cause:t})}else if(t.name==="ConstraintError"){if(((n=a.authenticatorSelection)===null||n===void 0?void 0:n.requireResidentKey)===!0)return new Ce({message:"Discoverable credentials were required but no available authenticator supported it",code:"ERROR_AUTHENTICATOR_MISSING_DISCOVERABLE_CREDENTIAL_SUPPORT",cause:t});if(e.mediation==="conditional"&&((r=a.authenticatorSelection)===null||r===void 0?void 0:r.userVerification)==="required")return new Ce({message:"User verification was required during automatic registration but it could not be performed",code:"ERROR_AUTO_REGISTER_USER_VERIFICATION_FAILURE",cause:t});if(((s=a.authenticatorSelection)===null||s===void 0?void 0:s.userVerification)==="required")return new Ce({message:"User verification was required but no available authenticator supported it",code:"ERROR_AUTHENTICATOR_MISSING_USER_VERIFICATION_SUPPORT",cause:t})}else{if(t.name==="InvalidStateError")return new Ce({message:"The authenticator was previously registered",code:"ERROR_AUTHENTICATOR_PREVIOUSLY_REGISTERED",cause:t});if(t.name==="NotAllowedError")return new Ce({message:t.message,code:"ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY",cause:t});if(t.name==="NotSupportedError")return a.pubKeyCredParams.filter(o=>o.type==="public-key").length===0?new Ce({message:'No entry in pubKeyCredParams was of type "public-key"',code:"ERROR_MALFORMED_PUBKEYCREDPARAMS",cause:t}):new Ce({message:"No available authenticator supported any of the specified pubKeyCredParams algorithms",code:"ERROR_AUTHENTICATOR_NO_SUPPORTED_PUBKEYCREDPARAMS_ALG",cause:t});if(t.name==="SecurityError"){const i=window.location.hostname;if(hm(i)){if(a.rp.id!==i)return new Ce({message:`The RP ID "${a.rp.id}" is invalid for this domain`,code:"ERROR_INVALID_RP_ID",cause:t})}else return new Ce({message:`${window.location.hostname} is an invalid domain`,code:"ERROR_INVALID_DOMAIN",cause:t})}else if(t.name==="TypeError"){if(a.user.id.byteLength<1||a.user.id.byteLength>64)return new Ce({message:"User ID was not between 1 and 64 characters",code:"ERROR_INVALID_USER_ID_LENGTH",cause:t})}else if(t.name==="UnknownError")return new Ce({message:"The authenticator was unable to process the specified options, or could not create a new credential",code:"ERROR_AUTHENTICATOR_GENERAL_ERROR",cause:t})}return new Ce({message:"a Non-Webauthn related error has occurred",code:"ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY",cause:t})}function ew({error:t,options:e}){const{publicKey:n}=e;if(!n)throw Error("options was missing required publicKey property");if(t.name==="AbortError"){if(e.signal instanceof AbortSignal)return new Ce({message:"Authentication ceremony was sent an abort signal",code:"ERROR_CEREMONY_ABORTED",cause:t})}else{if(t.name==="NotAllowedError")return new Ce({message:t.message,code:"ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY",cause:t});if(t.name==="SecurityError"){const r=window.location.hostname;if(hm(r)){if(n.rpId!==r)return new Ce({message:`The RP ID "${n.rpId}" is invalid for this domain`,code:"ERROR_INVALID_RP_ID",cause:t})}else return new Ce({message:`${window.location.hostname} is an invalid domain`,code:"ERROR_INVALID_DOMAIN",cause:t})}else if(t.name==="UnknownError")return new Ce({message:"The authenticator was unable to process the specified options, or could not create a new assertion signature",code:"ERROR_AUTHENTICATOR_GENERAL_ERROR",cause:t})}return new Ce({message:"a Non-Webauthn related error has occurred",code:"ERROR_PASSTHROUGH_SEE_CAUSE_PROPERTY",cause:t})}class tw{createNewAbortSignal(){if(this.controller){const n=new Error("Cancelling existing WebAuthn API call for new one");n.name="AbortError",this.controller.abort(n)}const e=new AbortController;return this.controller=e,e.signal}cancelCeremony(){if(this.controller){const e=new Error("Manually cancelling existing WebAuthn API call");e.name="AbortError",this.controller.abort(e),this.controller=void 0}}}const Yo=new tw;function nh(t){if(!t)throw new Error("Credential creation options are required");if(typeof PublicKeyCredential<"u"&&"parseCreationOptionsFromJSON"in PublicKeyCredential&&typeof PublicKeyCredential.parseCreationOptionsFromJSON=="function")return PublicKeyCredential.parseCreationOptionsFromJSON(t);const{challenge:e,user:n,excludeCredentials:r}=t,s=qi(t,["challenge","user","excludeCredentials"]),a=jr(e).buffer,i=Object.assign(Object.assign({},n),{id:jr(n.id).buffer}),o=Object.assign(Object.assign({},s),{challenge:a,user:i});if(r&&r.length>0){o.excludeCredentials=new Array(r.length);for(let u=0;u<r.length;u++){const c=r[u];o.excludeCredentials[u]=Object.assign(Object.assign({},c),{id:jr(c.id).buffer,type:c.type||"public-key",transports:c.transports})}}return o}function rh(t){if(!t)throw new Error("Credential request options are required");if(typeof PublicKeyCredential<"u"&&"parseRequestOptionsFromJSON"in PublicKeyCredential&&typeof PublicKeyCredential.parseRequestOptionsFromJSON=="function")return PublicKeyCredential.parseRequestOptionsFromJSON(t);const{challenge:e,allowCredentials:n}=t,r=qi(t,["challenge","allowCredentials"]),s=jr(e).buffer,a=Object.assign(Object.assign({},r),{challenge:s});if(n&&n.length>0){a.allowCredentials=new Array(n.length);for(let i=0;i<n.length;i++){const o=n[i];a.allowCredentials[i]=Object.assign(Object.assign({},o),{id:jr(o.id).buffer,type:o.type||"public-key",transports:o.transports})}}return a}function sh(t){var e;if("toJSON"in t&&typeof t.toJSON=="function")return t.toJSON();const n=t;return{id:t.id,rawId:t.id,response:{attestationObject:Vn(new Uint8Array(t.response.attestationObject)),clientDataJSON:Vn(new Uint8Array(t.response.clientDataJSON))},type:"public-key",clientExtensionResults:t.getClientExtensionResults(),authenticatorAttachment:(e=n.authenticatorAttachment)!==null&&e!==void 0?e:void 0}}function ah(t){var e;if("toJSON"in t&&typeof t.toJSON=="function")return t.toJSON();const n=t,r=t.getClientExtensionResults(),s=t.response;return{id:t.id,rawId:t.id,response:{authenticatorData:Vn(new Uint8Array(s.authenticatorData)),clientDataJSON:Vn(new Uint8Array(s.clientDataJSON)),signature:Vn(new Uint8Array(s.signature)),userHandle:s.userHandle?Vn(new Uint8Array(s.userHandle)):void 0},type:"public-key",clientExtensionResults:r,authenticatorAttachment:(e=n.authenticatorAttachment)!==null&&e!==void 0?e:void 0}}function hm(t){return t==="localhost"||/^([a-z0-9]+(-[a-z0-9]+)*\.)+[a-z]{2,}$/i.test(t)}function ji(){var t,e;return!!(De()&&"PublicKeyCredential"in window&&window.PublicKeyCredential&&"credentials"in navigator&&typeof((t=navigator==null?void 0:navigator.credentials)===null||t===void 0?void 0:t.create)=="function"&&typeof((e=navigator==null?void 0:navigator.credentials)===null||e===void 0?void 0:e.get)=="function")}async function fm(t){try{const e=await navigator.credentials.create(t);return e?e instanceof PublicKeyCredential?{data:e,error:null}:{data:null,error:new _i("Browser returned unexpected credential type",e)}:{data:null,error:new _i("Empty credential response",e)}}catch(e){return{data:null,error:Zv({error:e,options:t})}}}async function pm(t){try{const e=await navigator.credentials.get(t);return e?e instanceof PublicKeyCredential?{data:e,error:null}:{data:null,error:new _i("Browser returned unexpected credential type",e)}:{data:null,error:new _i("Empty credential response",e)}}catch(e){return{data:null,error:ew({error:e,options:t})}}}const nw={hints:["security-key"],authenticatorSelection:{authenticatorAttachment:"cross-platform",requireResidentKey:!1,userVerification:"preferred",residentKey:"discouraged"},attestation:"direct"},rw={userVerification:"preferred",hints:["security-key"],attestation:"direct"};function Ci(...t){const e=s=>s!==null&&typeof s=="object"&&!Array.isArray(s),n=s=>s instanceof ArrayBuffer||ArrayBuffer.isView(s),r={};for(const s of t)if(s)for(const a in s){const i=s[a];if(i!==void 0)if(Array.isArray(i))r[a]=i;else if(n(i))r[a]=i;else if(e(i)){const o=r[a];e(o)?r[a]=Ci(o,i):r[a]=Ci(i)}else r[a]=i}return r}function sw(t,e){return Ci(nw,t,e||{})}function aw(t,e){return Ci(rw,t,e||{})}class iw{constructor(e){this.client=e,this.enroll=this._enroll.bind(this),this.challenge=this._challenge.bind(this),this.verify=this._verify.bind(this),this.authenticate=this._authenticate.bind(this),this.register=this._register.bind(this)}async _enroll(e){return this.client.mfa.enroll(Object.assign(Object.assign({},e),{factorType:"webauthn"}))}async _challenge({factorId:e,webauthn:n,friendlyName:r,signal:s},a){var i;try{const{data:o,error:u}=await this.client.mfa.challenge({factorId:e,webauthn:n});if(!o)return{data:null,error:u};const c=s??Yo.createNewAbortSignal();if(o.webauthn.type==="create"){const{user:d}=o.webauthn.credential_options.publicKey;if(!d.name){const h=r;if(h)d.name=`${d.id}:${h}`;else{const m=(await this.client.getUser()).data.user,x=((i=m==null?void 0:m.user_metadata)===null||i===void 0?void 0:i.name)||(m==null?void 0:m.email)||(m==null?void 0:m.id)||"User";d.name=`${d.id}:${x}`}}d.displayName||(d.displayName=d.name)}switch(o.webauthn.type){case"create":{const d=sw(o.webauthn.credential_options.publicKey,a==null?void 0:a.create),{data:h,error:f}=await fm({publicKey:d,signal:c});return h?{data:{factorId:e,challengeId:o.id,webauthn:{type:o.webauthn.type,credential_response:h}},error:null}:{data:null,error:f}}case"request":{const d=aw(o.webauthn.credential_options.publicKey,a==null?void 0:a.request),{data:h,error:f}=await pm(Object.assign(Object.assign({},o.webauthn.credential_options),{publicKey:d,signal:c}));return h?{data:{factorId:e,challengeId:o.id,webauthn:{type:o.webauthn.type,credential_response:h}},error:null}:{data:null,error:f}}}}catch(o){return M(o)?{data:null,error:o}:{data:null,error:new _t("Unexpected error in challenge",o)}}}async _verify({challengeId:e,factorId:n,webauthn:r}){return this.client.mfa.verify({factorId:n,challengeId:e,webauthn:r})}async _authenticate({factorId:e,webauthn:{rpId:n=typeof window<"u"?window.location.hostname:void 0,rpOrigins:r=typeof window<"u"?[window.location.origin]:void 0,signal:s}={}},a){if(!n)return{data:null,error:new Ws("rpId is required for WebAuthn authentication")};try{if(!ji())return{data:null,error:new _t("Browser does not support WebAuthn",null)};const{data:i,error:o}=await this.challenge({factorId:e,webauthn:{rpId:n,rpOrigins:r},signal:s},{request:a});if(!i)return{data:null,error:o};const{webauthn:u}=i;return this._verify({factorId:e,challengeId:i.challengeId,webauthn:{type:u.type,rpId:n,rpOrigins:r,credential_response:u.credential_response}})}catch(i){return M(i)?{data:null,error:i}:{data:null,error:new _t("Unexpected error in authenticate",i)}}}async _register({friendlyName:e,webauthn:{rpId:n=typeof window<"u"?window.location.hostname:void 0,rpOrigins:r=typeof window<"u"?[window.location.origin]:void 0,signal:s}={}},a){if(!n)return{data:null,error:new Ws("rpId is required for WebAuthn registration")};try{if(!ji())return{data:null,error:new _t("Browser does not support WebAuthn",null)};const{data:i,error:o}=await this._enroll({friendlyName:e});if(!i)return await this.client.mfa.listFactors().then(d=>{var h;return(h=d.data)===null||h===void 0?void 0:h.all.find(f=>f.factor_type==="webauthn"&&f.friendly_name===e&&f.status!=="unverified")}).then(d=>d?this.client.mfa.unenroll({factorId:d==null?void 0:d.id}):void 0),{data:null,error:o};const{data:u,error:c}=await this._challenge({factorId:i.id,friendlyName:i.friendly_name,webauthn:{rpId:n,rpOrigins:r},signal:s},{create:a});return u?this._verify({factorId:i.id,challengeId:u.challengeId,webauthn:{rpId:n,rpOrigins:r,type:u.webauthn.type,credential_response:u.webauthn.credential_response}}):{data:null,error:c}}catch(i){return M(i)?{data:null,error:i}:{data:null,error:new _t("Unexpected error in register",i)}}}}Jv();const lw={url:cv,storageKey:dv,autoRefreshToken:!0,persistSession:!0,detectSessionInUrl:!0,headers:hv,flowType:"implicit",debug:!1,hasCustomAuthorizationHeader:!1,throwOnError:!1,lockAcquireTimeout:5e3,skipAutoInitialize:!1,experimental:{}},nr={};class Gs{get jwks(){var e,n;return(n=(e=nr[this.storageKey])===null||e===void 0?void 0:e.jwks)!==null&&n!==void 0?n:{keys:[]}}set jwks(e){nr[this.storageKey]=Object.assign(Object.assign({},nr[this.storageKey]),{jwks:e})}get jwks_cached_at(){var e,n;return(n=(e=nr[this.storageKey])===null||e===void 0?void 0:e.cachedAt)!==null&&n!==void 0?n:Number.MIN_SAFE_INTEGER}set jwks_cached_at(e){nr[this.storageKey]=Object.assign(Object.assign({},nr[this.storageKey]),{cachedAt:e})}constructor(e){var n,r,s;this.userStorage=null,this.memoryStorage=null,this.stateChangeEmitters=new Map,this.autoRefreshTicker=null,this.autoRefreshTickTimeout=null,this.visibilityChangedCallback=null,this.refreshingDeferred=null,this.lastRefreshFailure=null,this._sessionRemovalEpoch=0,this.initializePromise=null,this.detectSessionInUrl=!0,this.hasCustomAuthorizationHeader=!1,this.suppressGetSessionWarning=!1,this.lock=null,this.lockAcquired=!1,this.pendingInLock=[],this.broadcastChannel=null,this.logger=console.log;const a=Object.assign(Object.assign({},lw),e);if(this.storageKey=a.storageKey,this.instanceID=(n=Gs.nextInstanceID[this.storageKey])!==null&&n!==void 0?n:0,Gs.nextInstanceID[this.storageKey]=this.instanceID+1,this.logDebugMessages=!!a.debug,typeof a.debug=="function"&&(this.logger=a.debug),this.instanceID>0&&De()){const i=`${this._logPrefix()} Multiple GoTrueClient instances detected in the same browser context. It is not an error, but this should be avoided as it may produce undefined behavior when used concurrently under the same storage key.`;console.warn(i),this.logDebugMessages&&console.trace(i)}if(this.persistSession=a.persistSession,this.autoRefreshToken=a.autoRefreshToken,this.experimental=(r=a.experimental)!==null&&r!==void 0?r:{},this.admin=new Kv({url:a.url,headers:a.headers,fetch:a.fetch,experimental:this.experimental}),this.url=a.url,this.headers=a.headers,this.fetch=cm(a.fetch),this.detectSessionInUrl=a.detectSessionInUrl,this.flowType=a.flowType,this.hasCustomAuthorizationHeader=a.hasCustomAuthorizationHeader,this.throwOnError=a.throwOnError,this.lockAcquireTimeout=a.lockAcquireTimeout,a.lock!=null&&(this.lock=a.lock),this.jwks||(this.jwks={keys:[]},this.jwks_cached_at=Number.MIN_SAFE_INTEGER),this.mfa={verify:this._verify.bind(this),enroll:this._enroll.bind(this),unenroll:this._unenroll.bind(this),challenge:this._challenge.bind(this),listFactors:this._listFactors.bind(this),challengeAndVerify:this._challengeAndVerify.bind(this),getAuthenticatorAssuranceLevel:this._getAuthenticatorAssuranceLevel.bind(this),webauthn:new iw(this)},this.oauth={getAuthorizationDetails:this._getAuthorizationDetails.bind(this),approveAuthorization:this._approveAuthorization.bind(this),denyAuthorization:this._denyAuthorization.bind(this),listGrants:this._listOAuthGrants.bind(this),revokeGrant:this._revokeOAuthGrant.bind(this)},this.passkey={startRegistration:this._startPasskeyRegistration.bind(this),verifyRegistration:this._verifyPasskeyRegistration.bind(this),startAuthentication:this._startPasskeyAuthentication.bind(this),verifyAuthentication:this._verifyPasskeyAuthentication.bind(this),list:this._listPasskeys.bind(this),update:this._updatePasskey.bind(this),delete:this._deletePasskey.bind(this)},this.persistSession?(a.storage?this.storage=a.storage:um()?this.storage=globalThis.localStorage:(this.memoryStorage={},this.storage=th(this.memoryStorage)),a.userStorage&&(this.userStorage=a.userStorage)):(this.memoryStorage={},this.storage=th(this.memoryStorage)),De()&&globalThis.BroadcastChannel&&this.persistSession&&this.storageKey){try{this.broadcastChannel=new globalThis.BroadcastChannel(this.storageKey)}catch(i){console.error("Failed to create a new BroadcastChannel, multi-tab state changes will not be available",i)}(s=this.broadcastChannel)===null||s===void 0||s.addEventListener("message",async i=>{this._debug("received broadcast notification from other tab or client",i),(i.data.event==="TOKEN_REFRESHED"||i.data.event==="SIGNED_IN")&&(this.lastRefreshFailure=null);try{await this._notifyAllSubscribers(i.data.event,i.data.session,!1)}catch(o){this._debug("#broadcastChannel","error",o)}})}a.skipAutoInitialize||this.initialize().catch(i=>{this._debug("#initialize()","error",i)})}isThrowOnErrorEnabled(){return this.throwOnError}_returnResult(e){if(this.throwOnError&&e&&e.error)throw e.error;return e}_logPrefix(){return`GoTrueClient@${this.storageKey}:${this.instanceID} (${im}) ${new Date().toISOString()}`}_debug(...e){return this.logDebugMessages&&this.logger(this._logPrefix(),...e),this}async initialize(){return this.initializePromise?await this.initializePromise:(this.initializePromise=(async()=>this.lock!=null?await this._acquireLock(this.lockAcquireTimeout,async()=>await this._initialize()):await this._initialize())(),await this.initializePromise)}async _initialize(){var e;try{let n={},r="none";if(De()&&(n=Nv(window.location.href),this._isImplicitGrantCallback(n)?r="implicit":await this._isPKCECallback(n)&&(r="pkce")),De()&&this.detectSessionInUrl&&r!=="none"){const{data:s,error:a}=await this._getSessionFromURL(n,r);if(a){if(this._debug("#_initialize()","error detecting session from URL",a),yv(a)){const u=(e=a.details)===null||e===void 0?void 0:e.code;if(u==="identity_already_exists"||u==="identity_not_found"||u==="single_identity_not_deletable")return{error:a}}return{error:a}}const{session:i,redirectType:o}=s;return this._debug("#_initialize()","detected session in URL",i,"redirect type",o),await this._saveSession(i),setTimeout(async()=>{o==="recovery"?await this._notifyAllSubscribers("PASSWORD_RECOVERY",i):await this._notifyAllSubscribers("SIGNED_IN",i)},0),{error:null}}return await this._recoverAndRefresh(),{error:null}}catch(n){return M(n)?this._returnResult({error:n}):this._returnResult({error:new _t("Unexpected error during initialization",n)})}finally{await this._handleVisibilityChange(),this._debug("#_initialize()","end")}}async signInAnonymously(e){var n,r,s;try{const a=await H(this.fetch,"POST",`${this.url}/signup`,{headers:this.headers,body:{data:(r=(n=e==null?void 0:e.options)===null||n===void 0?void 0:n.data)!==null&&r!==void 0?r:{},gotrue_meta_security:{captcha_token:(s=e==null?void 0:e.options)===null||s===void 0?void 0:s.captchaToken}},xform:ot}),{data:i,error:o}=a;if(o||!i)return this._returnResult({data:{user:null,session:null},error:o});const u=i.session,c=i.user;return i.session&&(await this._saveSession(i.session),await this._notifyAllSubscribers("SIGNED_IN",u)),this._returnResult({data:{user:c,session:u},error:null})}catch(a){if(M(a))return this._returnResult({data:{user:null,session:null},error:a});throw a}}async signUp(e){var n,r,s;try{let a;if("email"in e){const{email:d,password:h,options:f}=e;let m=null,x=null;this.flowType==="pkce"&&([m,x]=await In(this.storage,this.storageKey)),a=await H(this.fetch,"POST",`${this.url}/signup`,{headers:this.headers,redirectTo:f==null?void 0:f.emailRedirectTo,body:{email:d,password:h,data:(n=f==null?void 0:f.data)!==null&&n!==void 0?n:{},gotrue_meta_security:{captcha_token:f==null?void 0:f.captchaToken},code_challenge:m,code_challenge_method:x},xform:ot})}else if("phone"in e){const{phone:d,password:h,options:f}=e;a=await H(this.fetch,"POST",`${this.url}/signup`,{headers:this.headers,body:{phone:d,password:h,data:(r=f==null?void 0:f.data)!==null&&r!==void 0?r:{},channel:(s=f==null?void 0:f.channel)!==null&&s!==void 0?s:"sms",gotrue_meta_security:{captcha_token:f==null?void 0:f.captchaToken}},xform:ot})}else throw new Ta("You must provide either an email or phone number and a password");const{data:i,error:o}=a;if(o||!i)return await Se(this.storage,`${this.storageKey}-code-verifier`),this._returnResult({data:{user:null,session:null},error:o});const u=i.session,c=i.user;return i.session&&(await this._saveSession(i.session),await this._notifyAllSubscribers("SIGNED_IN",u)),this._returnResult({data:{user:c,session:u},error:null})}catch(a){if(await Se(this.storage,`${this.storageKey}-code-verifier`),M(a))return this._returnResult({data:{user:null,session:null},error:a});throw a}}async signInWithPassword(e){try{let n;if("email"in e){const{email:a,password:i,options:o}=e;n=await H(this.fetch,"POST",`${this.url}/token?grant_type=password`,{headers:this.headers,body:{email:a,password:i,gotrue_meta_security:{captcha_token:o==null?void 0:o.captchaToken}},xform:Zd})}else if("phone"in e){const{phone:a,password:i,options:o}=e;n=await H(this.fetch,"POST",`${this.url}/token?grant_type=password`,{headers:this.headers,body:{phone:a,password:i,gotrue_meta_security:{captcha_token:o==null?void 0:o.captchaToken}},xform:Zd})}else throw new Ta("You must provide either an email or phone number and a password");const{data:r,error:s}=n;if(s)return this._returnResult({data:{user:null,session:null},error:s});if(!r||!r.session||!r.user){const a=new tr;return this._returnResult({data:{user:null,session:null},error:a})}return r.session&&(await this._saveSession(r.session),await this._notifyAllSubscribers("SIGNED_IN",r.session)),this._returnResult({data:Object.assign({user:r.user,session:r.session},r.weak_password?{weakPassword:r.weak_password}:null),error:s})}catch(n){if(M(n))return this._returnResult({data:{user:null,session:null},error:n});throw n}}async signInWithOAuth(e){var n,r,s,a;return await this._handleProviderSignIn(e.provider,{redirectTo:(n=e.options)===null||n===void 0?void 0:n.redirectTo,scopes:(r=e.options)===null||r===void 0?void 0:r.scopes,queryParams:(s=e.options)===null||s===void 0?void 0:s.queryParams,skipBrowserRedirect:(a=e.options)===null||a===void 0?void 0:a.skipBrowserRedirect})}async exchangeCodeForSession(e){return await this.initializePromise,this.lock!=null?this._acquireLock(this.lockAcquireTimeout,async()=>this._exchangeCodeForSession(e)):this._exchangeCodeForSession(e)}async signInWithWeb3(e){const{chain:n}=e;switch(n){case"ethereum":return await this.signInWithEthereum(e);case"solana":return await this.signInWithSolana(e);default:throw new Error(`@supabase/auth-js: Unsupported chain "${n}"`)}}async signInWithEthereum(e){var n,r,s,a,i,o,u,c,d,h,f;let m,x;if("message"in e)m=e.message,x=e.signature;else{const{chain:b,wallet:k,statement:y,options:p}=e;let g;if(De())if(typeof k=="object")g=k;else{const A=window;if("ethereum"in A&&typeof A.ethereum=="object"&&"request"in A.ethereum&&typeof A.ethereum.request=="function")g=A.ethereum;else throw new Error("@supabase/auth-js: No compatible Ethereum wallet interface on the window object (window.ethereum) detected. Make sure the user already has a wallet installed and connected for this app. Prefer passing the wallet interface object directly to signInWithWeb3({ chain: 'ethereum', wallet: resolvedUserWallet }) instead.")}else{if(typeof k!="object"||!(p!=null&&p.url))throw new Error("@supabase/auth-js: Both wallet and url must be specified in non-browser environments.");g=k}const w=new URL((n=p==null?void 0:p.url)!==null&&n!==void 0?n:window.location.href),_=await g.request({method:"eth_requestAccounts"}).then(A=>A).catch(()=>{throw new Error("@supabase/auth-js: Wallet method eth_requestAccounts is missing or invalid")});if(!_||_.length===0)throw new Error("@supabase/auth-js: No accounts available. Please ensure the wallet is connected.");const j=dm(_[0]);let C=(r=p==null?void 0:p.signInWithEthereum)===null||r===void 0?void 0:r.chainId;if(!C){const A=await g.request({method:"eth_chainId"});C=qv(A)}const N={domain:w.host,address:j,statement:y,uri:w.href,version:"1",chainId:C,nonce:(s=p==null?void 0:p.signInWithEthereum)===null||s===void 0?void 0:s.nonce,issuedAt:(i=(a=p==null?void 0:p.signInWithEthereum)===null||a===void 0?void 0:a.issuedAt)!==null&&i!==void 0?i:new Date,expirationTime:(o=p==null?void 0:p.signInWithEthereum)===null||o===void 0?void 0:o.expirationTime,notBefore:(u=p==null?void 0:p.signInWithEthereum)===null||u===void 0?void 0:u.notBefore,requestId:(c=p==null?void 0:p.signInWithEthereum)===null||c===void 0?void 0:c.requestId,resources:(d=p==null?void 0:p.signInWithEthereum)===null||d===void 0?void 0:d.resources};m=Xv(N),x=await g.request({method:"personal_sign",params:[Qv(m),j]})}try{const{data:b,error:k}=await H(this.fetch,"POST",`${this.url}/token?grant_type=web3`,{headers:this.headers,body:Object.assign({chain:"ethereum",message:m,signature:x},!((h=e.options)===null||h===void 0)&&h.captchaToken?{gotrue_meta_security:{captcha_token:(f=e.options)===null||f===void 0?void 0:f.captchaToken}}:null),xform:ot});if(k)throw k;if(!b||!b.session||!b.user){const y=new tr;return this._returnResult({data:{user:null,session:null},error:y})}return b.session&&(await this._saveSession(b.session),await this._notifyAllSubscribers("SIGNED_IN",b.session)),this._returnResult({data:Object.assign({},b),error:k})}catch(b){if(M(b))return this._returnResult({data:{user:null,session:null},error:b});throw b}}async signInWithSolana(e){var n,r,s,a,i,o,u,c,d,h,f,m;let x,b;if("message"in e)x=e.message,b=e.signature;else{const{chain:k,wallet:y,statement:p,options:g}=e;let w;if(De())if(typeof y=="object")w=y;else{const j=window;if("solana"in j&&typeof j.solana=="object"&&("signIn"in j.solana&&typeof j.solana.signIn=="function"||"signMessage"in j.solana&&typeof j.solana.signMessage=="function"))w=j.solana;else throw new Error("@supabase/auth-js: No compatible Solana wallet interface on the window object (window.solana) detected. Make sure the user already has a wallet installed and connected for this app. Prefer passing the wallet interface object directly to signInWithWeb3({ chain: 'solana', wallet: resolvedUserWallet }) instead.")}else{if(typeof y!="object"||!(g!=null&&g.url))throw new Error("@supabase/auth-js: Both wallet and url must be specified in non-browser environments.");w=y}const _=new URL((n=g==null?void 0:g.url)!==null&&n!==void 0?n:window.location.href);if("signIn"in w&&w.signIn){const j=await w.signIn(Object.assign(Object.assign(Object.assign({issuedAt:new Date().toISOString()},g==null?void 0:g.signInWithSolana),{version:"1",domain:_.host,uri:_.href}),p?{statement:p}:null));let C;if(Array.isArray(j)&&j[0]&&typeof j[0]=="object")C=j[0];else if(j&&typeof j=="object"&&"signedMessage"in j&&"signature"in j)C=j;else throw new Error("@supabase/auth-js: Wallet method signIn() returned unrecognized value");if("signedMessage"in C&&"signature"in C&&(typeof C.signedMessage=="string"||C.signedMessage instanceof Uint8Array)&&C.signature instanceof Uint8Array)x=typeof C.signedMessage=="string"?C.signedMessage:new TextDecoder().decode(C.signedMessage),b=C.signature;else throw new Error("@supabase/auth-js: Wallet method signIn() API returned object without signedMessage and signature fields")}else{if(!("signMessage"in w)||typeof w.signMessage!="function"||!("publicKey"in w)||typeof w!="object"||!w.publicKey||!("toBase58"in w.publicKey)||typeof w.publicKey.toBase58!="function")throw new Error("@supabase/auth-js: Wallet does not have a compatible signMessage() and publicKey.toBase58() API");x=[`${_.host} wants you to sign in with your Solana account:`,w.publicKey.toBase58(),...p?["",p,""]:[""],"Version: 1",`URI: ${_.href}`,`Issued At: ${(s=(r=g==null?void 0:g.signInWithSolana)===null||r===void 0?void 0:r.issuedAt)!==null&&s!==void 0?s:new Date().toISOString()}`,...!((a=g==null?void 0:g.signInWithSolana)===null||a===void 0)&&a.notBefore?[`Not Before: ${g.signInWithSolana.notBefore}`]:[],...!((i=g==null?void 0:g.signInWithSolana)===null||i===void 0)&&i.expirationTime?[`Expiration Time: ${g.signInWithSolana.expirationTime}`]:[],...!((o=g==null?void 0:g.signInWithSolana)===null||o===void 0)&&o.chainId?[`Chain ID: ${g.signInWithSolana.chainId}`]:[],...!((u=g==null?void 0:g.signInWithSolana)===null||u===void 0)&&u.nonce?[`Nonce: ${g.signInWithSolana.nonce}`]:[],...!((c=g==null?void 0:g.signInWithSolana)===null||c===void 0)&&c.requestId?[`Request ID: ${g.signInWithSolana.requestId}`]:[],...!((h=(d=g==null?void 0:g.signInWithSolana)===null||d===void 0?void 0:d.resources)===null||h===void 0)&&h.length?["Resources",...g.signInWithSolana.resources.map(C=>`- ${C}`)]:[]].join(`
-`);const j=await w.signMessage(new TextEncoder().encode(x),"utf8");if(!j||!(j instanceof Uint8Array))throw new Error("@supabase/auth-js: Wallet signMessage() API returned an recognized value");b=j}}try{const{data:k,error:y}=await H(this.fetch,"POST",`${this.url}/token?grant_type=web3`,{headers:this.headers,body:Object.assign({chain:"solana",message:x,signature:Vn(b)},!((f=e.options)===null||f===void 0)&&f.captchaToken?{gotrue_meta_security:{captcha_token:(m=e.options)===null||m===void 0?void 0:m.captchaToken}}:null),xform:ot});if(y)throw y;if(!k||!k.session||!k.user){const p=new tr;return this._returnResult({data:{user:null,session:null},error:p})}return k.session&&(await this._saveSession(k.session),await this._notifyAllSubscribers("SIGNED_IN",k.session)),this._returnResult({data:Object.assign({},k),error:y})}catch(k){if(M(k))return this._returnResult({data:{user:null,session:null},error:k});throw k}}async _exchangeCodeForSession(e){const n=await yt(this.storage,`${this.storageKey}-code-verifier`),[r,s]=(n??"").split("/");try{if(!r&&this.flowType==="pkce")throw new xv;const{data:a,error:i}=await H(this.fetch,"POST",`${this.url}/token?grant_type=pkce`,{headers:this.headers,body:{auth_code:e,code_verifier:r},xform:ot});if(await Se(this.storage,`${this.storageKey}-code-verifier`),i)throw i;if(!a||!a.session||!a.user){const o=new tr;return this._returnResult({data:{user:null,session:null,redirectType:null},error:o})}return a.session&&(await this._saveSession(a.session),await this._notifyAllSubscribers(s==="recovery"?"PASSWORD_RECOVERY":"SIGNED_IN",a.session)),this._returnResult({data:Object.assign(Object.assign({},a),{redirectType:s??null}),error:i})}catch(a){if(await Se(this.storage,`${this.storageKey}-code-verifier`),M(a))return this._returnResult({data:{user:null,session:null,redirectType:null},error:a});throw a}}async signInWithIdToken(e){try{const{options:n,provider:r,token:s,access_token:a,nonce:i}=e,o=await H(this.fetch,"POST",`${this.url}/token?grant_type=id_token`,{headers:this.headers,body:{provider:r,id_token:s,access_token:a,nonce:i,gotrue_meta_security:{captcha_token:n==null?void 0:n.captchaToken}},xform:ot}),{data:u,error:c}=o;if(c)return this._returnResult({data:{user:null,session:null},error:c});if(!u||!u.session||!u.user){const d=new tr;return this._returnResult({data:{user:null,session:null},error:d})}return u.session&&(await this._saveSession(u.session),await this._notifyAllSubscribers("SIGNED_IN",u.session)),this._returnResult({data:u,error:c})}catch(n){if(M(n))return this._returnResult({data:{user:null,session:null},error:n});throw n}}async signInWithOtp(e){var n,r,s,a,i;try{if("email"in e){const{email:o,options:u}=e;let c=null,d=null;this.flowType==="pkce"&&([c,d]=await In(this.storage,this.storageKey));const{error:h}=await H(this.fetch,"POST",`${this.url}/otp`,{headers:this.headers,body:{email:o,data:(n=u==null?void 0:u.data)!==null&&n!==void 0?n:{},create_user:(r=u==null?void 0:u.shouldCreateUser)!==null&&r!==void 0?r:!0,gotrue_meta_security:{captcha_token:u==null?void 0:u.captchaToken},code_challenge:c,code_challenge_method:d},redirectTo:u==null?void 0:u.emailRedirectTo});return this._returnResult({data:{user:null,session:null},error:h})}if("phone"in e){const{phone:o,options:u}=e,{data:c,error:d}=await H(this.fetch,"POST",`${this.url}/otp`,{headers:this.headers,body:{phone:o,data:(s=u==null?void 0:u.data)!==null&&s!==void 0?s:{},create_user:(a=u==null?void 0:u.shouldCreateUser)!==null&&a!==void 0?a:!0,gotrue_meta_security:{captcha_token:u==null?void 0:u.captchaToken},channel:(i=u==null?void 0:u.channel)!==null&&i!==void 0?i:"sms"}});return this._returnResult({data:{user:null,session:null,messageId:c==null?void 0:c.message_id},error:d})}throw new Ta("You must provide either an email or phone number.")}catch(o){if(await Se(this.storage,`${this.storageKey}-code-verifier`),M(o))return this._returnResult({data:{user:null,session:null},error:o});throw o}}async verifyOtp(e){var n,r;try{let s,a;"options"in e&&(s=(n=e.options)===null||n===void 0?void 0:n.redirectTo,a=(r=e.options)===null||r===void 0?void 0:r.captchaToken);const{data:i,error:o}=await H(this.fetch,"POST",`${this.url}/verify`,{headers:this.headers,body:Object.assign(Object.assign({},e),{gotrue_meta_security:{captcha_token:a}}),redirectTo:s,xform:ot});if(o)throw o;if(!i)throw new Error("An error occurred on token verification.");const u=i.session,c=i.user;return u!=null&&u.access_token&&(await this._saveSession(u),await this._notifyAllSubscribers(e.type=="recovery"?"PASSWORD_RECOVERY":"SIGNED_IN",u)),this._returnResult({data:{user:c,session:u},error:null})}catch(s){if(M(s))return this._returnResult({data:{user:null,session:null},error:s});throw s}}async signInWithSSO(e){var n,r,s,a,i;try{let o=null,u=null;this.flowType==="pkce"&&([o,u]=await In(this.storage,this.storageKey));const c=await H(this.fetch,"POST",`${this.url}/sso`,{body:Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({},"providerId"in e?{provider_id:e.providerId}:null),"domain"in e?{domain:e.domain}:null),{redirect_to:(r=(n=e.options)===null||n===void 0?void 0:n.redirectTo)!==null&&r!==void 0?r:void 0}),!((s=e==null?void 0:e.options)===null||s===void 0)&&s.captchaToken?{gotrue_meta_security:{captcha_token:e.options.captchaToken}}:null),{skip_http_redirect:!0,code_challenge:o,code_challenge_method:u}),headers:this.headers,xform:Fv});return!((a=c.data)===null||a===void 0)&&a.url&&De()&&!(!((i=e.options)===null||i===void 0)&&i.skipBrowserRedirect)&&window.location.assign(c.data.url),this._returnResult(c)}catch(o){if(await Se(this.storage,`${this.storageKey}-code-verifier`),M(o))return this._returnResult({data:null,error:o});throw o}}async reauthenticate(){return await this.initializePromise,this.lock!=null?await this._acquireLock(this.lockAcquireTimeout,async()=>await this._reauthenticate()):await this._reauthenticate()}async _reauthenticate(){try{return await this._useSession(async e=>{const{data:{session:n},error:r}=e;if(r)throw r;if(!n)throw new Pe;const{error:s}=await H(this.fetch,"GET",`${this.url}/reauthenticate`,{headers:this.headers,jwt:n.access_token});return this._returnResult({data:{user:null,session:null},error:s})})}catch(e){if(M(e))return this._returnResult({data:{user:null,session:null},error:e});throw e}}async resend(e){try{const n=`${this.url}/resend`;if("email"in e){const{email:r,type:s,options:a}=e;let i=null,o=null;this.flowType==="pkce"&&([i,o]=await In(this.storage,this.storageKey));const{error:u}=await H(this.fetch,"POST",n,{headers:this.headers,body:{email:r,type:s,gotrue_meta_security:{captcha_token:a==null?void 0:a.captchaToken},code_challenge:i,code_challenge_method:o},redirectTo:a==null?void 0:a.emailRedirectTo});return u&&await Se(this.storage,`${this.storageKey}-code-verifier`),this._returnResult({data:{user:null,session:null},error:u})}else if("phone"in e){const{phone:r,type:s,options:a}=e,{data:i,error:o}=await H(this.fetch,"POST",n,{headers:this.headers,body:{phone:r,type:s,gotrue_meta_security:{captcha_token:a==null?void 0:a.captchaToken}}});return this._returnResult({data:{user:null,session:null,messageId:i==null?void 0:i.message_id},error:o})}throw new Ta("You must provide either an email or phone number and a type")}catch(n){if(await Se(this.storage,`${this.storageKey}-code-verifier`),M(n))return this._returnResult({data:{user:null,session:null},error:n});throw n}}async getSession(){return await this.initializePromise,this.lock!=null?await this._acquireLock(this.lockAcquireTimeout,async()=>this._useSession(async e=>e)):await this._useSession(async e=>e)}async _acquireLock(e,n){this._debug("#_acquireLock","begin",e);try{if(this.lockAcquired){const r=this.pendingInLock.length?this.pendingInLock[this.pendingInLock.length-1]:Promise.resolve(),s=(async()=>(await r,await n()))();return this.pendingInLock.push((async()=>{try{await s}catch{}})()),s}return await this.lock(`lock:${this.storageKey}`,e,async()=>{this._debug("#_acquireLock","lock acquired for storage key",this.storageKey);try{this.lockAcquired=!0;const r=n();for(this.pendingInLock.push((async()=>{try{await r}catch{}})()),await r;this.pendingInLock.length;){const s=[...this.pendingInLock];await Promise.all(s),this.pendingInLock.splice(0,s.length)}return await r}finally{this._debug("#_acquireLock","lock released for storage key",this.storageKey),this.lockAcquired=!1}})}finally{this._debug("#_acquireLock","end")}}async _useSession(e){this._debug("#_useSession","begin");try{const n=await this.__loadSession();return await e(n)}finally{this._debug("#_useSession","end")}}async __loadSession(){this._debug("#__loadSession()","begin"),this.lock!=null&&!this.lockAcquired&&this._debug("#__loadSession()","used outside of an acquired lock!",new Error().stack);try{let e=null;const n=await yt(this.storage,this.storageKey);if(this._debug("#getSession()","session from storage",n),n!==null&&(this._isValidSession(n)?e=n:(this._debug("#getSession()","session from storage is not valid"),await this._removeSession())),!e)return{data:{session:null},error:null};const r=e.expires_at?e.expires_at*1e3-Date.now()<Rl:!1;if(this._debug("#__loadSession()",`session has${r?"":" not"} expired`,"expires_at",e.expires_at),!r){if(this.userStorage){const i=await yt(this.userStorage,this.storageKey+"-user");i!=null&&i.user?e.user=i.user:e.user=Il()}if(this.storage.isServer&&e.user&&!e.user.__isUserNotAvailableProxy){const i={value:this.suppressGetSessionWarning};e.user=Vv(e.user,i),i.value&&(this.suppressGetSessionWarning=!0)}return{data:{session:e},error:null}}const{data:s,error:a}=await this._callRefreshToken(e.refresh_token);if(a){if(!!(e.expires_at&&e.expires_at*1e3>Date.now())){const o=await yt(this.storage,this.storageKey);if(o&&o.refresh_token===e.refresh_token)return this._returnResult({data:{session:e},error:null})}return this._returnResult({data:{session:null},error:a})}return this._returnResult({data:{session:s},error:null})}finally{this._debug("#__loadSession()","end")}}async getUser(e){if(e)return await this._getUser(e);await this.initializePromise;let n;return this.lock!=null?n=await this._acquireLock(this.lockAcquireTimeout,async()=>await this._getUser()):n=await this._getUser(),n.data.user&&(this.suppressGetSessionWarning=!0),n}async _getUser(e){try{return e?await H(this.fetch,"GET",`${this.url}/user`,{headers:this.headers,jwt:e,xform:un}):await this._useSession(async n=>{var r,s,a;const{data:i,error:o}=n;if(o)throw o;return!(!((r=i.session)===null||r===void 0)&&r.access_token)&&!this.hasCustomAuthorizationHeader?{data:{user:null},error:new Pe}:await H(this.fetch,"GET",`${this.url}/user`,{headers:this.headers,jwt:(a=(s=i.session)===null||s===void 0?void 0:s.access_token)!==null&&a!==void 0?a:void 0,xform:un})})}catch(n){if(M(n))return Ea(n)&&(await this._removeSession(),await Se(this.storage,`${this.storageKey}-code-verifier`)),this._returnResult({data:{user:null},error:n});throw n}}async updateUser(e,n={}){return await this.initializePromise,this.lock!=null?await this._acquireLock(this.lockAcquireTimeout,async()=>await this._updateUser(e,n)):await this._updateUser(e,n)}async _updateUser(e,n={}){try{return await this._useSession(async r=>{const{data:s,error:a}=r;if(a)throw a;if(!s.session)throw new Pe;const i=s.session;let o=null,u=null;this.flowType==="pkce"&&e.email!=null&&([o,u]=await In(this.storage,this.storageKey));const{data:c,error:d}=await H(this.fetch,"PUT",`${this.url}/user`,{headers:this.headers,redirectTo:n==null?void 0:n.emailRedirectTo,body:Object.assign(Object.assign({},e),{code_challenge:o,code_challenge_method:u}),jwt:i.access_token,xform:un});if(d)throw d;return i.user=c.user,await this._saveSession(i),await this._notifyAllSubscribers("USER_UPDATED",i),this._returnResult({data:{user:i.user},error:null})})}catch(r){if(await Se(this.storage,`${this.storageKey}-code-verifier`),M(r))return this._returnResult({data:{user:null},error:r});throw r}}async setSession(e){return await this.initializePromise,this.lock!=null?await this._acquireLock(this.lockAcquireTimeout,async()=>await this._setSession(e)):await this._setSession(e)}async _setSession(e){try{if(!e.access_token||!e.refresh_token)throw new Pe;const n=Date.now()/1e3;let r=n,s=!0,a=null;const{payload:i}=Pa(e.access_token);if(i.exp&&(r=i.exp,s=r<=n),s){const{data:o,error:u}=await this._callRefreshToken(e.refresh_token);if(u)return this._returnResult({data:{user:null,session:null},error:u});if(!o)return{data:{user:null,session:null},error:null};a=o}else{const{data:o,error:u}=await this._getUser(e.access_token);if(u)return this._returnResult({data:{user:null,session:null},error:u});a={access_token:e.access_token,refresh_token:e.refresh_token,user:o.user,token_type:"bearer",expires_in:r-n,expires_at:r},await this._saveSession(a),await this._notifyAllSubscribers("SIGNED_IN",a)}return this._returnResult({data:{user:a.user,session:a},error:null})}catch(n){if(M(n))return this._returnResult({data:{session:null,user:null},error:n});throw n}}async refreshSession(e){return await this.initializePromise,this.lock!=null?await this._acquireLock(this.lockAcquireTimeout,async()=>await this._refreshSession(e)):await this._refreshSession(e)}async _refreshSession(e){try{return await this._useSession(async n=>{var r;if(!e){const{data:i,error:o}=n;if(o)throw o;e=(r=i.session)!==null&&r!==void 0?r:void 0}if(!(e!=null&&e.refresh_token))throw new Pe;const{data:s,error:a}=await this._callRefreshToken(e.refresh_token);return a?this._returnResult({data:{user:null,session:null},error:a}):s?this._returnResult({data:{user:s.user,session:s},error:null}):this._returnResult({data:{user:null,session:null},error:null})})}catch(n){if(M(n))return this._returnResult({data:{user:null,session:null},error:n});throw n}}async _getSessionFromURL(e,n){var r;try{if(!De())throw new Aa("No browser detected.");if(e.error||e.error_description||e.error_code)throw new Aa(e.error_description||"Error in URL with unspecified error_description",{error:e.error||"unspecified_error",code:e.error_code||"unspecified_code"});switch(n){case"implicit":if(this.flowType==="pkce")throw new Fd("Not a valid PKCE flow url.");break;case"pkce":if(this.flowType==="implicit")throw new Aa("Not a valid implicit grant flow url.");break;default:}if(n==="pkce"){if(this._debug("#_initialize()","begin","is PKCE flow",!0),!e.code)throw new Fd("No code detected.");const{data:g,error:w}=await this._exchangeCodeForSession(e.code);if(w)throw w;const _=new URL(window.location.href);return _.searchParams.delete("code"),window.history.replaceState(window.history.state,"",_.toString()),{data:{session:g.session,redirectType:(r=g.redirectType)!==null&&r!==void 0?r:null},error:null}}const{provider_token:s,provider_refresh_token:a,access_token:i,refresh_token:o,expires_in:u,expires_at:c,token_type:d}=e;if(!i||!u||!o||!d)throw new Aa("No session defined in URL");const h=Math.round(Date.now()/1e3),f=parseInt(u);let m=h+f;c&&(m=parseInt(c));const x=m-h;x*1e3<=Ft&&console.warn(`@supabase/gotrue-js: Session as retrieved from URL expires in ${x}s, should have been closer to ${f}s`);const b=m-f;h-b>=120?console.warn("@supabase/gotrue-js: Session as retrieved from URL was issued over 120s ago, URL could be stale",b,m,h):h-b<0&&console.warn("@supabase/gotrue-js: Session as retrieved from URL was issued in the future? Check the device clock for skew",b,m,h);const{data:k,error:y}=await this._getUser(i);if(y)throw y;const p={provider_token:s,provider_refresh_token:a,access_token:i,expires_in:f,expires_at:m,refresh_token:o,token_type:d,user:k.user};return window.location.hash="",this._debug("#_getSessionFromURL()","clearing window.location.hash"),this._returnResult({data:{session:p,redirectType:e.type},error:null})}catch(s){if(M(s))return this._returnResult({data:{session:null,redirectType:null},error:s});throw s}}_isImplicitGrantCallback(e){return typeof this.detectSessionInUrl=="function"?this.detectSessionInUrl(new URL(window.location.href),e):!!(e.access_token||e.error||e.error_description||e.error_code)}async _isPKCECallback(e){const n=await yt(this.storage,`${this.storageKey}-code-verifier`);return!!(e.code&&n)}async signOut(e={scope:"global"}){return await this.initializePromise,this.lock!=null?await this._acquireLock(this.lockAcquireTimeout,async()=>await this._signOut(e)):await this._signOut(e)}async _signOut({scope:e}={scope:"global"}){return await this._useSession(async n=>{var r;const{data:s,error:a}=n;if(a&&!Ea(a))return this._returnResult({error:a});const i=(r=s.session)===null||r===void 0?void 0:r.access_token;if(i){const{error:o}=await this.admin.signOut(i,e);if(o&&!(gv(o)&&(o.status===404||o.status===401||o.status===403)||Ea(o)))return this._returnResult({error:o})}return e!=="others"&&(await this._removeSession(),await Se(this.storage,`${this.storageKey}-code-verifier`)),this._returnResult({error:null})})}onAuthStateChange(e){const n=Cv(),r={id:n,callback:e,unsubscribe:()=>{this._debug("#unsubscribe()","state change callback with id removed",n),this.stateChangeEmitters.delete(n)}};return this._debug("#onAuthStateChange()","registered callback with id",n),this.stateChangeEmitters.set(n,r),(async()=>(await this.initializePromise,this.lock!=null?await this._acquireLock(this.lockAcquireTimeout,async()=>{this._emitInitialSession(n)}):await this._emitInitialSession(n)))(),{data:{subscription:r}}}async _emitInitialSession(e){return await this._useSession(async n=>{var r,s;try{const{data:{session:a},error:i}=n;if(i)throw i;await((r=this.stateChangeEmitters.get(e))===null||r===void 0?void 0:r.callback("INITIAL_SESSION",a)),this._debug("INITIAL_SESSION","callback id",e,"session",a)}catch(a){await((s=this.stateChangeEmitters.get(e))===null||s===void 0?void 0:s.callback("INITIAL_SESSION",null)),this._debug("INITIAL_SESSION","callback id",e,"error",a),Ea(a)?console.warn(a):console.error(a)}})}async resetPasswordForEmail(e,n={}){let r=null,s=null;this.flowType==="pkce"&&([r,s]=await In(this.storage,this.storageKey,!0));try{return await H(this.fetch,"POST",`${this.url}/recover`,{body:{email:e,code_challenge:r,code_challenge_method:s,gotrue_meta_security:{captcha_token:n.captchaToken}},headers:this.headers,redirectTo:n.redirectTo})}catch(a){if(await Se(this.storage,`${this.storageKey}-code-verifier`),M(a))return this._returnResult({data:null,error:a});throw a}}async getUserIdentities(){var e;try{const{data:n,error:r}=await this.getUser();if(r)throw r;return this._returnResult({data:{identities:(e=n.user.identities)!==null&&e!==void 0?e:[]},error:null})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async linkIdentity(e){return"token"in e?this.linkIdentityIdToken(e):this.linkIdentityOAuth(e)}async linkIdentityOAuth(e){var n;try{const{data:r,error:s}=await this._useSession(async a=>{var i,o,u,c,d;const{data:h,error:f}=a;if(f)throw f;const m=await this._getUrlForProvider(`${this.url}/user/identities/authorize`,e.provider,{redirectTo:(i=e.options)===null||i===void 0?void 0:i.redirectTo,scopes:(o=e.options)===null||o===void 0?void 0:o.scopes,queryParams:(u=e.options)===null||u===void 0?void 0:u.queryParams,skipBrowserRedirect:!0});return await H(this.fetch,"GET",m,{headers:this.headers,jwt:(d=(c=h.session)===null||c===void 0?void 0:c.access_token)!==null&&d!==void 0?d:void 0})});if(s)throw s;return De()&&!(!((n=e.options)===null||n===void 0)&&n.skipBrowserRedirect)&&window.location.assign(r==null?void 0:r.url),this._returnResult({data:{provider:e.provider,url:r==null?void 0:r.url},error:null})}catch(r){if(M(r))return this._returnResult({data:{provider:e.provider,url:null},error:r});throw r}}async linkIdentityIdToken(e){return await this._useSession(async n=>{var r;try{const{error:s,data:{session:a}}=n;if(s)throw s;const{options:i,provider:o,token:u,access_token:c,nonce:d}=e,h=await H(this.fetch,"POST",`${this.url}/token?grant_type=id_token`,{headers:this.headers,jwt:(r=a==null?void 0:a.access_token)!==null&&r!==void 0?r:void 0,body:{provider:o,id_token:u,access_token:c,nonce:d,link_identity:!0,gotrue_meta_security:{captcha_token:i==null?void 0:i.captchaToken}},xform:ot}),{data:f,error:m}=h;return m?this._returnResult({data:{user:null,session:null},error:m}):!f||!f.session||!f.user?this._returnResult({data:{user:null,session:null},error:new tr}):(f.session&&(await this._saveSession(f.session),await this._notifyAllSubscribers("USER_UPDATED",f.session)),this._returnResult({data:f,error:m}))}catch(s){if(await Se(this.storage,`${this.storageKey}-code-verifier`),M(s))return this._returnResult({data:{user:null,session:null},error:s});throw s}})}async unlinkIdentity(e){try{return await this._useSession(async n=>{var r,s;const{data:a,error:i}=n;if(i)throw i;return await H(this.fetch,"DELETE",`${this.url}/user/identities/${e.identity_id}`,{headers:this.headers,jwt:(s=(r=a.session)===null||r===void 0?void 0:r.access_token)!==null&&s!==void 0?s:void 0})})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async _refreshAccessToken(e){const n="#_refreshAccessToken()";this._debug(n,"begin");try{const r=Date.now();return await Av(async s=>(s>0&&await Tv(200*Math.pow(2,s-1)),this._debug(n,"refreshing attempt",s),await H(this.fetch,"POST",`${this.url}/token?grant_type=refresh_token`,{body:{refresh_token:e},headers:this.headers,xform:ot})),(s,a)=>{const i=200*Math.pow(2,s);return a&&Wd(a)&&Date.now()+i-r<Ft})}catch(r){if(this._debug(n,"error",r),M(r))return this._returnResult({data:{session:null,user:null},error:r});throw r}finally{this._debug(n,"end")}}_isValidSession(e){return typeof e=="object"&&e!==null&&"access_token"in e&&"refresh_token"in e&&"expires_at"in e}async _handleProviderSignIn(e,n){const r=await this._getUrlForProvider(`${this.url}/authorize`,e,{redirectTo:n.redirectTo,scopes:n.scopes,queryParams:n.queryParams});return this._debug("#_handleProviderSignIn()","provider",e,"options",n,"url",r),De()&&!n.skipBrowserRedirect&&window.location.assign(r),{data:{provider:e,url:r},error:null}}async _recoverAndRefresh(){var e,n;const r="#_recoverAndRefresh()";this._debug(r,"begin");try{const s=await yt(this.storage,this.storageKey);if(s&&this.userStorage){let i=await yt(this.userStorage,this.storageKey+"-user");!this.storage.isServer&&Object.is(this.storage,this.userStorage)&&!i&&(i={user:s.user},await ar(this.userStorage,this.storageKey+"-user",i)),s.user=(e=i==null?void 0:i.user)!==null&&e!==void 0?e:Il()}else if(s&&!s.user&&!s.user){const i=await yt(this.storage,this.storageKey+"-user");i&&(i!=null&&i.user)?(s.user=i.user,await Se(this.storage,this.storageKey+"-user"),await ar(this.storage,this.storageKey,s)):s.user=Il()}if(this._debug(r,"session from storage",s),!this._isValidSession(s)){this._debug(r,"session is not valid"),s!==null&&await this._removeSession();return}const a=((n=s.expires_at)!==null&&n!==void 0?n:1/0)*1e3-Date.now()<Rl;if(this._debug(r,`session has${a?"":" not"} expired with margin of ${Rl}s`),a){if(this.autoRefreshToken&&s.refresh_token){const{error:i}=await this._callRefreshToken(s.refresh_token);i&&(bv(i)?this._debug(r,"refresh discarded by commit guard",i):this._debug(r,"refresh failed",i))}}else if(s.user&&s.user.__isUserNotAvailableProxy===!0)try{const{data:i,error:o}=await this._getUser(s.access_token);!o&&(i!=null&&i.user)?(s.user=i.user,await this._saveSession(s),await this._notifyAllSubscribers("SIGNED_IN",s)):this._debug(r,"could not get user data, skipping SIGNED_IN notification")}catch(i){console.error("Error getting user data:",i),this._debug(r,"error getting user data, skipping SIGNED_IN notification",i)}else await this._notifyAllSubscribers("SIGNED_IN",s)}catch(s){this._debug(r,"error",s),console.error(s);return}finally{this._debug(r,"end")}}async _callRefreshToken(e){var n,r;if(!e)throw new Pe;if(this.refreshingDeferred)return this.refreshingDeferred.promise;if(this.lastRefreshFailure&&this.lastRefreshFailure.refreshToken===e&&Date.now()<this.lastRefreshFailure.expiresAt)return this._debug("#_callRefreshToken()","returning cached failure (cooldown active)"),this.lastRefreshFailure.result;const s="#_callRefreshToken()";this._debug(s,"begin");try{this.refreshingDeferred=new Zi;const a=await yt(this.storage,this.storageKey),{data:i,error:o}=await this._refreshAccessToken(e);if(o)throw o;if(!i.session)throw new Pe;const u=await yt(this.storage,this.storageKey);if(a!==null&&(u===null||u.refresh_token!==a.refresh_token)){this._debug(s,"commit guard: storage changed since refresh started, discarding rotated tokens",{startedWith:"present",nowHolds:u?"replaced":"cleared"});const f={data:null,error:new Gd};return this.refreshingDeferred.resolve(f),f}const d=this._sessionRemovalEpoch;if(await this._saveSession(i.session),this._sessionRemovalEpoch!==d){this._debug(s,"commit guard (post-save): _removeSession ran during _saveSession, undoing write"),await Se(this.storage,this.storageKey),this.userStorage&&await Se(this.userStorage,this.storageKey+"-user");const f={data:null,error:new Gd};return this.refreshingDeferred.resolve(f),f}await this._notifyAllSubscribers("TOKEN_REFRESHED",i.session);const h={data:i.session,error:null};return this.lastRefreshFailure=null,this.refreshingDeferred.resolve(h),h}catch(a){if(this._debug(s,"error",a),M(a)){const i={data:null,error:a};if(!Wd(a)){const o=await yt(this.storage,this.storageKey);!!(o!=null&&o.expires_at&&o.expires_at*1e3>Date.now())?this._debug(s,"proactive refresh failed, access token still valid — preserving session"):await this._removeSession()}return this.lastRefreshFailure={refreshToken:e,result:i,expiresAt:Date.now()+uv},(n=this.refreshingDeferred)===null||n===void 0||n.resolve(i),i}throw(r=this.refreshingDeferred)===null||r===void 0||r.reject(a),a}finally{this.refreshingDeferred=null,this._debug(s,"end")}}async _notifyAllSubscribers(e,n,r=!0){const s=`#_notifyAllSubscribers(${e})`;this._debug(s,"begin",n,`broadcast = ${r}`);try{this.broadcastChannel&&r&&this.broadcastChannel.postMessage({event:e,session:n});const a=[],i=Array.from(this.stateChangeEmitters.values()).map(async o=>{try{await o.callback(e,n)}catch(u){a.push(u)}});if(await Promise.all(i),a.length>0){for(let o=0;o<a.length;o+=1)console.error(a[o]);throw a[0]}}finally{this._debug(s,"end")}}async _saveSession(e){this._debug("#_saveSession()",e),this.suppressGetSessionWarning=!0,await Se(this.storage,`${this.storageKey}-code-verifier`);const n=Object.assign({},e),r=n.user&&n.user.__isUserNotAvailableProxy===!0;if(this.userStorage){!r&&n.user&&await ar(this.userStorage,this.storageKey+"-user",{user:n.user});const s=Object.assign({},n);delete s.user;const a=Qd(s);await ar(this.storage,this.storageKey,a)}else{const s=Qd(n);await ar(this.storage,this.storageKey,s)}}async _removeSession(){this._sessionRemovalEpoch+=1,this._debug("#_removeSession()"),this.lastRefreshFailure=null,this.suppressGetSessionWarning=!1,await Se(this.storage,this.storageKey),await Se(this.storage,this.storageKey+"-code-verifier"),await Se(this.storage,this.storageKey+"-user"),this.userStorage&&await Se(this.userStorage,this.storageKey+"-user"),await this._notifyAllSubscribers("SIGNED_OUT",null)}_removeVisibilityChangedCallback(){this._debug("#_removeVisibilityChangedCallback()");const e=this.visibilityChangedCallback;this.visibilityChangedCallback=null;try{e&&De()&&(window!=null&&window.removeEventListener)&&window.removeEventListener("visibilitychange",e)}catch(n){console.error("removing visibilitychange callback failed",n)}}async _startAutoRefresh(){await this._stopAutoRefresh(),this._debug("#_startAutoRefresh()");const e=setInterval(()=>this._autoRefreshTokenTick(),Ft);this.autoRefreshTicker=e,e&&typeof e=="object"&&typeof e.unref=="function"?e.unref():typeof Deno<"u"&&typeof Deno.unrefTimer=="function"&&Deno.unrefTimer(e);const n=setTimeout(async()=>{await this.initializePromise,await this._autoRefreshTokenTick()},0);this.autoRefreshTickTimeout=n,n&&typeof n=="object"&&typeof n.unref=="function"?n.unref():typeof Deno<"u"&&typeof Deno.unrefTimer=="function"&&Deno.unrefTimer(n)}async _stopAutoRefresh(){this._debug("#_stopAutoRefresh()");const e=this.autoRefreshTicker;this.autoRefreshTicker=null,e&&clearInterval(e);const n=this.autoRefreshTickTimeout;this.autoRefreshTickTimeout=null,n&&clearTimeout(n)}async startAutoRefresh(){this._removeVisibilityChangedCallback(),await this._startAutoRefresh()}async stopAutoRefresh(){this._removeVisibilityChangedCallback(),await this._stopAutoRefresh()}async dispose(){var e;this._removeVisibilityChangedCallback(),await this._stopAutoRefresh(),(e=this.broadcastChannel)===null||e===void 0||e.close(),this.broadcastChannel=null,this.stateChangeEmitters.clear()}async _autoRefreshTokenTick(){if(this._debug("#_autoRefreshTokenTick()","begin"),this.lock!=null){try{await this._acquireLock(0,async()=>{try{const e=Date.now();try{return await this._useSession(async n=>{const{data:{session:r}}=n;if(!r||!r.refresh_token||!r.expires_at){this._debug("#_autoRefreshTokenTick()","no session");return}const s=Math.floor((r.expires_at*1e3-e)/Ft);this._debug("#_autoRefreshTokenTick()",`access token expires in ${s} ticks, a tick lasts ${Ft}ms, refresh threshold is ${ss} ticks`),s<=ss&&await this._callRefreshToken(r.refresh_token)})}catch(n){console.error("Auto refresh tick failed with error. This is likely a transient error.",n)}}finally{this._debug("#_autoRefreshTokenTick()","end")}})}catch(e){if(e instanceof Yv)this._debug("auto refresh token tick lock not available");else throw e}return}if(this.refreshingDeferred!==null){this._debug("#_autoRefreshTokenTick()","refresh already in flight, skipping");return}try{const e=Date.now();try{await this._useSession(async n=>{const{data:{session:r}}=n;if(!r||!r.refresh_token||!r.expires_at){this._debug("#_autoRefreshTokenTick()","no session");return}const s=Math.floor((r.expires_at*1e3-e)/Ft);this._debug("#_autoRefreshTokenTick()",`access token expires in ${s} ticks, a tick lasts ${Ft}ms, refresh threshold is ${ss} ticks`),s<=ss&&await this._callRefreshToken(r.refresh_token)})}catch(n){console.error("Auto refresh tick failed with error. This is likely a transient error.",n)}}finally{this._debug("#_autoRefreshTokenTick()","end")}}async _handleVisibilityChange(){if(this._debug("#_handleVisibilityChange()"),!De()||!(window!=null&&window.addEventListener))return this.autoRefreshToken&&this.startAutoRefresh(),!1;try{this.visibilityChangedCallback=async()=>{try{await this._onVisibilityChanged(!1)}catch(e){this._debug("#visibilityChangedCallback","error",e)}},window==null||window.addEventListener("visibilitychange",this.visibilityChangedCallback),await this._onVisibilityChanged(!0)}catch(e){console.error("_handleVisibilityChange",e)}}async _onVisibilityChanged(e){const n=`#_onVisibilityChanged(${e})`;if(this._debug(n,"visibilityState",document.visibilityState),document.visibilityState==="visible"){if(this.autoRefreshToken&&this._startAutoRefresh(),!e)if(await this.initializePromise,this.lock!=null)await this._acquireLock(this.lockAcquireTimeout,async()=>{if(document.visibilityState!=="visible"){this._debug(n,"acquired the lock to recover the session, but the browser visibilityState is no longer visible, aborting");return}await this._recoverAndRefresh()});else{if(document.visibilityState!=="visible"){this._debug(n,"visibilityState is no longer visible, skipping recovery");return}await this._recoverAndRefresh()}}else document.visibilityState==="hidden"&&this.autoRefreshToken&&this._stopAutoRefresh()}async _getUrlForProvider(e,n,r){const s=[`provider=${encodeURIComponent(n)}`];if(r!=null&&r.redirectTo&&s.push(`redirect_to=${encodeURIComponent(r.redirectTo)}`),r!=null&&r.scopes&&s.push(`scopes=${encodeURIComponent(r.scopes)}`),this.flowType==="pkce"){const[a,i]=await In(this.storage,this.storageKey),o=new URLSearchParams({code_challenge:`${encodeURIComponent(a)}`,code_challenge_method:`${encodeURIComponent(i)}`});s.push(o.toString())}if(r!=null&&r.queryParams){const a=new URLSearchParams(r.queryParams);s.push(a.toString())}return r!=null&&r.skipBrowserRedirect&&s.push(`skip_http_redirect=${r.skipBrowserRedirect}`),`${e}?${s.join("&")}`}async _unenroll(e){try{return await this._useSession(async n=>{var r;const{data:s,error:a}=n;return a?this._returnResult({data:null,error:a}):await H(this.fetch,"DELETE",`${this.url}/factors/${e.factorId}`,{headers:this.headers,jwt:(r=s==null?void 0:s.session)===null||r===void 0?void 0:r.access_token})})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async _enroll(e){try{return await this._useSession(async n=>{var r,s;const{data:a,error:i}=n;if(i)return this._returnResult({data:null,error:i});const o=Object.assign({friendly_name:e.friendlyName,factor_type:e.factorType},e.factorType==="phone"?{phone:e.phone}:e.factorType==="totp"?{issuer:e.issuer}:{}),{data:u,error:c}=await H(this.fetch,"POST",`${this.url}/factors`,{body:o,headers:this.headers,jwt:(r=a==null?void 0:a.session)===null||r===void 0?void 0:r.access_token});return c?this._returnResult({data:null,error:c}):(e.factorType==="totp"&&u.type==="totp"&&(!((s=u==null?void 0:u.totp)===null||s===void 0)&&s.qr_code)&&(u.totp.qr_code=`data:image/svg+xml;utf-8,${u.totp.qr_code}`),this._returnResult({data:u,error:null}))})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async _verify(e){const n=async()=>{try{return await this._useSession(async r=>{var s;const{data:a,error:i}=r;if(i)return this._returnResult({data:null,error:i});const o=Object.assign({challenge_id:e.challengeId},"webauthn"in e?{webauthn:Object.assign(Object.assign({},e.webauthn),{credential_response:e.webauthn.type==="create"?sh(e.webauthn.credential_response):ah(e.webauthn.credential_response)})}:{code:e.code}),{data:u,error:c}=await H(this.fetch,"POST",`${this.url}/factors/${e.factorId}/verify`,{body:o,headers:this.headers,jwt:(s=a==null?void 0:a.session)===null||s===void 0?void 0:s.access_token});return c?this._returnResult({data:null,error:c}):(await this._saveSession(Object.assign({expires_at:Math.round(Date.now()/1e3)+u.expires_in},u)),await this._notifyAllSubscribers("MFA_CHALLENGE_VERIFIED",u),this._returnResult({data:u,error:c}))})}catch(r){if(M(r))return this._returnResult({data:null,error:r});throw r}};return this.lock!=null?this._acquireLock(this.lockAcquireTimeout,n):n()}async _challenge(e){const n=async()=>{try{return await this._useSession(async r=>{var s;const{data:a,error:i}=r;if(i)return this._returnResult({data:null,error:i});const o=await H(this.fetch,"POST",`${this.url}/factors/${e.factorId}/challenge`,{body:e,headers:this.headers,jwt:(s=a==null?void 0:a.session)===null||s===void 0?void 0:s.access_token});if(o.error)return o;const{data:u}=o;if(u.type!=="webauthn")return{data:u,error:null};switch(u.webauthn.type){case"create":return{data:Object.assign(Object.assign({},u),{webauthn:Object.assign(Object.assign({},u.webauthn),{credential_options:Object.assign(Object.assign({},u.webauthn.credential_options),{publicKey:nh(u.webauthn.credential_options.publicKey)})})}),error:null};case"request":return{data:Object.assign(Object.assign({},u),{webauthn:Object.assign(Object.assign({},u.webauthn),{credential_options:Object.assign(Object.assign({},u.webauthn.credential_options),{publicKey:rh(u.webauthn.credential_options.publicKey)})})}),error:null}}})}catch(r){if(M(r))return this._returnResult({data:null,error:r});throw r}};return this.lock!=null?this._acquireLock(this.lockAcquireTimeout,n):n()}async _challengeAndVerify(e){const{data:n,error:r}=await this._challenge({factorId:e.factorId});return r?this._returnResult({data:null,error:r}):await this._verify({factorId:e.factorId,challengeId:n.id,code:e.code})}async _listFactors(){var e;const{data:{user:n},error:r}=await this.getUser();if(r)return{data:null,error:r};const s={all:[],phone:[],totp:[],webauthn:[]};for(const a of(e=n==null?void 0:n.factors)!==null&&e!==void 0?e:[])s.all.push(a),a.status==="verified"&&s[a.factor_type].push(a);return{data:s,error:null}}async _getAuthenticatorAssuranceLevel(e){var n,r,s,a;if(e)try{const{payload:m}=Pa(e);let x=null;m.aal&&(x=m.aal);let b=x;const{data:{user:k},error:y}=await this.getUser(e);if(y)return this._returnResult({data:null,error:y});((r=(n=k==null?void 0:k.factors)===null||n===void 0?void 0:n.filter(w=>w.status==="verified"))!==null&&r!==void 0?r:[]).length>0&&(b="aal2");const g=m.amr||[];return{data:{currentLevel:x,nextLevel:b,currentAuthenticationMethods:g},error:null}}catch(m){if(M(m))return this._returnResult({data:null,error:m});throw m}const{data:{session:i},error:o}=await this.getSession();if(o)return this._returnResult({data:null,error:o});if(!i)return{data:{currentLevel:null,nextLevel:null,currentAuthenticationMethods:[]},error:null};const{payload:u}=Pa(i.access_token);let c=null;u.aal&&(c=u.aal);let d=c;((a=(s=i.user.factors)===null||s===void 0?void 0:s.filter(m=>m.status==="verified"))!==null&&a!==void 0?a:[]).length>0&&(d="aal2");const f=u.amr||[];return{data:{currentLevel:c,nextLevel:d,currentAuthenticationMethods:f},error:null}}async _getAuthorizationDetails(e){try{return await this._useSession(async n=>{const{data:{session:r},error:s}=n;return s?this._returnResult({data:null,error:s}):r?await H(this.fetch,"GET",`${this.url}/oauth/authorizations/${e}`,{headers:this.headers,jwt:r.access_token,xform:a=>({data:a,error:null})}):this._returnResult({data:null,error:new Pe})})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async _approveAuthorization(e,n){try{return await this._useSession(async r=>{const{data:{session:s},error:a}=r;if(a)return this._returnResult({data:null,error:a});if(!s)return this._returnResult({data:null,error:new Pe});const i=await H(this.fetch,"POST",`${this.url}/oauth/authorizations/${e}/consent`,{headers:this.headers,jwt:s.access_token,body:{action:"approve"},xform:o=>({data:o,error:null})});return i.data&&i.data.redirect_url&&De()&&!(n!=null&&n.skipBrowserRedirect)&&window.location.assign(i.data.redirect_url),i})}catch(r){if(M(r))return this._returnResult({data:null,error:r});throw r}}async _denyAuthorization(e,n){try{return await this._useSession(async r=>{const{data:{session:s},error:a}=r;if(a)return this._returnResult({data:null,error:a});if(!s)return this._returnResult({data:null,error:new Pe});const i=await H(this.fetch,"POST",`${this.url}/oauth/authorizations/${e}/consent`,{headers:this.headers,jwt:s.access_token,body:{action:"deny"},xform:o=>({data:o,error:null})});return i.data&&i.data.redirect_url&&De()&&!(n!=null&&n.skipBrowserRedirect)&&window.location.assign(i.data.redirect_url),i})}catch(r){if(M(r))return this._returnResult({data:null,error:r});throw r}}async _listOAuthGrants(){try{return await this._useSession(async e=>{const{data:{session:n},error:r}=e;return r?this._returnResult({data:null,error:r}):n?await H(this.fetch,"GET",`${this.url}/user/oauth/grants`,{headers:this.headers,jwt:n.access_token,xform:s=>({data:s,error:null})}):this._returnResult({data:null,error:new Pe})})}catch(e){if(M(e))return this._returnResult({data:null,error:e});throw e}}async _revokeOAuthGrant(e){try{return await this._useSession(async n=>{const{data:{session:r},error:s}=n;return s?this._returnResult({data:null,error:s}):r?(await H(this.fetch,"DELETE",`${this.url}/user/oauth/grants`,{headers:this.headers,jwt:r.access_token,query:{client_id:e.clientId},noResolveJson:!0}),{data:{},error:null}):this._returnResult({data:null,error:new Pe})})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async fetchJwk(e,n={keys:[]}){let r=n.keys.find(o=>o.kid===e);if(r)return r;const s=Date.now();if(r=this.jwks.keys.find(o=>o.kid===e),r&&this.jwks_cached_at+pv>s)return r;const{data:a,error:i}=await H(this.fetch,"GET",`${this.url}/.well-known/jwks.json`,{headers:this.headers});if(i)throw i;return!a.keys||a.keys.length===0||(this.jwks=a,this.jwks_cached_at=s,r=a.keys.find(o=>o.kid===e),!r)?null:r}async getClaims(e,n={}){try{let r=e;if(!r){const{data:m,error:x}=await this.getSession();if(x||!m.session)return this._returnResult({data:null,error:x});r=m.session.access_token}const{header:s,payload:a,signature:i,raw:{header:o,payload:u}}=Pa(r);if(!(n!=null&&n.allowExpired))try{zv(a.exp)}catch(m){throw new ki(m instanceof Error?m.message:"JWT validation failed")}const c=!s.alg||s.alg.startsWith("HS")||!s.kid||!("crypto"in globalThis&&"subtle"in globalThis.crypto)?null:await this.fetchJwk(s.kid,n!=null&&n.keys?{keys:n.keys}:n==null?void 0:n.jwks);if(!c){const{error:m}=await this.getUser(r);if(m)throw m;return{data:{claims:a,header:s,signature:i},error:null}}const d=Mv(s.alg),h=await crypto.subtle.importKey("jwk",c,d,!0,["verify"]);if(!await crypto.subtle.verify(d,h,i,_v(`${o}.${u}`)))throw new ki("Invalid JWT signature");return{data:{claims:a,header:s,signature:i},error:null}}catch(r){if(M(r))return this._returnResult({data:null,error:r});throw r}}async signInWithPasskey(e){var n,r,s;xt(this.experimental);try{if(!ji())return this._returnResult({data:null,error:new _t("Browser does not support WebAuthn",null)});const{data:a,error:i}=await this._startPasskeyAuthentication({options:{captchaToken:(n=e==null?void 0:e.options)===null||n===void 0?void 0:n.captchaToken}});if(i||!a)return this._returnResult({data:null,error:i});const o=rh(a.options),u=(s=(r=e==null?void 0:e.options)===null||r===void 0?void 0:r.signal)!==null&&s!==void 0?s:Yo.createNewAbortSignal(),{data:c,error:d}=await pm({publicKey:o,signal:u});if(d||!c)return this._returnResult({data:null,error:d??new _t("WebAuthn ceremony failed",null)});const h=ah(c);return this._verifyPasskeyAuthentication({challengeId:a.challenge_id,credential:h})}catch(a){if(M(a))return this._returnResult({data:null,error:a});throw a}}async registerPasskey(e){var n,r;xt(this.experimental);try{if(!ji())return this._returnResult({data:null,error:new _t("Browser does not support WebAuthn",null)});const{data:s,error:a}=await this._startPasskeyRegistration();if(a||!s)return this._returnResult({data:null,error:a});const i=nh(s.options),o=(r=(n=e==null?void 0:e.options)===null||n===void 0?void 0:n.signal)!==null&&r!==void 0?r:Yo.createNewAbortSignal(),{data:u,error:c}=await fm({publicKey:i,signal:o});if(c||!u)return this._returnResult({data:null,error:c??new _t("WebAuthn ceremony failed",null)});const d=sh(u);return this._verifyPasskeyRegistration({challengeId:s.challenge_id,credential:d})}catch(s){if(M(s))return this._returnResult({data:null,error:s});throw s}}async _startPasskeyRegistration(){xt(this.experimental);try{return await this._useSession(async e=>{const{data:{session:n},error:r}=e;if(r)return this._returnResult({data:null,error:r});if(!n)return this._returnResult({data:null,error:new Pe});const{data:s,error:a}=await H(this.fetch,"POST",`${this.url}/passkeys/registration/options`,{headers:this.headers,jwt:n.access_token,body:{}});return a?this._returnResult({data:null,error:a}):this._returnResult({data:s,error:null})})}catch(e){if(M(e))return this._returnResult({data:null,error:e});throw e}}async _verifyPasskeyRegistration(e){xt(this.experimental);try{return await this._useSession(async n=>{const{data:{session:r},error:s}=n;if(s)return this._returnResult({data:null,error:s});if(!r)return this._returnResult({data:null,error:new Pe});const{data:a,error:i}=await H(this.fetch,"POST",`${this.url}/passkeys/registration/verify`,{headers:this.headers,jwt:r.access_token,body:{challenge_id:e.challengeId,credential:e.credential}});return i?this._returnResult({data:null,error:i}):this._returnResult({data:a,error:null})})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async _startPasskeyAuthentication(e){var n;xt(this.experimental);try{const{data:r,error:s}=await H(this.fetch,"POST",`${this.url}/passkeys/authentication/options`,{headers:this.headers,body:{gotrue_meta_security:{captcha_token:(n=e==null?void 0:e.options)===null||n===void 0?void 0:n.captchaToken}}});return s?this._returnResult({data:null,error:s}):this._returnResult({data:r,error:null})}catch(r){if(M(r))return this._returnResult({data:null,error:r});throw r}}async _verifyPasskeyAuthentication(e){xt(this.experimental);try{const{data:n,error:r}=await H(this.fetch,"POST",`${this.url}/passkeys/authentication/verify`,{headers:this.headers,body:{challenge_id:e.challengeId,credential:e.credential},xform:ot});return r?this._returnResult({data:null,error:r}):(n.session&&(await this._saveSession(n.session),await this._notifyAllSubscribers("SIGNED_IN",n.session)),this._returnResult({data:n,error:null}))}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async _listPasskeys(){xt(this.experimental);try{return await this._useSession(async e=>{const{data:{session:n},error:r}=e;if(r)return this._returnResult({data:null,error:r});if(!n)return this._returnResult({data:null,error:new Pe});const{data:s,error:a}=await H(this.fetch,"GET",`${this.url}/passkeys`,{headers:this.headers,jwt:n.access_token,xform:i=>({data:i,error:null})});return a?this._returnResult({data:null,error:a}):this._returnResult({data:s,error:null})})}catch(e){if(M(e))return this._returnResult({data:null,error:e});throw e}}async _updatePasskey(e){xt(this.experimental);try{return await this._useSession(async n=>{const{data:{session:r},error:s}=n;if(s)return this._returnResult({data:null,error:s});if(!r)return this._returnResult({data:null,error:new Pe});const{data:a,error:i}=await H(this.fetch,"PATCH",`${this.url}/passkeys/${e.passkeyId}`,{headers:this.headers,jwt:r.access_token,body:{friendly_name:e.friendlyName}});return i?this._returnResult({data:null,error:i}):this._returnResult({data:a,error:null})})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async _deletePasskey(e){xt(this.experimental);try{return await this._useSession(async n=>{const{data:{session:r},error:s}=n;if(s)return this._returnResult({data:null,error:s});if(!r)return this._returnResult({data:null,error:new Pe});const{error:a}=await H(this.fetch,"DELETE",`${this.url}/passkeys/${e.passkeyId}`,{headers:this.headers,jwt:r.access_token,noResolveJson:!0});return a?this._returnResult({data:null,error:a}):this._returnResult({data:null,error:null})})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}}Gs.nextInstanceID={};const ow=Gs,uw="2.109.0";let as="",Ni;if(typeof Deno<"u"){var Ll;as="deno",Ni=(Ll=Deno.version)===null||Ll===void 0?void 0:Ll.deno}else if(typeof document<"u")as="web";else if(typeof navigator<"u"&&navigator.product==="ReactNative")as="react-native";else{var $l;as="node",Ni=typeof process<"u"?($l=process.version)===null||$l===void 0?void 0:$l.replace(/^v/,""):void 0}const mm=[`runtime=${as}`];Ni&&mm.push(`runtime-version=${Ni}`);const cw={"X-Client-Info":`supabase-js/${uw}; ${mm.join("; ")}`},dw={headers:cw},hw={schema:"public"},fw={autoRefreshToken:!0,persistSession:!0,detectSessionInUrl:!0,flowType:"implicit"},pw={},mw={enabled:!1,respectSamplingDecision:!0};function gw(t,e,n,r){function s(a){return a instanceof n?a:new n(function(i){i(a)})}return new(n||(n=Promise))(function(a,i){function o(d){try{c(r.next(d))}catch(h){i(h)}}function u(d){try{c(r.throw(d))}catch(h){i(h)}}function c(d){d.done?a(d.value):s(d.value).then(o,u)}c((r=r.apply(t,[])).next())})}let zl=null;const yw="@opentelemetry/api";function xw(){return zl===null&&(zl=import(yw).catch(()=>null)),zl}function bw(){return gw(this,void 0,void 0,function*(){try{const t=yield xw();if(!t||!t.propagation||!t.context)return null;const e={};t.propagation.inject(t.context.active(),e);const n=e.traceparent;return n?{traceparent:n,tracestate:e.tracestate,baggage:e.baggage}:null}catch{return null}})}function vw(t){if(!t||typeof t!="string")return null;const e=t.split("-");if(e.length!==4)return null;const[n,r,s,a]=e;if(n.length!==2||r.length!==32||s.length!==16||a.length!==2)return null;const i=/^[0-9a-f]+$/i;return!i.test(n)||!i.test(r)||!i.test(s)||!i.test(a)||r==="00000000000000000000000000000000"||s==="0000000000000000"?null:{version:n,traceId:r,parentId:s,traceFlags:a,isSampled:(parseInt(a,16)&1)===1}}function ww(t,e){if(!t||!e||e.length===0)return!1;let n;if(t instanceof URL)n=t;else try{n=new URL(t)}catch{return!1}for(const r of e)try{if(typeof r=="string"){if(kw(n.hostname,r))return!0}else if(r instanceof RegExp){if(r.test(n.hostname))return!0}else if(typeof r=="function"&&r(n))return!0}catch{continue}return!1}function kw(t,e){if(e===t)return!0;if(e.startsWith("*.")){const n=e.slice(2);if(t.endsWith(n)&&(t===n||t.endsWith("."+n)))return!0}return!1}function Sw(t){const e=[];try{const n=new URL(t);e.push(n.hostname)}catch{}return e.push("*.supabase.co","*.supabase.in"),e.push("localhost","127.0.0.1","[::1]"),e}function Ks(t){"@babel/helpers - typeof";return Ks=typeof Symbol=="function"&&typeof Symbol.iterator=="symbol"?function(e){return typeof e}:function(e){return e&&typeof Symbol=="function"&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},Ks(t)}function _w(t,e){if(Ks(t)!="object"||!t)return t;var n=t[Symbol.toPrimitive];if(n!==void 0){var r=n.call(t,e);if(Ks(r)!="object")return r;throw new TypeError("@@toPrimitive must return a primitive value.")}return(e==="string"?String:Number)(t)}function jw(t){var e=_w(t,"string");return Ks(e)=="symbol"?e:e+""}function Cw(t,e,n){return(e=jw(e))in t?Object.defineProperty(t,e,{value:n,enumerable:!0,configurable:!0,writable:!0}):t[e]=n,t}function ih(t,e){var n=Object.keys(t);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(t);e&&(r=r.filter(function(s){return Object.getOwnPropertyDescriptor(t,s).enumerable})),n.push.apply(n,r)}return n}function we(t){for(var e=1;e<arguments.length;e++){var n=arguments[e]!=null?arguments[e]:{};e%2?ih(Object(n),!0).forEach(function(r){Cw(t,r,n[r])}):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(n)):ih(Object(n)).forEach(function(r){Object.defineProperty(t,r,Object.getOwnPropertyDescriptor(n,r))})}return t}const Nw=t=>t?(...e)=>t(...e):(...e)=>fetch(...e),Ew=()=>Headers,Tw=(t,e,n,r,s)=>{const a=Nw(r),i=Ew(),o=(s==null?void 0:s.enabled)===!0,u=(s==null?void 0:s.respectSamplingDecision)!==!1,c=o?Sw(e):null;return async(d,h)=>{var f;const m=(f=await n())!==null&&f!==void 0?f:t;let x=new i(h==null?void 0:h.headers);if(x.has("apikey")||x.set("apikey",t),x.has("Authorization")||x.set("Authorization",`Bearer ${m}`),c){const b=await Aw(d,c,u);b&&(b.traceparent&&!x.has("traceparent")&&x.set("traceparent",b.traceparent),b.tracestate&&!x.has("tracestate")&&x.set("tracestate",b.tracestate),b.baggage&&!x.has("baggage")&&x.set("baggage",b.baggage))}return a(d,we(we({},h),{},{headers:x}))}};async function Aw(t,e,n){if(!ww(typeof t=="string"||t instanceof URL?t:t.url,e))return null;const r=await bw();if(!r||!r.traceparent)return null;if(n){const s=vw(r.traceparent);if(s&&!s.isSampled)return null}return r}function lh(t){return typeof t=="boolean"?{enabled:t}:t}function Pw(t){return t.endsWith("/")?t:t+"/"}function Rw(t,e){var n,r,s,a,i,o;const{db:u,auth:c,realtime:d,global:h}=t,{db:f,auth:m,realtime:x,global:b}=e,k=lh(t.tracePropagation),y=lh(e.tracePropagation),p={db:we(we({},f),u),auth:we(we({},m),c),realtime:we(we({},x),d),storage:{},global:we(we(we({},b),h),{},{headers:we(we({},(n=b==null?void 0:b.headers)!==null&&n!==void 0?n:{}),(r=h==null?void 0:h.headers)!==null&&r!==void 0?r:{})}),tracePropagation:{enabled:(s=(a=k==null?void 0:k.enabled)!==null&&a!==void 0?a:y==null?void 0:y.enabled)!==null&&s!==void 0?s:!1,respectSamplingDecision:(i=(o=k==null?void 0:k.respectSamplingDecision)!==null&&o!==void 0?o:y==null?void 0:y.respectSamplingDecision)!==null&&i!==void 0?i:!0},accessToken:async()=>""};return t.accessToken?p.accessToken=t.accessToken:delete p.accessToken,p}function Iw(t){const e=t==null?void 0:t.trim();if(!e)throw new Error("supabaseUrl is required.");if(!e.match(/^https?:\/\//i))throw new Error("Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.");try{return new URL(Pw(e))}catch{throw Error("Invalid supabaseUrl: Provided URL is malformed.")}}var Ow=class extends ow{constructor(t){super(t)}},Lw=class{constructor(t,e,n){var r,s;this.supabaseUrl=t,this.supabaseKey=e;const a=Iw(t);if(!e)throw new Error("supabaseKey is required.");this.realtimeUrl=new URL("realtime/v1",a),this.realtimeUrl.protocol=this.realtimeUrl.protocol.replace("http","ws"),this.authUrl=new URL("auth/v1",a),this.storageUrl=new URL("storage/v1",a),this.functionsUrl=new URL("functions/v1",a);const i=`sb-${a.hostname.split(".")[0]}-auth-token`,o={db:hw,realtime:pw,auth:we(we({},fw),{},{storageKey:i}),global:dw,tracePropagation:mw},u=Rw(n??{},o);if(this.settings=u,this.storageKey=(r=u.auth.storageKey)!==null&&r!==void 0?r:"",this.headers=(s=u.global.headers)!==null&&s!==void 0?s:{},u.accessToken)this.accessToken=u.accessToken,this.auth=new Proxy({},{get:(d,h)=>{throw new Error(`@supabase/supabase-js: Supabase Client is configured with the accessToken option, accessing supabase.auth.${String(h)} is not possible`)}});else{var c;this.auth=this._initSupabaseAuthClient((c=u.auth)!==null&&c!==void 0?c:{},this.headers,u.global.fetch)}this.fetch=Tw(e,t,this._getAccessToken.bind(this),u.global.fetch,u.tracePropagation),this.realtime=this._initRealtimeClient(we({headers:this.headers,accessToken:this._getAccessToken.bind(this),fetch:this.fetch},u.realtime)),this.accessToken&&Promise.resolve(this.accessToken()).then(d=>this.realtime.setAuth(d)).catch(d=>console.warn("Failed to set initial Realtime auth token:",d)),this.rest=new Fx(new URL("rest/v1",a).href,{headers:this.headers,schema:u.db.schema,fetch:this.fetch,timeout:u.db.timeout,urlLengthLimit:u.db.urlLengthLimit}),this.storage=new ov(this.storageUrl.href,this.headers,this.fetch,n==null?void 0:n.storage),u.accessToken||this._listenForAuthEvents()}get functions(){return new Lx(this.functionsUrl.href,{headers:this.headers,customFetch:this.fetch})}from(t){return this.rest.from(t)}schema(t){return this.rest.schema(t)}rpc(t,e={},n={head:!1,get:!1,count:void 0}){return this.rest.rpc(t,e,n)}channel(t,e={config:{}}){return this.realtime.channel(t,e)}getChannels(){return this.realtime.getChannels()}removeChannel(t){return this.realtime.removeChannel(t)}removeAllChannels(){return this.realtime.removeAllChannels()}async _getAccessToken(){var t=this,e,n;if(t.accessToken)return await t.accessToken();const{data:r}=await t.auth.getSession();return(e=(n=r.session)===null||n===void 0?void 0:n.access_token)!==null&&e!==void 0?e:t.supabaseKey}_initSupabaseAuthClient({autoRefreshToken:t,persistSession:e,detectSessionInUrl:n,storage:r,userStorage:s,storageKey:a,flowType:i,lock:o,debug:u,throwOnError:c,experimental:d,lockAcquireTimeout:h,skipAutoInitialize:f},m,x){const b={Authorization:`Bearer ${this.supabaseKey}`,apikey:`${this.supabaseKey}`};return new Ow({url:this.authUrl.href,headers:we(we({},b),m),storageKey:a,autoRefreshToken:t,persistSession:e,detectSessionInUrl:n,storage:r,userStorage:s,flowType:i,lock:o,debug:u,throwOnError:c,experimental:d,fetch:x,lockAcquireTimeout:h,skipAutoInitialize:f,hasCustomAuthorizationHeader:Object.keys(this.headers).some(k=>k.toLowerCase()==="authorization")})}_initRealtimeClient(t){return new Rb(this.realtimeUrl.href,we(we({},t),{},{params:we(we({},{apikey:this.supabaseKey}),t==null?void 0:t.params)}))}_listenForAuthEvents(){return this.auth.onAuthStateChange((t,e)=>{this._handleTokenChanged(t,"CLIENT",e==null?void 0:e.access_token)})}_handleTokenChanged(t,e,n){(t==="TOKEN_REFRESHED"||t==="SIGNED_IN")&&this.changedAccessToken!==n?(this.changedAccessToken=n,this.realtime.setAuth(n)):t==="SIGNED_OUT"&&(this.realtime.setAuth(),e=="STORAGE"&&this.auth.signOut(),this.changedAccessToken=void 0)}};const $w=(t,e,n)=>new Lw(t,e,n);function zw(){if(typeof window<"u")return!1;const t=globalThis.process;if(!t)return!1;const e=t.version;if(e==null)return!1;const n=e.match(/^v(\d+)\./);return n?parseInt(n[1],10)<=18:!1}zw()&&console.warn("⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217");const oh={VITE_SUPABASE_ANON_KEY:"sb_publishable_OqJ27gFeFceeXEgJcE1ijA_vIMc39Wr",VITE_SUPABASE_URL:"https://wecusrqrzwcsdtenodba.supabase.co"};var Mw={};const gm=typeof import.meta<"u"&&oh?oh:typeof process<"u"?Mw:{},Jo=gm.VITE_SUPABASE_URL,qo=gm.VITE_SUPABASE_ANON_KEY,at=!!(Jo&&qo&&Jo!=="https://your-project.supabase.co"&&qo!=="your-anon-key-here"),X=at?$w(Jo,qo):null,uh=[{slug:"all-to-jesus-i-surrender",number:1,title:"All to Jesus I surrender",title_alt:null,language:"english",tags:["Offertory"],stanzas:[{label:"Verse 1",text:`All to Jesus I surrender
-All to Him I freely give
-I will ever love and trust Him
-In His presence daily live.`},{label:"Verse 2",text:`I surrender all, I surrender all
-All to thee, my blessed Saviour
-I surrender all`},{label:"Verse 3",text:`All to Jesus I surrender
-Humbly at His feet I bow
-Worldly pleasure all forsaken
-Take me Jesus, take me now.`},{label:"Verse 4",text:`All to Jesus I surrender
-Make me Saviour wholly Thine
-Let me feel Thy Holy Spirit
-Truly know that Thou art mine.`},{label:"Verse 5",text:`All to Jesus I surrender
-Now I feel the sacred flame
-O the joy of full salvation
-Glory, glory to His name.`}],type:"worship",beat:"4/4",tempo:74},{slug:"apna-bojh-yeshu-par-daalo",number:1,title:"अपना बोझ यीशु पर डालो",title_alt:"Apna Bojh Yeshu Par Daalo",language:"hindi",tags:["Praise","Encouragement"],stanzas:[{label:"कोरस",text:`अपना बोझ यीशु पर डालो
+`);const j=await w.signMessage(new TextEncoder().encode(x),"utf8");if(!j||!(j instanceof Uint8Array))throw new Error("@supabase/auth-js: Wallet signMessage() API returned an recognized value");b=j}}try{const{data:k,error:y}=await H(this.fetch,"POST",`${this.url}/token?grant_type=web3`,{headers:this.headers,body:Object.assign({chain:"solana",message:x,signature:Vn(b)},!((f=e.options)===null||f===void 0)&&f.captchaToken?{gotrue_meta_security:{captcha_token:(m=e.options)===null||m===void 0?void 0:m.captchaToken}}:null),xform:ot});if(y)throw y;if(!k||!k.session||!k.user){const p=new tr;return this._returnResult({data:{user:null,session:null},error:p})}return k.session&&(await this._saveSession(k.session),await this._notifyAllSubscribers("SIGNED_IN",k.session)),this._returnResult({data:Object.assign({},k),error:y})}catch(k){if(M(k))return this._returnResult({data:{user:null,session:null},error:k});throw k}}async _exchangeCodeForSession(e){const n=await yt(this.storage,`${this.storageKey}-code-verifier`),[r,s]=(n??"").split("/");try{if(!r&&this.flowType==="pkce")throw new xv;const{data:a,error:i}=await H(this.fetch,"POST",`${this.url}/token?grant_type=pkce`,{headers:this.headers,body:{auth_code:e,code_verifier:r},xform:ot});if(await Se(this.storage,`${this.storageKey}-code-verifier`),i)throw i;if(!a||!a.session||!a.user){const o=new tr;return this._returnResult({data:{user:null,session:null,redirectType:null},error:o})}return a.session&&(await this._saveSession(a.session),await this._notifyAllSubscribers(s==="recovery"?"PASSWORD_RECOVERY":"SIGNED_IN",a.session)),this._returnResult({data:Object.assign(Object.assign({},a),{redirectType:s??null}),error:i})}catch(a){if(await Se(this.storage,`${this.storageKey}-code-verifier`),M(a))return this._returnResult({data:{user:null,session:null,redirectType:null},error:a});throw a}}async signInWithIdToken(e){try{const{options:n,provider:r,token:s,access_token:a,nonce:i}=e,o=await H(this.fetch,"POST",`${this.url}/token?grant_type=id_token`,{headers:this.headers,body:{provider:r,id_token:s,access_token:a,nonce:i,gotrue_meta_security:{captcha_token:n==null?void 0:n.captchaToken}},xform:ot}),{data:u,error:c}=o;if(c)return this._returnResult({data:{user:null,session:null},error:c});if(!u||!u.session||!u.user){const d=new tr;return this._returnResult({data:{user:null,session:null},error:d})}return u.session&&(await this._saveSession(u.session),await this._notifyAllSubscribers("SIGNED_IN",u.session)),this._returnResult({data:u,error:c})}catch(n){if(M(n))return this._returnResult({data:{user:null,session:null},error:n});throw n}}async signInWithOtp(e){var n,r,s,a,i;try{if("email"in e){const{email:o,options:u}=e;let c=null,d=null;this.flowType==="pkce"&&([c,d]=await In(this.storage,this.storageKey));const{error:h}=await H(this.fetch,"POST",`${this.url}/otp`,{headers:this.headers,body:{email:o,data:(n=u==null?void 0:u.data)!==null&&n!==void 0?n:{},create_user:(r=u==null?void 0:u.shouldCreateUser)!==null&&r!==void 0?r:!0,gotrue_meta_security:{captcha_token:u==null?void 0:u.captchaToken},code_challenge:c,code_challenge_method:d},redirectTo:u==null?void 0:u.emailRedirectTo});return this._returnResult({data:{user:null,session:null},error:h})}if("phone"in e){const{phone:o,options:u}=e,{data:c,error:d}=await H(this.fetch,"POST",`${this.url}/otp`,{headers:this.headers,body:{phone:o,data:(s=u==null?void 0:u.data)!==null&&s!==void 0?s:{},create_user:(a=u==null?void 0:u.shouldCreateUser)!==null&&a!==void 0?a:!0,gotrue_meta_security:{captcha_token:u==null?void 0:u.captchaToken},channel:(i=u==null?void 0:u.channel)!==null&&i!==void 0?i:"sms"}});return this._returnResult({data:{user:null,session:null,messageId:c==null?void 0:c.message_id},error:d})}throw new Ta("You must provide either an email or phone number.")}catch(o){if(await Se(this.storage,`${this.storageKey}-code-verifier`),M(o))return this._returnResult({data:{user:null,session:null},error:o});throw o}}async verifyOtp(e){var n,r;try{let s,a;"options"in e&&(s=(n=e.options)===null||n===void 0?void 0:n.redirectTo,a=(r=e.options)===null||r===void 0?void 0:r.captchaToken);const{data:i,error:o}=await H(this.fetch,"POST",`${this.url}/verify`,{headers:this.headers,body:Object.assign(Object.assign({},e),{gotrue_meta_security:{captcha_token:a}}),redirectTo:s,xform:ot});if(o)throw o;if(!i)throw new Error("An error occurred on token verification.");const u=i.session,c=i.user;return u!=null&&u.access_token&&(await this._saveSession(u),await this._notifyAllSubscribers(e.type=="recovery"?"PASSWORD_RECOVERY":"SIGNED_IN",u)),this._returnResult({data:{user:c,session:u},error:null})}catch(s){if(M(s))return this._returnResult({data:{user:null,session:null},error:s});throw s}}async signInWithSSO(e){var n,r,s,a,i;try{let o=null,u=null;this.flowType==="pkce"&&([o,u]=await In(this.storage,this.storageKey));const c=await H(this.fetch,"POST",`${this.url}/sso`,{body:Object.assign(Object.assign(Object.assign(Object.assign(Object.assign({},"providerId"in e?{provider_id:e.providerId}:null),"domain"in e?{domain:e.domain}:null),{redirect_to:(r=(n=e.options)===null||n===void 0?void 0:n.redirectTo)!==null&&r!==void 0?r:void 0}),!((s=e==null?void 0:e.options)===null||s===void 0)&&s.captchaToken?{gotrue_meta_security:{captcha_token:e.options.captchaToken}}:null),{skip_http_redirect:!0,code_challenge:o,code_challenge_method:u}),headers:this.headers,xform:Fv});return!((a=c.data)===null||a===void 0)&&a.url&&De()&&!(!((i=e.options)===null||i===void 0)&&i.skipBrowserRedirect)&&window.location.assign(c.data.url),this._returnResult(c)}catch(o){if(await Se(this.storage,`${this.storageKey}-code-verifier`),M(o))return this._returnResult({data:null,error:o});throw o}}async reauthenticate(){return await this.initializePromise,this.lock!=null?await this._acquireLock(this.lockAcquireTimeout,async()=>await this._reauthenticate()):await this._reauthenticate()}async _reauthenticate(){try{return await this._useSession(async e=>{const{data:{session:n},error:r}=e;if(r)throw r;if(!n)throw new Pe;const{error:s}=await H(this.fetch,"GET",`${this.url}/reauthenticate`,{headers:this.headers,jwt:n.access_token});return this._returnResult({data:{user:null,session:null},error:s})})}catch(e){if(M(e))return this._returnResult({data:{user:null,session:null},error:e});throw e}}async resend(e){try{const n=`${this.url}/resend`;if("email"in e){const{email:r,type:s,options:a}=e;let i=null,o=null;this.flowType==="pkce"&&([i,o]=await In(this.storage,this.storageKey));const{error:u}=await H(this.fetch,"POST",n,{headers:this.headers,body:{email:r,type:s,gotrue_meta_security:{captcha_token:a==null?void 0:a.captchaToken},code_challenge:i,code_challenge_method:o},redirectTo:a==null?void 0:a.emailRedirectTo});return u&&await Se(this.storage,`${this.storageKey}-code-verifier`),this._returnResult({data:{user:null,session:null},error:u})}else if("phone"in e){const{phone:r,type:s,options:a}=e,{data:i,error:o}=await H(this.fetch,"POST",n,{headers:this.headers,body:{phone:r,type:s,gotrue_meta_security:{captcha_token:a==null?void 0:a.captchaToken}}});return this._returnResult({data:{user:null,session:null,messageId:i==null?void 0:i.message_id},error:o})}throw new Ta("You must provide either an email or phone number and a type")}catch(n){if(await Se(this.storage,`${this.storageKey}-code-verifier`),M(n))return this._returnResult({data:{user:null,session:null},error:n});throw n}}async getSession(){return await this.initializePromise,this.lock!=null?await this._acquireLock(this.lockAcquireTimeout,async()=>this._useSession(async e=>e)):await this._useSession(async e=>e)}async _acquireLock(e,n){this._debug("#_acquireLock","begin",e);try{if(this.lockAcquired){const r=this.pendingInLock.length?this.pendingInLock[this.pendingInLock.length-1]:Promise.resolve(),s=(async()=>(await r,await n()))();return this.pendingInLock.push((async()=>{try{await s}catch{}})()),s}return await this.lock(`lock:${this.storageKey}`,e,async()=>{this._debug("#_acquireLock","lock acquired for storage key",this.storageKey);try{this.lockAcquired=!0;const r=n();for(this.pendingInLock.push((async()=>{try{await r}catch{}})()),await r;this.pendingInLock.length;){const s=[...this.pendingInLock];await Promise.all(s),this.pendingInLock.splice(0,s.length)}return await r}finally{this._debug("#_acquireLock","lock released for storage key",this.storageKey),this.lockAcquired=!1}})}finally{this._debug("#_acquireLock","end")}}async _useSession(e){this._debug("#_useSession","begin");try{const n=await this.__loadSession();return await e(n)}finally{this._debug("#_useSession","end")}}async __loadSession(){this._debug("#__loadSession()","begin"),this.lock!=null&&!this.lockAcquired&&this._debug("#__loadSession()","used outside of an acquired lock!",new Error().stack);try{let e=null;const n=await yt(this.storage,this.storageKey);if(this._debug("#getSession()","session from storage",n),n!==null&&(this._isValidSession(n)?e=n:(this._debug("#getSession()","session from storage is not valid"),await this._removeSession())),!e)return{data:{session:null},error:null};const r=e.expires_at?e.expires_at*1e3-Date.now()<Rl:!1;if(this._debug("#__loadSession()",`session has${r?"":" not"} expired`,"expires_at",e.expires_at),!r){if(this.userStorage){const i=await yt(this.userStorage,this.storageKey+"-user");i!=null&&i.user?e.user=i.user:e.user=Il()}if(this.storage.isServer&&e.user&&!e.user.__isUserNotAvailableProxy){const i={value:this.suppressGetSessionWarning};e.user=Vv(e.user,i),i.value&&(this.suppressGetSessionWarning=!0)}return{data:{session:e},error:null}}const{data:s,error:a}=await this._callRefreshToken(e.refresh_token);if(a){if(!!(e.expires_at&&e.expires_at*1e3>Date.now())){const o=await yt(this.storage,this.storageKey);if(o&&o.refresh_token===e.refresh_token)return this._returnResult({data:{session:e},error:null})}return this._returnResult({data:{session:null},error:a})}return this._returnResult({data:{session:s},error:null})}finally{this._debug("#__loadSession()","end")}}async getUser(e){if(e)return await this._getUser(e);await this.initializePromise;let n;return this.lock!=null?n=await this._acquireLock(this.lockAcquireTimeout,async()=>await this._getUser()):n=await this._getUser(),n.data.user&&(this.suppressGetSessionWarning=!0),n}async _getUser(e){try{return e?await H(this.fetch,"GET",`${this.url}/user`,{headers:this.headers,jwt:e,xform:un}):await this._useSession(async n=>{var r,s,a;const{data:i,error:o}=n;if(o)throw o;return!(!((r=i.session)===null||r===void 0)&&r.access_token)&&!this.hasCustomAuthorizationHeader?{data:{user:null},error:new Pe}:await H(this.fetch,"GET",`${this.url}/user`,{headers:this.headers,jwt:(a=(s=i.session)===null||s===void 0?void 0:s.access_token)!==null&&a!==void 0?a:void 0,xform:un})})}catch(n){if(M(n))return Ea(n)&&(await this._removeSession(),await Se(this.storage,`${this.storageKey}-code-verifier`)),this._returnResult({data:{user:null},error:n});throw n}}async updateUser(e,n={}){return await this.initializePromise,this.lock!=null?await this._acquireLock(this.lockAcquireTimeout,async()=>await this._updateUser(e,n)):await this._updateUser(e,n)}async _updateUser(e,n={}){try{return await this._useSession(async r=>{const{data:s,error:a}=r;if(a)throw a;if(!s.session)throw new Pe;const i=s.session;let o=null,u=null;this.flowType==="pkce"&&e.email!=null&&([o,u]=await In(this.storage,this.storageKey));const{data:c,error:d}=await H(this.fetch,"PUT",`${this.url}/user`,{headers:this.headers,redirectTo:n==null?void 0:n.emailRedirectTo,body:Object.assign(Object.assign({},e),{code_challenge:o,code_challenge_method:u}),jwt:i.access_token,xform:un});if(d)throw d;return i.user=c.user,await this._saveSession(i),await this._notifyAllSubscribers("USER_UPDATED",i),this._returnResult({data:{user:i.user},error:null})})}catch(r){if(await Se(this.storage,`${this.storageKey}-code-verifier`),M(r))return this._returnResult({data:{user:null},error:r});throw r}}async setSession(e){return await this.initializePromise,this.lock!=null?await this._acquireLock(this.lockAcquireTimeout,async()=>await this._setSession(e)):await this._setSession(e)}async _setSession(e){try{if(!e.access_token||!e.refresh_token)throw new Pe;const n=Date.now()/1e3;let r=n,s=!0,a=null;const{payload:i}=Pa(e.access_token);if(i.exp&&(r=i.exp,s=r<=n),s){const{data:o,error:u}=await this._callRefreshToken(e.refresh_token);if(u)return this._returnResult({data:{user:null,session:null},error:u});if(!o)return{data:{user:null,session:null},error:null};a=o}else{const{data:o,error:u}=await this._getUser(e.access_token);if(u)return this._returnResult({data:{user:null,session:null},error:u});a={access_token:e.access_token,refresh_token:e.refresh_token,user:o.user,token_type:"bearer",expires_in:r-n,expires_at:r},await this._saveSession(a),await this._notifyAllSubscribers("SIGNED_IN",a)}return this._returnResult({data:{user:a.user,session:a},error:null})}catch(n){if(M(n))return this._returnResult({data:{session:null,user:null},error:n});throw n}}async refreshSession(e){return await this.initializePromise,this.lock!=null?await this._acquireLock(this.lockAcquireTimeout,async()=>await this._refreshSession(e)):await this._refreshSession(e)}async _refreshSession(e){try{return await this._useSession(async n=>{var r;if(!e){const{data:i,error:o}=n;if(o)throw o;e=(r=i.session)!==null&&r!==void 0?r:void 0}if(!(e!=null&&e.refresh_token))throw new Pe;const{data:s,error:a}=await this._callRefreshToken(e.refresh_token);return a?this._returnResult({data:{user:null,session:null},error:a}):s?this._returnResult({data:{user:s.user,session:s},error:null}):this._returnResult({data:{user:null,session:null},error:null})})}catch(n){if(M(n))return this._returnResult({data:{user:null,session:null},error:n});throw n}}async _getSessionFromURL(e,n){var r;try{if(!De())throw new Aa("No browser detected.");if(e.error||e.error_description||e.error_code)throw new Aa(e.error_description||"Error in URL with unspecified error_description",{error:e.error||"unspecified_error",code:e.error_code||"unspecified_code"});switch(n){case"implicit":if(this.flowType==="pkce")throw new Fd("Not a valid PKCE flow url.");break;case"pkce":if(this.flowType==="implicit")throw new Aa("Not a valid implicit grant flow url.");break;default:}if(n==="pkce"){if(this._debug("#_initialize()","begin","is PKCE flow",!0),!e.code)throw new Fd("No code detected.");const{data:g,error:w}=await this._exchangeCodeForSession(e.code);if(w)throw w;const _=new URL(window.location.href);return _.searchParams.delete("code"),window.history.replaceState(window.history.state,"",_.toString()),{data:{session:g.session,redirectType:(r=g.redirectType)!==null&&r!==void 0?r:null},error:null}}const{provider_token:s,provider_refresh_token:a,access_token:i,refresh_token:o,expires_in:u,expires_at:c,token_type:d}=e;if(!i||!u||!o||!d)throw new Aa("No session defined in URL");const h=Math.round(Date.now()/1e3),f=parseInt(u);let m=h+f;c&&(m=parseInt(c));const x=m-h;x*1e3<=Ft&&console.warn(`@supabase/gotrue-js: Session as retrieved from URL expires in ${x}s, should have been closer to ${f}s`);const b=m-f;h-b>=120?console.warn("@supabase/gotrue-js: Session as retrieved from URL was issued over 120s ago, URL could be stale",b,m,h):h-b<0&&console.warn("@supabase/gotrue-js: Session as retrieved from URL was issued in the future? Check the device clock for skew",b,m,h);const{data:k,error:y}=await this._getUser(i);if(y)throw y;const p={provider_token:s,provider_refresh_token:a,access_token:i,expires_in:f,expires_at:m,refresh_token:o,token_type:d,user:k.user};return window.location.hash="",this._debug("#_getSessionFromURL()","clearing window.location.hash"),this._returnResult({data:{session:p,redirectType:e.type},error:null})}catch(s){if(M(s))return this._returnResult({data:{session:null,redirectType:null},error:s});throw s}}_isImplicitGrantCallback(e){return typeof this.detectSessionInUrl=="function"?this.detectSessionInUrl(new URL(window.location.href),e):!!(e.access_token||e.error||e.error_description||e.error_code)}async _isPKCECallback(e){const n=await yt(this.storage,`${this.storageKey}-code-verifier`);return!!(e.code&&n)}async signOut(e={scope:"global"}){return await this.initializePromise,this.lock!=null?await this._acquireLock(this.lockAcquireTimeout,async()=>await this._signOut(e)):await this._signOut(e)}async _signOut({scope:e}={scope:"global"}){return await this._useSession(async n=>{var r;const{data:s,error:a}=n;if(a&&!Ea(a))return this._returnResult({error:a});const i=(r=s.session)===null||r===void 0?void 0:r.access_token;if(i){const{error:o}=await this.admin.signOut(i,e);if(o&&!(gv(o)&&(o.status===404||o.status===401||o.status===403)||Ea(o)))return this._returnResult({error:o})}return e!=="others"&&(await this._removeSession(),await Se(this.storage,`${this.storageKey}-code-verifier`)),this._returnResult({error:null})})}onAuthStateChange(e){const n=Cv(),r={id:n,callback:e,unsubscribe:()=>{this._debug("#unsubscribe()","state change callback with id removed",n),this.stateChangeEmitters.delete(n)}};return this._debug("#onAuthStateChange()","registered callback with id",n),this.stateChangeEmitters.set(n,r),(async()=>(await this.initializePromise,this.lock!=null?await this._acquireLock(this.lockAcquireTimeout,async()=>{this._emitInitialSession(n)}):await this._emitInitialSession(n)))(),{data:{subscription:r}}}async _emitInitialSession(e){return await this._useSession(async n=>{var r,s;try{const{data:{session:a},error:i}=n;if(i)throw i;await((r=this.stateChangeEmitters.get(e))===null||r===void 0?void 0:r.callback("INITIAL_SESSION",a)),this._debug("INITIAL_SESSION","callback id",e,"session",a)}catch(a){await((s=this.stateChangeEmitters.get(e))===null||s===void 0?void 0:s.callback("INITIAL_SESSION",null)),this._debug("INITIAL_SESSION","callback id",e,"error",a),Ea(a)?console.warn(a):console.error(a)}})}async resetPasswordForEmail(e,n={}){let r=null,s=null;this.flowType==="pkce"&&([r,s]=await In(this.storage,this.storageKey,!0));try{return await H(this.fetch,"POST",`${this.url}/recover`,{body:{email:e,code_challenge:r,code_challenge_method:s,gotrue_meta_security:{captcha_token:n.captchaToken}},headers:this.headers,redirectTo:n.redirectTo})}catch(a){if(await Se(this.storage,`${this.storageKey}-code-verifier`),M(a))return this._returnResult({data:null,error:a});throw a}}async getUserIdentities(){var e;try{const{data:n,error:r}=await this.getUser();if(r)throw r;return this._returnResult({data:{identities:(e=n.user.identities)!==null&&e!==void 0?e:[]},error:null})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async linkIdentity(e){return"token"in e?this.linkIdentityIdToken(e):this.linkIdentityOAuth(e)}async linkIdentityOAuth(e){var n;try{const{data:r,error:s}=await this._useSession(async a=>{var i,o,u,c,d;const{data:h,error:f}=a;if(f)throw f;const m=await this._getUrlForProvider(`${this.url}/user/identities/authorize`,e.provider,{redirectTo:(i=e.options)===null||i===void 0?void 0:i.redirectTo,scopes:(o=e.options)===null||o===void 0?void 0:o.scopes,queryParams:(u=e.options)===null||u===void 0?void 0:u.queryParams,skipBrowserRedirect:!0});return await H(this.fetch,"GET",m,{headers:this.headers,jwt:(d=(c=h.session)===null||c===void 0?void 0:c.access_token)!==null&&d!==void 0?d:void 0})});if(s)throw s;return De()&&!(!((n=e.options)===null||n===void 0)&&n.skipBrowserRedirect)&&window.location.assign(r==null?void 0:r.url),this._returnResult({data:{provider:e.provider,url:r==null?void 0:r.url},error:null})}catch(r){if(M(r))return this._returnResult({data:{provider:e.provider,url:null},error:r});throw r}}async linkIdentityIdToken(e){return await this._useSession(async n=>{var r;try{const{error:s,data:{session:a}}=n;if(s)throw s;const{options:i,provider:o,token:u,access_token:c,nonce:d}=e,h=await H(this.fetch,"POST",`${this.url}/token?grant_type=id_token`,{headers:this.headers,jwt:(r=a==null?void 0:a.access_token)!==null&&r!==void 0?r:void 0,body:{provider:o,id_token:u,access_token:c,nonce:d,link_identity:!0,gotrue_meta_security:{captcha_token:i==null?void 0:i.captchaToken}},xform:ot}),{data:f,error:m}=h;return m?this._returnResult({data:{user:null,session:null},error:m}):!f||!f.session||!f.user?this._returnResult({data:{user:null,session:null},error:new tr}):(f.session&&(await this._saveSession(f.session),await this._notifyAllSubscribers("USER_UPDATED",f.session)),this._returnResult({data:f,error:m}))}catch(s){if(await Se(this.storage,`${this.storageKey}-code-verifier`),M(s))return this._returnResult({data:{user:null,session:null},error:s});throw s}})}async unlinkIdentity(e){try{return await this._useSession(async n=>{var r,s;const{data:a,error:i}=n;if(i)throw i;return await H(this.fetch,"DELETE",`${this.url}/user/identities/${e.identity_id}`,{headers:this.headers,jwt:(s=(r=a.session)===null||r===void 0?void 0:r.access_token)!==null&&s!==void 0?s:void 0})})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async _refreshAccessToken(e){const n="#_refreshAccessToken()";this._debug(n,"begin");try{const r=Date.now();return await Av(async s=>(s>0&&await Tv(200*Math.pow(2,s-1)),this._debug(n,"refreshing attempt",s),await H(this.fetch,"POST",`${this.url}/token?grant_type=refresh_token`,{body:{refresh_token:e},headers:this.headers,xform:ot})),(s,a)=>{const i=200*Math.pow(2,s);return a&&Wd(a)&&Date.now()+i-r<Ft})}catch(r){if(this._debug(n,"error",r),M(r))return this._returnResult({data:{session:null,user:null},error:r});throw r}finally{this._debug(n,"end")}}_isValidSession(e){return typeof e=="object"&&e!==null&&"access_token"in e&&"refresh_token"in e&&"expires_at"in e}async _handleProviderSignIn(e,n){const r=await this._getUrlForProvider(`${this.url}/authorize`,e,{redirectTo:n.redirectTo,scopes:n.scopes,queryParams:n.queryParams});return this._debug("#_handleProviderSignIn()","provider",e,"options",n,"url",r),De()&&!n.skipBrowserRedirect&&window.location.assign(r),{data:{provider:e,url:r},error:null}}async _recoverAndRefresh(){var e,n;const r="#_recoverAndRefresh()";this._debug(r,"begin");try{const s=await yt(this.storage,this.storageKey);if(s&&this.userStorage){let i=await yt(this.userStorage,this.storageKey+"-user");!this.storage.isServer&&Object.is(this.storage,this.userStorage)&&!i&&(i={user:s.user},await ar(this.userStorage,this.storageKey+"-user",i)),s.user=(e=i==null?void 0:i.user)!==null&&e!==void 0?e:Il()}else if(s&&!s.user&&!s.user){const i=await yt(this.storage,this.storageKey+"-user");i&&(i!=null&&i.user)?(s.user=i.user,await Se(this.storage,this.storageKey+"-user"),await ar(this.storage,this.storageKey,s)):s.user=Il()}if(this._debug(r,"session from storage",s),!this._isValidSession(s)){this._debug(r,"session is not valid"),s!==null&&await this._removeSession();return}const a=((n=s.expires_at)!==null&&n!==void 0?n:1/0)*1e3-Date.now()<Rl;if(this._debug(r,`session has${a?"":" not"} expired with margin of ${Rl}s`),a){if(this.autoRefreshToken&&s.refresh_token){const{error:i}=await this._callRefreshToken(s.refresh_token);i&&(bv(i)?this._debug(r,"refresh discarded by commit guard",i):this._debug(r,"refresh failed",i))}}else if(s.user&&s.user.__isUserNotAvailableProxy===!0)try{const{data:i,error:o}=await this._getUser(s.access_token);!o&&(i!=null&&i.user)?(s.user=i.user,await this._saveSession(s),await this._notifyAllSubscribers("SIGNED_IN",s)):this._debug(r,"could not get user data, skipping SIGNED_IN notification")}catch(i){console.error("Error getting user data:",i),this._debug(r,"error getting user data, skipping SIGNED_IN notification",i)}else await this._notifyAllSubscribers("SIGNED_IN",s)}catch(s){this._debug(r,"error",s),console.error(s);return}finally{this._debug(r,"end")}}async _callRefreshToken(e){var n,r;if(!e)throw new Pe;if(this.refreshingDeferred)return this.refreshingDeferred.promise;if(this.lastRefreshFailure&&this.lastRefreshFailure.refreshToken===e&&Date.now()<this.lastRefreshFailure.expiresAt)return this._debug("#_callRefreshToken()","returning cached failure (cooldown active)"),this.lastRefreshFailure.result;const s="#_callRefreshToken()";this._debug(s,"begin");try{this.refreshingDeferred=new Zi;const a=await yt(this.storage,this.storageKey),{data:i,error:o}=await this._refreshAccessToken(e);if(o)throw o;if(!i.session)throw new Pe;const u=await yt(this.storage,this.storageKey);if(a!==null&&(u===null||u.refresh_token!==a.refresh_token)){this._debug(s,"commit guard: storage changed since refresh started, discarding rotated tokens",{startedWith:"present",nowHolds:u?"replaced":"cleared"});const f={data:null,error:new Gd};return this.refreshingDeferred.resolve(f),f}const d=this._sessionRemovalEpoch;if(await this._saveSession(i.session),this._sessionRemovalEpoch!==d){this._debug(s,"commit guard (post-save): _removeSession ran during _saveSession, undoing write"),await Se(this.storage,this.storageKey),this.userStorage&&await Se(this.userStorage,this.storageKey+"-user");const f={data:null,error:new Gd};return this.refreshingDeferred.resolve(f),f}await this._notifyAllSubscribers("TOKEN_REFRESHED",i.session);const h={data:i.session,error:null};return this.lastRefreshFailure=null,this.refreshingDeferred.resolve(h),h}catch(a){if(this._debug(s,"error",a),M(a)){const i={data:null,error:a};if(!Wd(a)){const o=await yt(this.storage,this.storageKey);!!(o!=null&&o.expires_at&&o.expires_at*1e3>Date.now())?this._debug(s,"proactive refresh failed, access token still valid — preserving session"):await this._removeSession()}return this.lastRefreshFailure={refreshToken:e,result:i,expiresAt:Date.now()+uv},(n=this.refreshingDeferred)===null||n===void 0||n.resolve(i),i}throw(r=this.refreshingDeferred)===null||r===void 0||r.reject(a),a}finally{this.refreshingDeferred=null,this._debug(s,"end")}}async _notifyAllSubscribers(e,n,r=!0){const s=`#_notifyAllSubscribers(${e})`;this._debug(s,"begin",n,`broadcast = ${r}`);try{this.broadcastChannel&&r&&this.broadcastChannel.postMessage({event:e,session:n});const a=[],i=Array.from(this.stateChangeEmitters.values()).map(async o=>{try{await o.callback(e,n)}catch(u){a.push(u)}});if(await Promise.all(i),a.length>0){for(let o=0;o<a.length;o+=1)console.error(a[o]);throw a[0]}}finally{this._debug(s,"end")}}async _saveSession(e){this._debug("#_saveSession()",e),this.suppressGetSessionWarning=!0,await Se(this.storage,`${this.storageKey}-code-verifier`);const n=Object.assign({},e),r=n.user&&n.user.__isUserNotAvailableProxy===!0;if(this.userStorage){!r&&n.user&&await ar(this.userStorage,this.storageKey+"-user",{user:n.user});const s=Object.assign({},n);delete s.user;const a=Qd(s);await ar(this.storage,this.storageKey,a)}else{const s=Qd(n);await ar(this.storage,this.storageKey,s)}}async _removeSession(){this._sessionRemovalEpoch+=1,this._debug("#_removeSession()"),this.lastRefreshFailure=null,this.suppressGetSessionWarning=!1,await Se(this.storage,this.storageKey),await Se(this.storage,this.storageKey+"-code-verifier"),await Se(this.storage,this.storageKey+"-user"),this.userStorage&&await Se(this.userStorage,this.storageKey+"-user"),await this._notifyAllSubscribers("SIGNED_OUT",null)}_removeVisibilityChangedCallback(){this._debug("#_removeVisibilityChangedCallback()");const e=this.visibilityChangedCallback;this.visibilityChangedCallback=null;try{e&&De()&&(window!=null&&window.removeEventListener)&&window.removeEventListener("visibilitychange",e)}catch(n){console.error("removing visibilitychange callback failed",n)}}async _startAutoRefresh(){await this._stopAutoRefresh(),this._debug("#_startAutoRefresh()");const e=setInterval(()=>this._autoRefreshTokenTick(),Ft);this.autoRefreshTicker=e,e&&typeof e=="object"&&typeof e.unref=="function"?e.unref():typeof Deno<"u"&&typeof Deno.unrefTimer=="function"&&Deno.unrefTimer(e);const n=setTimeout(async()=>{await this.initializePromise,await this._autoRefreshTokenTick()},0);this.autoRefreshTickTimeout=n,n&&typeof n=="object"&&typeof n.unref=="function"?n.unref():typeof Deno<"u"&&typeof Deno.unrefTimer=="function"&&Deno.unrefTimer(n)}async _stopAutoRefresh(){this._debug("#_stopAutoRefresh()");const e=this.autoRefreshTicker;this.autoRefreshTicker=null,e&&clearInterval(e);const n=this.autoRefreshTickTimeout;this.autoRefreshTickTimeout=null,n&&clearTimeout(n)}async startAutoRefresh(){this._removeVisibilityChangedCallback(),await this._startAutoRefresh()}async stopAutoRefresh(){this._removeVisibilityChangedCallback(),await this._stopAutoRefresh()}async dispose(){var e;this._removeVisibilityChangedCallback(),await this._stopAutoRefresh(),(e=this.broadcastChannel)===null||e===void 0||e.close(),this.broadcastChannel=null,this.stateChangeEmitters.clear()}async _autoRefreshTokenTick(){if(this._debug("#_autoRefreshTokenTick()","begin"),this.lock!=null){try{await this._acquireLock(0,async()=>{try{const e=Date.now();try{return await this._useSession(async n=>{const{data:{session:r}}=n;if(!r||!r.refresh_token||!r.expires_at){this._debug("#_autoRefreshTokenTick()","no session");return}const s=Math.floor((r.expires_at*1e3-e)/Ft);this._debug("#_autoRefreshTokenTick()",`access token expires in ${s} ticks, a tick lasts ${Ft}ms, refresh threshold is ${ss} ticks`),s<=ss&&await this._callRefreshToken(r.refresh_token)})}catch(n){console.error("Auto refresh tick failed with error. This is likely a transient error.",n)}}finally{this._debug("#_autoRefreshTokenTick()","end")}})}catch(e){if(e instanceof Yv)this._debug("auto refresh token tick lock not available");else throw e}return}if(this.refreshingDeferred!==null){this._debug("#_autoRefreshTokenTick()","refresh already in flight, skipping");return}try{const e=Date.now();try{await this._useSession(async n=>{const{data:{session:r}}=n;if(!r||!r.refresh_token||!r.expires_at){this._debug("#_autoRefreshTokenTick()","no session");return}const s=Math.floor((r.expires_at*1e3-e)/Ft);this._debug("#_autoRefreshTokenTick()",`access token expires in ${s} ticks, a tick lasts ${Ft}ms, refresh threshold is ${ss} ticks`),s<=ss&&await this._callRefreshToken(r.refresh_token)})}catch(n){console.error("Auto refresh tick failed with error. This is likely a transient error.",n)}}finally{this._debug("#_autoRefreshTokenTick()","end")}}async _handleVisibilityChange(){if(this._debug("#_handleVisibilityChange()"),!De()||!(window!=null&&window.addEventListener))return this.autoRefreshToken&&this.startAutoRefresh(),!1;try{this.visibilityChangedCallback=async()=>{try{await this._onVisibilityChanged(!1)}catch(e){this._debug("#visibilityChangedCallback","error",e)}},window==null||window.addEventListener("visibilitychange",this.visibilityChangedCallback),await this._onVisibilityChanged(!0)}catch(e){console.error("_handleVisibilityChange",e)}}async _onVisibilityChanged(e){const n=`#_onVisibilityChanged(${e})`;if(this._debug(n,"visibilityState",document.visibilityState),document.visibilityState==="visible"){if(this.autoRefreshToken&&this._startAutoRefresh(),!e)if(await this.initializePromise,this.lock!=null)await this._acquireLock(this.lockAcquireTimeout,async()=>{if(document.visibilityState!=="visible"){this._debug(n,"acquired the lock to recover the session, but the browser visibilityState is no longer visible, aborting");return}await this._recoverAndRefresh()});else{if(document.visibilityState!=="visible"){this._debug(n,"visibilityState is no longer visible, skipping recovery");return}await this._recoverAndRefresh()}}else document.visibilityState==="hidden"&&this.autoRefreshToken&&this._stopAutoRefresh()}async _getUrlForProvider(e,n,r){const s=[`provider=${encodeURIComponent(n)}`];if(r!=null&&r.redirectTo&&s.push(`redirect_to=${encodeURIComponent(r.redirectTo)}`),r!=null&&r.scopes&&s.push(`scopes=${encodeURIComponent(r.scopes)}`),this.flowType==="pkce"){const[a,i]=await In(this.storage,this.storageKey),o=new URLSearchParams({code_challenge:`${encodeURIComponent(a)}`,code_challenge_method:`${encodeURIComponent(i)}`});s.push(o.toString())}if(r!=null&&r.queryParams){const a=new URLSearchParams(r.queryParams);s.push(a.toString())}return r!=null&&r.skipBrowserRedirect&&s.push(`skip_http_redirect=${r.skipBrowserRedirect}`),`${e}?${s.join("&")}`}async _unenroll(e){try{return await this._useSession(async n=>{var r;const{data:s,error:a}=n;return a?this._returnResult({data:null,error:a}):await H(this.fetch,"DELETE",`${this.url}/factors/${e.factorId}`,{headers:this.headers,jwt:(r=s==null?void 0:s.session)===null||r===void 0?void 0:r.access_token})})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async _enroll(e){try{return await this._useSession(async n=>{var r,s;const{data:a,error:i}=n;if(i)return this._returnResult({data:null,error:i});const o=Object.assign({friendly_name:e.friendlyName,factor_type:e.factorType},e.factorType==="phone"?{phone:e.phone}:e.factorType==="totp"?{issuer:e.issuer}:{}),{data:u,error:c}=await H(this.fetch,"POST",`${this.url}/factors`,{body:o,headers:this.headers,jwt:(r=a==null?void 0:a.session)===null||r===void 0?void 0:r.access_token});return c?this._returnResult({data:null,error:c}):(e.factorType==="totp"&&u.type==="totp"&&(!((s=u==null?void 0:u.totp)===null||s===void 0)&&s.qr_code)&&(u.totp.qr_code=`data:image/svg+xml;utf-8,${u.totp.qr_code}`),this._returnResult({data:u,error:null}))})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async _verify(e){const n=async()=>{try{return await this._useSession(async r=>{var s;const{data:a,error:i}=r;if(i)return this._returnResult({data:null,error:i});const o=Object.assign({challenge_id:e.challengeId},"webauthn"in e?{webauthn:Object.assign(Object.assign({},e.webauthn),{credential_response:e.webauthn.type==="create"?sh(e.webauthn.credential_response):ah(e.webauthn.credential_response)})}:{code:e.code}),{data:u,error:c}=await H(this.fetch,"POST",`${this.url}/factors/${e.factorId}/verify`,{body:o,headers:this.headers,jwt:(s=a==null?void 0:a.session)===null||s===void 0?void 0:s.access_token});return c?this._returnResult({data:null,error:c}):(await this._saveSession(Object.assign({expires_at:Math.round(Date.now()/1e3)+u.expires_in},u)),await this._notifyAllSubscribers("MFA_CHALLENGE_VERIFIED",u),this._returnResult({data:u,error:c}))})}catch(r){if(M(r))return this._returnResult({data:null,error:r});throw r}};return this.lock!=null?this._acquireLock(this.lockAcquireTimeout,n):n()}async _challenge(e){const n=async()=>{try{return await this._useSession(async r=>{var s;const{data:a,error:i}=r;if(i)return this._returnResult({data:null,error:i});const o=await H(this.fetch,"POST",`${this.url}/factors/${e.factorId}/challenge`,{body:e,headers:this.headers,jwt:(s=a==null?void 0:a.session)===null||s===void 0?void 0:s.access_token});if(o.error)return o;const{data:u}=o;if(u.type!=="webauthn")return{data:u,error:null};switch(u.webauthn.type){case"create":return{data:Object.assign(Object.assign({},u),{webauthn:Object.assign(Object.assign({},u.webauthn),{credential_options:Object.assign(Object.assign({},u.webauthn.credential_options),{publicKey:nh(u.webauthn.credential_options.publicKey)})})}),error:null};case"request":return{data:Object.assign(Object.assign({},u),{webauthn:Object.assign(Object.assign({},u.webauthn),{credential_options:Object.assign(Object.assign({},u.webauthn.credential_options),{publicKey:rh(u.webauthn.credential_options.publicKey)})})}),error:null}}})}catch(r){if(M(r))return this._returnResult({data:null,error:r});throw r}};return this.lock!=null?this._acquireLock(this.lockAcquireTimeout,n):n()}async _challengeAndVerify(e){const{data:n,error:r}=await this._challenge({factorId:e.factorId});return r?this._returnResult({data:null,error:r}):await this._verify({factorId:e.factorId,challengeId:n.id,code:e.code})}async _listFactors(){var e;const{data:{user:n},error:r}=await this.getUser();if(r)return{data:null,error:r};const s={all:[],phone:[],totp:[],webauthn:[]};for(const a of(e=n==null?void 0:n.factors)!==null&&e!==void 0?e:[])s.all.push(a),a.status==="verified"&&s[a.factor_type].push(a);return{data:s,error:null}}async _getAuthenticatorAssuranceLevel(e){var n,r,s,a;if(e)try{const{payload:m}=Pa(e);let x=null;m.aal&&(x=m.aal);let b=x;const{data:{user:k},error:y}=await this.getUser(e);if(y)return this._returnResult({data:null,error:y});((r=(n=k==null?void 0:k.factors)===null||n===void 0?void 0:n.filter(w=>w.status==="verified"))!==null&&r!==void 0?r:[]).length>0&&(b="aal2");const g=m.amr||[];return{data:{currentLevel:x,nextLevel:b,currentAuthenticationMethods:g},error:null}}catch(m){if(M(m))return this._returnResult({data:null,error:m});throw m}const{data:{session:i},error:o}=await this.getSession();if(o)return this._returnResult({data:null,error:o});if(!i)return{data:{currentLevel:null,nextLevel:null,currentAuthenticationMethods:[]},error:null};const{payload:u}=Pa(i.access_token);let c=null;u.aal&&(c=u.aal);let d=c;((a=(s=i.user.factors)===null||s===void 0?void 0:s.filter(m=>m.status==="verified"))!==null&&a!==void 0?a:[]).length>0&&(d="aal2");const f=u.amr||[];return{data:{currentLevel:c,nextLevel:d,currentAuthenticationMethods:f},error:null}}async _getAuthorizationDetails(e){try{return await this._useSession(async n=>{const{data:{session:r},error:s}=n;return s?this._returnResult({data:null,error:s}):r?await H(this.fetch,"GET",`${this.url}/oauth/authorizations/${e}`,{headers:this.headers,jwt:r.access_token,xform:a=>({data:a,error:null})}):this._returnResult({data:null,error:new Pe})})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async _approveAuthorization(e,n){try{return await this._useSession(async r=>{const{data:{session:s},error:a}=r;if(a)return this._returnResult({data:null,error:a});if(!s)return this._returnResult({data:null,error:new Pe});const i=await H(this.fetch,"POST",`${this.url}/oauth/authorizations/${e}/consent`,{headers:this.headers,jwt:s.access_token,body:{action:"approve"},xform:o=>({data:o,error:null})});return i.data&&i.data.redirect_url&&De()&&!(n!=null&&n.skipBrowserRedirect)&&window.location.assign(i.data.redirect_url),i})}catch(r){if(M(r))return this._returnResult({data:null,error:r});throw r}}async _denyAuthorization(e,n){try{return await this._useSession(async r=>{const{data:{session:s},error:a}=r;if(a)return this._returnResult({data:null,error:a});if(!s)return this._returnResult({data:null,error:new Pe});const i=await H(this.fetch,"POST",`${this.url}/oauth/authorizations/${e}/consent`,{headers:this.headers,jwt:s.access_token,body:{action:"deny"},xform:o=>({data:o,error:null})});return i.data&&i.data.redirect_url&&De()&&!(n!=null&&n.skipBrowserRedirect)&&window.location.assign(i.data.redirect_url),i})}catch(r){if(M(r))return this._returnResult({data:null,error:r});throw r}}async _listOAuthGrants(){try{return await this._useSession(async e=>{const{data:{session:n},error:r}=e;return r?this._returnResult({data:null,error:r}):n?await H(this.fetch,"GET",`${this.url}/user/oauth/grants`,{headers:this.headers,jwt:n.access_token,xform:s=>({data:s,error:null})}):this._returnResult({data:null,error:new Pe})})}catch(e){if(M(e))return this._returnResult({data:null,error:e});throw e}}async _revokeOAuthGrant(e){try{return await this._useSession(async n=>{const{data:{session:r},error:s}=n;return s?this._returnResult({data:null,error:s}):r?(await H(this.fetch,"DELETE",`${this.url}/user/oauth/grants`,{headers:this.headers,jwt:r.access_token,query:{client_id:e.clientId},noResolveJson:!0}),{data:{},error:null}):this._returnResult({data:null,error:new Pe})})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async fetchJwk(e,n={keys:[]}){let r=n.keys.find(o=>o.kid===e);if(r)return r;const s=Date.now();if(r=this.jwks.keys.find(o=>o.kid===e),r&&this.jwks_cached_at+pv>s)return r;const{data:a,error:i}=await H(this.fetch,"GET",`${this.url}/.well-known/jwks.json`,{headers:this.headers});if(i)throw i;return!a.keys||a.keys.length===0||(this.jwks=a,this.jwks_cached_at=s,r=a.keys.find(o=>o.kid===e),!r)?null:r}async getClaims(e,n={}){try{let r=e;if(!r){const{data:m,error:x}=await this.getSession();if(x||!m.session)return this._returnResult({data:null,error:x});r=m.session.access_token}const{header:s,payload:a,signature:i,raw:{header:o,payload:u}}=Pa(r);if(!(n!=null&&n.allowExpired))try{zv(a.exp)}catch(m){throw new ki(m instanceof Error?m.message:"JWT validation failed")}const c=!s.alg||s.alg.startsWith("HS")||!s.kid||!("crypto"in globalThis&&"subtle"in globalThis.crypto)?null:await this.fetchJwk(s.kid,n!=null&&n.keys?{keys:n.keys}:n==null?void 0:n.jwks);if(!c){const{error:m}=await this.getUser(r);if(m)throw m;return{data:{claims:a,header:s,signature:i},error:null}}const d=Mv(s.alg),h=await crypto.subtle.importKey("jwk",c,d,!0,["verify"]);if(!await crypto.subtle.verify(d,h,i,_v(`${o}.${u}`)))throw new ki("Invalid JWT signature");return{data:{claims:a,header:s,signature:i},error:null}}catch(r){if(M(r))return this._returnResult({data:null,error:r});throw r}}async signInWithPasskey(e){var n,r,s;xt(this.experimental);try{if(!ji())return this._returnResult({data:null,error:new _t("Browser does not support WebAuthn",null)});const{data:a,error:i}=await this._startPasskeyAuthentication({options:{captchaToken:(n=e==null?void 0:e.options)===null||n===void 0?void 0:n.captchaToken}});if(i||!a)return this._returnResult({data:null,error:i});const o=rh(a.options),u=(s=(r=e==null?void 0:e.options)===null||r===void 0?void 0:r.signal)!==null&&s!==void 0?s:Yo.createNewAbortSignal(),{data:c,error:d}=await pm({publicKey:o,signal:u});if(d||!c)return this._returnResult({data:null,error:d??new _t("WebAuthn ceremony failed",null)});const h=ah(c);return this._verifyPasskeyAuthentication({challengeId:a.challenge_id,credential:h})}catch(a){if(M(a))return this._returnResult({data:null,error:a});throw a}}async registerPasskey(e){var n,r;xt(this.experimental);try{if(!ji())return this._returnResult({data:null,error:new _t("Browser does not support WebAuthn",null)});const{data:s,error:a}=await this._startPasskeyRegistration();if(a||!s)return this._returnResult({data:null,error:a});const i=nh(s.options),o=(r=(n=e==null?void 0:e.options)===null||n===void 0?void 0:n.signal)!==null&&r!==void 0?r:Yo.createNewAbortSignal(),{data:u,error:c}=await fm({publicKey:i,signal:o});if(c||!u)return this._returnResult({data:null,error:c??new _t("WebAuthn ceremony failed",null)});const d=sh(u);return this._verifyPasskeyRegistration({challengeId:s.challenge_id,credential:d})}catch(s){if(M(s))return this._returnResult({data:null,error:s});throw s}}async _startPasskeyRegistration(){xt(this.experimental);try{return await this._useSession(async e=>{const{data:{session:n},error:r}=e;if(r)return this._returnResult({data:null,error:r});if(!n)return this._returnResult({data:null,error:new Pe});const{data:s,error:a}=await H(this.fetch,"POST",`${this.url}/passkeys/registration/options`,{headers:this.headers,jwt:n.access_token,body:{}});return a?this._returnResult({data:null,error:a}):this._returnResult({data:s,error:null})})}catch(e){if(M(e))return this._returnResult({data:null,error:e});throw e}}async _verifyPasskeyRegistration(e){xt(this.experimental);try{return await this._useSession(async n=>{const{data:{session:r},error:s}=n;if(s)return this._returnResult({data:null,error:s});if(!r)return this._returnResult({data:null,error:new Pe});const{data:a,error:i}=await H(this.fetch,"POST",`${this.url}/passkeys/registration/verify`,{headers:this.headers,jwt:r.access_token,body:{challenge_id:e.challengeId,credential:e.credential}});return i?this._returnResult({data:null,error:i}):this._returnResult({data:a,error:null})})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async _startPasskeyAuthentication(e){var n;xt(this.experimental);try{const{data:r,error:s}=await H(this.fetch,"POST",`${this.url}/passkeys/authentication/options`,{headers:this.headers,body:{gotrue_meta_security:{captcha_token:(n=e==null?void 0:e.options)===null||n===void 0?void 0:n.captchaToken}}});return s?this._returnResult({data:null,error:s}):this._returnResult({data:r,error:null})}catch(r){if(M(r))return this._returnResult({data:null,error:r});throw r}}async _verifyPasskeyAuthentication(e){xt(this.experimental);try{const{data:n,error:r}=await H(this.fetch,"POST",`${this.url}/passkeys/authentication/verify`,{headers:this.headers,body:{challenge_id:e.challengeId,credential:e.credential},xform:ot});return r?this._returnResult({data:null,error:r}):(n.session&&(await this._saveSession(n.session),await this._notifyAllSubscribers("SIGNED_IN",n.session)),this._returnResult({data:n,error:null}))}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async _listPasskeys(){xt(this.experimental);try{return await this._useSession(async e=>{const{data:{session:n},error:r}=e;if(r)return this._returnResult({data:null,error:r});if(!n)return this._returnResult({data:null,error:new Pe});const{data:s,error:a}=await H(this.fetch,"GET",`${this.url}/passkeys`,{headers:this.headers,jwt:n.access_token,xform:i=>({data:i,error:null})});return a?this._returnResult({data:null,error:a}):this._returnResult({data:s,error:null})})}catch(e){if(M(e))return this._returnResult({data:null,error:e});throw e}}async _updatePasskey(e){xt(this.experimental);try{return await this._useSession(async n=>{const{data:{session:r},error:s}=n;if(s)return this._returnResult({data:null,error:s});if(!r)return this._returnResult({data:null,error:new Pe});const{data:a,error:i}=await H(this.fetch,"PATCH",`${this.url}/passkeys/${e.passkeyId}`,{headers:this.headers,jwt:r.access_token,body:{friendly_name:e.friendlyName}});return i?this._returnResult({data:null,error:i}):this._returnResult({data:a,error:null})})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}async _deletePasskey(e){xt(this.experimental);try{return await this._useSession(async n=>{const{data:{session:r},error:s}=n;if(s)return this._returnResult({data:null,error:s});if(!r)return this._returnResult({data:null,error:new Pe});const{error:a}=await H(this.fetch,"DELETE",`${this.url}/passkeys/${e.passkeyId}`,{headers:this.headers,jwt:r.access_token,noResolveJson:!0});return a?this._returnResult({data:null,error:a}):this._returnResult({data:null,error:null})})}catch(n){if(M(n))return this._returnResult({data:null,error:n});throw n}}}Gs.nextInstanceID={};const ow=Gs,uw="2.109.0";let as="",Ni;if(typeof Deno<"u"){var Ll;as="deno",Ni=(Ll=Deno.version)===null||Ll===void 0?void 0:Ll.deno}else if(typeof document<"u")as="web";else if(typeof navigator<"u"&&navigator.product==="ReactNative")as="react-native";else{var $l;as="node",Ni=typeof process<"u"?($l=process.version)===null||$l===void 0?void 0:$l.replace(/^v/,""):void 0}const mm=[`runtime=${as}`];Ni&&mm.push(`runtime-version=${Ni}`);const cw={"X-Client-Info":`supabase-js/${uw}; ${mm.join("; ")}`},dw={headers:cw},hw={schema:"public"},fw={autoRefreshToken:!0,persistSession:!0,detectSessionInUrl:!0,flowType:"implicit"},pw={},mw={enabled:!1,respectSamplingDecision:!0};function gw(t,e,n,r){function s(a){return a instanceof n?a:new n(function(i){i(a)})}return new(n||(n=Promise))(function(a,i){function o(d){try{c(r.next(d))}catch(h){i(h)}}function u(d){try{c(r.throw(d))}catch(h){i(h)}}function c(d){d.done?a(d.value):s(d.value).then(o,u)}c((r=r.apply(t,[])).next())})}let zl=null;const yw="@opentelemetry/api";function xw(){return zl===null&&(zl=import(yw).catch(()=>null)),zl}function bw(){return gw(this,void 0,void 0,function*(){try{const t=yield xw();if(!t||!t.propagation||!t.context)return null;const e={};t.propagation.inject(t.context.active(),e);const n=e.traceparent;return n?{traceparent:n,tracestate:e.tracestate,baggage:e.baggage}:null}catch{return null}})}function vw(t){if(!t||typeof t!="string")return null;const e=t.split("-");if(e.length!==4)return null;const[n,r,s,a]=e;if(n.length!==2||r.length!==32||s.length!==16||a.length!==2)return null;const i=/^[0-9a-f]+$/i;return!i.test(n)||!i.test(r)||!i.test(s)||!i.test(a)||r==="00000000000000000000000000000000"||s==="0000000000000000"?null:{version:n,traceId:r,parentId:s,traceFlags:a,isSampled:(parseInt(a,16)&1)===1}}function ww(t,e){if(!t||!e||e.length===0)return!1;let n;if(t instanceof URL)n=t;else try{n=new URL(t)}catch{return!1}for(const r of e)try{if(typeof r=="string"){if(kw(n.hostname,r))return!0}else if(r instanceof RegExp){if(r.test(n.hostname))return!0}else if(typeof r=="function"&&r(n))return!0}catch{continue}return!1}function kw(t,e){if(e===t)return!0;if(e.startsWith("*.")){const n=e.slice(2);if(t.endsWith(n)&&(t===n||t.endsWith("."+n)))return!0}return!1}function Sw(t){const e=[];try{const n=new URL(t);e.push(n.hostname)}catch{}return e.push("*.supabase.co","*.supabase.in"),e.push("localhost","127.0.0.1","[::1]"),e}function Ks(t){"@babel/helpers - typeof";return Ks=typeof Symbol=="function"&&typeof Symbol.iterator=="symbol"?function(e){return typeof e}:function(e){return e&&typeof Symbol=="function"&&e.constructor===Symbol&&e!==Symbol.prototype?"symbol":typeof e},Ks(t)}function _w(t,e){if(Ks(t)!="object"||!t)return t;var n=t[Symbol.toPrimitive];if(n!==void 0){var r=n.call(t,e);if(Ks(r)!="object")return r;throw new TypeError("@@toPrimitive must return a primitive value.")}return(e==="string"?String:Number)(t)}function jw(t){var e=_w(t,"string");return Ks(e)=="symbol"?e:e+""}function Cw(t,e,n){return(e=jw(e))in t?Object.defineProperty(t,e,{value:n,enumerable:!0,configurable:!0,writable:!0}):t[e]=n,t}function ih(t,e){var n=Object.keys(t);if(Object.getOwnPropertySymbols){var r=Object.getOwnPropertySymbols(t);e&&(r=r.filter(function(s){return Object.getOwnPropertyDescriptor(t,s).enumerable})),n.push.apply(n,r)}return n}function we(t){for(var e=1;e<arguments.length;e++){var n=arguments[e]!=null?arguments[e]:{};e%2?ih(Object(n),!0).forEach(function(r){Cw(t,r,n[r])}):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(n)):ih(Object(n)).forEach(function(r){Object.defineProperty(t,r,Object.getOwnPropertyDescriptor(n,r))})}return t}const Nw=t=>t?(...e)=>t(...e):(...e)=>fetch(...e),Ew=()=>Headers,Tw=(t,e,n,r,s)=>{const a=Nw(r),i=Ew(),o=(s==null?void 0:s.enabled)===!0,u=(s==null?void 0:s.respectSamplingDecision)!==!1,c=o?Sw(e):null;return async(d,h)=>{var f;const m=(f=await n())!==null&&f!==void 0?f:t;let x=new i(h==null?void 0:h.headers);if(x.has("apikey")||x.set("apikey",t),x.has("Authorization")||x.set("Authorization",`Bearer ${m}`),c){const b=await Aw(d,c,u);b&&(b.traceparent&&!x.has("traceparent")&&x.set("traceparent",b.traceparent),b.tracestate&&!x.has("tracestate")&&x.set("tracestate",b.tracestate),b.baggage&&!x.has("baggage")&&x.set("baggage",b.baggage))}return a(d,we(we({},h),{},{headers:x}))}};async function Aw(t,e,n){if(!ww(typeof t=="string"||t instanceof URL?t:t.url,e))return null;const r=await bw();if(!r||!r.traceparent)return null;if(n){const s=vw(r.traceparent);if(s&&!s.isSampled)return null}return r}function lh(t){return typeof t=="boolean"?{enabled:t}:t}function Pw(t){return t.endsWith("/")?t:t+"/"}function Rw(t,e){var n,r,s,a,i,o;const{db:u,auth:c,realtime:d,global:h}=t,{db:f,auth:m,realtime:x,global:b}=e,k=lh(t.tracePropagation),y=lh(e.tracePropagation),p={db:we(we({},f),u),auth:we(we({},m),c),realtime:we(we({},x),d),storage:{},global:we(we(we({},b),h),{},{headers:we(we({},(n=b==null?void 0:b.headers)!==null&&n!==void 0?n:{}),(r=h==null?void 0:h.headers)!==null&&r!==void 0?r:{})}),tracePropagation:{enabled:(s=(a=k==null?void 0:k.enabled)!==null&&a!==void 0?a:y==null?void 0:y.enabled)!==null&&s!==void 0?s:!1,respectSamplingDecision:(i=(o=k==null?void 0:k.respectSamplingDecision)!==null&&o!==void 0?o:y==null?void 0:y.respectSamplingDecision)!==null&&i!==void 0?i:!0},accessToken:async()=>""};return t.accessToken?p.accessToken=t.accessToken:delete p.accessToken,p}function Iw(t){const e=t==null?void 0:t.trim();if(!e)throw new Error("supabaseUrl is required.");if(!e.match(/^https?:\/\//i))throw new Error("Invalid supabaseUrl: Must be a valid HTTP or HTTPS URL.");try{return new URL(Pw(e))}catch{throw Error("Invalid supabaseUrl: Provided URL is malformed.")}}var Ow=class extends ow{constructor(t){super(t)}},Lw=class{constructor(t,e,n){var r,s;this.supabaseUrl=t,this.supabaseKey=e;const a=Iw(t);if(!e)throw new Error("supabaseKey is required.");this.realtimeUrl=new URL("realtime/v1",a),this.realtimeUrl.protocol=this.realtimeUrl.protocol.replace("http","ws"),this.authUrl=new URL("auth/v1",a),this.storageUrl=new URL("storage/v1",a),this.functionsUrl=new URL("functions/v1",a);const i=`sb-${a.hostname.split(".")[0]}-auth-token`,o={db:hw,realtime:pw,auth:we(we({},fw),{},{storageKey:i}),global:dw,tracePropagation:mw},u=Rw(n??{},o);if(this.settings=u,this.storageKey=(r=u.auth.storageKey)!==null&&r!==void 0?r:"",this.headers=(s=u.global.headers)!==null&&s!==void 0?s:{},u.accessToken)this.accessToken=u.accessToken,this.auth=new Proxy({},{get:(d,h)=>{throw new Error(`@supabase/supabase-js: Supabase Client is configured with the accessToken option, accessing supabase.auth.${String(h)} is not possible`)}});else{var c;this.auth=this._initSupabaseAuthClient((c=u.auth)!==null&&c!==void 0?c:{},this.headers,u.global.fetch)}this.fetch=Tw(e,t,this._getAccessToken.bind(this),u.global.fetch,u.tracePropagation),this.realtime=this._initRealtimeClient(we({headers:this.headers,accessToken:this._getAccessToken.bind(this),fetch:this.fetch},u.realtime)),this.accessToken&&Promise.resolve(this.accessToken()).then(d=>this.realtime.setAuth(d)).catch(d=>console.warn("Failed to set initial Realtime auth token:",d)),this.rest=new Fx(new URL("rest/v1",a).href,{headers:this.headers,schema:u.db.schema,fetch:this.fetch,timeout:u.db.timeout,urlLengthLimit:u.db.urlLengthLimit}),this.storage=new ov(this.storageUrl.href,this.headers,this.fetch,n==null?void 0:n.storage),u.accessToken||this._listenForAuthEvents()}get functions(){return new Lx(this.functionsUrl.href,{headers:this.headers,customFetch:this.fetch})}from(t){return this.rest.from(t)}schema(t){return this.rest.schema(t)}rpc(t,e={},n={head:!1,get:!1,count:void 0}){return this.rest.rpc(t,e,n)}channel(t,e={config:{}}){return this.realtime.channel(t,e)}getChannels(){return this.realtime.getChannels()}removeChannel(t){return this.realtime.removeChannel(t)}removeAllChannels(){return this.realtime.removeAllChannels()}async _getAccessToken(){var t=this,e,n;if(t.accessToken)return await t.accessToken();const{data:r}=await t.auth.getSession();return(e=(n=r.session)===null||n===void 0?void 0:n.access_token)!==null&&e!==void 0?e:t.supabaseKey}_initSupabaseAuthClient({autoRefreshToken:t,persistSession:e,detectSessionInUrl:n,storage:r,userStorage:s,storageKey:a,flowType:i,lock:o,debug:u,throwOnError:c,experimental:d,lockAcquireTimeout:h,skipAutoInitialize:f},m,x){const b={Authorization:`Bearer ${this.supabaseKey}`,apikey:`${this.supabaseKey}`};return new Ow({url:this.authUrl.href,headers:we(we({},b),m),storageKey:a,autoRefreshToken:t,persistSession:e,detectSessionInUrl:n,storage:r,userStorage:s,flowType:i,lock:o,debug:u,throwOnError:c,experimental:d,fetch:x,lockAcquireTimeout:h,skipAutoInitialize:f,hasCustomAuthorizationHeader:Object.keys(this.headers).some(k=>k.toLowerCase()==="authorization")})}_initRealtimeClient(t){return new Rb(this.realtimeUrl.href,we(we({},t),{},{params:we(we({},{apikey:this.supabaseKey}),t==null?void 0:t.params)}))}_listenForAuthEvents(){return this.auth.onAuthStateChange((t,e)=>{this._handleTokenChanged(t,"CLIENT",e==null?void 0:e.access_token)})}_handleTokenChanged(t,e,n){(t==="TOKEN_REFRESHED"||t==="SIGNED_IN")&&this.changedAccessToken!==n?(this.changedAccessToken=n,this.realtime.setAuth(n)):t==="SIGNED_OUT"&&(this.realtime.setAuth(),e=="STORAGE"&&this.auth.signOut(),this.changedAccessToken=void 0)}};const $w=(t,e,n)=>new Lw(t,e,n);function zw(){if(typeof window<"u")return!1;const t=globalThis.process;if(!t)return!1;const e=t.version;if(e==null)return!1;const n=e.match(/^v(\d+)\./);return n?parseInt(n[1],10)<=18:!1}zw()&&console.warn("⚠️  Node.js 18 and below are deprecated and will no longer be supported in future versions of @supabase/supabase-js. Please upgrade to Node.js 20 or later. For more information, visit: https://github.com/orgs/supabase/discussions/37217");const oh={VITE_SUPABASE_ANON_KEY:"sb_publishable_OqJ27gFeFceeXEgJcE1ijA_vIMc39Wr",VITE_SUPABASE_URL:"https://wecusrqrzwcsdtenodba.supabase.co"};var Mw={};const gm=typeof import.meta<"u"&&oh?oh:typeof process<"u"?Mw:{},Jo=gm.VITE_SUPABASE_URL,qo=gm.VITE_SUPABASE_ANON_KEY,at=!!(Jo&&qo&&Jo!=="https://your-project.supabase.co"&&qo!=="your-anon-key-here"),X=at?$w(Jo,qo):null,uh=[{slug:"anokha-pyaar-hai-tera",number:1,title:"अनोखा प्यार है तेरा",title_alt:"Anokha Pyaar Hai Tera",language:"hindi",tags:["Love","Praise"],stanzas:[{label:"कोरस",text:`अनोखा प्यार है तेरा
+करूँगा स्तुति तेरी मैं सर्वदा (२)`},{label:"पद 1",text:`जग में आया यीशु स्वर्ग छोड़कर
+मेरा सारा दंड सह लिया उसने
+कोड़े खा के क्रूस उठा के यीशु ने
+मुझको मुक्ति और चंगाई दे दी है
+अनोखा प्यार है तेरा, करूँगा स्तुति तेरी मैं सर्वदा`},{label:"पद 2",text:`खोया हुआ था मैं घोर अंधेरे में
+ढूंढ लिया मुझको मेरे चरवाहे ने
+हाथ पकड़कर अपना बनाया
+जीवन की राहों पे चलना सिखाया
+अनोखा प्यार है तेरा, करूँगा स्तुति तेरी मैं सर्वदा`},{label:"पद 3",text:`कोई न था जब मेरा सहारा
+तू ही बना प्रभु मीत हमारा
+तेरी दया और तेरी भलाई
+जीवन भर मुझ पर बनी रहेगी
+अनोखा प्यार है तेरा, करूँगा स्तुति तेरी मैं सर्वदा`}],type:"worship",beat:"4/4",tempo:76},{slug:"an-vachan-aur-mannat-aulad",number:2,title:"अन्न वस्त्र और सभी आशीषें",title_alt:"An Vachan Aur Mannat Aulad",language:"hindi",tags:["Thanksgiving","Provision"],stanzas:[{label:"पद",text:`अन्न वस्त्र और सभी आशीषें, दी मुझे उसने भरपूरी से
+खतरों और सब मुसीबतों से, आँख की पुतली जैसे संभाला मुझे
+तेरे प्यार से मुझे मिली, जीवन में पाया नया जीवन मैंने
+पवित्र आत्मा और वचन से भी नया, जीवन में पाया नया जीवन मैंने`}],type:"worship",beat:"4/4",tempo:74},{slug:"apna-bojh-prabhu-par-daal",number:3,title:"अपना बोझ प्रभु पर डाल",title_alt:"Apna Bojh Prabhu Par Daal",language:"hindi",tags:["Encouragement"],stanzas:[{label:"कोरस",text:`अपना बोझ प्रभु पर डाल, कभी न घबराना,
+तेरा आदर मान करेगा, आश्चर्य कर्म करेगा – 2`},{label:"पद 1",text:"भक्तों को वह भूलेगा नहीं, हमेशा उनको संभाला करेगा – 2"},{label:"पद 2",text:"तारणहारा हमारी शरण, साये में लेकर चलता है – 2"},{label:"पद 3",text:"माता पिता यदि छोड़ भी दे, वो तो गले से लगाएगा – 2"},{label:"पद 4",text:"प्रभु हमारे साथ रहे, सामना कौन कर पाएगा – 2"},{label:"पद 5",text:"पूरा समर्पण उसको करें, वो ही सब कुछ देखेगा – 2"},{label:"पद 6",text:"बोझ प्रभु पर डाल दिया है, अब क्यों घबराना – 2"}],type:"worship",beat:"4/4",tempo:74},{slug:"apna-bojh-yeshu-par-daalo",number:4,title:"अपना बोझ यीशु पर डालो",title_alt:"Apna Bojh Yeshu Par Daalo",language:"hindi",tags:["Praise","Encouragement"],stanzas:[{label:"कोरस",text:`अपना बोझ यीशु पर डालो
 वो तुमसे प्यार करता है (२)
 ऊँचा... ऊँचा... ऊँचा... ऊँचा...
 ऊँचा, ऊँचा, यीशु को उठाओ!
@@ -135,27 +138,34 @@ Glory, glory to His name.`}],type:"worship",beat:"4/4",tempo:74},{slug:"apna-boj
 नीचा, नीचा, शैतान को दबाओ!`},{label:"पद 3",text:`अपनी बीमारी यीशु पर डालो
 वो तुमसे प्यार करता है (२)
 ऊँचा, ऊँचा, यीशु को उठाओ!
-नीचा, नीचा, शैतान को दबाओ!`}],type:"praise",beat:"4/4",tempo:118},{slug:"alleluia-speak-lord",number:2,title:"Alleluia, Speak Lord",title_alt:null,language:"english",tags:["Acclamation"],stanzas:[{label:"Verse 1",text:"Alleluia Alleluia Alleluia x2"},{label:"Verse 2",text:`Speak Lord, your servant is listening
-You have the words of everlasting life`},{label:"Verse 3",text:"Alleluia Alleluia Alleluia x2"}],type:"worship",beat:"4/4",tempo:74},{slug:"aaj-ka-din-yehova-ne-banaya-hai",number:2,title:"आज का दिन यहोवा ने बनाया है",title_alt:"Aaj Ka Din Yehova Ne Banaya Hai",language:"hindi",tags:["Praise","Joy"],stanzas:[{label:"कोरस",text:`आज का दिन यहोवा ने बनाया है
-हम उसमें आनंदित हों, आनंदित हों`},{label:"पद 1",text:`प्रभु को महिमा मिले चाहे हो मेरा अपमान
-वो बढ़े और मैं घटूँ, रहे इसी का ध्यान`},{label:"पद 2",text:`स्तुति प्रशंसा करें क्यों ना कुछ होता रहे
-उसको हम भाते रहें चाहे हम जहाँ भी रहें`},{label:"पद 3",text:`आता हूँ तेरे पास मुझको कबूल कर ले
-मुझको है तुझसे आस, पापों से शुद्ध कर ले`}],type:"praise",beat:"4/4",tempo:104},{slug:"amazing-love",number:3,title:"Amazing Love",title_alt:null,language:"english",tags:["Communion"],stanzas:[{label:"Verse 1",text:`I'm forgiven because You were forsaken
-I'm accepted, You were condemned
-I am alive and well, Your spirit is within me
-'Cause You died and rose again`},{label:"Verse 2",text:`Amazing love, how can it be?
-That You, my King would die for me?
-Amazing love, I know its true
-It's my joy to honor You
-In all I do, I honor You`}],type:"worship",beat:"4/4",tempo:74},{slug:"aatma-mandraata-pavitra-aatma-mandraata",number:3,title:"आत्मा मण्डराता, पवित्र आत्मा मण्डराता",title_alt:"Aatma Mandraata, Pavitra Aatma Mandraata",language:"hindi",tags:["Holy Spirit","Worship"],stanzas:[{label:"कोरस",text:`आत्मा मण्डराता, पवित्र आत्मा मण्डराता
-पिन्तेकुस्त के दिन समान
-आत्मा मण्डराता`},{label:"पद 1",text:`अंधे देखते हैं, बहरे सुनते हैं
-यीशु मसीह के नाम से
-अंधे देखते हैं, आत्मा मण्डराता`},{label:"पद 2",text:`लंगड़े चलते हैं, गूंगे बोलते हैं
-यीशु मसीह के नाम से
-लंगड़े चलते हैं, आत्मा मण्डराता`},{label:"पद 3",text:`पापी क्षमा पाते, बीमार चंगाई पाते
-यीशु मसीह के नाम से
-बीमार चंगाई पाते, आत्मा मण्डराता`}],type:"worship",beat:"4/4",tempo:74},{slug:"aao-hum-yehova-ka-dhanyavaad-karein",number:4,title:"आओ हम यहोवा का धन्यवाद करें",title_alt:"Aao Hum Yehova Ka Dhanyavaad Karein",language:"hindi",tags:["Praise","Worship"],stanzas:[{label:"कोरस",text:`आओ हम यहोवा का धन्यवाद करें
+नीचा, नीचा, शैतान को दबाओ!`}],type:"praise",beat:"4/4",tempo:118},{slug:"abhishek-kar",number:5,title:"अभिषेक कर",title_alt:"Abhishek Kar",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`अभिषेक कर, अभिषेक कर...२
+अभिषेक मुझे तू कर`},{label:"Verse 1",text:`१. जिस तरह हिरण तड़पता है,
+पानी के झरने के लिए
+मेरा मन प्यासा है,
+पवित्र आत्मा मेरे लिए ...२
+मैं प्यासा हूं, मेरी प्यास बुझा
+हिरण की तरह तुझे ढूंढ रहा
+प्रभु, प्यास मेरी बुझा`},{label:"Verse 2",text:`२. जीवन के बोझ के तले,
+मैं यूं ही दबा रहा
+जीवन के झरनों से,
+प्रभु मैं अनजान रहा
+अपने लहू से मुझे शुद्ध कर
+नए जीवन को मुझमें तू भर
+प्रभु, प्यास मेरी बुझा`}],type:"worship",beat:"4/4",tempo:74},{slug:"alpha-aur-omega",number:6,title:"अल्फा और ओमेगा",title_alt:"Alpha Aur Omega",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`अल्फा और ओमेगा
+आदि और अंत
+अनंतकाल का ईश्वर
+तेरी आराधना आराधना
+आराधना हालेलुय्याह`},{label:"Verse 2",text:`१. यहोवा शालोम तेरा नाम है,
+मुझको शांति देता तू
+यहोवा राफा तेरा नाम है
+मुझको चंगा करता तू,
+मुझको कभी ना छोड़ेगा,
+मुझको कभी ना त्यागेगा ...३
+कैसा प्यारा वादा है`}],type:"worship",beat:"4/4",tempo:74},{slug:"alleluya-alleluya",number:7,title:"अल्लेलुया, प्रभु आया जहां में",title_alt:"Alleluya Alleluya",language:"hindi",tags:["Carol","Christmas"],stanzas:[{label:"कोरस",text:`अल्लेलुया, अल्लेलुया
+प्रभु आया जहां में,
+देखो चमकी नई आभा
+हमें उषा देने को,`},{label:"पद 1",text:`आने वाला है वो हम पापियों को,
+जीवन मुक्ति खुशी देने को (2)`}],type:"worship",beat:"4/4",tempo:74},{slug:"aao-hum-yehova-ka-dhanyavaad-karein",number:8,title:"आओ हम यहोवा का धन्यवाद करें",title_alt:"Aao Hum Yehova Ka Dhanyavaad Karein",language:"hindi",tags:["Praise","Worship"],stanzas:[{label:"कोरस",text:`आओ हम यहोवा का धन्यवाद करें
 अपने सारे हृदय से वंदना करें
 उसके फाटकों में स्तुति करें और ललकारें (२)`},{label:"पद 1",text:`जिसने बनाया हमें वो है हमारा आधार
 जिसने दी हमको सांस वो है हमारा उद्धार
@@ -164,793 +174,48 @@ In all I do, I honor You`}],type:"worship",beat:"4/4",tempo:74},{slug:"aatma-man
 उसकी ही जय जय हो आराधना`},{label:"पद 2",text:`अपने पूरे तन मन से हम उसकी महिमा करें
 वो है शिफा और नजात, उसकी प्रशंसा करें
 वो है जग का त्राता और तारणहार
-उसकी हो जय जय सदा (२)`}],type:"praise",beat:"4/4",tempo:104},{slug:"as-the-deer",number:5,title:"As the deer",title_alt:null,language:"english",tags:["Psalms"],stanzas:[{label:"Verse 1",text:`As the deer panteth for the water,
-So my soul longeth after Thee.
-You alone are my heart's desire,
-And I long to worship you.`},{label:"Verse 2",text:`You alone are my Strength, my shield,
-To you alone may my spirit yield.
-You alone are my heart's desire,
-And I long to worship you.`},{label:"Verse 3",text:`I want you more than Gold and silver,
-Only you can satisfy.
-You alone are the real joy-giver,
-And the apple of my eye.`},{label:"Verse 4",text:`You're my friend and you are my brother,
-Even though you are my Lord
-I love you more than any other,
-So much more than anything.`}],type:"worship",beat:"4/4",tempo:74},{slug:"aawaz-uthayenge-hum-saaz-bajayenge",number:5,title:"आवाज उठायेंगे, हम साज बजायेंगे",title_alt:"Aawaz Uthayenge, Hum Saaz Bajayenge",language:"hindi",tags:["Praise","Worship"],stanzas:[{label:"कोरस",text:`आवाज़ उठायेंगे, हम साज़ बजायेंगे
-है यीशु महान अपना, यह गीत सुनायेंगे`},{label:"पद 1",text:`संसार की सुंदरता में, है रूप जो तेरा ही
-इन चाँद सितारों में, है अक्स जो तेरा ही
-महिमा की तेरी बातें, हम सबको बतायेंगे`},{label:"पद 2",text:`दिल तेरा खज़ाना है, इक पाक मोहब्बत का
-थाह पा न सका कोई, सागर है तू उल्फत का
-हम तेरी मोहब्बत से, दिल अपना सजायेंगे`},{label:"पद 3",text:`न देख सका हमको, तू पाप के सागर में
-और बन के मनुष्य आया, आकाश से इस जग में
-मुक्ति का तू दाता है, दुनिया को बतायेंगे`}],type:"praise",beat:"4/4",tempo:104},{slug:"as-we-gather-in-this-place-today",number:6,title:"As we gather in this place today",title_alt:null,language:"english",tags:["Entrance","Holy Spirit"],stanzas:[{label:"Verse 1",text:`As we gather in this place today
-Holy Spirit come and have Your way, have Your way
-As we lay aside our own desires
-Sweep across our hearts with Holy fire, have Your way`},{label:"Verse 2",text:`This is Your house, Your home
-We welcome You, Lord, we welcome You
-This is Your house, Your home
-We welcome You today`},{label:"Verse 3",text:`As we offer up our hearts and lives
-Let them be a living sacrifice, oh have Your way
-Be glorified in everything we do
-Be glorified in everything we say, oh have Your way`},{label:"Verse 4",text:`This is Your house, Your home
-We welcome You, Lord, we welcome You
-This is Your house, Your home
-We welcome You today`}],type:"worship",beat:"4/4",tempo:74},{slug:"awesome-god",number:7,title:"Awesome God",title_alt:null,language:"english",tags:["Psalms"],stanzas:[{label:"Verse 1",text:`When He rolls up His sleeves
-He ain't just putting on the ritz
-(Our God is an awesome God)`},{label:"Verse 2",text:`There's thunder in His footsteps
-And lightning in His fists
-(Our God is an awesome God)`},{label:"Verse 3",text:`And the Lord wasn't joking
-When He kicked 'em out of Eden
-It wasn't for no reason
-That He shed His blood
-His return is very close
-And so you better be believing that
-Our God is an awesome God`},{label:"Verse 4",text:`( Our God is an awesome God
-He reigns from heaven above
-With wisdom, power, and love
-Our God is an awesome God ) x2`},{label:"Verse 5",text:`And when the sky was starless
-In the void of the night
-(Our God is an awesome God)`},{label:"Verse 6",text:`He spoke into the darkness
-And created the light
-(Our God is an awesome God)`},{label:"Verse 7",text:`Judgement and wrath
-He poured out on the Sodom
-Mercy and grace
-He gave us at the cross
-I hope that you have not
-Too quickly forgotten that
-Our God is an awesome God`},{label:"Verse 8",text:`Our God is an awesome God
-He reigns from heaven above
-With wisdom, power, and love
-Our God is an awesome God`}],type:"worship",beat:"4/4",tempo:74},{slug:"aaradhana-mein-hai-chhutkara-aaradhana-mein-hai-changai",number:7,title:"आराधना में है छुटकारा, आराधना में है चंगाई",title_alt:"Aaradhana Mein Hai Chhutkara, Aaradhana Mein Hai Changai",language:"hindi",tags:["Worship","Healing"],stanzas:[{label:"कोरस",text:`आराधना में है छुटकारा, आराधना में है चंगाई
-शरीर, प्राण, आत्मा में शांति आनंद देता है जान से प्यारा प्रभु
-प्रार्थना करें, आराधना करें, वो अच्छा है कितना भला है (२)
-छुटकारा पायें हमेशा हमेशा`},{label:"पद 1",text:`माँगोगे तो मिलेगा, ढूँढोगे तो पाओगे
-खटखटाओ, खुलेगी स्वर्ग की आशीषें
-पाओ तुम उसे अभी
-प्रार्थना करें, आराधना करें, वो अच्छा है कितना भला है
-छुटकारा पायें हमेशा हमेशा`},{label:"पद 2",text:`प्रार्थना करो निरंतर, प्रार्थना करो विश्वास से
-धर्मी जन की प्रार्थना, विश्वास की प्रार्थना खोलती है सारे बंधन को
-प्रार्थना करें, आराधना करें, वो अच्छा है कितना भला है
-छुटकारा पायें हमेशा हमेशा`}],type:"worship",beat:"4/4",tempo:74},{slug:"because-he-lives",number:8,title:"Because He lives",title_alt:null,language:"english",tags:["Communion","Easter"],stanzas:[{label:"Verse 1",text:`Because He lives, I can face tomorrow
-Because He lives, all fear is gone
-Because I know-w-w He holds the future
-And life is worth a living, just because He lives`},{label:"Verse 2",text:`God sent His son, they called Him Jesus
-He came to love, heal and forgive
-He lived and died to buy my pardon
-An empty grave is there to prove my Savior lives`},{label:"Verse 3",text:`Because He lives, I can face tomorrow
-Because He lives, all fear is gone
-Because I know-w-w He holds the future
-And life is worth a living, just because He lives`},{label:"Verse 4",text:`And then one day, I'll cross the river
-I'll fight life's final war with pain
-And then as death gives way to victory
-I’ll see the lights of glory and l'll know He reigns`},{label:"Verse 5",text:`Because He lives, I can face tomorrow
-Because He lives, all fear is gone
-Because I know-w-w He holds the future
-And life is worth a living, just because He lives`}],type:"worship",beat:"4/4",tempo:74},{slug:"aaye-hain-hum-tere-charnon-me",number:8,title:"आये हैं हम, तेरे चरणों मे",title_alt:"Aaye Hain Hum, Tere Charnon Me",language:"hindi",tags:["Worship","Entrance"],stanzas:[{label:"कोरस",text:`आये हैं हम तेरे चरणों में, लेकर हम स्तुति
-हालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह...`},{label:"पद 1",text:`प्यारे मसीहा आशीष दे हमें
-आत्मा से तू भर दे हमें (३)
-हालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह...`},{label:"पद 2",text:`हम बच्चे हैं परमपिता के
-बढ़ना है हमें वचनों में (३)
-हालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह...`},{label:"पद 3",text:`मिलती है हमें तुझसे चंगाईयाँ
-देता तू हमें पापों से मुक्ति (३)
-हालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह...`},{label:"पद 4",text:`हम तैयार हैं यीशु तेरे लिए
-जल्दी आ तू हमको लेने (३)
-हालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह...`}],type:"worship",beat:"4/4",tempo:74},{slug:"bless-the-lord-o-my-soul",number:9,title:"Bless the Lord O My Soul",title_alt:null,language:"english",tags:["Communion"],stanzas:[{label:"Verse 1",text:`The sun comes up
-It's a new day dawning
-It's time to sing Your song again
-Whatever may pass
-And whatever lies before me
-Let me be singing
-When the evening comes
-Bless the Lord oh my soul
-Oh my soul
-Worship His Holy name
-Sing like never before
-Oh my soul
-I'll worship Your Holy name
-You're rich in love
-And You're slow to anger
-Your name is great
-And Your heart is kind
-For all Your goodness
-I will keep on singing
-Ten thousand reasons
-For my heart to find
-So bless the Lord oh my soul
-Oh my soul
-Worship His Holy name
-Sing like never before
-Oh my soul
-I'll worship Your Holy name
-Bless You Lord
-And on that day
-When my strength is failing
-The end draws near
-And my time has come
-Still my soul will
-Sing Your praise unending
-Ten thousand years
-And then forevermore
-Forevermore
-Bless the Lord oh my soul
-Oh my soul
-Worship His Holy name
-Sing like never before
-Oh my soul
-I'll worship Your Holy name`}],type:"worship",beat:"4/4",tempo:74},{slug:"aashish-tum-se-chahte-hai",number:9,title:"आशीष तुम से चाहते हैं",title_alt:"Aashish Tum Se Chahte Hai",language:"hindi",tags:["Prayer","Worship"],stanzas:[{label:"कोरस",text:`आशीष तुझ से चाहते हैं
-हे स्वर्गीय पिता हम आते हैं`},{label:"पद 1",text:`न कोई ख़ूबी है न लियाकत, बख़्श हमको अपनी ताकत (२)
-खाली दिलों को लाते हैं (२)`},{label:"पद 2",text:`हमने बहुत खताएं की हैं, रहे निकम्मे जफाएं की हैं (२)
-शर्म से सर झुक जाते हैं (२)`},{label:"पद 3",text:`तू है शक्तिमान प्रभु जी, दया भी है अपार प्रभु जी
-स्तुति हम सब गाते हैं (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"blest-are-you-lord",number:10,title:"Blest are You Lord",title_alt:null,language:"english",tags:["Offertory"],stanzas:[{label:"Verse 1",text:`Blest are You, Lord, God of all creation
-Thanks to Your goodness,
-this bread we offer
-Fruit of the earth, work of our hands
-It will become the bread of life.`},{label:"Verse 2",text:`Blessed be God (2)
-blessed be God for ever, amen
-Blessed be God (2)
-blessed be God for ever, amen`},{label:"Verse 3",text:`Blest are You, Lord God of all creation
-Thanks to Your goodness
-this wine we offer
-Fruit of the vine, work of our hands
-It will become the cup of joy.`}],type:"worship",beat:"4/4",tempo:74},{slug:"aao-hum-yehova-ke-liye",number:10,title:"आओ हम यहोवा के लिए",title_alt:"Aao Hum Yehova Ke Liye",language:"hindi",tags:["Praise","Psalms"],stanzas:[{label:"कोरस",text:`आओ हम यहोवा के लिये ऊँचे स्वर से गायें
+उसकी हो जय जय सदा (२)`}],type:"praise",beat:"4/4",tempo:104},{slug:"aao-hum-yehova-ke-liye",number:9,title:"आओ हम यहोवा के लिए",title_alt:"Aao Hum Yehova Ke Liye",language:"hindi",tags:["Praise","Psalms"],stanzas:[{label:"कोरस",text:`आओ हम यहोवा के लिये ऊँचे स्वर से गायें
 अपनी मुक्ति की चट्टान का जय जयकार करें`},{label:"पद 1",text:`धन्यवाद करते हुए उसके सम्मुख आयें
 भजन गाते हुए उसका जय जयकार करें`},{label:"पद 2",text:`क्योंकि यहोवा महान ईश्वर है
 सारे देवताओं के ऊपर वो महान राजा है`},{label:"पद 3",text:`क्योंकि वो हमारा परमेश्वर है
-और हम उसकी प्रजा, उसके हाथ की भेड़ें हैं`}],type:"praise",beat:"4/4",tempo:104},{slug:"come-holy-spirit-fall-on-me",number:11,title:"Come Holy Spirit (Fall on me)",title_alt:null,language:"english",tags:["Communion","Holy Spirit"],stanzas:[{label:"Verse 1",text:`Come Holy Spirit
-Fall on me now
-I need Your anointing
-Come in Your power
-I love You Holy Spirit
-You're captivating my soul
-And everyday I grow to love You more`},{label:"Verse 2",text:`Come Holy Spirit
-Fall on me now
-I need Your anointing
-Come in Your power
-I love You Holy Spirit
-You're captivating my soul
-And everyday I grow to love You more`},{label:"Verse 3",text:`I'm reaching for Your heart
-You hold my life into Your hands
-Drawing me closer to You
-I feel Your power renew
-Nothing compares to this place
-Where I can see You face to face`},{label:"Verse 4",text:"I worship You in spirit and in truth"}],type:"worship",beat:"4/4",tempo:74},{slug:"dhanyavaad-karte-hue",number:11,title:"धन्यवाद करते हुए",title_alt:"Dhanyavaad Karte Hue",language:"hindi",tags:["Thanksgiving","Praise"],stanzas:[{label:"पद",text:`धन्यवाद करते हुए उसके दरबार में
-आओ हम उसकी स्तुति करें
-गाओ नया गीत यहोवा के लिए
-गाओ नया गीत यहोवा के लिए`}],type:"praise",beat:"4/4",tempo:104},{slug:"uthte-hain-tera-naam-teri-stuti-karte-hue",number:12,title:"उठाते हैं तेरा नाम, तेरी स्तुति करते हुए",title_alt:"Uthte Hain Tera Naam, Teri Stuti Karte Hue",language:"hindi",tags:["Praise","Worship"],stanzas:[{label:"कोरस",text:`उठाते हैं तेरा नाम, तेरी स्तुति करते हुए
-घुटनों पर हम आकर, करते हैं तुझसे प्रार्थना
-मिलकर हम गायें, प्रभु की स्तुति हो (२)
-मिलकर हम गायें, हालेलुयाह... हालेलुयाह... हालेलुयाह...`},{label:"पद 1",text:`आएगा मेरा यीशु हमें लेने एक दिन
-जाएंगे हम उसके संग जहां पर होगा अनंत जीवन
-मिलकर हम गायें, प्रभु की स्तुति हो (२)
-हालेलुयाह, हालेलुयाह, हालेलुयाह...`}],type:"praise",beat:"4/4",tempo:104},{slug:"feliz-navidad",number:13,title:"Feliz Navidad",title_alt:null,language:"english",tags:["Carol","Christmas"],stanzas:[{label:"Verse 1",text:`Feliz Navidad,
-Feliz Navidad,
-Feliz Navidad,
-Próspero año y felicidad (2)`},{label:"Verse 2",text:`We wanna wish you a merry Christmas!
-We wanna wish you a merry Christmas!
-We wanna wish you a merry Christmas!
-From the bottom of our hearts (2)`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-hai-sachcha-gadiya",number:13,title:"यीशु है सच्चा गड़रिया",title_alt:"Yeshu Hai Sachcha Gadiya",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`यीशु है सच्चा गड़रिया,
-उसकी हम भेड़ें हैं...२
-हरी चराइयों में हमें चराता है
-हालेलूयाह आमीन....`},{label:"Verse 2",text:`१. वादी पहाड़ों में ले चलता है
-जहाँ पर सुखदाई झरने बहते हैं...२`},{label:"Verse 3",text:`२. हमको किसी का अब तो डर नहीं है
-क्योंकि यीशु जो मेरा साथी है...२`},{label:"Verse 4",text:`३. मार्गों में मेरी रक्षा वह करता है
-शैतान के हाथों से हमें बचाता है..२`}],type:"worship",beat:"4/4",tempo:74},{slug:"give-thanks",number:14,title:"Give thanks",title_alt:null,language:"english",tags:["Communion","Praise & Worship","Recessional"],stanzas:[{label:"Verse 1",text:`Give thanks with a grateful heart,
-give thanks to the Holy One;
-give thanks, because he’s given
-Jesus Christ, his Son.
-Give thanks with a grateful heart,
-give thanks to the Holy One;
-give thanks, because he’s given
-Jesus Christ, his Son.`},{label:"Verse 2",text:`And now let the weak say ‘I am strong’,
-let the poor say ‘I am rich’,
-because of what the Lord has done for us;
-and now let the weak say ‘I am strong’,
-let the poor say ‘I am rich’,
-because of what the Lord has done for us.`},{label:"Verse 3",text:"Give thanks..."}],type:"worship",beat:"4/4",tempo:74},{slug:"uth-aa-uth-aa-uth-aa",number:14,title:"उतर आ, उतर आ, ऐ रूह-ए-पाक उतर आ",title_alt:"Uth Aa, Uth Aa, Uth Aa",language:"hindi",tags:["Holy Spirit","Prayer"],stanzas:[{label:"कोरस",text:`उतर आ, उतर आ, उतर आ
-ऐ रूह-ए-पाक उतर आ (२)
-आसमानी खुशी से भर दे मुझको
-गीत नया दिल में ला (२), उतर आ...`},{label:"पद 1",text:`अमृत जल प्रभु मुझको पिला दे
-दिल मेरे की प्यास बुझा दे
-चश्मा बन के उतर आ...`},{label:"पद 2",text:`आसमानी रोटी मुझको खिला दे
-कमजोर दिल को तगड़ा बना दे
-भरपूर जीवन दिला...`},{label:"पद 3",text:`पाक रूह आ मेरे दिल के अंदर
-बन जाऊँ मैं तेरा मंदिर
-अपनी राह दिखा...`}],type:"worship",beat:"4/4",tempo:74},{slug:"give-me-joy-in-my-heart",number:15,title:"Give me Joy in my heart",title_alt:null,language:"english",tags:["Entrance"],stanzas:[{label:"Verse 1",text:`Give me joy in my heart, keep me praising,
-Give me joy in my heart, I pray.
-Give me joy in my heart, keep me praising,
-Keep me praising till the end of day.`},{label:"Verse 2",text:`Sing hosanna! Sing hosanna!
-Sing hosanna to the King of kings!
-Sing hosanna! Sing hosanna!
-Sing hosanna to the King.`},{label:"Verse 3",text:`Give me oil in my heart, keep me burning,
-Give me oil in my heart, I pray.
-Give me joy in my heart, keep me burning,
-Keep me burning till the end of day.`}],type:"worship",beat:"4/4",tempo:74},{slug:"karte-hain-teri-mahima-yehova",number:15,title:"करते हैं तेरी हम स्तुति",title_alt:"Karte Hain Teri Mahima Yehova",language:"hindi",tags:["Worship","Praise"],stanzas:[{label:"कोरस",text:`करते हैं तेरी हम स्तुति, हृदय की गहराइयों से (२)
-यीशु तू ही है, तू ही है, हमारा प्रभु (२)
-महिमा हो तेरी... महिमा हो तेरी
-महिमा हो तेरी... महिमा हो तेरी`},{label:"पद 1",text:`आत्मा और सच्चाई से, तेरी आराधना करें
-ऊँचा और ऊँचा, सबसे ऊँचा रहे तेरा नाम
-महिमा हो तेरी... महिमा हो तेरी
-महिमा हो तेरी... महिमा हो तेरी`}],type:"praise",beat:"4/4",tempo:104},{slug:"glory-glory-to-god-in-the-highest",number:16,title:"Glory, glory to God in the highest",title_alt:null,language:"english",tags:["Gloria"],stanzas:[{label:"Verse 1",text:`Glory, glory to God in the highest
-Glory, glory to God in the highest
-And on earth, peace to people of good will`},{label:"Verse 2",text:`We praise You
-We bless You
-We adore You
-We glorify You
-We give You thanks for Your great glory
-Lord God, Heavenly King
-O God, Almighty Father`},{label:"Verse 3",text:`Lord Jesus Christ, only Begotten Son
-Lord God, Lamb of God, Son of the Father
-You take away the sins of the world,
-have mercy on us
-You take away the sins of the world.
-receive our pray'r
-You are seated at the right hand of the Father
-have mercy on us`},{label:"Verse 4",text:`For You alone are the Holy One
-You alone are the Lord
-You alone are the Most High, Jesus Christ
-With the Holy Spirit
-In the glory of God the Father`},{label:"Verse 5",text:`Glory, glory to God in the highest
-Glory, glory to God in the highest
-And on earth, peace to people of good will
-Amen`}],type:"worship",beat:"4/4",tempo:74},{slug:"kitna-haseen-varda-kiya-khudavand-ne",number:16,title:"कितना हसीन वादा किया खुदावंद ने",title_alt:"Kitna Haseen Varda Kiya Khudavand Ne",language:"hindi",tags:["Encouragement","Promise"],stanzas:[{label:"कोरस",text:`कितना हसीन वादा ये किया खुदावंद ने
-जहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें (२)`},{label:"पद 1",text:`तुझे अकेला ना छोड़ूँ मैं, रूह अपनी भेजूँ
-तुझे अनाथ भी ना छोड़ूँ, एक मददगार भेजूँ
-यीशु के सिवा ये बात कही किसने?
-जहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें`},{label:"पद 2",text:`दस्तक वो देता है चाहे हर दिल में आना
-भरता उसको रूह से अपनी, जिसने उसे जाना
-जिसका बने है माली वो, कलियाँ लगे खिलने
-जहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें`},{label:"पद 3",text:`रूह-ए-पाक जो हाज़िर है और कहें खुशामदीद
-इज्जत, दौलत, हशमत जिसकी, उसकी करें तमजीद
-रूह के शोले बरसें जब फिर बदन लगे जलने
-जहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें`}],type:"worship",beat:"4/4",tempo:74},{slug:"great-indeed-are-your-works-o-lord",number:17,title:"Great indeed are your works O lord",title_alt:null,language:"english",tags:["Easter","Psalms"],stanzas:[{label:"Verse 1",text:`Great indeed are your works O lord
-now and evermore
-Great indeed are your works O lord
-now and evermore`},{label:"Verse 2",text:`The universe night and day
-Tells of all your wonders
-You are our life and our light
-We shall praise you always
-You are the path which we tread
-you will lead us onward`},{label:"Verse 3",text:`From every corner of the Earth
-All the nations gather
-You lead us all by the hand
-To the heavenly kingdom
-Then at the end of all time
-You will come in glory.`}],type:"worship",beat:"4/4",tempo:74},{slug:"tujhe-chhodunga-nahi-main-rahunga-tere-saaye-mein",number:17,title:"तुझे छोड़ूँगा नहीं मैं रहूँगा तेरे साये में",title_alt:"Tujhe Chhodunga Nahi Main Rahunga Tere Saaye Mein",language:"hindi",tags:["Promise","Comfort"],stanzas:[{label:"पद",text:`तुझे छोड़ूँगा नहीं मैं रहूँगा तेरे साये में
-आएगा वो दिन तेरे लिए भी
-देखेगा तू सपने सच होते
-तुझे छोड़ूँगा नहीं मैं रहूँगा तेरे साये में (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"heart-of-worship",number:18,title:"Heart of Worship",title_alt:null,language:"english",tags:["Communion","Praise & Worship"],stanzas:[{label:"Verse 1",text:`When the music fades
-All is stripped away
-And I simply come
-Longin' just to bring
-Something that's of worth
-That will bless Your heart
-I'll bring You more than a song
-For a song in itself
-Is not what You have required
-You search much deeper within
-Through the ways things appear
-You're looking into my heart
-I'm comin' back to the heart of worship
-And it's all about You
-It's all about You, Jesus
-I'm sorry, Lord, for the thing I've made it
-When it's all about You
-It's all about You, Jesus
-King of endless worth
-No one could express
-How much You deserve?
-Though I'm weak and poor
-All I have is Yours
-Every single breath
-I'll bring You more than a song
-For a song in itself
-Is not what You have required
-You search much deeper within
-Through the way things appear
-You're looking into my heart, yeah
-I'm comin' back to the heart of worship
-And it's all about You
-It's all about You, Jesus
-I'm sorry, Lord, for the thing I've made it
-When it's all about You
-It's all about You, Jesus`}],type:"worship",beat:"4/4",tempo:74},{slug:"holy-holy-lord-god-of-hosts",number:19,title:"Holy, Holy Lord God of hosts",title_alt:null,language:"english",tags:["Hosanna"],stanzas:[{label:"Verse 1",text:`Holy, Holy Lord God of Hosts
-Heaven and earth are full of your glory
-Hosanna, Hosanna in the highest`},{label:"Verse 2",text:`Blessed is he who comes in the
-name of the Lord
-Hosanna, Hosanna in the highest (2)
-Hosanna!`}],type:"worship",beat:"4/4",tempo:74},{slug:"dil-se-jo-pyaar-hota-hai",number:19,title:"दिल से जो प्यार होता है",title_alt:"Dil Se Jo Pyaar Hota Hai",language:"hindi",tags:["Love","Worship"],stanzas:[{label:"पद 1",text:`दिल से जो प्यार होता है, वो जीवन भर साथ रहता है (२)
-मैं तुझे छोड़ूँगा नहीं (२)
-मैं तुझे भूलूँगा नहीं (२)
-तेरी स्तुति गाता रहूँगा, जब तक जीवन रहेगा (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"i-the-lord-of-sea-and-sky",number:20,title:"I, the Lord of sea and sky",title_alt:null,language:"english",tags:["Entrance"],stanzas:[{label:"Verse 1",text:`I, the Lord of sea and sky,
-I have heard my people cry.
-All who dwell in dark and sin,
-my hand will save.`},{label:"Verse 2",text:`I, who made the stars of night,
-I will make their darkness bright.
-Who will bear my light to them?
-Whom shall I send?`},{label:"Verse 3",text:`Here I am, Lord.  Is it I, Lord?
-I have heard you calling in the night.
-I will go, Lord, if you lead me.
-I will hold your people in my heart.`},{label:"Verse 4",text:`I, the Lord of snow and rain,
-I have borne my people’s pain.
-I have wept for love of them.
-They turn away.`},{label:"Verse 5",text:`I will break their hearts of stone,
-give them hearts for love alone.
-I will speak my words to them.
-Whom shall I send?`},{label:"Verse 6",text:"Here I am, Lord..."},{label:"Verse 7",text:`I, the Lord of wind and flame,
-I will send the poor and lame.
-I will set a feast for them.
-My hand will save.
-Finest bread I will provide
-till their hearts be satisfied.
-I will give my life to them.
-Whom shall I send?`},{label:"Verse 8",text:"Here I am, Lord..."}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-dhanya-hai-sarvashaktiman",number:20,title:"तू धन्य है, सर्वश्रेष्ठ है",title_alt:"Tu Dhanya Hai, Sarvashaktiman",language:"hindi",tags:["Worship","Adoration"],stanzas:[{label:"कोरस",text:`गहरे प्यार से तूने प्यार किया
-माँ से गहरा है प्यार तेरा (२)
-तू धन्य है, सर्वश्रेष्ठ है
-तेरे जैसा नहीं और कोई (२)
-हल्लेलूयाह... हल्लेलूयाह... हल्लेलूयाह... हल्लेलूयाह...`},{label:"पद 1",text:`तुझे मैं कभी भूलूँगा नहीं
-तुझे मैं कभी छोड़ूँगा नहीं
-तेरे साथ-साथ मैं चलूँगा
-एक नूर के समान रहूँगा`}],type:"worship",beat:"4/4",tempo:74},{slug:"i-wander-far-away-from-god",number:21,title:"I wander far away from God",title_alt:null,language:"english",tags:[],stanzas:[{label:"Verse 1",text:`I’ve wandered far away from God,
-Now I’m coming home;
-The paths of sin too long I’ve trod,
-Lord, I’m coming home.`},{label:"Verse 2",text:`Coming home, coming home,
-Nevermore to roam;
-Open wide Thine arms of love;
-Lord, I’m coming home.`},{label:"Verse 3",text:`I’ve wasted many precious years,
-Now I’m coming home;
-I now repent with bitter tears,
-Lord, I’m coming home.`},{label:"Verse 4",text:`I’m tired of sin and straying, Lord,
-Now I’m coming home;
-I’ll trust Thy love, believe Thy word;
-Lord, I’m coming home.`},{label:"Verse 5",text:`My soul is sick, my heart is sore,
-Now I’m coming home;
-My strength renew, my hope restore:
-Lord, I’m coming home.`},{label:"Verse 6",text:`My only hope, my only plea,
-Now I’m coming home;
-That Jesus died, and died for me;
-Lord, I’m coming home.`},{label:"Verse 7",text:`I need His cleansing blood, I know,
-Now I’m coming home;
-O wash me whiter than the snow;
-Lord, I’m coming home.`}],type:"worship",beat:"4/4",tempo:74},{slug:"i-will-sing-of-the-mercices",number:22,title:"I will sing of the mercices",title_alt:null,language:"english",tags:["Psalms"],stanzas:[{label:"Verse 1",text:`I will sing of the mercies of the Lord for ever
-I will sing, I will sing
-I will sing of the mercies of the Lord for ever
-I will sing of the mercies of the Lord.`},{label:"Verse 2",text:`With my mouth will I make known
-Thy faithfulness, thy faithfulness
-With my mouth will I make known
-Thy faithfulness to all generations.`}],type:"worship",beat:"4/4",tempo:74},{slug:"in-his-time",number:23,title:"In his time",title_alt:null,language:"english",tags:["Psalms"],stanzas:[{label:"Verse 1",text:`In his time, In his time,
-He makes all things beautiful in his time,
-Lord, please show me everyday
-As you're teaching me your way
-That you do just what you say.`},{label:"Verse 2",text:`In your time, In your time,
-He makes all things beautiful in your time,
-Lord, my life to you bring
-With its winter and its spring
-May I fathom everything in your time.`},{label:"Verse 3",text:`There's a time, There's a time,
-Both for sowing and for reaping there's a time
-Time for losing, time for gain
-Time for joy and time for pain
-Every purpose under heaven has a time.`},{label:"Verse 4",text:`There are times, there are days
-Weeks and months we cannot understand God's ways.
-If for years we fail to scan
-What is his eternal plan
-We'll remember what he can all the time.
-Whom shall I send?`}],type:"worship",beat:"4/4",tempo:74},{slug:"lamb-of-god-sins-of-all-the-world",number:24,title:"Lamb of God - sins of all the world",title_alt:null,language:"english",tags:["Lamb of God"],stanzas:[{label:"Verse 1",text:`Lamb of God
-You take away the sins,
-The sins of all the world
-Give us mercy - 2
-Give us mercy Lamb of God`},{label:"Verse 2",text:`Lamb of God
-You take away the sins,
-The sins of all the world
-Give us mercy - 2
-Give us mercy Lamb of God`},{label:"Verse 3",text:`Lamb of God
-You take away the sins,
-The sins of all the world
-Grant us peace, Lord - 2
-Grant us Peace, O Lamb of God`}],type:"worship",beat:"4/4",tempo:74},{slug:"lamb-of-god-o-jesus-christ",number:25,title:"Lamb of God, O Jesus Christ",title_alt:null,language:"english",tags:["Lamb of God"],stanzas:[{label:"Verse 1",text:`Lamb of God, O Jesus Christ
-You take away our sins
-Have mercy on us
-Have mercy on us`},{label:"Verse 2",text:`Lamb of God, O Jesus Christ
-You take away our sins
-Grant us your true peace
-Grant us your lasting peace.`}],type:"worship",beat:"4/4",tempo:74},{slug:"lord-have-mercy",number:26,title:"Lord have mercy",title_alt:null,language:"english",tags:["Lord have mercy"],stanzas:[{label:"Verse 1",text:`Lord, have mercy, Lord, have mercy
-Lord, have mercy on us all.
-Lord, have mercy, Lord, have mercy
-Lord, have mercy on us all`},{label:"Verse 2",text:`Christ, have mercy, Christ, have mercy
-Christ, have mercy on us all
-Christ, have mercy, Christ, have mercy
-Christ, have mercy on us all`},{label:"Verse 3",text:`Lord, have mercy, Lord, have mercy
-Lord, have mercy on us all.
-Lord, have mercy, Lord, have mercy
-Lord, have mercy on us all.`}],type:"worship",beat:"4/4",tempo:74},{slug:"make-me-a-channel-of-your-peace",number:27,title:"Make me a channel of your peace",title_alt:null,language:"english",tags:["Communion"],stanzas:[{label:"Verse 1",text:`Make me a channel of your peace,
-Where there is hatred let me bring your love.
-Where there is injury your pardon Lord
-And where there's doubt true faith in You.`},{label:"Verse 2",text:`Oh Master grant that I may never seek.
-So much to be consoled as to console,
-To be understood as to understand,
-To be loved as to love with all my soul.`},{label:"Verse 3",text:`Make me a channel of your peace
-Where there's despair in life let me bring hope.
-Where there is darkness, Lord your shining light.
-And where there's sadness, every joy.`},{label:"Verse 4",text:`Make me a channel of your peace,
-It is in pardoning that we are pardoned,
-In giving to all men that we receive,
-And in dying that we're born to eternal life`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-mera-yeshu-mera",number:27,title:"यीशु मेरा यीशु मेरा",title_alt:"Yeshu Mera Yeshu Mera",language:"hindi",tags:["Praise","Devotion"],stanzas:[{label:"पद",text:`यीशु मेरा, यीशु मेरा, नाम लेता हूँ (२)
-जय जयकार करूँ मैं तेरा
-तूने मुझको है बचाया
-अपने लहू से है छुड़ाया
-यीशु मेरा, यीशु मेरा नाम लेता हूँ`}],type:"praise",beat:"4/4",tempo:104},{slug:"tere-bin-main-kuchh-bhi-nahi",number:28,title:"तेरे बिन मैं कुछ भी नहीं",title_alt:"Tere Bin Main Kuchh Bhi Nahi",language:"hindi",tags:["Worship","Surrender"],stanzas:[{label:"कोरस",text:`तेरे बिन मैं कुछ भी नहीं, कुछ भी नहीं (२)
-ऐ खुदावंद यीशु तेरे बिन
-ओ येशुआ, येशुआ (२), करूँ आराधना (२)
-हाथों को अपने उठाकर तुझे दूँ महिमा (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"khaali-hoon-bhar-de-mujhko",number:29,title:"खाली हूँ भर दे मुझको",title_alt:"Khaali Hoon Bhar De Mujhko",language:"hindi",tags:["Prayer","Holy Spirit"],stanzas:[{label:"कोरस",text:`खाली हूँ भर दे मुझको, है दुआ तुझसे (२)
-कुछ भी मैं नहीं हूँ बिना तेरे (२)
-ओ येशुआ, येशुआ (२), करूँ आराधना (२)
-हाथों को अपने उठाकर तुझे दूँ महिमा (२)`},{label:"पद 1",text:`तेरी सामर्थ से मुझको तू भर दे
-अपनी आत्मा से नया तू कर दे (२)
-जीवन ये मेरा, अर्पण है तुझको
-तू ही संभाले, तू ही चलाए`},{label:"पद 2",text:`तेरे भवन में आनंद मिलता
-तेरी संगति में जीवन मिलता (२)
-ओ येशुआ, येशुआ (२), करूँ आराधना (२)
-हाथों को अपने उठाकर तुझे दूँ महिमा (२)`}],type:"worship",beat:"4/4",tempo:70},{slug:"shepherd-of-my-soul",number:30,title:"Shepherd of my soul",title_alt:null,language:"english",tags:["Communion","Psalms"],stanzas:[{label:"Verse 1",text:`Shepherd of my soul I give You full control
-Wherever You may lead I will follow
-I have made the choice to listen for Your voice
-Wherever You may lead I will go`},{label:"Verse 2",text:`Shepherd of my soul I give You full control
-Wherever You may lead I will follow
-I have made the choice to listen for Your voice
-Wherever You may lead I will go`},{label:"Verse 3",text:`Be it in a quiet pasture or by a gentle breeze
-The shepherd of my soul is by my side
-Should I face a mighty mountain or a valley dark and deep
-The shepherd of my soul will be my guide`},{label:"Verse 4",text:`Shepherd of my soul I give You full control
-Wherever You may lead I will follow
-I have made the choice to listen for Your voice
-Wherever You may lead I will go`},{label:"Verse 5",text:`Be it in a quiet pasture or by a gentle breeze
-The shepherd of my soul is by my side
-And should I face a mighty mountain or a valley dark and deep
-The shepherd of my soul will be my guide`},{label:"Verse 6",text:`The Shepherd of my soul I give You full control
-Wherever You may lead I will follow
-I have made the choice to listen for Your voice
-Wherever You may lead I will go
-Wherever wherever You may lead I will go`}],type:"worship",beat:"4/4",tempo:74},{slug:"teri-ichchha-poori-ho-jaaye",number:30,title:"तेरी इच्छा पूरी हो जाए",title_alt:"Teri Ichchha Poori Ho Jaaye",language:"hindi",tags:["Surrender","Worship"],stanzas:[{label:"कोरस",text:`तेरी इच्छा पूरी हो जाए
-हाथों में तेरे जीवन है ये
-मैं मिट्टी हूँ, तू है कुम्हार
-मुझको उठा, मुझको बना`},{label:"पद 1",text:`अपनी मर्जी पर मैं चलता रहा
-तुझको कभी भी अपना ना कहा
-लेकिन प्रभु आज से मैं
-तेरे क्रूस को ले लेता हूँ`}],type:"worship",beat:"4/4",tempo:74},{slug:"shine-jesus-shine",number:31,title:"Shine Jesus shine",title_alt:null,language:"english",tags:["Recessional"],stanzas:[{label:"Verse 1",text:`Lord the light of your Love is shining
-In the midst of the darkness shining
-Jesus, Light of the world, shine upon us
-Set us free by the truth you now bring us
-Shine on me
-Shine on me.`},{label:"Verse 2",text:`Shine Jesus shine,
-fill this land with
-The Father's glory
-Blaze spirit blaze,
-set our heart on fire
-Flow river flow;
-flood the nations with Grace and mercy
-Send forth your word,
-Lord let there be light.`},{label:"Verse 3",text:`Lord I come to your awesome presence
-From the shadows into your radiance
-By the blood I may enter your brightness
-Search me, try me, consume all my darkness
-Shine on me
-Shine on me.`}],type:"worship",beat:"4/4",tempo:74},{slug:"sar-ko-apne-jhukaata-hoon",number:31,title:"सर को अपने झुकाता हूँ",title_alt:"Sar Ko Apne Jhukaata Hoon",language:"hindi",tags:["Worship","Surrender"],stanzas:[{label:"पद",text:`सर को अपने झुकाता हूँ मैं तेरे हुज़ूर (२)
-बन कर क़ुरबानी आता हूँ मेरे हुज़ूर (२)
-ओ येशुआ, येशुआ, करूँ आराधना
-हाथों को अपने उठाकर तुझे दूँ महिमा`}],type:"worship",beat:"4/4",tempo:74},{slug:"shout-to-the-lord",number:32,title:"Shout to the Lord",title_alt:null,language:"english",tags:["Communion","Recessional"],stanzas:[{label:"Verse 1",text:`My Jesus, my Saviour
-Lord there is none like You
-All of my days, I want to praise
-The wonders of Your mighty love`},{label:"Verse 2",text:`My comfort, my shelter
-Tower of refuge and strength
-Let every breath, all that I am
-Never cease to worship You`},{label:"Verse 3",text:`Shout to the Lord all the earth, let us sing
-Power and majesty, praise to the King
-Mountains bow down and the seas will roar
-At the sound of Your name`},{label:"Verse 4",text:`I sing for joy at the works of Your hand
-Forever I'll love You, forever I'll stand
-Nothing compares to the promise I have, in You`},{label:"Verse 5",text:`My Jesus, my Saviour
-Lord there is none like You
-All of my days, I want to praise
-The wonders of Your mighty love`},{label:"Verse 6",text:`My comfort, my shelter
-Tower of refuge and strength
-Let every breath, all that I am
-Never cease to worship You`},{label:"Verse 7",text:`Shout to the Lord all the earth, let us sing
-Power and majesty, praise to the King
-Mountains bow down and the seas will roar
-At the sound of Your name`},{label:"Verse 8",text:`I sing for joy at the works of Your hand
-Forever I'll love You, forever I'll stand
-Nothing compares to the promise I have, in You
-Nothing compares to the promise I have, in You
-Nothing compares to the promise I have, in You`}],type:"worship",beat:"4/4",tempo:74},{slug:"prabhu-yeshu-tere-charnon-mein",number:32,title:"प्रभु यीशु तेरे चरणों में",title_alt:"Prabhu Yeshu Tere Charnon Mein",language:"hindi",tags:["Worship","Devotion"],stanzas:[{label:"पद",text:`प्रभु यीशु तेरे चरणों में
-लाया हूँ मैं अपना जीवन
-तू ही मेरा जीवन आधार (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"silent-night",number:33,title:"Silent night",title_alt:null,language:"english",tags:["Christmas","Communion"],stanzas:[{label:"Verse 1",text:`Silent night, holy night
-All is calm, all is bright
-Round yon Virgin, Mother and Child
-Holy Infant so tender and mild
-Sleep in heavenly peace
-Sleep in heavenly peace`},{label:"Verse 2",text:`Silent night, holy night
-Shepherds quake at the sight
-Glories stream from heaven afar
-Heavenly hosts sing Alleluia
-Christ the Savior is born
-Christ the Savior is born`},{label:"Verse 3",text:`Silent night, holy night
-Son of God, love's pure light
-Radiant beams from Thy holy face
-With the dawn of redeeming grace
-Jesus Lord, at Thy birth
-Jesus Lord, at Thy birth`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-mere-jeevan-mein",number:33,title:"यीशु मेरे जीवन में",title_alt:"Yeshu Mere Jeevan Mein",language:"hindi",tags:["Thanksgiving"],stanzas:[{label:"पद",text:`यीशु मेरे जीवन में तूने जो किया है
-उसके लिए मैं तुझे धन्यवाद दूँगा`}],type:"worship",beat:"4/4",tempo:74},{slug:"the-king-of-glory",number:34,title:"The King of glory",title_alt:null,language:"english",tags:["Entrance","Palm Sunday"],stanzas:[{label:"Verse 1",text:`The King of glory comes, the nation rejoices;
-Open the gates before Him lift up your voices.`},{label:"Verse 2",text:`Who is the King of Glory; how shall we call Him?
-He is Emmanuel, the promised of ages.`},{label:"Verse 3",text:`In all of Galilee, in city or village,
-He goes among His people curing their illness.`},{label:"Verse 4",text:`Sing then of David's Son, our Saviour and brother,
-In all of Galilee was never another.`},{label:"Verse 5",text:`He gave His life for us, the lamb of salvation;
-He took upon Himself the sins of the nation.`},{label:"Verse 6",text:`He conquered sin and death, He truly has risen,
-And he will share with us his heavenly vision.`}],type:"worship",beat:"4/4",tempo:74},{slug:"there-is-no-problem-too-big",number:35,title:"There is no problem too big",title_alt:null,language:"english",tags:["Communion","Good Friday"],stanzas:[{label:"Verse 1",text:`There is no problem too big, God cannot solve it.
-There is no mountain too tall, He cannot move it.
-There is no storm too dark, God cannot calm it.
-There is no sorrow too deep, He cannot soothe it.`},{label:"Verse 2",text:`If he carried the weight of the world,
-Upon his shoulders,
-I know, my brothers, that he will carry you.
-If he carried the weight of the world,
-Upon his shoulders
-I know, my sister, that he will carry you.`}],type:"worship",beat:"4/4",tempo:74},{slug:"thy-word",number:36,title:"Thy Word",title_alt:null,language:"english",tags:["Acclamation"],stanzas:[{label:"Verse 1",text:`Thy Word is a lamp unto my feet
-And a light unto my path
-You're the light unto my path.`}],type:"worship",beat:"4/4",tempo:74},{slug:"teri-mahima-ho-mahima",number:36,title:"तेरी महिमा, हो महिमा",title_alt:"Teri Mahima, Ho Mahima",language:"hindi",tags:["Praise","Worship"],stanzas:[{label:"पद",text:`तेरी महिमा, हो महिमा (४)
-महिमा मिले तुझे स्वर्ग में
-महिमा मिले तुझे पृथ्वी पर`}],type:"praise",beat:"4/4",tempo:104},{slug:"way-maker",number:37,title:"Way Maker",title_alt:null,language:"english",tags:["Communion","Praise & Worship"],stanzas:[{label:"Verse 1",text:`You are here, You’re moving in our midst
-I worship You, I worship You
-You are here, You’re working in this place
-I worship You, I worship You`},{label:"Verse 2",text:`Way maker, miracle worker, promise keeper
-Light in the darkness, my God
-That is who You are`},{label:"Verse 3",text:`Way maker, miracle worker, promise keeper
-Light in the darkness, my God
-That is who You are`},{label:"Verse 4",text:`You are here, touching every heart
-I worship You, I worship You
-You are here, healing every heart
-I worship You, I worship You`},{label:"Verse 5",text:`You are here, turning lives around
-I worship You, I worship You
-You are here, mending every heart
-I worship You, I worship You`},{label:"Verse 6",text:`Even when I don’t see it, You’re working
-Even when I don’t feel it, You’re working
-You never stop, You never stop working
-You never stop, You never stop working`}],type:"worship",beat:"4/4",tempo:74},{slug:"taareef-taareef-milkar-karo-saare-taareef",number:37,title:"तारीफ, तारीफ मिलकर करो सारे तारीफ",title_alt:"Taareef, Taareef Milkar Karo Saare Taareef",language:"hindi",tags:["Praise"],stanzas:[{label:"कोरस",text:`तारीफ़, तारीफ़ तारीफ़, मिलके करो सारे तारीफ़ (२)
-यीशु की जो है प्यारा मुन्जी (२)`},{label:"पद 1",text:`उसने हम सब को है बनाया, जो कुछ दिखता उसने रचाया (२)
-सारे जहाँ का वह शाहनशाह (२)`},{label:"पद 2",text:`पापों से वह पाक है करता, सारी खताये माफ है करता (२)
-सारे रोगों को करता चंगा (२)`},{label:"पद 3",text:`उसकी मौत से जिन्दगी है पायी, आशा नयी एक उसने दिलायी (२)
-बैठेंगे तख्त पर फतहमन्द हो (२)`},{label:"पद 4",text:`हम्द-ओ-सन्ना हम मिलके करेंगे, सदा वहां पर उसको ताकेंगे (२)
-गीत नया वहाँ गायेंगे (२)`}],type:"praise",beat:"4/4",tempo:104},{slug:"we-are-gathering-together-unto-him",number:38,title:"We are gathering together unto Him",title_alt:null,language:"english",tags:["Entrance"],stanzas:[{label:"Verse 1",text:`We are gathering together unto Him,
-We are gathering together unto Him;
-Unto Him shall the gathering of the people be;
-We are gathering together unto Him;`},{label:"Verse 2",text:`We are offering together unto Him,
-We are offering together unto Him;
-Unto Him shall the offering of the people be;
-We are offering together unto Him;`},{label:"Verse 3",text:`We are singing together unto Him,
-We are singing together unto Him;
-Unto Him shall the singing of the people be;
-We are singing together unto Him;`},{label:"Verse 4",text:`We are praying together unto Him,
-We are praying together unto Him;
-Unto Him shall the praying of the people be;
-We are praying together unto Him;`}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-mera-sharanasthan",number:38,title:"तू मेरा शरणस्थान",title_alt:"Tu Mera Sharanasthan",language:"hindi",tags:["Worship","Refuge"],stanzas:[{label:"कोरस",text:`तू मेरा शरणस्थान, तू मेरा गढ़ है
-संकट में मेरा दोस्त, मेरा प्रभु!
-आराधना करूँ मैं पूरे दिल से, मैं तुझे ढूँढूँगा संपूर्ण जीवन से
-तेरी सेवा करूँगा तन-मन-धन से, मैं हूँ यहाँ प्रभु...`},{label:"पद 1",text:`उद्धारक मेरा तू, मेरी चंगाई है
-संकट में सामर्थ है, मेरा प्रभु...`},{label:"पद 2",text:"तू मेरा चरवाहा, संकट में सांत्वना है मेरा दोस्त, मेरा प्रभु..."}],type:"worship",beat:"4/4",tempo:74},{slug:"we-three-kings",number:40,title:"We three Kings",title_alt:null,language:"english",tags:["Carol","Christmas","Entrance","Epiphany","Recessional"],stanzas:[{label:"Verse 1",text:`We three kings of Orient are
-Bearing gifts we traverse afar.
-Field and fountain, moor and mountain,
-Following yonder star.`},{label:"Verse 2",text:`O star of wonder, star of night,
-Star with royal beauty bright,
-Westward leading, still proceeding,
-Guide us to thy perfect Light.`},{label:"Verse 3",text:`Born a king on Bethlehem's plain,
-Gold I bring to crown Him again,
-King forever, ceasing never
-Over us all to reign.`},{label:"Verse 4",text:`O star of wonder, star of night,
-Star with royal beauty bright,
-Westward leading, still proceeding,
-Guide us to thy perfect Light.`},{label:"Verse 5",text:`Frankincense to offer have I.
-Incense owns a Deity nigh.
-Prayer and praising all men raising,
-Worship Him, God on high.`},{label:"Verse 6",text:`O star of wonder, star of night,
-Star with royal beauty bright,
-Westward leading, still proceeding,
-Guide us to thy perfect Light.`},{label:"Verse 7",text:`Myrrh is mine: Its bitter perfume
-Breaths a life of gathering gloom.
-Sorrowing, sighing, bleeding dying,
-Sealed in the stone-cold tomb.`},{label:"Verse 8",text:`O star of wonder, star of night,
-Star with royal beauty bright,
-Westward leading, still proceeding,
-Guide us to thy perfect Light.`},{label:"Verse 9",text:`Glorious now behold Him arise,
-King and God and Sacrifice.
-Alleluia, alleluia!
-Sounds through the earth and skies.`},{label:"Verse 10",text:`O star of wonder, star of night,
-Star with royal beauty bright,
-Westward leading, still proceeding,
-Guide us to thy perfect Light.`}],type:"worship",beat:"4/4",tempo:74},{slug:"toone-lahoo-ki-kataron-ko",number:40,title:"तूने लहू के कतरों को",title_alt:"Toone Lahoo Ki Kataron Ko",language:"hindi",tags:["Sacrifice","Salvation"],stanzas:[{label:"कोरस",text:`यीशु नाम मिला, यीशु नाम मिला
-मेरा जीवन संवर गया, मेरा जीवन संवर गया (२)`},{label:"पद 1",text:`तूने लहू के कतरों को मेरे लिए बहा दिया
-तूने जान बदन देकर यीशु मुझको बचा लिया (२)
-तेरे लहू से (२), यीशु के लहू से, मसीह के लहू से
-मेरा जीवन संवर गया, मेरा जीवन संवर गया`},{label:"पद 2",text:`जब मैं पाप के दलदल में फंसा हुआ था
-तूने आके मुझको उठाया, अपना बेटा बनाया (२)
-तेरी दया से (२), यीशु की दया से, मसीह की दया से
-मेरा जीवन संवर गया, मेरा जीवन संवर गया`},{label:"पद 3",text:`अब मैं गाऊँगा, तेरी महिमा सुनाऊँगा
-जब तक है दम में दम, यीशु तेरे पीछे चलूँगा (२)
-तेरे अनुग्रह से (२), यीशु के अनुग्रह से, मसीह के अनुग्रह से
-मेरा जीवन संवर गया, मेरा जीवन संवर गया`}],type:"worship",beat:"4/4",tempo:68},{slug:"we-wish-you-a-merry-christmas",number:41,title:"We wish you a Merry Christmas",title_alt:null,language:"english",tags:["Carol","Christmas"],stanzas:[{label:"Verse 1",text:`We wish you a merry Christmas,
-We wish you a merry Christmas,
-We wish you a merry Christmas
-And a happy new year!`},{label:"Verse 2",text:`Good tidings we bring to you and your kin,
-We wish you a merry Christmas
-And a happy new year!`}],type:"worship",beat:"4/4",tempo:74},{slug:"welcome-holy-spirit",number:42,title:"Welcome Holy Spirit",title_alt:null,language:"english",tags:["Adoration","Communion","Entrance","Holy Spirit"],stanzas:[{label:"Verse 1",text:`Welcome Holy Spirit
-We are in Your presence
-Fill us with Your power
-Live inside of me`},{label:"Verse 2",text:`Welcome Holy Spirit
-We are in Your presence
-Fill us with Your power
-Live inside of me`},{label:"Verse 3",text:`You’re the Living Water
-Never drying Fountain
-Comforter and Counselor
-Take complete control`},{label:"Verse 4",text:`Welcome Holy Spirit
-We are in Your presence
-Fill us with Your power
-Live inside of me`},{label:"Verse 5",text:`Welcome Holy Spirit
-We are in Your presence
-Fill us with Your power
-Live inside of me`},{label:"Verse 6",text:`You’re the Living Water
-Never drying Fountain
-Comforter and Counselor
-Take complete control`},{label:"Verse 7",text:`You’re the Living Water
-Never drying Fountain
-Comforter and Counselor
-Take complete control`},{label:"Verse 8",text:`Welcome Holy Spirit
-We are in Your presence
-Fill us with Your power
-Live inside of me`},{label:"Verse 9",text:`Fill us with Your power
-Live inside of me
-Fill us with Your power
-Live inside of me`}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-hai-mera-apna",number:42,title:"तू है मेरा अपना",title_alt:"Tu Hai Mera Apna",language:"hindi",tags:["Comfort","Encouragement"],stanzas:[{label:"कोरस",text:"तू है मेरा अपना (२)"},{label:"पद 1",text:`निश्चय भलाई और करुणा
-जीवन भर साथ है सदा (२)`},{label:"पद 2",text:`ज्ञान सिखाता राह बताता
-वचन को देता सदा (२)`},{label:"पद 3",text:`संकट में अगर हम दुहाई दें
-छुटकारा देगा हमें (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"what-a-beautiful-name",number:43,title:"What a beautiful name",title_alt:null,language:"english",tags:["Communion","Easter"],stanzas:[{label:"Verse 1",text:`You were the Word at the beginning
-One with God the Lord Most High
-Your hidden glory in creation
-Now revealed in You our Christ`},{label:"Verse 2",text:`What a beautiful name it is
-What a beautiful name it is
-The name of Jesus Christ my King`},{label:"Verse 3",text:`What a beautiful name it is
-Nothing compares to this
-What a beautiful name it is
-The name of Jesus`},{label:"Verse 4",text:`You didn't want heaven without us
-So Jesus, You brought heaven down
-My sin was great, Your love was greater
-What could separate us now`},{label:"Verse 5",text:`What a wonderful name it is
-What a wonderful name it is
-The name of Jesus Christ my King`},{label:"Verse 6",text:`What a wonderful name it is
-Nothing compares to this
-What a wonderful name it is
-The name of Jesus`},{label:"Verse 7",text:`Death could not hold You
-The veil tore before You
-You silenced the boast, of sin and grave
-The heavens are roaring the praise of Your glory
-For You are raised to life again`},{label:"Verse 8",text:`You have no rival
-You have no equal
-Now and forever, God You reign
-Yours is the Kingdom
-Yours is the Glory
-Yours is the name, above all names`},{label:"Verse 9",text:`What a powerful name it is
-What a powerful name it is
-The name of Jesus Christ my King`},{label:"Verse 10",text:`What a powerful name it is
-Nothing can stand against
-What a powerful name it is
-The name of Jesus`},{label:"Verse 11",text:`What a powerful name it is
-The name of Jesus
-What a powerful name it is
-The name of Jesus`}],type:"worship",beat:"4/4",tempo:74},{slug:"thoda-samay-hai-baaki",number:43,title:"थोड़ा समय है बाकी",title_alt:"Thoda Samay Hai Baaki",language:"hindi",tags:["Encouragement","Service"],stanzas:[{label:"Chorus",text:`थोड़ा समय है बाकी, सेवा अभी है काफी (२)
-हम रुकें नहीं, पीछे मुड़े नहीं, यीशु है हमारा साथी (२)`},{label:"Verse 1",text:`१) संदेश सुनाते जाना, सेवा से नहीं शरमाना
-चाहे जग हमें रोके आये दु:ख के झकोरे (२)
-हमें देगा वो भरपूर शांति (२)`},{label:"Verse 2",text:`२) हम अपना क्रूस उठायें, और यीशु के पीछे आयें
-अपने को त्यागे यीशु से मन लगायें
-हम हैं उसके विश्वासी (२)`},{label:"Verse 3",text:`३) यीशु ने हमें भेजा है, उसका काम दिन ही दिन में करना है
-वो है रात आने वाली, ये हमारी जिम्मेवारी
-यीशु है हमारा न्यायी (२)`},{label:"Verse 4",text:`४) प्रतिफल हमें वो देगा, विश्वास में स्थिर करेगा
-उसकी आज्ञा हम मानें, उससे शांति हम पायें
-प्रतिज्ञा है उसकी काफी (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"what-a-friend-we-have-in-jesus",number:44,title:"What a friend we have in Jesus",title_alt:null,language:"english",tags:["Entrance","Recessional"],stanzas:[{label:"Verse 1",text:`What a friend we have in Jesus,
-All our sins and griefs to bear,
-What a privilege to carry,
-Everything to God in prayer,
-Oh, what grace we often forfeit,
-Oh, what needless pain we bear,
-All because we do not carry,
-Everything to God in Prayer.`},{label:"Verse 2",text:`Have we trials and temptations,
-Is there trouble anywhere,
-Take it to the Lord in prayer.
-Can we find a friend so faithful,
-Who will all our sorrows share,
-Jesus knows our every weakness,
-Take it to the Lord in prayer.`},{label:"Verse 3",text:`Are we weak and heavy laden?
-Cumbered with load of care?
-Precious Saviour, still our refuge.
-Take it to the Lord in prayer.
-Do thy friends despise, forsake thee?
-Take it to the Lord in prayer;
-In His arms He'll take and shield thee
-Thou wilt find a solace there.`}],type:"worship",beat:"4/4",tempo:74},{slug:"dekho-chali-naiya-meri",number:44,title:"देखो चली, नैया मेरी",title_alt:"Dekho Chali, Naiya Meri",language:"hindi",tags:["Trust","Encouragement"],stanzas:[{label:"कोरस",text:`देखो चली, नैया मेरी कैसी है ये, झूमती डोली
-देखो चली रे मोरी नैया है इसका यीशु खिवैया`},{label:"पद 1",text:`आ प्रभु आ थाम ले मुझे, अपने कर में जीवन चाहे
-जीवन है यीशु हवाले, चलते हैं तोरे सहारे`},{label:"पद 2",text:`बातों पर तोरे ध्यान लगायें, मन में हमारे तू ही समाये
-दुनियाँ के राजा यीशु उजाले, पापों से हमें तू ही संभाले`},{label:"पद 3",text:`अब तो मसीह तू ही बचाये, आये हम तो पास में तोरे
-यीशु ही राह दिखाये, जीवन को तू ही बचाये`}],type:"worship",beat:"4/4",tempo:74},{slug:"do-to-tumhe-diya-jayega",number:45,title:"दो तो तुम्हें दिया जायेगा",title_alt:"Do To Tumhe Diya Jayega",language:"hindi",tags:["Giving","Offertory"],stanzas:[{label:"कोरस",text:`दो तो तुम्हें दिया जायेगा (४)
-जिस नाप से तुम नापते हो
-तुम्हारे लिए भी नापा जायेगा
-दो तो तुम्हें दिया जायेगा (४)`},{label:"पद 1",text:`दायाँ अगर देता है तो, बायाँ ये जानने न पाये
-गुप्त में रहे तुम्हारा देना, यही है यहोवा को भाये (२)
-जिस नाप से तुम नापते हो`},{label:"पद 2",text:`विधवा के जैसे तुम दान दो, धनवान के जैसे नहीं
-मन को तुम साफ कर देना, कुड़कुड़ाते हुए नहीं (२)
-जिस नाप से तुम नापते हो`},{label:"पद 3",text:`जो कुछ तुम पृथ्वी पर बांधोगे, वो स्वर्ग में बंधेगा
-जो कुछ तुम पृथ्वी पर खोलोगे, वो स्वर्ग में खुलेगा`}],type:"worship",beat:"4/4",tempo:74},{slug:"when-we-eat-this-bread",number:46,title:"When we eat this bread",title_alt:null,language:"english",tags:["Proclamation"],stanzas:[{label:"Verse 1",text:`When we eat this bread
-and we drink this cup,
-we proclaim your death, Lord Jesus,
-until you come,
-until you come in glory.`}],type:"worship",beat:"4/4",tempo:74},{slug:"you-are-my-all-in-all",number:47,title:"You are my all in all",title_alt:null,language:"english",tags:["Communion"],stanzas:[{label:"Verse 1",text:`You are my strength when I am weak
-You are the treasure that I seek
-You are my all in all
-Seeking You as a precious jewel
-Lord, to give up I'd be a fool
-You are my all in all`},{label:"Verse 2",text:`Jesus, Lamb of God
-Worthy is Your name
-Jesus, Lamb of God
-Worthy is Your name`},{label:"Verse 3",text:`Taking my sin, my cross, my shame
-Rising again I bless Your name
-You are my all in all
-When I fall down You pick me up
-When I am dry You fill my cup
-You are my all in all`},{label:"Verse 4",text:`Jesus, Lamb of God
-Worthy is Your name
-Jesus, Lamb of God
-Worthy is Your name`}],type:"worship",beat:"4/4",tempo:74},{slug:"pavitra-jeevan-mein-jyoti-jala-de",number:47,title:"पवित्र जीवन में ज्योति जला दे",title_alt:"Pavitra Jeevan Mein Jyoti Jala De",language:"hindi",tags:["Prayer","Holiness"],stanzas:[{label:"Verse 1",text:`पवित्र जीवन में ज्योति जला दे
-तुझ पर लगी है ये आशा मेरी
-पापमय तन को दूर हटा दे (२)
-पूर्ण हो अभिलाषा मेरी`},{label:"Verse 2",text:`जीवन के दु:खी और कठिन क्षणों का
-दृढ़ता से सामना करने का बल दे
-अपने पवित्र वचनों से चला मुझे
-पूर्ण हो अभिलाषा मेरी`}],type:"worship",beat:"4/4",tempo:74},{slug:"aawaaz-uthayenge",number:48,title:"आवाज़ उठाएंगे",title_alt:"Aawaaz uthayenge",language:"hindi",tags:["Christmas","Psalms"],stanzas:[{label:"कोरस",text:`आवाज़ उठाएंगे, हम साज बजाएंगे
-हे येसु महान अपना, यह गीत सुनाएंगे`},{label:"पद 1",text:`संसार की सुन्दरता में, यह रूप तो तेरा ही
-इस चाँद सितारों में, हे अक्स तो तेरा ही।
-महिमा की तेरी बातें हम सब को बतायेंगे।
-हे येसु महान...`},{label:"पद 2",text:`दिल तेरा खजाना है एक पाक मोहब्बत का
-थाह पा न सका कोई सागर है तू उल्फत का ।
-हम तेरी मोहब्बत से दिल अपना सजायेंगे।
-हे येसु महान...`},{label:"पद 3",text:`न देख सका हमको तू पाप के सागर में
-और बनके मनुष्य आया आकाश में सागर में
-मुक्ति का तू दाता है दुनिया को बतायेंगे।
-हे येसु महान...`}],type:"worship",beat:"4/4",tempo:74},{slug:"anokha-pyaar-hai-tera",number:49,title:"अनोखा प्यार है तेरा",title_alt:"Anokha Pyaar Hai Tera",language:"hindi",tags:["Love","Praise"],stanzas:[{label:"कोरस",text:`अनोखा प्यार है तेरा
-करूँगा स्तुति तेरी मैं सर्वदा (२)`},{label:"पद 1",text:`जग में आया यीशु स्वर्ग छोड़कर
-मेरा सारा दंड सह लिया उसने
-कोड़े खा के क्रूस उठा के यीशु ने
-मुझको मुक्ति और चंगाई दे दी है
-अनोखा प्यार है तेरा, करूँगा स्तुति तेरी मैं सर्वदा`},{label:"पद 2",text:`खोया हुआ था मैं घोर अंधेरे में
-ढूंढ लिया मुझको मेरे चरवाहे ने
-हाथ पकड़कर अपना बनाया
-जीवन की राहों पे चलना सिखाया
-अनोखा प्यार है तेरा, करूँगा स्तुति तेरी मैं सर्वदा`},{label:"पद 3",text:`कोई न था जब मेरा सहारा
-तू ही बना प्रभु मीत हमारा
-तेरी दया और तेरी भलाई
-जीवन भर मुझ पर बनी रहेगी
-अनोखा प्यार है तेरा, करूँगा स्तुति तेरी मैं सर्वदा`}],type:"worship",beat:"4/4",tempo:76},{slug:"aaye-prabhu-ham-tere-dwaar",number:49,title:"आये प्रभु हम तेरे द्वार",title_alt:"Aaye prabhu ham tere dwaar",language:"hindi",tags:["Entrance"],stanzas:[{label:"कोरस",text:`आये प्रभु हम तेरे द्वार,
+और हम उसकी प्रजा, उसके हाथ की भेड़ें हैं`}],type:"praise",beat:"4/4",tempo:104},{slug:"aaj-ka-din-yehova-ne-banaya-hai",number:10,title:"आज का दिन यहोवा ने बनाया है",title_alt:"Aaj Ka Din Yehova Ne Banaya Hai",language:"hindi",tags:["Praise","Joy"],stanzas:[{label:"कोरस",text:`आज का दिन यहोवा ने बनाया है
+हम उसमें आनंदित हों, आनंदित हों`},{label:"पद 1",text:`प्रभु को महिमा मिले चाहे हो मेरा अपमान
+वो बढ़े और मैं घटूँ, रहे इसी का ध्यान`},{label:"पद 2",text:`स्तुति प्रशंसा करें क्यों ना कुछ होता रहे
+उसको हम भाते रहें चाहे हम जहाँ भी रहें`},{label:"पद 3",text:`आता हूँ तेरे पास मुझको कबूल कर ले
+मुझको है तुझसे आस, पापों से शुद्ध कर ले`}],type:"praise",beat:"4/4",tempo:104},{slug:"aatma-mandraata-pavitra-aatma-mandraata",number:11,title:"आत्मा मण्डराता, पवित्र आत्मा मण्डराता",title_alt:"Aatma Mandraata, Pavitra Aatma Mandraata",language:"hindi",tags:["Holy Spirit","Worship"],stanzas:[{label:"कोरस",text:`आत्मा मण्डराता, पवित्र आत्मा मण्डराता
+पिन्तेकुस्त के दिन समान
+आत्मा मण्डराता`},{label:"पद 1",text:`अंधे देखते हैं, बहरे सुनते हैं
+यीशु मसीह के नाम से
+अंधे देखते हैं, आत्मा मण्डराता`},{label:"पद 2",text:`लंगड़े चलते हैं, गूंगे बोलते हैं
+यीशु मसीह के नाम से
+लंगड़े चलते हैं, आत्मा मण्डराता`},{label:"पद 3",text:`पापी क्षमा पाते, बीमार चंगाई पाते
+यीशु मसीह के नाम से
+बीमार चंगाई पाते, आत्मा मण्डराता`}],type:"worship",beat:"4/4",tempo:74},{slug:"aadar-aur-mahima-samarth-ke-yogya",number:12,title:"आदर और महिमा सामर्थ के योग्य",title_alt:"Aadar Aur Mahima",language:"hindi",type:"worship",beat:"4/4",tempo:75,tags:["Worship","Adoration"],stanzas:[{label:"कोरस",text:`आदर और महिमा, सामर्थ के योग्य
+यीशु तू ही तो है (२)
+युगानुयुग जीवित, धन्यवाद के योग्य
+यीशु तू ही तो है (२)
+हम गाएं होसन्ना, होसन्ना... (२)
+राजाओं के राजा को!`},{label:"पद 1",text:`झुकते हैं आकर चरणों में तेरे संग दूतों के
+मुकुट को रखते कदमों में तेरे संग संतों के (२)
+पवित्र, पवित्र, पवित्र प्रभु सर्वशक्तिमान!`},{label:"पद 2",text:`तू ही हमारा उद्धारकर्ता, तू ही हमारा सहारा
+तेरी महिमा से भर दे इस भवन को प्रभु जी (२)
+हम गाएं होसन्ना, होसन्ना... (२)
+राजाओं के राजा को!`}]},{slug:"aadi-aur-ant-tu-hi-hai",number:13,title:"आदि और अंत तू ही है",title_alt:"Aadi Aur Ant Tu Hi Hai",language:"hindi",tags:["Worship"],stanzas:[{label:"कोरस",text:`आदि और अंत तू ही है, अल्फा और ओमेगा तू ही है
+दूतों की स्तुति भी तू ही है, बुद्धि और सब ज्ञान तू ही है`},{label:"पद 1",text:`यीशु तू महान है, यीशु तू अच्छा है
+यीशु तू जिन्दा है, यीशु तू धन्य है`},{label:"पद 2",text:"राजाओं का राजा तू ही है, प्रभुओं का प्रभु तू ही है"},{label:"पद 3",text:`जीवन भरा पापों से मेरा, जग अन्धेरा और अशुद्ध सारा
+मेरे पापों से बचाने को, मेरे लिए जीवन दिया है`},{label:"पद 4",text:`सारे गुनाहगारों के लिए, अपना खून बहाया यीशु ने
+खाई कोड़ों की मार भी दी, सलीब पर उसने अपनी जान`}],type:"worship",beat:"4/4",tempo:74},{slug:"anand-anand-anand-hai",number:14,title:"आनंद आनंद आनंद है",title_alt:"Anand Anand Anand Hai",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`१. आनंद आनंद आनंद है (२)
+अब्दी मोहब्बत से हमें प्रेम किया
+अपना बेटा हमें बना लिया
+यह हमारी आशीष है
+हालेलूयाह सदा गाएंगे, (२)
+हम प्रभु यीशु के लिए`},{label:"Verse 2",text:`२. आनंद आनंद आनंद है (२)
+आनंद के तेल से मस्सा किया है
+पवित्र स्थान में दाखिल किया
+यह हमारा सौभाग्य हुआ
+हालेलूयाह सदा गाएंगे, (२)
+हम प्रभु यीशु के लिए`},{label:"Verse 3",text:`३. आनंद आनंद आनंद है
+प्रभु की स्तुति करना आनंद है`}],type:"praise",beat:"4/4",tempo:104},{slug:"aaye-prabhu-ham-tere-dwaar",number:15,title:"आये प्रभु हम तेरे द्वार",title_alt:"Aaye prabhu ham tere dwaar",language:"hindi",tags:["Entrance"],stanzas:[{label:"कोरस",text:`आये प्रभु हम तेरे द्वार,
 तुझी से ये घर और संसार
 तेरी कष्पा हम सब पर हो प्रभु,
 महिमा तेरी अपार`},{label:"पद 1",text:`तू हर मन की आशा,
@@ -969,10 +234,77 @@ Worthy is Your name`}],type:"worship",beat:"4/4",tempo:74},{slug:"pavitra-jeevan
 अपना लहू बहाया
 पाप का बोझ हमारा तूने सहा
 जीवन ये हमारा है तेरा ही दान
-मोक्ष के सिवा और क्या चाहिए ।`}],type:"worship",beat:"4/4",tempo:74},{slug:"an-vachan-aur-mannat-aulad",number:50,title:"अन्न वस्त्र और सभी आशीषें",title_alt:"An Vachan Aur Mannat Aulad",language:"hindi",tags:["Thanksgiving","Provision"],stanzas:[{label:"पद",text:`अन्न वस्त्र और सभी आशीषें, दी मुझे उसने भरपूरी से
-खतरों और सब मुसीबतों से, आँख की पुतली जैसे संभाला मुझे
-तेरे प्यार से मुझे मिली, जीवन में पाया नया जीवन मैंने
-पवित्र आत्मा और वचन से भी नया, जीवन में पाया नया जीवन मैंने`}],type:"worship",beat:"4/4",tempo:74},{slug:"asha-meri",number:51,title:"आशा मेरी",title_alt:"Asha meri",language:"hindi",tags:["Communion","Easter"],stanzas:[{label:"कोरस",text:`हममें वो दूरी थी कितनी गहरी
+मोक्ष के सिवा और क्या चाहिए ।`}],type:"worship",beat:"4/4",tempo:74},{slug:"aaye-hain-hum-tere-charnon-me",number:16,title:"आये हैं हम, तेरे चरणों मे",title_alt:"Aaye Hain Hum, Tere Charnon Me",language:"hindi",tags:["Worship","Entrance"],stanzas:[{label:"कोरस",text:`आये हैं हम तेरे चरणों में, लेकर हम स्तुति
+हालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह...`},{label:"पद 1",text:`प्यारे मसीहा आशीष दे हमें
+आत्मा से तू भर दे हमें (३)
+हालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह...`},{label:"पद 2",text:`हम बच्चे हैं परमपिता के
+बढ़ना है हमें वचनों में (३)
+हालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह...`},{label:"पद 3",text:`मिलती है हमें तुझसे चंगाईयाँ
+देता तू हमें पापों से मुक्ति (३)
+हालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह...`},{label:"पद 4",text:`हम तैयार हैं यीशु तेरे लिए
+जल्दी आ तू हमको लेने (३)
+हालेलुयाह... हालेलुयाह... हालेलुयाह... हालेलुयाह...`}],type:"worship",beat:"4/4",tempo:74},{slug:"aaradhana-aaradhana",number:17,title:"आराधना आराधना",title_alt:"Aaradhana Aaradhana",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`आराधना आराधना
+स्तुति आराधना आराधना
+सुबह के समय, शाम के समय
+आराधना पिता की`},{label:"Verse 1",text:`१. पवित्र आत्मा तुझे आराधना
+मेरे साथी तुझे आराधना ...२
+स्वर्गीय पिता तुझे आराधना
+मार्गदर्शी तुझे आराधना ...२`},{label:"Verse 2",text:`२. जीवित बलि तुझे आराधना
+जीवन जल तुझे आराधना ...२
+बादल के खंभे तुझे आराधना
+मेरे मसीह तुझे आराधना ...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"aaradhana-mein-hai-chhutkara-aaradhana-mein-hai-changai",number:18,title:"आराधना में है छुटकारा, आराधना में है चंगाई",title_alt:"Aaradhana Mein Hai Chhutkara, Aaradhana Mein Hai Changai",language:"hindi",tags:["Worship","Healing"],stanzas:[{label:"कोरस",text:`आराधना में है छुटकारा, आराधना में है चंगाई
+शरीर, प्राण, आत्मा में शांति आनंद देता है जान से प्यारा प्रभु
+प्रार्थना करें, आराधना करें, वो अच्छा है कितना भला है (२)
+छुटकारा पायें हमेशा हमेशा`},{label:"पद 1",text:`माँगोगे तो मिलेगा, ढूँढोगे तो पाओगे
+खटखटाओ, खुलेगी स्वर्ग की आशीषें
+पाओ तुम उसे अभी
+प्रार्थना करें, आराधना करें, वो अच्छा है कितना भला है
+छुटकारा पायें हमेशा हमेशा`},{label:"पद 2",text:`प्रार्थना करो निरंतर, प्रार्थना करो विश्वास से
+धर्मी जन की प्रार्थना, विश्वास की प्रार्थना खोलती है सारे बंधन को
+प्रार्थना करें, आराधना करें, वो अच्छा है कितना भला है
+छुटकारा पायें हमेशा हमेशा`}],type:"worship",beat:"4/4",tempo:74},{slug:"aaradhana-hum-teri-karenge",number:19,title:"आराधना हम तेरी करेंगे",title_alt:"Aaradhana Hum Teri Karenge",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`आराधना हम तेरी करेंगे
+जैसी आसमां पर होती है पूरी`},{label:"Verse 1",text:`१. रोज की रोटी हमें वह देता
+जीवन जल से है तृप्त करता
+हम उसकी महिमा में (२)
+शांति पाए
+आराधना हम तेरी करेंगे`},{label:"Verse 2",text:`२. अंधियारे से उसने हमें है छुड़ाया
+ज्योति में हमको यीशु ने लाया
+हम उसके सदा ही (२)
+वारिस कहलाए
+आराधना हम तेरी करेंगे`},{label:"Verse 3",text:`३. अनंत जीवन यीशु ने दिया है
+प्यार किया है हमसे गहरा
+पिता से उसने ही (२)
+हमें मिलाया है
+आराधना हम तेरी करेंगे`},{label:"Verse 4",text:`४. यहोवा रोही तेरा नाम है,
+मेरा चरवाहा है तू,
+यहोवा यिरे तेरा नाम है
+मेरा उपाय करता तू,
+मुझको ना होगी कोई कमी,
+मुझको ना होगी कोई घटी ...२
+हरी चराईयों में चराता है`},{label:"Verse 5",text:`५. यहोवा निस्सी तेरा नाम है,
+मेरे जय का झंडा तू
+यहोवा सिदकेनु तेरा नाम है
+मेरी धार्मिकता है तू,
+मेरे गुनाहों और पापों की
+सारी सजा को तू ने सहा,
+मुझको धर्मी बना दिया`}],type:"worship",beat:"4/4",tempo:74},{slug:"aawaaz-uthayenge",number:20,title:"आवाज़ उठाएंगे",title_alt:"Aawaaz uthayenge",language:"hindi",tags:["Christmas","Psalms"],stanzas:[{label:"कोरस",text:`आवाज़ उठाएंगे, हम साज बजाएंगे
+हे येसु महान अपना, यह गीत सुनाएंगे`},{label:"पद 1",text:`संसार की सुन्दरता में, यह रूप तो तेरा ही
+इस चाँद सितारों में, हे अक्स तो तेरा ही।
+महिमा की तेरी बातें हम सब को बतायेंगे।
+हे येसु महान...`},{label:"पद 2",text:`दिल तेरा खजाना है एक पाक मोहब्बत का
+थाह पा न सका कोई सागर है तू उल्फत का ।
+हम तेरी मोहब्बत से दिल अपना सजायेंगे।
+हे येसु महान...`},{label:"पद 3",text:`न देख सका हमको तू पाप के सागर में
+और बनके मनुष्य आया आकाश में सागर में
+मुक्ति का तू दाता है दुनिया को बतायेंगे।
+हे येसु महान...`}],type:"worship",beat:"4/4",tempo:74},{slug:"aawaz-uthayenge-hum-saaz-bajayenge",number:21,title:"आवाज उठायेंगे, हम साज बजायेंगे",title_alt:"Aawaz Uthayenge, Hum Saaz Bajayenge",language:"hindi",tags:["Praise","Worship"],stanzas:[{label:"कोरस",text:`आवाज़ उठायेंगे, हम साज़ बजायेंगे
+है यीशु महान अपना, यह गीत सुनायेंगे`},{label:"पद 1",text:`संसार की सुंदरता में, है रूप जो तेरा ही
+इन चाँद सितारों में, है अक्स जो तेरा ही
+महिमा की तेरी बातें, हम सबको बतायेंगे`},{label:"पद 2",text:`दिल तेरा खज़ाना है, इक पाक मोहब्बत का
+थाह पा न सका कोई, सागर है तू उल्फत का
+हम तेरी मोहब्बत से, दिल अपना सजायेंगे`},{label:"पद 3",text:`न देख सका हमको, तू पाप के सागर में
+और बन के मनुष्य आया, आकाश से इस जग में
+मुक्ति का तू दाता है, दुनिया को बतायेंगे`}],type:"praise",beat:"4/4",tempo:104},{slug:"asha-meri",number:22,title:"आशा मेरी",title_alt:"Asha meri",language:"hindi",tags:["Communion","Easter"],stanzas:[{label:"कोरस",text:`हममें वो दूरी थी कितनी गहरी
 कितना बड़ा था वो फासला
 मायूस होकर स्वर्ग की ओर देखा
 निराशा में तेरा नाम लिया`},{label:"पद 1",text:`अंधकार हटा कर
@@ -1004,10 +336,112 @@ Worthy is Your name`}],type:"worship",beat:"4/4",tempo:74},{slug:"pavitra-jeevan
 अल्लेलूया, तूने हराया मृत्यु को
 तूने तोड़ी हर जंजीर, तेरे नाम में रिहाई
 येशुआ, तू है आशा मेरी`},{label:"पद 10",text:`येशु मसीह, तू है आशा मेरी
-येशु मसीह, तू है आशा मेरी`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-ka-naam-leta-hai",number:51,title:"यीशु का नाम लेता है",title_alt:"Yeshu Ka Naam Leta Hai",language:"hindi",tags:["Praise","Salvation"],stanzas:[{label:"पद",text:`यीशु का नाम लेता है, वो ज़िंदगी पाता है
-तेरी राहों पर चलकर, रूह इनाम में पाता है (२)
-तेरी रूह से (२), खुदा की रूह से, मसीह की रूह से
-मेरा जीवन संवर गया, यीशु नाम मिला`}],type:"praise",beat:"4/4",tempo:104},{slug:"changa-karta-hai",number:52,title:"चंगा करता है",title_alt:"Changa karta hai",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`तेरे कोड़े खाने से, मिली चंगाई
+येशु मसीह, तू है आशा मेरी`}],type:"worship",beat:"4/4",tempo:74},{slug:"aashish-tum-se-chahte-hai",number:23,title:"आशीष तुम से चाहते हैं",title_alt:"Aashish Tum Se Chahte Hai",language:"hindi",tags:["Prayer","Worship"],stanzas:[{label:"कोरस",text:`आशीष तुझ से चाहते हैं
+हे स्वर्गीय पिता हम आते हैं`},{label:"पद 1",text:`न कोई ख़ूबी है न लियाकत, बख़्श हमको अपनी ताकत (२)
+खाली दिलों को लाते हैं (२)`},{label:"पद 2",text:`हमने बहुत खताएं की हैं, रहे निकम्मे जफाएं की हैं (२)
+शर्म से सर झुक जाते हैं (२)`},{label:"पद 3",text:`तू है शक्तिमान प्रभु जी, दया भी है अपार प्रभु जी
+स्तुति हम सब गाते हैं (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"ishwar-hoon-main-karoon-changa-tujhe",number:24,title:"ईश्वर हूं मैं, करूं चंगा तुझे",title_alt:"Ishwar Hoon Main, Karoon Changa Tujhe",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`ईश्वर हूं मैं करूं चंगा तुझे
+प्रभु हूं मैं चंगा करता
+मैंने भेजा वचन,
+किया चंगा रोगों से
+प्रभु हूं मैं चंगा करता`},{label:"Verse 1",text:`१. ईश्वर हो तुम, मुझे चंगा करता
+प्रभु हो तुम चंगा करता
+तूने भेजा वचन,
+किया चंगा रोगों से
+प्रभु हो तुम चंगा करता`}],type:"worship",beat:"4/4",tempo:74},{slug:"uthte-hain-tera-naam-teri-stuti-karte-hue",number:25,title:"उठाते हैं तेरा नाम, तेरी स्तुति करते हुए",title_alt:"Uthte Hain Tera Naam, Teri Stuti Karte Hue",language:"hindi",tags:["Praise","Worship"],stanzas:[{label:"कोरस",text:`उठाते हैं तेरा नाम, तेरी स्तुति करते हुए
+घुटनों पर हम आकर, करते हैं तुझसे प्रार्थना
+मिलकर हम गायें, प्रभु की स्तुति हो (२)
+मिलकर हम गायें, हालेलुयाह... हालेलुयाह... हालेलुयाह...`},{label:"पद 1",text:`आएगा मेरा यीशु हमें लेने एक दिन
+जाएंगे हम उसके संग जहां पर होगा अनंत जीवन
+मिलकर हम गायें, प्रभु की स्तुति हो (२)
+हालेलुयाह, हालेलुयाह, हालेलुयाह...`}],type:"praise",beat:"4/4",tempo:104},{slug:"uth-aa-uth-aa-uth-aa",number:26,title:"उतर आ, उतर आ, ऐ रूह-ए-पाक उतर आ",title_alt:"Uth Aa, Uth Aa, Uth Aa",language:"hindi",tags:["Holy Spirit","Prayer"],stanzas:[{label:"कोरस",text:`उतर आ, उतर आ, उतर आ
+ऐ रूह-ए-पाक उतर आ (२)
+आसमानी खुशी से भर दे मुझको
+गीत नया दिल में ला (२), उतर आ...`},{label:"पद 1",text:`अमृत जल प्रभु मुझको पिला दे
+दिल मेरे की प्यास बुझा दे
+चश्मा बन के उतर आ...`},{label:"पद 2",text:`आसमानी रोटी मुझको खिला दे
+कमजोर दिल को तगड़ा बना दे
+भरपूर जीवन दिला...`},{label:"पद 3",text:`पाक रूह आ मेरे दिल के अंदर
+बन जाऊँ मैं तेरा मंदिर
+अपनी राह दिखा...`}],type:"worship",beat:"4/4",tempo:74},{slug:"aur-paas-tere-aana-chahta-hoon",number:27,title:"और पास तेरे आना चाहता हूं",title_alt:"Aur Paas Tere Aana Chahta Hoon",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`और पास तेरे, आना चाहता हूं
+चेहरा तेरा निहारने
+कैसा खुबसुरत है तू
+तुलना मैं किससे करूं
+आराधना मैं करता प्रभु
+तुझे ताकते हुए।`}],type:"worship",beat:"4/4",tempo:74},{slug:"karta-samarpan",number:28,title:"करता समर्पण",title_alt:"Karta Samarpan",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`करता समर्पण
+आत्मा और जीवन
+तेरी आराधना में
+तन मन धन
+पिता परमेश्वर
+हो धन्यवाद
+हो तेरी स्तुति और आराधना
+प्यारे मसीहा
+हो धन्यवाद
+हो तेरी स्तुति और आराधना
+पवित्र आत्मा
+हो धन्यवाद
+हो तेरी स्तुति और आराधना`}],type:"worship",beat:"4/4",tempo:74},{slug:"karte-hain-teri-stuti",number:29,title:"करते हैं तेरी स्तुति",title_alt:"Karte Hain Teri Stuti",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`करते हैं तेरी हम स्तुति
+हृदय की गहराईयों से
+यीशु तू ही है
+तू ही है हमारा प्रभु
+महिमा हो तेरी....४`}],type:"worship",beat:"4/4",tempo:74},{slug:"karte-hain-teri-mahima-yehova",number:30,title:"करते हैं तेरी हम स्तुति",title_alt:"Karte Hain Teri Mahima Yehova",language:"hindi",tags:["Worship","Praise"],stanzas:[{label:"कोरस",text:`करते हैं तेरी हम स्तुति, हृदय की गहराइयों से (२)
+यीशु तू ही है, तू ही है, हमारा प्रभु (२)
+महिमा हो तेरी... महिमा हो तेरी
+महिमा हो तेरी... महिमा हो तेरी`},{label:"पद 1",text:`आत्मा और सच्चाई से, तेरी आराधना करें
+ऊँचा और ऊँचा, सबसे ऊँचा रहे तेरा नाम
+महिमा हो तेरी... महिमा हो तेरी
+महिमा हो तेरी... महिमा हो तेरी`}],type:"praise",beat:"4/4",tempo:104},{slug:"kehta-hai-dil-mera-dhanyavaad-prabhu",number:31,title:"कहता है दिल मेरा",title_alt:"Kehta hai dil mera dhanyavaad prabhu",language:"hindi",tags:["Recessional"],stanzas:[{label:"कोरस",text:`कहता है दिल मेरा धन्यवाद प्रभु,
+किये तूने कार्य महान मेरे प्रभु।`},{label:"पद 1",text:`तूने चुना इस निर्बल को,
+कैसे कहूँ धन्यवाद मेरे प्रभु।`},{label:"पद 2",text:`तूने दिया जीवन नया,
+लाखों बार धन्यवाद मेरे प्रभु।`}],type:"worship",beat:"4/4",tempo:74},{slug:"kitna-pyara-hai-yeshu-naam",number:32,title:"कितना प्यारा है यीशु नाम",title_alt:"Kitna Pyara Hai Yeshu Naam",language:"hindi",type:"worship",beat:"4/4",tempo:80,tags:["Worship","Name of Jesus"],stanzas:[{label:"कोरस",text:`कितना प्यारा है यीशु नाम
+कितना मीठा है यीशु नाम (२)
+सारे नामों से ऊँचा नाम
+मुक्ति देता है यीशु नाम (२)`},{label:"पद 1",text:`बीमारों को चंगाई देता
+दुखियों को दिलासा देता (२)
+पापियों को क्षमा करता
+शांति देता है यीशु नाम`},{label:"पद 2",text:`इस नाम में है सामर्थ भारी
+भागती है अंधकार की शक्ति सारी (२)
+जय दिलाता है हर पल हमको
+अद्भूत है ये यीशु नाम`}]},{slug:"kitna-haseen-varda-kiya-khudavand-ne",number:33,title:"कितना हसीन वादा किया खुदावंद ने",title_alt:"Kitna Haseen Varda Kiya Khudavand Ne",language:"hindi",tags:["Encouragement","Promise"],stanzas:[{label:"कोरस",text:`कितना हसीन वादा ये किया खुदावंद ने
+जहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें (२)`},{label:"पद 1",text:`तुझे अकेला ना छोड़ूँ मैं, रूह अपनी भेजूँ
+तुझे अनाथ भी ना छोड़ूँ, एक मददगार भेजूँ
+यीशु के सिवा ये बात कही किसने?
+जहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें`},{label:"पद 2",text:`दस्तक वो देता है चाहे हर दिल में आना
+भरता उसको रूह से अपनी, जिसने उसे जाना
+जिसका बने है माली वो, कलियाँ लगे खिलने
+जहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें`},{label:"पद 3",text:`रूह-ए-पाक जो हाज़िर है और कहें खुशामदीद
+इज्जत, दौलत, हशमत जिसकी, उसकी करें तमजीद
+रूह के शोले बरसें जब फिर बदन लगे जलने
+जहाँ दो या तीन जमा हों, मैं हूँ हाज़िर उनमें`}],type:"worship",beat:"4/4",tempo:74},{slug:"kya-hai-teri-ichchha-prabhu",number:34,title:"क्या है तेरी इच्छा प्रभु",title_alt:"Kya Hai Teri Ichchha Prabhu",language:"hindi",tags:["Guidance","Prayer"],stanzas:[{label:"पद",text:`क्या है तेरी इच्छा प्रभु, मुझे बता दे
+मैं तो चलूँगा तेरे पीछे, तेरे संग चलूँगा`}],type:"worship",beat:"4/4",tempo:74},{slug:"khaali-hoon-bhar-de-mujhko",number:35,title:"खाली हूँ भर दे मुझको",title_alt:"Khaali Hoon Bhar De Mujhko",language:"hindi",tags:["Prayer","Holy Spirit"],stanzas:[{label:"कोरस",text:`खाली हूँ भर दे मुझको, है दुआ तुझसे (२)
+कुछ भी मैं नहीं हूँ बिना तेरे (२)
+ओ येशुआ, येशुआ (२), करूँ आराधना (२)
+हाथों को अपने उठाकर तुझे दूँ महिमा (२)`},{label:"पद 1",text:`तेरी सामर्थ से मुझको तू भर दे
+अपनी आत्मा से नया तू कर दे (२)
+जीवन ये मेरा, अर्पण है तुझको
+तू ही संभाले, तू ही चलाए`},{label:"पद 2",text:`तेरे भवन में आनंद मिलता
+तेरी संगति में जीवन मिलता (२)
+ओ येशुआ, येशुआ (२), करूँ आराधना (२)
+हाथों को अपने उठाकर तुझे दूँ महिमा (२)`}],type:"worship",beat:"4/4",tempo:70},{slug:"khushi-manao-gaao-re",number:36,title:"ख़ुशी मनाओ गाओ रे",title_alt:"Khushi manao gaao re",language:"hindi",tags:["Carol","Christmas"],stanzas:[{label:"कोरस",text:`ख़ुशी मनाओ गाओ रे
+जन्मा है येसु राजा`},{label:"पद 1",text:`दूतों ने आकर चरवाहों को
+ये पैगाम सुनाया...हो,
+जाओ देखो बेतलेहेम में
+मुक्तिदाता आया...हो,
+ताली बजाओ गाओ रे
+जन्मा है येसु राजा..`},{label:"पद 2",text:`ख़ुशी मनाओ गाओ रे
+जन्मा है येसु राजा`}],type:"worship",beat:"4/4",tempo:74},{slug:"khrist-marr-gaye",number:37,title:"ख्रीस्त मर गये",title_alt:"Khrist marr gaye",language:"hindi",tags:["Proclamation"],stanzas:[{label:"कोरस",text:`ख्रीस्त मर गये
+ख्रीस्त जी उठे
+ख्रीस्त महिमा के साथ फिर आयेंगे (2)`}],type:"worship",beat:"4/4",tempo:74},{slug:"gaane-ka-dil",number:38,title:"गाने का दिल",title_alt:"Gaane Ka Dil",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`गाने का दिल
+और बजाने का जीवन,
+हम सबने पाया है ...२
+खुशियां ये कैसी अनोखी ...२
+दिल में यीशु आ गया`},{label:"Verse 1",text:`१. जिस व्यक्ति ने यीशु को पाया ...२
+उसका जीवन बदल गया है
+गाने का दिल...`},{label:"Verse 2",text:`२. जिस व्यक्ति ने आत्मा को पाया ...२
+वो सामर्थ से भर गया है
+गाने का दिल...`},{label:"Verse 3",text:`३. जिस व्यक्ति ने पिता को पाया ...२
+वो स्वर्गीय वारिस बन गया
+गाने का दिल...`}],type:"worship",beat:"4/4",tempo:74},{slug:"changa-karta-hai",number:39,title:"चंगा करता है",title_alt:"Changa karta hai",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`तेरे कोड़े खाने से, मिली चंगाई
 खून के वसीले से, पाऊं शिफा
 सूली पे हर घाव ने, बख़्शी मेरी ज़िंदगी
 कोई बीमारी अब ना छू सके`},{label:"पद 1",text:`तू चंगा करता है
@@ -1026,9 +460,7 @@ Worthy is Your name`}],type:"worship",beat:"4/4",tempo:74},{slug:"pavitra-jeevan
 येशु तू जीवन देता है`},{label:"पद 4",text:`स्वर्ग से, धरती पे बरसे तेरी चंगाई (x2)
 स्वर्ग से, धरती पे बरसे तेरी चंगाई (x2)
 स्वर्ग से, धरती पे बरसे तेरी चंगाई
-स्वर्ग से, धरती पे बरसे`}],type:"worship",beat:"4/4",tempo:74},{slug:"naam-bada-hai-tera",number:52,title:"नाम बड़ा है तेरा",title_alt:"Naam Bada Hai Tera",language:"hindi",tags:["Praise","Adoration"],stanzas:[{label:"पद",text:`नाम बड़ा है तेरा, यीशु नाम बड़ा है तेरा (२)
-जिसने मेरे जीवन को, नया जीवन दिया है (२)`}],type:"praise",beat:"4/4",tempo:104},{slug:"kya-hai-teri-ichchha-prabhu",number:53,title:"क्या है तेरी इच्छा प्रभु",title_alt:"Kya Hai Teri Ichchha Prabhu",language:"hindi",tags:["Guidance","Prayer"],stanzas:[{label:"पद",text:`क्या है तेरी इच्छा प्रभु, मुझे बता दे
-मैं तो चलूँगा तेरे पीछे, तेरे संग चलूँगा`}],type:"worship",beat:"4/4",tempo:74},{slug:"chattan",number:53,title:"चट्टान",title_alt:"Chattan",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`भंवर के बीच में
+स्वर्ग से, धरती पे बरसे`}],type:"worship",beat:"4/4",tempo:74},{slug:"chattan",number:40,title:"चट्टान",title_alt:"Chattan",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`भंवर के बीच में
 तू कहता है थम जा
 तू मेरी ताकत है
 तू ही मेरा ईमान x2`},{label:"पद 1",text:`बीते कल में तू
@@ -1044,28 +476,29 @@ Worthy is Your name`}],type:"worship",beat:"4/4",tempo:74},{slug:"pavitra-jeevan
 तू ही मेरी शिफा`},{label:"पद 4",text:`बीमारियों में
 तू कहता है उठ जा
 यहोवा राफा
-तू ही मेरी शिफा`}],type:"worship",beat:"4/4",tempo:74},{slug:"making-melody-in-your-heart",number:54,title:"Making melody in your heart",title_alt:"Making melody in your heart",language:"english",tags:["Praise","Worship"],stanzas:[{label:"Chorus",text:`Making melody in your heart unto the King of Kings
-Worship and adore Him (2)
-Making melody in your heart unto the King of Kings`},{label:"Verse 1",text:`King of kings and Lord of lords (3), glory to His name
-Give to the Lord glory (3), oh give unto the Lord
-He is the King and Lord (3), महिमा उसकी हो`}],type:"praise",beat:"4/4",tempo:104},{slug:"hai-di-awaaz",number:54,title:"है दी आवाज़",title_alt:"Hai di awaaz",language:"hindi",tags:["Christmas","Entrance"],stanzas:[{label:"कोरस",text:`है दी आवाज़ फरिश्तों ने ज़मीं के लोगों को
-उतर आया जहाँ में आब खुदा इंसान बनके
-है दी आवाज़`},{label:"पद 1",text:`1. वो आया है गुनाह की कैद से आज़ाद करने को
-जो उजड़े ज़िंदगी के बाग़ उन्हें आबाद करने को
-ना हो मायूस खुदा आया उमीदों का जहाँ बनके
-उतर आया जहाँ में...`},{label:"पद 2",text:`2. जो बैठे हैं अंधेरों में वो आए रोशनी लेले
-ग़मों में रहने वाले ज़िंदगी की हर खुशी लेले
-वो आया है खुदा इंसान, मेहरबान बनके
-उतर आया जहाँ में.....`},{label:"पद 3",text:`3. हमारे वास्ते वो आसमानी प्यार लाया है
-नया जीवन नए राहे नया संसार लाया है
-कभी जो खत्म ना हो आया ऐसी दास्तान बनके
-उतर आया जहाँ में.....`}],type:"worship",beat:"4/4",tempo:74},{slug:"i-will-praise-you",number:55,title:"I will praise you",title_alt:"I will praise you",language:"english",tags:["Worship"],stanzas:[{label:"Verse 1",text:`I will praise you with all of my life
-I will praise you with all of my strength
-With all of my life, with all of my strength
-All of my hope is in you`},{label:"Verse 2",text:`I will seek you with all of my heart
-I will seek you with all of my mind
-With all of my heart, with all of my strength
-All of my hope is in you`}],type:"worship",beat:"4/4",tempo:74},{slug:"jab-jab-ham-gayenge",number:55,title:"जब जब हम गायेंगे",title_alt:"Jab jab ham gayenge",language:"hindi",tags:["Psalms"],stanzas:[{label:"कोरस",text:`स्वर जो हमारे होठों पे है।
+तू ही मेरी शिफा`}],type:"worship",beat:"4/4",tempo:74},{slug:"chhodo-chhodo-ye-tera-naam",number:41,title:"छोड़ो छोड़ो ये तेरा नाम",title_alt:"Chhodo Chhodo Ye Tera Naam",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`छोड़ो छोड़ो ये तेरा नाम
+उसने तो मुझे मुक्ति दी है
+यीशु ने तेरा नाम... (२)
+हम प्रभु यीशु के लिए`},{label:"Verse 2",text:`२. उसने तो हमें अपनी मुक्ति दी है
+यह हमारा सौभाग्य हुआ
+हालेलूयाह सदा गाएंगे, (२)
+हम प्रभु यीशु के लिए`},{label:"Verse 3",text:`३. उसने तो हमें अपनी मुक्ति दी है
+यह हमारा सौभाग्य हुआ
+हालेलूयाह सदा गाएंगे, (२)
+हम प्रभु यीशु के लिए`}],type:"worship",beat:"4/4",tempo:74},{slug:"jannat-se-aaya-masiha",number:42,title:"जन्नत से आया मसीहा",title_alt:"Jannat Se Aaya Masiha",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`जन्नत से आया मसीहा,
+उसकी हम स्तुति करे,
+गाए, झूमे, हम नाचे,
+जन्नत के गीत सुनाएं
+हालेलुय्याह ...`},{label:"Verse 1",text:`१. आओ हम मिलकर आज खुशियां मनाएं
+उद्धार जो पाया हमने,`},{label:"Verse 2",text:`गीतों में डालकर सुनाएं
+जगत ...`},{label:"Verse 3",text:`२. खाए कोई यीशु ने सबकी चंगाई के लिए
+बहाया खून जो अपना,
+सभी की मुक्ति के लिए
+जगत ...`},{label:"Verse 4",text:`३. हम बचे है जो आज,
+यीशु की दया के कारण
+जीवन बदल गया आज यीशु के वचन
+के कारण
+जगत ...`}],type:"worship",beat:"4/4",tempo:74},{slug:"jab-jab-ham-gayenge",number:43,title:"जब जब हम गायेंगे",title_alt:"Jab jab ham gayenge",language:"hindi",tags:["Psalms"],stanzas:[{label:"कोरस",text:`स्वर जो हमारे होठों पे है।
 उस मैं छुपी है स्वामी तेरी ही धुन
 तेरे दरवाज़े पे आते हैं हम
 पग-पग गाते हुए तेरे ही धुन`},{label:"पद 1",text:`जब जब हम गायेंगे, तेरा यश गायेंगे
@@ -1075,75 +508,287 @@ All of my hope is in you`}],type:"worship",beat:"4/4",tempo:74},{slug:"jab-jab-h
 चाँद-सितारों का प्रकाश भी`},{label:"पद 3",text:`सारी दुनिया में चारों पहर
 स्वर के राजा तेरा सम्मान हो
 युग-युग तेरी ही कीर्ति चलें
-जीवन हमारी तेरी पहचान हो`}],type:"worship",beat:"4/4",tempo:74},{slug:"seek-ye-first",number:56,title:"Seek ye first",title_alt:"Seek ye first",language:"english",tags:["Gospel","Scripture"],stanzas:[{label:"Verse 1",text:`Seek ye first the Kingdom of God
-And His righteousness,
-And all these things shall be added unto you
-Hallelu, Hallelujah
-Hallelujah, Hallelujah
-Hallelujah, Hallelu-Hallelujah`},{label:"Verse 2",text:`Ask and it shall be given unto you,
-Seek and you shall find,
-Knock and the door shall be opened unto you
-Hallelu, Hallelujah`},{label:"Verse 3",text:`Man shall not live by bread alone,
-But by every word
-That proceeds from the mouth of God
-Hallelu, Hallelujah`}],type:"worship",beat:"4/4",tempo:74},{slug:"jab-se-pyaara-yeshu-aaya",number:56,title:"जब से प्यारा येसु आया",title_alt:"Jab se pyaara Yeshu aaya",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`जब से प्यारा येसु आया, मेरा जीवन बदल-बदल गया
+जीवन हमारी तेरी पहचान हो`}],type:"worship",beat:"4/4",tempo:74},{slug:"jab-se-pyaara-yeshu-aaya",number:44,title:"जब से प्यारा येसु आया",title_alt:"Jab se pyaara Yeshu aaya",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`जब से प्यारा येसु आया, मेरा जीवन बदल-बदल गया
 जब से मैंने तुझको पाया, मेरा जीवन बदल-बदल गया`},{label:"पद 1",text:`इस जहान की जिन्दगी से, मुझे छुड़ाया जान देकर
 मेरा दिल, मेरा मन, मेरी काया, मेरा जीवन बदल-बदल गया`},{label:"पद 2",text:`रात का दिल बीत गया, हुवा सवेरा का सुबह तारा
-इस लिए, मैंने ये गीत गाया, मेरा जीवन बदल-बदल गया`}],type:"worship",beat:"4/4",tempo:74},{slug:"more-love-more-power",number:57,title:"More love, more power",title_alt:"More love, more power",language:"english",tags:["Worship","Prayer"],stanzas:[{label:"Chorus",text:`More love, more power
-More of you in my life (2)`},{label:"Verse 1",text:`And I will worship you with all of my heart
-And I will worship you with all of my mind
-And I will worship you with all of my strength
-For you are my Lord (2)`},{label:"Verse 2",text:`I will seek your face with all of my heart
-I will seek your face with all of my mind
-I will seek your face with all of my strength
-For you are my Lord (2)`}],type:"worship",beat:"4/4",tempo:74},{slug:"khushi-manao-gaao-re",number:57,title:"ख़ुशी मनाओ गाओ रे",title_alt:"Khushi manao gaao re",language:"hindi",tags:["Carol","Christmas"],stanzas:[{label:"कोरस",text:`ख़ुशी मनाओ गाओ रे
-जन्मा है येसु राजा`},{label:"पद 1",text:`दूतों ने आकर चरवाहों को
-ये पैगाम सुनाया...हो,
-जाओ देखो बेतलेहेम में
-मुक्तिदाता आया...हो,
-ताली बजाओ गाओ रे
-जन्मा है येसु राजा..`},{label:"पद 2",text:`ख़ुशी मनाओ गाओ रे
-जन्मा है येसु राजा`}],type:"worship",beat:"4/4",tempo:74},{slug:"majesty-worship-his-majesty",number:58,title:"Majesty, worship His majesty",title_alt:"Majesty, worship His majesty",language:"english",tags:["Worship","Adoration"],stanzas:[{label:"Verse 1",text:`Majesty, worship His majesty
-Unto Jesus be all glory, power and praise
-Majesty, kingdom authority,
-Flow from His throne unto His own, His anthem raise!`},{label:"Chorus",text:`So exalt, lift up on high the name of Jesus
-Magnify, come glorify Christ Jesus, the King`},{label:"Verse 2",text:`Majesty, worship His majesty,
-Jesus who died, now glorified, King of all Kings`}],type:"worship",beat:"4/4",tempo:74},{slug:"mera-tu-hi-sahara-hai",number:58,title:"मेरा तू ही सहारा है",title_alt:"Mera tu hi sahara hai",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`अगर तू ना सिखाए
-तो कौन सिखाए, येशु
-अगर तू ना चलाए
-तो कौन चलाए, येशु`},{label:"पद 1",text:`मेरा तो तू ही सहारा है
-हाथों को तू ने ही थामा है`},{label:"पद 2",text:`अगर तू ना उठाए
-तो कौन उठाए, येशु
-अगर तू ना खिलाए
-तो कौन खिलाए, येशु`},{label:"पद 3",text:`यहोवा मेरा रक्षक,
-है मुझको ना छोड़े
-साथ में रहता सदा`}],type:"worship",beat:"4/4",tempo:74},{slug:"when-the-spirit-of-the-lord",number:59,title:"When the Spirit of the Lord",title_alt:"When the Spirit of the Lord",language:"english",tags:["Praise","Holy Spirit"],stanzas:[{label:"Verse 1",text:`When the Spirit of the Lord moves in my heart
-I will praise like David praised (2)
-I will sing like David sang
-I will clap like David clapped
-I will dance like David danced`}],type:"praise",beat:"4/4",tempo:104},{slug:"mere-yeshu-mai-swagat-karu",number:59,title:"मेरे येसु मैं स्वागत करूँ",title_alt:"Mere Yeshu mai swagat karu",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`मेरे येसु मैं स्वागत करूँ, अपने इस दिल में तेरा
-माँस और लहु अपना देके प्रभु पूरण करो जीवन मेरा ।`},{label:"पद 1",text:`भूखे जो आये थे सुनने वचन तुने उन्हे भोजन दिया
-प्यासे जो आये थे सुनने वचन तूने उन्हें पानी दिया
-मेरे येसु इन सबका दिल खुशियों से तूने भरा - 2`},{label:"पद 2",text:`निर्धन जो आये थे सुनने वचन तूने उन्हे धन दे दिया
-निर्बल जो आये थे सुनने वचन तूने उन्हें बल दे दिया
-मेरे येसु इन सबका दिल खुशियों से तूने भरा - 2`},{label:"पद 3",text:`गूंगे जो आये थे सुनने वचन तूने उन्हें स्वर दे दिया
-अन्धे जो आये थे सुनने वचन तूने उन्हें दर्शन दिया
-मेरे येसु इन सबका दिल खुशियों से तूने भरा - 2`}],type:"worship",beat:"4/4",tempo:74},{slug:"there-is-power-power",number:60,title:"There is power, power",title_alt:"There is power, power",language:"english",tags:["Victory","Power"],stanzas:[{label:"Chorus",text:`There is power, power, wonder-working power
-In the blood of the Lamb
-There is power, power, wonder-working power
-In the precious blood of Jesus`},{label:"Verse 1",text:`Victory... Victory to the Blood
-Victory... Victory to the Blood
-Victory... Victory to the Blood of Jesus`}],type:"worship",beat:"4/4",tempo:74},{slug:"tarak-to-samarth-to",number:60,title:"तारक तो सामर्थ तो",title_alt:"Tarak To Samarth To",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`तारक तो सामर्थ तो
-येशु देव युग युग आहे
-हा..हा.. हालेलुया हो..हो..होसना..२
-हालेलुया, हालेलुया, हालेलुया...२`},{label:"Verse 2",text:`१. हा दिवस प्रभुचा आहे,
-आपण उल्हास व आनंद करू,
-स्वर्गाच्या देवाला स्तुतीचे गीत गाऊ.`},{label:"Verse 3",text:`२. चला हो आता त्या कडे,
-आपण महिमा व स्तुति वर्णु
-किती थोर तो देव, सर्वस्व आपणा दिले.`},{label:"Verse 4",text:`३. त्याचा अनुभव घ्या,
-तो किती चांगला आहे,
-शैतानी बंधनातुनी
-आपणाला सोडवितो.`}],type:"worship",beat:"4/4",tempo:74},{slug:"naa-darunga",number:60,title:"ना डरूंगा",title_alt:"Naa Darunga",language:"hindi",tags:["Adoration","Communion","Praise & Worship","Psalms"],stanzas:[{label:"कोरस",text:`परमप्रधान शरण में तेरी
+इस लिए, मैंने ये गीत गाया, मेरा जीवन बदल-बदल गया`}],type:"worship",beat:"4/4",tempo:74},{slug:"jai-jai-naam",number:45,title:"जय जय नाम",title_alt:"Jai Jai Naam",language:"hindi",tags:["Praise"],stanzas:[{label:"कोरस",text:"जय-जय नाम येशु नाम गाऊँ में सुबह-ओ-शाम (4)"},{label:"पद 1",text:`बलहीन का सहारा, पापियों का दोस्त है तू
+येशु तू है कितना प्यारा, शब्द ना, कैसे बताऊँ?`},{label:"पद 2",text:`तुझमें बना रहूँ तो अमृत फल लाऊँ
+मैं गाऊँ तेरी जय सदा तो तुझसा बन जाऊँ मैं`},{label:"पद 3",text:`तू ही है जो मुझको बुलाता, देता है जीवन जल
+तेरी शक्ति पाऊँ सदा और योजना है सफला`}],type:"praise",beat:"4/4",tempo:104},{slug:"jay-jay-prabhu-yeshu-ki",number:46,title:"जय जय प्रभु यीशु की",title_alt:"Jay Jay Prabhu Yeshu Ki",language:"hindi",tags:["Praise"],stanzas:[{label:"कोरस",text:`जय जय प्रभु यीशु की -2
+हमको बचाने आया जगत में उसकी स्तुति करो
+गाओ खुशी के गीत – हाल्लेलूय्याह हे धरती हे आकाश – होसन्ना
+आया मसीह जग में पापों का करने नाश`},{label:"पद 1",text:`खून की धारा, बहती सूली से जिसमें धुले सब पाप
+धो लो अब तुम अपने हृदय को उसमें रहे ना दाग`},{label:"पद 2",text:`ग्रहण करो तुम आज प्रभु को प्रेम की बहती धार
+उसको बना लो खेवनहारा नाव लगा लो पार`},{label:"पद 3",text:`वापस आता मेरा प्रभु जी ले जायेगा साथ
+आशा मेरी अब तो यही है चलो तुम मेरे साथ`}],type:"praise",beat:"4/4",tempo:104},{slug:"jay-jay-yeshu-jay-jay-yeshu",number:47,title:"जय जय यीशु, जय जय यीशु",title_alt:"Jay Jay Yeshu, Jay Jay Yeshu",language:"hindi",tags:["Praise"],stanzas:[{label:"कोरस",text:`जय जय यीशु, जय जय यीशु, जय प्रभु जय जयकार
+सिरजनहार, पालनहार, तारणहार`},{label:"पद 1",text:`दीनो का दुःख हरने वाला, हृदय में शांति भरने वाला
+जय जनरंजन, जय दुखभंजन`},{label:"पद 2",text:`नर-तन वार लियो अवतार, दे निज प्राण कियो छुटकारा
+जय जगराता, जय सुखदाता`},{label:"पद 3",text:`मृत्यु के बंधन भंजनहारा, अक्षय जीवन देवनहारा
+रोगिन, शोकीन एक आधारा`},{label:"पद 4",text:`जय जयकार करो सब प्यारो, नर-नारी एक संग पुकारो
+नारा मारो, जय ललकारो`}],type:"praise",beat:"4/4",tempo:104},{slug:"taareef-taareef-milkar-karo-saare-taareef",number:48,title:"तारीफ, तारीफ मिलकर करो सारे तारीफ",title_alt:"Taareef, Taareef Milkar Karo Saare Taareef",language:"hindi",tags:["Praise"],stanzas:[{label:"कोरस",text:`तारीफ़, तारीफ़ तारीफ़, मिलके करो सारे तारीफ़ (२)
+यीशु की जो है प्यारा मुन्जी (२)`},{label:"पद 1",text:`उसने हम सब को है बनाया, जो कुछ दिखता उसने रचाया (२)
+सारे जहाँ का वह शाहनशाह (२)`},{label:"पद 2",text:`पापों से वह पाक है करता, सारी खताये माफ है करता (२)
+सारे रोगों को करता चंगा (२)`},{label:"पद 3",text:`उसकी मौत से जिन्दगी है पायी, आशा नयी एक उसने दिलायी (२)
+बैठेंगे तख्त पर फतहमन्द हो (२)`},{label:"पद 4",text:`हम्द-ओ-सन्ना हम मिलके करेंगे, सदा वहां पर उसको ताकेंगे (२)
+गीत नया वहाँ गायेंगे (२)`}],type:"praise",beat:"4/4",tempo:104},{slug:"taali-bajaakar-khushiyan-manao",number:49,title:"ताली बजाकर खुशियां मनाओ",title_alt:"Taali Bajaakar Khushiyan Manao",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`ताली बजाके खुशियां मनाओ
+प्रभु के सम्मुख आनंद मनाओ...२
+आनंद मनाओ, आनंद मनाओ
+सब दुख भुल कर आनंद मनाओ...२`},{label:"Verse 1",text:`१. बिनती से विचारों से,
+बढ़कर करता है...२`},{label:"Verse 2",text:`२. भयभीत ना हो, मैंने छुड़ाया तुझे
+तू है मेरा अपना...२`},{label:"Verse 3",text:`३. निश्चय भलाई और करुणा
+जीवन भर साथ है सदा...२`},{label:"Verse 4",text:`४. ज्ञान सिखाता राह बताता,
+वचन को देता सदा...२`},{label:"Verse 5",text:`५. संकट में अगर हम, दुहाई दे
+छुटकारा देगा हमें...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"tujhe-chhodunga-nahi-main-rahunga-tere-saaye-mein",number:50,title:"तुझे छोड़ूँगा नहीं मैं रहूँगा तेरे साये में",title_alt:"Tujhe Chhodunga Nahi Main Rahunga Tere Saaye Mein",language:"hindi",tags:["Promise","Comfort"],stanzas:[{label:"पद",text:`तुझे छोड़ूँगा नहीं मैं रहूँगा तेरे साये में
+आएगा वो दिन तेरे लिए भी
+देखेगा तू सपने सच होते
+तुझे छोड़ूँगा नहीं मैं रहूँगा तेरे साये में (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-dil-mai-prabhu-madhur",number:51,title:"तू दिल में हैं प्रभु मधूर",title_alt:"Tu dil mai prabhu madhur",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`तू दिल में हैं प्रभु मधूर मांगू यही दुआ,
+भक्ति भरे हृदय से मैं पूजूँ सदा`},{label:"पद 1",text:`पापों से तू ने मुक्ति दिलाई,
+आये मेरा घर मेहमान बन
+पापी हूँ फिर भी भक्ति निभाई,
+देखा न तुझसा दूजा सजन`},{label:"पद 2",text:`जब से तू आया संतोष पाया,
+दिल तो खुशियों से भरपूर है
+दर्शन मैं तेरा करता हूँ मन से,
+तेरा प्रभु मुझ में तो नूर है`},{label:"पद 3",text:`तू मेरी रक्षा करता हमेशा,
+तेरे उपहारों की गिनती नहीं
+मिल जायें मुझको तेरा सहारा,
+जाऊँ न करने विनती कहीं`},{label:"पद 4",text:`मैं तेरी पूजा हर क्षण करूँगा,
+तू मेरे दिल में हर क्षण रहें,
+मैं तेरा साक्षी बन जाऊँ दाता,
+दिल मेरा दरपन रहे।`}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-dhanya-hai-sarvashaktiman",number:52,title:"तू धन्य है, सर्वश्रेष्ठ है",title_alt:"Tu Dhanya Hai, Sarvashaktiman",language:"hindi",tags:["Worship","Adoration"],stanzas:[{label:"कोरस",text:`गहरे प्यार से तूने प्यार किया
+माँ से गहरा है प्यार तेरा (२)
+तू धन्य है, सर्वश्रेष्ठ है
+तेरे जैसा नहीं और कोई (२)
+हल्लेलूयाह... हल्लेलूयाह... हल्लेलूयाह... हल्लेलूयाह...`},{label:"पद 1",text:`तुझे मैं कभी भूलूँगा नहीं
+तुझे मैं कभी छोड़ूँगा नहीं
+तेरे साथ-साथ मैं चलूँगा
+एक नूर के समान रहूँगा`}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-pavitra-pavitra-hai",number:53,title:"तू पवित्र पवित्र है",title_alt:"Tu Pavitra Pavitra Hai",language:"hindi",tags:["Worship"],stanzas:[{label:"कोरस",text:`तू पवित्र पवित्र है – 2
+तू सच्चा है प्रभु, तू झूठा नहीं है, तू पवित्र पवित्र है`},{label:"पद 1",text:`तू सामर्थी भय योग्य है, तू स्वर्गों के स्वर्ग में है – 2
+तू सच्चा है प्रभु, तू झूठा नहीं है, तू पवित्र पवित्र है`},{label:"पद 2",text:`तू करुणा निधान है, प्रभु तू अत्यंत महान है प्रभु – 2
+तू सच्चा है प्रभु, तू झूठा नहीं है, तू पवित्र पवित्र है`},{label:"पद 3",text:`तू अधर्मों को क्षमा करता है, सारे रोगों को चंगा करता है – 2
+तू सच्चा है प्रभु, तू झूठा नहीं है, तू पवित्र पवित्र है`}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-pyaar-ka-sagar-hai",number:54,title:"तू प्यार का सागर है",title_alt:"Tu Pyaar Ka Sagar Hai",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`तू प्यार का सागर है
+सागर दया का तू है,
+तेरे प्यार के सागर में,
+हम तैरना चाहते हैं।
+तेरे प्यार के सागर में हम डूबना चाहते हैं`},{label:"Verse 2",text:`१. गहराई मिले सागर की
+ऊँचाई मिले आसमाँ की।
+पर कोई नाप न पायेगा,
+गहराई तेरे प्यार की।
+तू प्यार का सागर...`},{label:"Verse 3",text:`२. परमेश्वर होने पर भी तू,
+मानव रूप धारण किया।
+प्रभु तेरे इसी प्यार ने,
+हमको है दीवाना बनाया।
+तू प्यार का सागर...`}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-mera-geet-hai",number:55,title:"तू मेरा गीत है",title_alt:"Tu mera Geet hai",language:"hindi",tags:["Psalms"],stanzas:[{label:"कोरस",text:`तू मेरा गीत है
+मेरा संगीत है
+जीवन की राह में
+तू मीत है`},{label:"पद 1",text:`करूँ अब तेरी आराधना
+सम्पूर्ण मन से उपासना
+दे मुझको अपनी आत्मा में यहाँ`},{label:"पद 2",text:`मैं यहाँ प्रभु (x3)
+मैं हूँ यहाँ`},{label:"पद 3",text:`तू मेरी आशा
+तू मेरा प्रीत है
+जीवन की हार में
+तू जीत है`}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-mera-sharanasthan",number:56,title:"तू मेरा शरणस्थान",title_alt:"Tu Mera Sharanasthan",language:"hindi",tags:["Worship","Refuge"],stanzas:[{label:"कोरस",text:`तू मेरा शरणस्थान, तू मेरा गढ़ है
+संकट में मेरा दोस्त, मेरा प्रभु!
+आराधना करूँ मैं पूरे दिल से, मैं तुझे ढूँढूँगा संपूर्ण जीवन से
+तेरी सेवा करूँगा तन-मन-धन से, मैं हूँ यहाँ प्रभु...`},{label:"पद 1",text:`उद्धारक मेरा तू, मेरी चंगाई है
+संकट में सामर्थ है, मेरा प्रभु...`},{label:"पद 2",text:"तू मेरा चरवाहा, संकट में सांत्वना है मेरा दोस्त, मेरा प्रभु..."}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-hi-to-hak-aur-tu-hi-raasta",number:57,title:"तू ही तो हक और तू ही रास्ता",title_alt:"Tu Hi To Hak Aur Tu Hi Raasta",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`तू ही तो हक और तू ही रास्ता
+तू ही है जिन्दगी ...२ जिन्दगी ...
+खुदावंत खुदा`},{label:"Verse 1",text:`१. मेरा सब कुछ तू ही तू है
+साथ मेरे अब तेरी रूह है ...२
+तू है मालिक, तू है दाता
+तूर है तू, और तू खुशबू है
+मुझसे हो चाहे सारी
+दुनिया खफा ...२
+तू है जिन्दगी है, तू है बन्दगी है,
+बन्दगी खुदावंत खुदा
+तू है आशिकी है आशिकी
+खुदावंत खुदा`},{label:"Verse 2",text:`२. घर जो बनाए, तू ही बनाए
+तू ना बनाए कौन बनाए ...२
+शहर बचाए तू ही बचाए
+तू ना बचाए कौन बचाए
+दुनिया में होगी बस, तेरी ही रजा
+तू ही जिन्दगी है`},{label:"Verse 3",text:`३. हर बेबस का, तू ही सहारा
+डूबने वालों का है किनारा
+तू आगाज है, तू अंजाम है
+तेरे बिना अब कौन हमारा
+तू ने बनाए है, जुमीं आसमां ...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-hai-mera-apna",number:58,title:"तू है मेरा अपना",title_alt:"Tu Hai Mera Apna",language:"hindi",tags:["Comfort","Encouragement"],stanzas:[{label:"कोरस",text:"तू है मेरा अपना (२)"},{label:"पद 1",text:`निश्चय भलाई और करुणा
+जीवन भर साथ है सदा (२)`},{label:"पद 2",text:`ज्ञान सिखाता राह बताता
+वचन को देता सदा (२)`},{label:"पद 3",text:`संकट में अगर हम दुहाई दें
+छुटकारा देगा हमें (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-hai-mera-parameshwar-pita",number:59,title:"तू है मेरा परमेश्वर पिता",title_alt:"Tu Hai Mera Parameshwar Pita",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`तू है मेरा परमेश्वर पिता
+मैं हूं तेरी संतान,
+तेरा प्यार मेरे लिये है बड़ा महान`},{label:"Verse 1",text:`१. तेरा प्यार मैं चाहूं,
+हर खुशी से बढ़कर
+तेरे घर में मैं रहूं, सदा सर्वदा`},{label:"Verse 2",text:`१. तेरा प्यार मैं चाहूं,
+हर खुशी से बढ़कर
+तेरे घर में मैं रहूं, सदा सर्वदा`}],type:"worship",beat:"4/4",tempo:74},{slug:"tune-mujhe-aage-peeche",number:60,title:"तूने मुझे आगे पीछे घेरा है",title_alt:"Tune Mujhe Aage Peeche Ghera Hai",language:"hindi",type:"worship",beat:"4/4",tempo:68,tags:["Worship","Psalm 139"],stanzas:[{label:"कोरस",text:`तूने मुझे आगे पीछे घेरा है
+और अपना हाथ मुझ पर रखा है (२)
+यह ज्ञान मेरे लिए अति अद्भूत है
+मेरी समझ से बहुत ही ऊँचा है (२)`},{label:"पद 1",text:`यदि मैं आकाश पर चढ़ूँ, तो तू वहाँ है
+यदि मैं अधोलोक में बिछौना बिछाऊँ, तो तू वहाँ है (२)
+यदि मैं भोर की किरणों पर चढ़कर
+समुद्र के पार जा बसूँ
+वहाँ भी तेरा हाथ मेरी अगुवाई करेगा
+तेरा दाहिना हाथ मुझे थामे रहेगा`},{label:"पद 2",text:`तूने ही मेरे अंतःकरण को रचा
+माता के गर्भ में मुझे रचा (२)
+मैं तेरा धन्यवाद करूँगा
+क्योंकि मैं भयानक और अद्भूत रीति से रचा गया हूँ`}]},{slug:"toone-lahoo-ki-kataron-ko",number:61,title:"तूने लहू के कतरों को",title_alt:"Toone Lahoo Ki Kataron Ko",language:"hindi",tags:["Sacrifice","Salvation"],stanzas:[{label:"कोरस",text:`यीशु नाम मिला, यीशु नाम मिला
+मेरा जीवन संवर गया, मेरा जीवन संवर गया (२)`},{label:"पद 1",text:`तूने लहू के कतरों को मेरे लिए बहा दिया
+तूने जान बदन देकर यीशु मुझको बचा लिया (२)
+तेरे लहू से (२), यीशु के लहू से, मसीह के लहू से
+मेरा जीवन संवर गया, मेरा जीवन संवर गया`},{label:"पद 2",text:`जब मैं पाप के दलदल में फंसा हुआ था
+तूने आके मुझको उठाया, अपना बेटा बनाया (२)
+तेरी दया से (२), यीशु की दया से, मसीह की दया से
+मेरा जीवन संवर गया, मेरा जीवन संवर गया`},{label:"पद 3",text:`अब मैं गाऊँगा, तेरी महिमा सुनाऊँगा
+जब तक है दम में दम, यीशु तेरे पीछे चलूँगा (२)
+तेरे अनुग्रह से (२), यीशु के अनुग्रह से, मसीह के अनुग्रह से
+मेरा जीवन संवर गया, मेरा जीवन संवर गया`}],type:"worship",beat:"4/4",tempo:68},{slug:"tera-lahoo-tera-lahoo",number:62,title:"तेरा लहू, तेरा लहू",title_alt:"Tera Lahoo, Tera Lahoo",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`तेरा लहू, तेरा लहू
+तेरा लहू पाक करता है
+तेरा लहू जीवन देता है`},{label:"Verse 1",text:`१. तेरे लहू की धार से,
+मिटते गुनाह और खिलते है फूल ...२
+तेरा लहू .... २
+धोकर के साफ करता है,
+तेरा लहू, जीवन देता है।`},{label:"Verse 2",text:`२. तेरे लहू में जो छुपे
+किसी भी बलासे कभी ना डरे .... २
+तेरा लहू .... २
+तेरा लहू हिम्मत देता है,
+तेरा लहू जीवन देता है।`},{label:"Verse 3",text:`३. तेरा लहू ढाल और किला,
+सबकी पनाह बस तू आसरा .... २
+तेरा लहू .... २
+दिल में सुकून भरता है
+तेरा लहू जीवन देता है।`},{label:"Verse 4",text:`४. तेरे लहू के झरनों से,
+जख्म तो क्या मिटें नासूर भी .... २
+तेरा लहू .... २
+मरहम का काम करता है
+तेरा लहू जीवन देता है।`}],type:"worship",beat:"4/4",tempo:74},{slug:"teri-aradhana-karne-aaya-hoon",title:"तेरी आराधना करने आया हूँ",title_alt:"Teri Aradhana Karne Aaya Hoon (Tu Hai Mahan)",language:"hindi",type:"worship",beat:"4/4",tempo:75,tags:["Worship","Adoration"],stanzas:[{label:"कोरस",text:`तेरी आराधना करने आया हूँ
+झुकने को आया हूँ
+तुझसे ये कहने
+तू है मेरा खुदा
+तू है महान, सर्वशक्तिमान`},{label:"पद 1",text:`तू ही है अति सुन्दर, तू ही है अति योग्य
+तू ही है अति अद्भुत, मेरे प्रभु
+तेरी आराधना करने आया हूँ
+झुकने को आया हूँ
+तुझसे ये कहने
+तू है मेरा खुदा`},{label:"पद 2",text:`जीवन से मेरे तू महिमा पाये
+एक ही कामना करूँ
+हृदय के तार छेड़े झनकार
+तेरी आराधना है मधुर गीत
+तू है महान, सर्वशक्तिमान`},{label:"पद 3",text:`सृष्टि के हर एक कण-कण में
+छाया है तेरी ही महिमा का राज
+पक्षी भी करते हैं तेरी प्रशंसा
+हर पल सुनाते हैं आनंद का राग
+तू है महान, सर्वशक्तिमान`}],number:63},{slug:"teri-ichchha-poori-ho-jaaye",number:64,title:"तेरी इच्छा पूरी हो जाए",title_alt:"Teri Ichchha Poori Ho Jaaye",language:"hindi",tags:["Surrender","Worship"],stanzas:[{label:"कोरस",text:`तेरी इच्छा पूरी हो जाए
+हाथों में तेरे जीवन है ये
+मैं मिट्टी हूँ, तू है कुम्हार
+मुझको उठा, मुझको बना`},{label:"पद 1",text:`अपनी मर्जी पर मैं चलता रहा
+तुझको कभी भी अपना ना कहा
+लेकिन प्रभु आज से मैं
+तेरे क्रूस को ले लेता हूँ`}],type:"worship",beat:"4/4",tempo:74},{slug:"teri-jai-ho-teri-jai-ho",number:65,title:"तेरी जय हो, तेरी जय हो",title_alt:"Teri Jai Ho, Teri Jai Ho",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`तेरी जय हो, तेरी जय हो
+हर दिन सुबह और शाम
+आज, कल और हरदम ...२`},{label:"Verse 1",text:`१. तू मृदु कृपालु है, तू बड़ दयालु है...२
+विलंब से क्रोध करता है
+तू करुणा निधान है ...२`},{label:"Verse 2",text:`२. तू हमारे साथ है, तू बड़ा सामर्थी है
+उद्धार करने में पराक्रमी है
+प्रेम का तू सागर है ...२`},{label:"Verse 3",text:`३. तू प्रभु विश्वासू है,
+तू अधर्म को ढोता है
+क्षमा गुनाहों को करता है
+तू प्रभु महान है ...२`}],type:"praise",beat:"4/4",tempo:104},{slug:"teri-mahima-ho-mahima",number:66,title:"तेरी महिमा, हो महिमा",title_alt:"Teri Mahima, Ho Mahima",language:"hindi",tags:["Praise","Worship"],stanzas:[{label:"पद",text:`तेरी महिमा, हो महिमा (४)
+महिमा मिले तुझे स्वर्ग में
+महिमा मिले तुझे पृथ्वी पर`}],type:"praise",beat:"4/4",tempo:104},{slug:"tere-aasan-ke-paas-aaun",number:67,title:"तेरे आसन के पास आऊं",title_alt:"Tere Aasan Ke Paas Aaun",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`तेरे आसन के पास आऊं,
+कृपा मिलती है
+तेरे चरणों के पास बैठूं
+शांति मिलती है
+तेरे मंदिर में मैं आऊं,
+तू मिलता है।`},{label:"Verse 2",text:`१. तू ही है यहोवा शालोम
+प्रभु मेरी शांति
+जो मेरे मन में आई
+मसीहा को जानकर
+तू ही है यहोवा शामा
+प्रभु मेरे करीब है
+वादा किया है मुझसे तेरे
+साथ रहूं सदा`},{label:"Verse 3",text:`२. तेरे हृदय को छूऊं, प्यार मिलता है
+तेरे हाथों को मैं थामूं
+सहारा मिलता है
+तेरे आंखों में मैं देखूं
+तृप्त होता हूं मैं
+तू ही है यहोवा रोही प्रभु मेरा चरवाहा
+हरी चराई में चराता
+सुखदाई जल पिलाता
+तू ही है यहोवा यिरे
+प्रभु जो मुझे देता है
+जरूरत को पूर्ण करता
+महिमा के धन से`}],type:"worship",beat:"4/4",tempo:74},{slug:"tere-geet-gaun",number:68,title:"तेरे गीत गाऊँ",title_alt:"Tere geet gaun",language:"hindi",tags:["Psalms"],stanzas:[{label:"कोरस",text:`तेरे गीत गाऊँ, तेरे संग रहूँ मैं
+पाऊँ मैं जीवन का आनन्द तुझमें प्रभु`},{label:"पद 1",text:`तू ही मेरी ज्योति प्रभु
+तू ही मेरी मसीह`},{label:"पद 2",text:`तू ही मेरी मंजिल प्रभु
+तू ही मेरा मार्ग`},{label:"पद 3",text:`तू ही मेरी शांति प्रभु
+तू ही मेरा नाथ`}],type:"worship",beat:"4/4",tempo:74},{slug:"tere-bin-main-kuchh-bhi-nahi",number:69,title:"तेरे बिन मैं कुछ भी नहीं",title_alt:"Tere Bin Main Kuchh Bhi Nahi",language:"hindi",tags:["Worship","Surrender"],stanzas:[{label:"कोरस",text:`तेरे बिन मैं कुछ भी नहीं, कुछ भी नहीं (२)
+ऐ खुदावंद यीशु तेरे बिन
+ओ येशुआ, येशुआ (२), करूँ आराधना (२)
+हाथों को अपने उठाकर तुझे दूँ महिमा (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"thoda-samay-hai-baaki",number:70,title:"थोड़ा समय है बाकी",title_alt:"Thoda Samay Hai Baaki",language:"hindi",tags:["Encouragement","Service"],stanzas:[{label:"Chorus",text:`थोड़ा समय है बाकी, सेवा अभी है काफी (२)
+हम रुकें नहीं, पीछे मुड़े नहीं, यीशु है हमारा साथी (२)`},{label:"Verse 1",text:`१) संदेश सुनाते जाना, सेवा से नहीं शरमाना
+चाहे जग हमें रोके आये दु:ख के झकोरे (२)
+हमें देगा वो भरपूर शांति (२)`},{label:"Verse 2",text:`२) हम अपना क्रूस उठायें, और यीशु के पीछे आयें
+अपने को त्यागे यीशु से मन लगायें
+हम हैं उसके विश्वासी (२)`},{label:"Verse 3",text:`३) यीशु ने हमें भेजा है, उसका काम दिन ही दिन में करना है
+वो है रात आने वाली, ये हमारी जिम्मेवारी
+यीशु है हमारा न्यायी (२)`},{label:"Verse 4",text:`४) प्रतिफल हमें वो देगा, विश्वास में स्थिर करेगा
+उसकी आज्ञा हम मानें, उससे शांति हम पायें
+प्रतिज्ञा है उसकी काफी (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"daya-karo-bhagwan-kripa-karo-bhagwan",number:71,title:"दया करो भगवन",title_alt:"Daya karo bhagwan kripa karo bhagwan",language:"hindi",tags:["Lord have mercy"],stanzas:[{label:"कोरस",text:`दया करो भगवन, कृपा करो भगवन (2)
+दया करो हे ख्रीस्त प्रभुवर (3)`}],type:"worship",beat:"4/4",tempo:74},{slug:"dil-ke-daag-ko-dhove-kaun",number:72,title:"दिल के दाग को धोवे कौन",title_alt:"Dil Ke Daag Ko Dhove Kaun",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`दिल के दाग को धोवे कौन
+लहू जो कि क्रूस से जारी
+मेरे मर्ज को खोवे कौन?
+लहू जो कि क्रूस से जारी`},{label:"Verse 2",text:`वह चश्मा है मामूर
+दाग दिल के करता दूर
+है मुझको दिल मंजूर
+लहू जो कि क्रूस से जारी`},{label:"Verse 3",text:`२. मेरे मर्ज का शाफी है
+लहू जो कि क्रूस से जारी
+माफी को वो काफी है
+लहू जो कि क्रूस से जारी`},{label:"Verse 4",text:`३. वह है मेरे कर्ज का दाम
+लहू जो कि क्रूस से जारी
+वह है मेरा खास इनाम
+लहू जो कि क्रूस से जारी`},{label:"Verse 5",text:`४. मेरी वह उम्मीद है खास
+लहू जो कि क्रूस से जारी
+रास्ती का है खुश लिबास
+लहू जो कि क्रूस से जारी`},{label:"Verse 6",text:`५. दुख तकलीफ में है पनाह
+लहू जो कि क्रूस से जारी
+वह है मेरे घर की राह
+लहू जो कि क्रूस से जारी`},{label:"Verse 7",text:`६. मेरे गीत का है मजमून
+लहू जो कि क्रूस से जारी
+मुझको करता है ममनून
+लहू जो कि क्रूस से जारी`}],type:"worship",beat:"4/4",tempo:74},{slug:"dil-se-jo-pyaar-hota-hai",number:73,title:"दिल से जो प्यार होता है",title_alt:"Dil Se Jo Pyaar Hota Hai",language:"hindi",tags:["Love","Worship"],stanzas:[{label:"पद 1",text:`दिल से जो प्यार होता है, वो जीवन भर साथ रहता है (२)
+मैं तुझे छोड़ूँगा नहीं (२)
+मैं तुझे भूलूँगा नहीं (२)
+तेरी स्तुति गाता रहूँगा, जब तक जीवन रहेगा (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"dekho-chali-naiya-meri",number:74,title:"देखो चली, नैया मेरी",title_alt:"Dekho Chali, Naiya Meri",language:"hindi",tags:["Trust","Encouragement"],stanzas:[{label:"कोरस",text:`देखो चली, नैया मेरी कैसी है ये, झूमती डोली
+देखो चली रे मोरी नैया है इसका यीशु खिवैया`},{label:"पद 1",text:`आ प्रभु आ थाम ले मुझे, अपने कर में जीवन चाहे
+जीवन है यीशु हवाले, चलते हैं तोरे सहारे`},{label:"पद 2",text:`बातों पर तोरे ध्यान लगायें, मन में हमारे तू ही समाये
+दुनियाँ के राजा यीशु उजाले, पापों से हमें तू ही संभाले`},{label:"पद 3",text:`अब तो मसीह तू ही बचाये, आये हम तो पास में तोरे
+यीशु ही राह दिखाये, जीवन को तू ही बचाये`}],type:"worship",beat:"4/4",tempo:74},{slug:"dekho-pita-ne-kaisa-mahaan",number:75,title:"देखो पिता ने कैसा महान",title_alt:"Dekho Pita Ne Kaisa Mahaan",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`देखो पिता ने कैसा महान
+प्रेम हमसे किया है
+कि हम सभी उसकी संतान,
+कहलाये जा सके (२)
+और हम है भी
+देखो पिता ने . . .`},{label:"Verse 1",text:`१. कृपा मुझ पर है किया इतना,
+गहराई का कोई नाप नहीं
+प्यार मुझसे है किया इतना,
+सीमाओं का कोई अन्त नहीं (२)
+धन्य हुआ मैं ऐसे प्रेम और कृपा से
+जो महान पिता ने दिखाया
+देखो पिता ने . . .`},{label:"Verse 2",text:`२. गुजर जाऊ मैं नदी से होकर
+उसकी गहराई ना डुबाएगी
+चला जाऊं मैं अग्नि से होकर,
+उसकी लौ ना झुलसाएगी।
+नहीं डरूं मैं अग्नि और पानी से
+उस महान पिता ने छुड़ाया
+देखो पिता ने . . .`}],type:"worship",beat:"4/4",tempo:74},{slug:"do-to-tumhe-diya-jayega",number:76,title:"दो तो तुम्हें दिया जायेगा",title_alt:"Do To Tumhe Diya Jayega",language:"hindi",tags:["Giving","Offertory"],stanzas:[{label:"कोरस",text:`दो तो तुम्हें दिया जायेगा (४)
+जिस नाप से तुम नापते हो
+तुम्हारे लिए भी नापा जायेगा
+दो तो तुम्हें दिया जायेगा (४)`},{label:"पद 1",text:`दायाँ अगर देता है तो, बायाँ ये जानने न पाये
+गुप्त में रहे तुम्हारा देना, यही है यहोवा को भाये (२)
+जिस नाप से तुम नापते हो`},{label:"पद 2",text:`विधवा के जैसे तुम दान दो, धनवान के जैसे नहीं
+मन को तुम साफ कर देना, कुड़कुड़ाते हुए नहीं (२)
+जिस नाप से तुम नापते हो`},{label:"पद 3",text:`जो कुछ तुम पृथ्वी पर बांधोगे, वो स्वर्ग में बंधेगा
+जो कुछ तुम पृथ्वी पर खोलोगे, वो स्वर्ग में खुलेगा`}],type:"worship",beat:"4/4",tempo:74},{slug:"dhanyavaad-karte-hue",number:77,title:"धन्यवाद करते हुए",title_alt:"Dhanyavaad Karte Hue",language:"hindi",tags:["Thanksgiving","Praise"],stanzas:[{label:"पद",text:`धन्यवाद करते हुए उसके दरबार में
+आओ हम उसकी स्तुति करें
+गाओ नया गीत यहोवा के लिए
+गाओ नया गीत यहोवा के लिए`}],type:"praise",beat:"4/4",tempo:104},{slug:"naa-darunga",number:78,title:"ना डरूंगा",title_alt:"Naa Darunga",language:"hindi",tags:["Adoration","Communion","Praise & Worship","Psalms"],stanzas:[{label:"कोरस",text:`परमप्रधान शरण में तेरी
 मैं सदा रहूंगा
 सर्वशक्तिमान छाया में तेरी
 मैं बना रहूंगा`},{label:"पद 1",text:`ऐ मेरे खुदा – हुजूरी में तेरी
@@ -1158,7 +803,938 @@ Victory... Victory to the Blood of Jesus`}],type:"worship",beat:"4/4",tempo:74},
 यहोवा निस्सी – भरोसा है मेरा`},{label:"पद 8",text:"येशुआ... येशुआ..."},{label:"पद 9",text:`( जो चाहे तुझे – तू संभाले उन्हें
 जो जाने तुझे – तू उठाए उन्हें ) x4`},{label:"पद 10",text:`( जो पुकारे तुझे – तू सुनता उन्हें
 मुसीबतों में – तू साथ रहे ) x2`},{label:"पद 11",text:`( मेरी हर लड़ाई – जिताई तूने
-अपने फज़ल से – भरा है मुझे ) x2`},{label:"पद 12",text:"येशुआ... येशुआ..."}],type:"worship",beat:"4/4",tempo:74},{slug:"pray-for-india",number:61,title:"Pray For India",title_alt:"Pray For India",language:"bilingual",tags:[],stanzas:[{label:"Chorus",text:`Pray for India...6
+अपने फज़ल से – भरा है मुझे ) x2`},{label:"पद 12",text:"येशुआ... येशुआ..."}],type:"worship",beat:"4/4",tempo:74},{slug:"naam-bada-hai-tera",number:79,title:"नाम बड़ा है तेरा",title_alt:"Naam Bada Hai Tera",language:"hindi",tags:["Praise","Adoration"],stanzas:[{label:"पद",text:`नाम बड़ा है तेरा, यीशु नाम बड़ा है तेरा (२)
+जिसने मेरे जीवन को, नया जीवन दिया है (२)`}],type:"praise",beat:"4/4",tempo:104},{slug:"naare-lagao-aur-gao-re",number:80,title:"नारे लगाओ और गाओ रे",title_alt:"Naare Lagao Aur Gao Re",language:"hindi",tags:["Praise"],stanzas:[{label:"कोरस",text:`नारे लगाओ और गाओ रे, झण्डा मसीह का फैलाओ रे
+हालेलुय्याह, हालेलुय्याह (2)`},{label:"पद 1",text:`जीवन से उलझा हुआ राही, यीशु के पास तुम आओ रे
+गम की यह राहें सब छोड़ो, जिन्दगी में अब कुछ जोड़ो रे…`},{label:"पद 2",text:`लम्बा सफर जिन्दगी का, सच्चाई कोई न जाने रे
+आँखें ऊपर को लगाओ, यीशु के पास तुम आओ रे…`},{label:"पद 3",text:`यीशु कुर्बान हुआ है, पापों का अन्त हुआ है
+खुशियाँ वो बाँट रहा है, प्रेम की धारा वही है…`}],type:"praise",beat:"4/4",tempo:104},{slug:"neele-aasman-ke-paar-jayenge",number:81,title:"नीले आसमान के पार जाएंगे",title_alt:"Neele aasman ke paar jayenge",language:"hindi",tags:["Entrance","Recessional"],stanzas:[{label:"कोरस",text:`नीले आसमान के पार जाएंगे,
+मेरा येशु रहता वहां
+नीले आसमान के पार जाएंगे,
+मेरा येशु रहता वहां`},{label:"पद 1",text:`हम मिलेंगे बादलों पर
+हम मिलेंगे बादलों पर
+देखेगा सारा जहान`},{label:"पद 2",text:`नीले आसमान के पार जाएंगे,
+मेरा येशु रहता वहां
+नीले आसमान के पार जाएंगे,
+मेरा येशु रहता वहां`},{label:"पद 3",text:`उसका कोई भी वादा ना होगा अधूरा
+हर एक वादा उसका
+होता है पूरा
+उसका कोई भी वादा`},{label:"पद 4",text:`उसका कोई भी वादा ना होगा अधूरा
+हर एक वादा उसका
+होता है पूरा
+उसका कोई भी वादा`},{label:"पद 5",text:`उसके आने का वादा भी होगा पूरा
+देखेगा सारा जहान
+उसके आने का वादा भी होगा पूरा
+देखेगा सारा जहान`},{label:"पद 6",text:`हम मिलेंगे बादलों पर
+हम मिलेंगे बादलों पर
+देखेगा सारा जहान`},{label:"पद 7",text:`नीले आसमान के पार जाएंगे,
+मेरा येशु रहता वहां
+नीले आसमान के पार जाएंगे,
+मेरा येशु रहता वहां`},{label:"पद 8",text:`ये विश्वास है मेरा जो होगा पूरा
+सपना ये मेरा ना
+रहेगा अधूरा
+ये विश्वास है मेरा`},{label:"पद 9",text:`ये विश्वास है मेरा जो होगा पूरा
+सपना ये मेरा ना
+रहेगा अधूरा
+ये विश्वास है मेरा`},{label:"पद 10",text:`फिर संग हम रहेंगे अपने येशु के
+देखेगा सारा जहान
+फिर संग हम रहेंगे अपने येशु के
+देखेगा सारा जहान`},{label:"पद 11",text:`हम मिलेंगे बादलों पर
+हम मिलेंगे बादलों पर
+देखेगा सारा जहान`},{label:"पद 12",text:`नीले आसमान के पार जाएंगे,
+मेरा येशु रहता वहां
+नीले आसमान के पार जाएंगे,
+मेरा येशु रहता वहां`},{label:"पद 13",text:`हम मिलेंगे बादलों पर
+हम मिलेंगे बादलों पर
+देखेगा सारा जहान`},{label:"पद 14",text:`नीले आसमान के पार जाएंगे,
+मेरा येशु रहता वहां
+नीले आसमान के पार जाएंगे,
+मेरा येशु रहता वहां`}],type:"worship",beat:"4/4",tempo:74},{slug:"param-pita-aaya",number:82,title:"परम पिता आया",title_alt:"Param Pita Aaya",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`परम पिता आया,
+यीशु को दिया,
+हमारे पापों के लिए,
+हमें बचाने को,
+अपना खून बहाया,
+यीशु ने हमारे लिए...`},{label:"Verse 2",text:`१. यीशु ने हमारे लिए,
+अपना खून बहाया,
+हमें बचाने को,
+अपना खून बहाया...२`},{label:"Verse 3",text:`२. यीशु ने हमारे लिए,
+अपना खून बहाया,
+हमें बचाने को,
+अपना खून बहाया...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"parameshwar-mera-mahaan-hai",number:83,title:"परमेश्वर मेरा महान है",title_alt:"Parameshwar Mera Mahaan Hai",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`परमेश्वर मेरा महान है,
+उसके बिना जीवन अधूरा है..२
+जिंगूंगा, मरूंगा मैं उसके लिये,
+मैं सबकुछ करूंगा उसके लिये..२`},{label:"Verse 1",text:`१. राहों में जब आएगी कठिनाइयां,
+चलता जाऊंगा मैं पीछे ना हटूंगा..२`},{label:"Verse 2",text:`२. उसने है सिखाया जीना मुझे,
+पापों की डगर पर कभी ना चलना..२`},{label:"Verse 3",text:`३. जीवन का वो ही है उद्देश्य बना,
+गाऊंगा सदा मैं उसकी महिमा..२`}],type:"worship",beat:"4/4",tempo:74},{slug:"parvaton-ko-dekhunga-main",number:84,title:"पर्वतों को देखूंगा मैं",title_alt:"Parvaton Ko Dekhunga Main",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`पर्वतों को देखूंगा मैं
+कौन है मददगार मेरा...२
+मेरा मददगार है खुदा...२
+जिसने जमी और आसमां को बनाया`},{label:"Verse 1",text:`१. वो मेरे पांव को,
+फिसलने नहीं देगा...२
+खुदावंद है मेरा जागा हुआ,
+मुझे तन्हा ना छोड़ेगा...२
+मेरा निगेहबान खुदा है...२
+जिसने जमी और आसमां को बनाया`},{label:"Verse 2",text:`२. मेरी जां को बला छूं भी ना पाएगी...२
+न गर्मी चांद और सूरज की,
+कभी मुझको जलाएगी...२
+मेरा साहेबान खुदा है...२
+जिसने जमी और आसमां को बनाया`}],type:"worship",beat:"4/4",tempo:74},{slug:"pavitra-ati-pavitra",number:85,title:"पवित्र अति पवित्र",title_alt:"Pavitra Ati Pavitra",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`पवित्र अति पवित्र ...२ है
+सेनाओं का प्रभु`},{label:"Verse 1",text:`१. यशायाह ने देखा
+प्रभु को ऊंचाई पर,
+बैठा सिंहासन पर राजाओं का राज
+उसकी महिमा से
+मंदिर भर गया, दूतों ने कहा
+पवित्र अति पवित्र ...`},{label:"Verse 2",text:`२. यूहन्ना ने देखा
+प्रभु को टापु पर,
+मुर्दों सा गिर पड़ा
+उसके चरणों पर
+दिपों में दिखा`},{label:"Verse 3",text:`मानव पुत्र के समान,
+दूतों ने कहा
+पवित्र अति पवित्र
+पवित्र अति पवित्र है
+सेनाओं का प्रभु`}],type:"worship",beat:"4/4",tempo:74},{slug:"pavitra-aatma-aa",number:86,title:"पवित्र आत्मा आ",title_alt:"Pavitra Aatma Aa",language:"hindi",tags:["Adoration","Holy Spirit"],stanzas:[{label:"Chorus",text:`पवित्र आत्मा आ, पवित्र आत्मा आ
+हम पर छा जा, हम पर छा जा (२)`},{label:"Verse 1",text:`१. अपने सामर्थ्य से भर दे हमें
+अपनी आग से छू ले हमें
+नया जीवन दे दे हमें
+पवित्र आत्मा आ`},{label:"Verse 2",text:`२. ज्ञान और बुद्धि का आत्मा
+शांति और आनंद का आत्मा
+अपने प्रेम से भर दे हमें
+पवित्र आत्मा आ`}],type:"worship",beat:"4/4",tempo:74},{slug:"pavitra-jeevan-mein-jyoti-jala-de",number:87,title:"पवित्र जीवन में ज्योति जला दे",title_alt:"Pavitra Jeevan Mein Jyoti Jala De",language:"hindi",tags:["Prayer","Holiness"],stanzas:[{label:"Verse 1",text:`पवित्र जीवन में ज्योति जला दे
+तुझ पर लगी है ये आशा मेरी
+पापमय तन को दूर हटा दे (२)
+पूर्ण हो अभिलाषा मेरी`},{label:"Verse 2",text:`जीवन के दु:खी और कठिन क्षणों का
+दृढ़ता से सामना करने का बल दे
+अपने पवित्र वचनों से चला मुझे
+पूर्ण हो अभिलाषा मेरी`}],type:"worship",beat:"4/4",tempo:74},{slug:"pavitra-tu-hi-to-hai",number:88,title:"पवित्र तू ही तो है",title_alt:"Pavitra Tu Hi To Hai",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`पवित्र तू ही तो है,
+तेरा नाम पवित्र है ...२
+आसमां के नीचे और धरती पर
+मेरा यीशु पवित्र है ...२
+पवित्र तू ही तो है,
+तेरा नाम पवित्र है ...२
+आ हा हा हालेलुया, हालेलुया...२`},{label:"Verse 2",text:`१. तू ने हमको अपना बना लिया
+अपनी महिमा को हम पर प्रगट किया
+तेरी महिमा हम रोज करते रहे
+अपने हाथों को उठाकर पवित्र कहे
+पवित्र कहे... पवित्र कहे.. पवित्र कहे..
+पवित्र तू ही`},{label:"Verse 3",text:`२. सिंहासन स्तुति का तैयार है
+आराधना आज ऐसी है
+पवित्र पिता है सिंहासन पे
+और भरता हमें अपने पाक रूह से
+आ पाक रूह ... आ पाक रूह ...
+आ पाक रूह ...`}],type:"worship",beat:"4/4",tempo:74},{slug:"papa-by-bridge-music",number:89,title:"पापा",title_alt:"Papa by Bridge music",language:"hindi",tags:["Adoration","Communion","Praise & Worship"],stanzas:[{label:"कोरस",text:`तुझे छोड़ मैं चल पड़ा
+ढूंढने घर हर जगह
+खोज में मैं खो गया
+खुद को पहचान ना सका
+रेहमत के दरिया में डुबाया मुझे
+उस से ज़रिया बनाकर चलाया मुझे
+रेहमत के दरिया में डुबाया मुझे
+उस से ज़रिया बनाकर चलाया मुझे`},{label:"पद 1",text:`पापा, पापा
+बेटा मैं तेरा
+पापा, पापा
+बेटा मैं तेरा`},{label:"पद 2",text:`तुझे छोड़ मैं जाऊं कहां
+तू ही तो घर है मेरा
+ना था मुझे ये पता
+बेटा मैं था ही तेरा
+नज़र तेरी कभी ना हटी
+महफूज़ हूं तेरी परछाई में
+नज़र तेरी कभी ना हटी
+महफूज़ हूं तेरी परछाई में`},{label:"पद 3",text:`पापा, पापा
+बेटा मैं तेरा
+पापा, पापा
+बेटा मैं तेरा`},{label:"पद 4",text:`तेरी आंखों की पुतली हूं पापा
+मैं - आंखों की पुतली हूं पापा
+तेरी आंखों की पुतली हूं पापा
+तेरी आंखों की पुतली हूं पापा`},{label:"पद 5",text:`पराया ना हूं मैं - ठुकराया ना तूने
+शर्मिंदगी से - निकाला है तूने
+पराया ना हूं मैं - ठुकराया ना तूने
+शर्मिंदगी से - निकाला है तूने
+पराया ना हूं मैं - ठुकराया ना तूने
+पराया ना हूं मैं - ठुकराया ना तूने
+शर्मिंदगी से - निकाला है तूने
+गले लगाकर चूमा मुझे
+मेरा लत्ता हटाकर लबादा दिया
+गले लगाकर चूमा मुझे
+मेरा लत्ता हटाकर लबादा दिया`},{label:"पद 6",text:`पापा, पापा
+बेटा मैं तेरा
+पापा, पापा
+बेटा मैं तेरा`},{label:"पद 7",text:`तेरी आंखों की पुतली हूं पापा
+मैं - आंखों की पुतली हूं पापा
+तेरी आंखों की पुतली हूं पापा
+मैं - आंखों की पुतली हूं पापा`}],type:"worship",beat:"4/4",tempo:74},{slug:"pawan-aatma-aa",number:90,title:"पावन आत्मा आ",title_alt:"Pawan Aatma Aa",language:"hindi",type:"worship",beat:"4/4",tempo:72,tags:["Worship","Holy Spirit"],stanzas:[{label:"कोरस",text:`पावन आत्मा आ, पावन आत्मा आ
+मेरे जीवन में आ, मेरे हृदय में आ (२)
+मुझको छू ले, मुझको भर दे
+अपनी सामर्थ से नया कर दे (२)`},{label:"पद 1",text:`जैसे आग उतरती है, वैसे तू उतर आ
+जैसे हवा बहती है, वैसे तू बहा (२)
+पावन आत्मा आ, पावन आत्मा आ
+मेरे जीवन में आ, मेरे हृदय में आ`},{label:"पद 2",text:`कमज़ोरियों में तू ही बल देता
+अंधकार में तू ज्योति दिखाता (२)
+पावन आत्मा आ, पावन आत्मा आ
+मेरे जीवन में आ, मेरे हृदय में आ`}]},{slug:"paavan-paavan-paavan-eshwar",number:91,title:"पावन पावन ईश्वर",title_alt:"Paavan paavan paavan Eshwar",language:"hindi",tags:["Holy"],stanzas:[{label:"कोरस",text:`पावन पावन पावन ईश्वर
+स्वर्ग महिमा दिखाता तेरी
+स्तुति तव गाती पृथ्वी सारी
+जय जय जय प्रभु जय हो तेरी`}],type:"worship",beat:"4/4",tempo:74},{slug:"pawan-hai-vo-prabhu-hamara",title:"पावन है वो प्रभु हमारा",title_alt:"Paavan Hai Vo Prabhu Hamaara",language:"hindi",type:"praise",beat:"4/4",tempo:95,tags:["Praise","Joy"],stanzas:[{label:"कोरस",text:`पावन है वो प्रभु हमारा, उसकी जय जयकार करो
+निर्बल का वो बल है न्यारा, उसकी जय जयकार करो
+जय हो, जय हो, जय हो... (२)`},{label:"पद 1",text:`दीन दुखियों का है दाता, भटके हुओं को राह दिखाता
+सीधे मार्ग में हमें चलाता, उसकी जय जयकार करो
+जय हो, जय हो, जय हो...`},{label:"पद 2",text:`प्रभु हमारा बड़ा महान, निर्बुद्धियों को देता ज्ञान
+पतितों का वो बचाता प्राण, उसकी जय जयकार करो
+जय हो, जय हो, जय हो...`},{label:"पद 3",text:`प्रभु की महिमा अपरंपार, जग का वो है तारणहार
+मानो उसे अपना आधार, उसकी जय जयकार करो
+जय हो, जय हो, जय हो...`}],number:92},{slug:"paavan-ati-paavan-prabhu-eshwar-akhileshwar",number:93,title:"पावन, अति पावन",title_alt:"Paavan ati paavan prabhu Eshwar akhileshwar",language:"hindi",tags:["Holy"],stanzas:[{label:"कोरस",text:"पावन, अति पावन, प्रभु ईश्वर अखिलेश्वर - २"},{label:"पद 1",text:`१. स्वर्ग धरा के कोने-कोने गूंजे तेरा नाम
+परमेश्वर की महिमा गरिमा फैले तीनों धाम - २`},{label:"पद 2",text:`२. धन्य है वह जो आता है परमेश्वर के नाम
+परमेश्वर की महिमा गरिमा फेले तीनों धाम - २`}],type:"worship",beat:"4/4",tempo:74},{slug:"pita-hamare-tu-jo-karta-swarg-dham-mein-vaas",number:94,title:"पिता हमारे",title_alt:"Pita hamare tu jo karta swarg dham mein vaas",language:"hindi",tags:["Our Father"],stanzas:[{label:"कोरस",text:`पिता हमारे तू जो करता स्वर्ग धाम में वास,
+पावन तेरा नाम सदा हो आवे तेरा राज,
+स्वर्ग समान हो तेरी इच्छा धरती तल पर पूरण,`},{label:"पद 1",text:`हर दिन का आहार हमारा कर दे आज प्रदान,
+और हमारे अपराधों को क्षमा दान कर नाथ,`},{label:"पद 2",text:`जो अपने अपराधी जन को हम करते हैं माफ़,
+न परीक्षा ले हमारी किन्तु बुराई से बचा.`},{label:"पद 3",text:`क्योंकि तेरा राज तेरा सामर्थ्य और तेरी महिमा,
+अनंत काल तक बनी रहती है
+बनी रहती है (2)`}],type:"worship",beat:"4/4",tempo:74},{slug:"pyaar-ka-sagar-hai-tu",number:95,title:"प्यार का सागर है तू",title_alt:"Pyaar ka sagar hai tu",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`प्यार का सागर है तू येसु मेरे मसीह
+प्यार का सागर है तू येसु मेरे मसीह`},{label:"पद 1",text:`जीवन की मंज़िल है तू बिन तेरे मिले न खुशी
+दिल में तेरे मैं बस जाऊँ हर दिन हर पल मैं प्रभू
+पाकर तेरा प्यार बन जाऊँ तेरे समान`},{label:"पद 2",text:`कितना मीठा तेरा प्यार कैसे करूँ मैं वर्णन
+मधुर मधु से भी मीठा तेरा प्यार है।`},{label:"पद 3",text:`ढूँढा सारे जहाँ साजन मिला न कहीं
+हर प्रेम प्रीत में खोजा पर तेरे जैसा नहीं
+तेरे प्रीत में पाऊँ सम्पूर्ण जीवन भी
+पाकर तेरा प्यार चाहूँ न दूजा कोई`},{label:"पद 4",text:`जग में सदा अपनी माता प्यार की मूरत है
+जननी की ममता हमेशा ईश्वर की दीदार है।
+माता अगर भूल भी जाये अपनी ही संतान को
+पर तेरा यह प्यार कभी भूल न जाये हमको।`}],type:"worship",beat:"4/4",tempo:74},{slug:"pyar-milta-hai",number:96,title:"प्यार मिलता है",title_alt:"Pyar Milta Hai",language:"hindi",tags:["Gospel"],stanzas:[{label:"कोरस",text:`प्यार मिलता है, उद्धार मिलता है
+बैचैन दिल को करार मिलता है
+येशु के नाम से ....`},{label:"पद 1",text:`अंधो को दृष्टि मिलती है, लाचार शांति पाते
+बंधन में जो जकड़े है, वो मुक्ति पाते`},{label:"पद 2",text:`हर गम की दावा येशु, येशु ही मसीहा है
+आओ तुम चले आओ, जीवन यहाँ है`}],type:"worship",beat:"4/4",tempo:74},{slug:"pyaasa-hiran",number:97,title:"प्यासा हिरन",title_alt:"Pyaasa hiran",language:"hindi",tags:["Psalms"],stanzas:[{label:"कोरस",text:`प्यासा हिरन जैसे ढूँढे हैं जल को
+वैसे प्रभु मैं तुझे खोज रहा।`},{label:"पद 1",text:`तू ही मेरे मन की अभिलाषा
+तेरी पूजा नित दिन करता रहूँ मैं`},{label:"पद 2",text:`सोना चाँदी मैं तो न माँगू
+मन तेरे प्रेम से भरता रहूँ मैं`},{label:"पद 3",text:`तू जो बन जाये श्रद्धा सुमन
+पुष्प पराग सा झरता रहूँ मैं`}],type:"worship",beat:"4/4",tempo:74},{slug:"prabhu-ka-aanand-hai",number:98,title:"प्रभु का आनंद है",title_alt:"Prabhu Ka Aanand Hai",language:"hindi",tags:["Joy"],stanzas:[{label:"कोरस",text:`प्रभु का आनंद है मेरी ताकत, संसार में यीशु है मेरी ताकत (2)
+वो मेरा आनंद हर एक दिन में, वो मेरा सहारा है (2)`},{label:"पद 1",text:`जब मैंने सोचा मैं अकेला हूँ, तब प्रभु यीशु ने मुझ से कहा (2)
+संसार के अंत तक साथ रहने वाला, मैं तेरे साथ हूँ (2)`},{label:"पद 2",text:`जब मैंने सोचा मैं निर्बल हूँ, तब प्रभु यीशु ने मुझ से कहा (2)
+शक्ति देने वाला सामर्थ देने वाला, मैं तेरे साथ हूँ (2)`},{label:"पद 3",text:`जब मैंने सोचा आसंभव है, तब प्रभु यीशु ने मुझ से कहा (2)
+आसंभव के संभव करने वाला यीशु, मैं तेरे साथ हूँ (2)`}],type:"praise",beat:"4/4",tempo:104},{slug:"prabhu-ko-ham-bhet-chadaye",number:99,title:"प्रभु को हम भेंट चढ़ायें",title_alt:"Prabhu ko ham bhet chadaye",language:"hindi",tags:["Offertory"],stanzas:[{label:"कोरस",text:`प्रभु को हम भेंट चढ़ायें,
+और गायें उसका नाम सदा (2)`},{label:"पद 1",text:`जो भी हमारा दान तुम्हारा,
+ग्रहण करो उपहार हमारा
+लाये चरणों में अर्पित करने, (2)
+स्वीकारो हे भाग्य विधाता`},{label:"पद 2",text:`मानव श्रम की रोटी जिनका,
+रूप यही है ईश्वर तन का,
+आये चरणों में भेंट चढ़ाने (2),
+अपनाओ हे मुक्ति विधाता ।`},{label:"पद 3",text:`दाख कटोरा मानव श्रम का,
+ले लो प्रभु जी लोहू हमारा
+आये पापी सकल चढ़ाने, (2)
+स्वीकारो हे सकल विधाता ।`}],type:"worship",beat:"4/4",tempo:74},{slug:"prabhu-tere-hi-mandir-mai",number:100,title:"प्रभु तेरे ही मन्दिर में",title_alt:"Prabhu tere hi mandir mai",language:"hindi",tags:["Offertory"],stanzas:[{label:"कोरस",text:`प्रभु तेरे ही मन्दिर में हम चढाते हैं बलिदान
+स्तुति तेरी गाते सभी भक्ति में झूम, तुझको करे सम्मान`},{label:"पद 1",text:`सब कुछ हमें देता, हमारा प्रमी पिता
+जीवन के संकट में, प्रभु साथ निभाता सदा`},{label:"पद 2",text:`कृपा दया सागर, बरसाता प्रेम की फुहार
+गुमराह भेड़ों का बन जाता राखनहार`}],type:"worship",beat:"4/4",tempo:74},{slug:"prabhu-parameshwar-tu-kitna",number:101,title:"प्रभु परमेश्वर, तू कितना",title_alt:"Prabhu Parameshwar, Tu Kitna",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`प्रभु परमेश्वर, तू कितना भला है
+तेरी भलाई सदा की है
+मेरा दिल तुझे धन्यवाद देता
+मेरा प्राण तुझे स्तुति देता`},{label:"Verse 2",text:`१. कठिन समय में तू मजबूत गढ़
+अंधेरी राह में तू उजियाला है
+मेरी दोहाई तू सुनता
+मेरा प्रभु कभी नहीं सोता
+मेरा प्राण तुझे स्तुति करता`},{label:"Verse 3",text:`२. तू कहता है, नहीं छोड़ूंगा
+तू कहता है, नहीं ठुकराऊंगा
+तेरा हाथ मेरी अगुवाई करता
+तेरा सामर्थ मुझे बल देता`}],type:"worship",beat:"4/4",tempo:74},{slug:"prabhu-yeshu-tere-charnon-mein",number:102,title:"प्रभु यीशु तेरे चरणों में",title_alt:"Prabhu Yeshu Tere Charnon Mein",language:"hindi",tags:["Worship","Devotion"],stanzas:[{label:"पद",text:`प्रभु यीशु तेरे चरणों में
+लाया हूँ मैं अपना जीवन
+तू ही मेरा जीवन आधार (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"phir-se-wo-aag-barasa-de",number:103,title:"फिर से वो आग बरसा दे",title_alt:"Phir Se Wo Aag Barasa De",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`फिर से वो आग बरसा दे
+फिर से उफान आने दे
+फिर से महिमा देश में
+आ जाए यहोवा (२)`},{label:"Verse 1",text:`१. तेरी महिमा देश में
+फिर से उफान आने दे
+पवित्र आत्मा की सामर्थ्य से
+फिर से आग बरसा दे`},{label:"Verse 2",text:`२. टूटे हुए दिल जुड़ जाएं
+भटके हुए जन मुड़ आएं
+यीशु के नाम की महिमा हो
+फिर से आग बरसा दे`}],type:"worship",beat:"4/4",tempo:74},{slug:"bhusiyon-yehova-ki-stuti-karo",number:104,title:"भूसियों यहोवा की स्तुति करो",title_alt:"Bhusiyon Yehova Ki Stuti Karo",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`भूसियों यहोवा की स्तुति करो
+को: वह कितना अच्छा है,
+उसकी करुणा सदा है,
+वो कैसा भला है,
+उसकी करुणा सदा है।
+भूसियों यहोवा की स्तुति करो (२)`},{label:"Verse 2",text:`२. यहोवा सारे सृष्टि का कर्ता,
+हमारा वो सिरजनहार,
+वो हमारा पिता,
+हम उसकी संतान हैं।
+उसका धन्यवाद करो।
+वो कितना अच्छा.....`},{label:"Verse 3",text:`३. यहोवा पवित्र परमेश्वर है,
+हमारा वो तारणहार है,
+वो अच्छा चरवाह,
+हम उसकी भेड़े हैं।
+उसका धन्यवाद करो।
+वो कितना अच्छा.....`}],type:"worship",beat:"4/4",tempo:74},{slug:"man-mandir-mein-yeshu-aaya",number:105,title:"मन मंदिर में यीशु आया",title_alt:"Man Mandir Mein Yeshu Aaya",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`मन मंदिर में यीशु आया
+दिल मेरा खुशियों से भर गया।।(२)
+हालेलूयाह, हालेलूयाह,
+हालेलूयाह, हालेलूयाह, हालेलूयाह,`},{label:"Verse 2",text:`१. जब से आया यीशु दिल में मेरे
+दूर हो गए गम दिल से मेरे...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"mera-tu-hi-sahara-hai",number:106,title:"मेरा तू ही सहारा है",title_alt:"Mera tu hi sahara hai",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`अगर तू ना सिखाए
+तो कौन सिखाए, येशु
+अगर तू ना चलाए
+तो कौन चलाए, येशु`},{label:"पद 1",text:`मेरा तो तू ही सहारा है
+हाथों को तू ने ही थामा है`},{label:"पद 2",text:`अगर तू ना उठाए
+तो कौन उठाए, येशु
+अगर तू ना खिलाए
+तो कौन खिलाए, येशु`},{label:"पद 3",text:`यहोवा मेरा रक्षक,
+है मुझको ना छोड़े
+साथ में रहता सदा`}],type:"worship",beat:"4/4",tempo:74},{slug:"mera-yeshu-bhala-hai",number:107,title:"मेरा यीशु भला है",title_alt:"Mera Yeshu Bhala Hai",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`मेरा यीशु भला है,
+हरगिज ना छोड़ेगा
+हरगिज ना त्यागेगा
+जय मिलकर गाएंगे
+शत्रु को हराएंगे,
+देश को जितेंगे`},{label:"Verse 1",text:`१. करता मुझपे करम, आराम देता
+मुश्किल में मुझे / हर
+राहत देता है / मुझको ...`},{label:"Verse 2",text:`२. आंसू देखता, आहों को सुनता
+कष्टों को सहता / मेरे
+मुझको छुड़ाता / यीशु`},{label:"Verse 3",text:`३. हर परीक्षा में, मैं न डरूंगा
+हक को पाकर के / मेरे
+राज करूंगा / यीशु`},{label:"Verse 4",text:`४. टूटे हुए मन से, सच्चे हृदय से
+यीशु को अपना लो / मेरे
+कमियों को भर देगा / तेरे`}],type:"worship",beat:"4/4",tempo:74},{slug:"mere-jeevan-mein-yeshu-tera-naam",number:108,title:"मेरे जीवन में यीशु तेरा नाम",title_alt:"Mere Jeevan Mein Yeshu Tera Naam",language:"hindi",tags:["Worship"],stanzas:[{label:"कोरस",text:`मेरे जीवन में यीशु तेरा नाम, जलाल पाता रहे – 2
+मेरा उठना बैठना और – 2 चलना तुझे भाता रहे`},{label:"पद 1",text:`बेमिशल है तू मैं मिशल बनूँ, तू कामिल है मैं भी कमाल बनूँ – 2
+बेमिशल है तू मैं मिशल बनूँ – 2 तू कामिल है मैं भी कमाल बनूँ
+दुनिया का नूर है यीशु, मेरी रहें सजाता रहे – 2`},{label:"पद 2",text:`मेरे सोचों में तू मेरे ख्वाबों में तू, मेरे सारे सवालों जवाबों में तू – 2
+मेरे सोचों में तू मेरे ख्वाबों में तू – 2 मेरे सारे सवालों जवाबों में तू
+जब भी तुझे पुकारूँ, तेरा रूह मुझपे आता रहे – 2`},{label:"पद 3",text:`ज़िंदगी भर तेरे गीत गाता रहूँ, तू सुनता रहे मैं सुनता रहूँ – 2
+ज़िंदगी भर तेरे गीत गाता रहूँ – 2 तू सुनता रहे मैं सुनता रहूँ
+जब गीत तेरे गाउँ, तेरा रूह मुझमें गाता रहे – 2`}],type:"worship",beat:"4/4",tempo:74},{slug:"kehta-hai-tumse-vo-ek-baat",number:109,title:"मेरे तुम",title_alt:"Kehta hai tumse vo ek baat",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`कहता है तुमसे, वो एक बात
+सुनो उसको, सुनो उसको`},{label:"पद 1",text:`हर पल तुम्हारे, रहता है साथ
+सुनो उसको, सुनो उसको`},{label:"पद 2",text:`वो ना देखे गुनाह, ना देखे खता
+बस करता है, तुमसे वो प्यार`},{label:"पद 3",text:`सारे जग में तुम्हे, ना मिले ऎसा मीत
+जिसने अपना जीवन दिया`},{label:"पद 4",text:`आँखों का तारा, वो कहे तुमको आज
+कहता है तुमसे, मेरे तुम`},{label:"पद 5",text:"मेरे तुम"}],type:"worship",beat:"4/4",tempo:74},{slug:"mere-masiha",number:110,title:"मेरे मसीहा",title_alt:"Mere Masiha",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`मेरे मसीहा ...२
+कोई नहीं है तेरे समान
+तू है महान सर्वशक्तिमान
+तू है महान दयालु प्रभु`},{label:"Verse 2",text:`१. अपने शब्दों से आकाश
+और पृथ्वी बनाया
+अपने सामर्थ से सारे जहा में फैलाया
+पंछी और सागर,
+पर्वत और नदियां
+सारे जहा में बनाया`},{label:"Verse 3",text:`२. आदम को भूमि की मिट्टी से बनाया
+अपने जीवन का सांस
+उसमें फूंक दिया
+अपने स्वरूप में, अपने स्वभाव में
+मनुष्य को उसने बनाया
+तू है महान ...`},{label:"Verse 4",text:`३. अपने वचनों से अंधों को
+आंखे दिया है
+अपनी शक्ति से लंगड़ों को
+उसने चलाया
+अद्भुत सामर्थ से पवित्र प्रेम से
+मुर्दों को उसने जिलाया`}],type:"worship",beat:"4/4",tempo:74},{slug:"mere-yeshu-mai-swagat-karu",number:111,title:"मेरे येसु मैं स्वागत करूँ",title_alt:"Mere Yeshu mai swagat karu",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`मेरे येसु मैं स्वागत करूँ, अपने इस दिल में तेरा
+माँस और लहु अपना देके प्रभु पूरण करो जीवन मेरा ।`},{label:"पद 1",text:`भूखे जो आये थे सुनने वचन तुने उन्हे भोजन दिया
+प्यासे जो आये थे सुनने वचन तूने उन्हें पानी दिया
+मेरे येसु इन सबका दिल खुशियों से तूने भरा - 2`},{label:"पद 2",text:`निर्धन जो आये थे सुनने वचन तूने उन्हे धन दे दिया
+निर्बल जो आये थे सुनने वचन तूने उन्हें बल दे दिया
+मेरे येसु इन सबका दिल खुशियों से तूने भरा - 2`},{label:"पद 3",text:`गूंगे जो आये थे सुनने वचन तूने उन्हें स्वर दे दिया
+अन्धे जो आये थे सुनने वचन तूने उन्हें दर्शन दिया
+मेरे येसु इन सबका दिल खुशियों से तूने भरा - 2`}],type:"worship",beat:"4/4",tempo:74},{slug:"main-aankhen-apni-parvat-ki-aur-uthaunga",number:112,title:"मैं आंखें अपनी पर्वत की ओर उठाऊंगा",title_alt:"Main Aankhen Apni Parvat Ki Aur Uthaunga",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`मैं आंखें अपनी पर्वत की ओर उठाऊंगा।
+मुझको है पता सहायता
+वहीं से पाऊंगा ...३
+नीचे धरती ऊपर आसमां बनाता है
+परमेश्वर है वो
+उसके गुण गाऊंगा।`},{label:"Verse 1",text:`१. फिसले ना कभी कदम राहों में
+इसीलिए ना सोता दिन रातों में
+इस्राएल का वो है रखवाला
+ऊंघेगा ना वो सोयेगा
+मैं आंखें अपनी...`},{label:"Verse 2",text:`२. कष्टों से यीशु मुझे बचाएगा
+रक्षक बनकर प्राण संभालेगा
+बाहर जाओ या अंदर आओ
+वो ही हमेशा रक्षक होगा
+मैं आंखें अपनी...`}],type:"worship",beat:"4/4",tempo:74},{slug:"main-khush-hoon-chhudaya-yeshu-ne",number:113,title:"मैं खुश हूं छुड़ाया यीशु ने",title_alt:"Main Khush Hoon Chhudaya Yeshu Ne",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`मैं खुश हूं छुड़ाया यीशु ने (३)
+गाऊं महिमा हालेलुय्याह
+छुड़ाया यीशु ने`},{label:"Verse 1",text:`१. शैतान ने बांधा था,
+छुड़ाया यीशु ने (३)
+गाऊं महिमा हालेलुय्याह
+छुड़ाया यीशु ने`},{label:"Verse 2",text:`२. पापों से धोया है,
+छुड़ाया यीशु ने (३)
+गाऊं महिमा हालेलुय्याह
+छुड़ाया यीशु ने`}],type:"worship",beat:"4/4",tempo:74},{slug:"main-dhundta-raha-hun-tumko-hey-prabhu",number:114,title:"मैं ढूढ़ता रहा हूँ",title_alt:"Main dhundta raha hun tumko hey prabhu",language:"hindi",tags:["Entrance"],stanzas:[{label:"कोरस",text:`मैं ढूढता रहा हूं तुमको हे प्रभु-2
+पाऊँ कहा तुम्हें, पाऊँ कहा तुम्हें-2
+मैं ढूढता रहा हूं तुमको हे प्रभु`},{label:"पद 1",text:"आ… आ…. आ… आ…."},{label:"पद 2",text:`डुबा जीवन मेरा पाप के सागर में,
+शान्ति है नहीं मेरे जीवन में
+खो गया हूं प्रभु, साथ दे मेरा-2`},{label:"पद 3",text:`तुम हो जीवन साथी, तुम हो मेरा प्यार
+टूटे दिल में मेरी लगी है आस तेरा
+दर्शन दो प्रभु नव जीवन दे मुझे-2`}],type:"worship",beat:"4/4",tempo:74},{slug:"main-yeshu-ka-diwana-hoon",number:115,title:"मैं यीशु का दिवाना हूं",title_alt:"Main Yeshu Ka Diwana Hoon",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`मैं यीशु का दिवाना हूं
+यीशु दिवाना.... हूं
+हां मैं यीशु का दिवाना हूं
+यीशु दिवाना.... हूं`},{label:"Verse 2",text:`१. मसीह में हूं मैं नई सृष्टि
+पुराना चला गया
+देखो सब नया हुआ है
+बिता कल चला गया
+मेरे सर पे हाथ को रखकर`},{label:"Verse 3",text:`कहा तुझसे प्यार करूं
+मत डर तू मेरे बेटे
+तेरे संग रहता हूं ... मैं`},{label:"Verse 4",text:`२. अब मेरा जीना मसीह है,
+मरना भी मसीह है
+जीने की है एक आरज़ू
+उसे मैं पहचान लूं
+उसी में मैं पाया जाऊं
+दुखों से सहभागी होऊं
+किसी तरह मरे हुओं से, जी उठने
+तक पहुंचू मैं ... मैं`}],type:"worship",beat:"4/4",tempo:74},{slug:"yehi-diwas-hai-jise-banaya",number:116,title:"यही दिवस है जिसे बनाया",title_alt:"Yehi diwas hai jise banaya",language:"hindi",tags:["Entrance"],stanzas:[{label:"कोरस",text:`यही दिवस है जिसे बनाया प्रभु ने अपने हाथों से
+प्रसन्न मन से खुशी मनावें नाचे गावें तन मन से
+आल्लेलूया, आल्लेलूया ।।`},{label:"पद 1",text:`नाचे गावे तन मन से खुशी मनावे तन मन से
+यही दिवस है जिसे बनाया प्रभु ने अपने हाथों से`},{label:"पद 2",text:`यही दिवस है जिस दिन प्रभु ने भू पर फिर अवतार लिया
+प्रसन्न मन से खुशी मनावें नाचे गावें तन मन से`},{label:"पद 3",text:`यही दिवस है जिस दिन हम ने नव जीवन का लाभ लिया
+प्रसन्न मन से खुशी मनावें नाचे गावें तन मन से`}],type:"worship",beat:"4/4",tempo:74},{slug:"yehova-ka-tum-dhanyavaad-karo",number:117,title:"यहोवा का तुम धन्यवाद करो",title_alt:"Yehova Ka Tum Dhanyavaad Karo",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`यहोवा का तुम धन्यवाद करो
+उसके प्रेम के लिए धन्यवाद करो
+सदा का है . . .२`},{label:"Verse 1",text:`१. सारे गौरव में प्रभु आता
+होकर महिमा में वो सवार
+सच्चाई, नम्रता और नम्रता के लिए`},{label:"Verse 2",text:`२. उसकी सेना आती आकाश में,
+उसकी सेना आती है नाचते
+उसने आनंद से है दिल भरा
+खुशियां मनाओ, राज बढ़ रहा
+उसका प्रेम युद्ध का नारा
+यहोवा का तुम . . .`}],type:"worship",beat:"4/4",tempo:74},{slug:"yehova-nissi",number:118,title:"यहोवा निस्सी",title_alt:"Yehova Nissi",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`यहोवा निस्सी... धन्य तेरा नाम
+धन्य, धन्य, धन्य तेरा नाम`},{label:"Verse 2",text:`१. शत्रुओं की सेना को हराता तू
+जय का झंडा है हमारा तू...२
+धन्य, धन्य, धन्य तेरा नाम।`},{label:"Verse 3",text:`२. शैतान के सिर को कुचल कर तू
+मृत्यु पर जयवंत हुआ है तू...२
+धन्य, धन्य, धन्य तेरा नाम।`},{label:"Verse 4",text:`३. जय के उत्सव में ले चलता तू
+सुन्स वचन की हमसे है फैलाता तू...२
+धन्य, धन्य, धन्य तेरा नाम।`}],type:"worship",beat:"4/4",tempo:74},{slug:"yehova-yehova-yehova-yehova",number:119,title:"यहोवा यहोवा यहोवा यहोवा",title_alt:"Yehova Yehova Yehova Yehova",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`यहोवा यहोवा यहोवा यहोवा
+यहोवा जिन्दा खुदा,
+वो हमारा बादशाह
+जो मसीह में मुर्जस्सिम हुआ
+यहोवा यहोवा यहोवा ...`},{label:"Verse 2",text:`१. यहोवा शामा भी तू
+जो रहता साथ साथ
+यहोवा राहें भी तू
+मेरा चौपाल साथ साथ
+जो भी मांगे वही मिल जाए
+जो भी ढूंढेंगे वही पाएंगे
+खटखटाए तो खुल जाएगा
+यहोवा ...`},{label:"Verse 3",text:`२. - ऐ पाक यहोवा निस्सी
+तू झंडा कौम का
+ऐ पाक यहोवा राफा
+तू शाफी कौम का
+तेरे पीछे चलें और
+शक ना करें
+बल्कि रखें ईनाम है मसीह मेरा
+जो भी चाहे हो जाएगा
+यहोवा ...`},{label:"Verse 4",text:`३. तू है यहोवा यारी
+जो मुहय्या करता है
+तू है यहोवा शम्मा
+जो तसल्ली देता है
+तू ने बेटा दिया
+सबको माफ किया
+नया जन्म दिया
+रूह से भर दिया
+आज शैतान झुक जाएगा
+यहोवा ...`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-ka-naam-leta-hai",number:120,title:"यीशु का नाम लेता है",title_alt:"Yeshu Ka Naam Leta Hai",language:"hindi",tags:["Praise","Salvation"],stanzas:[{label:"पद",text:`यीशु का नाम लेता है, वो ज़िंदगी पाता है
+तेरी राहों पर चलकर, रूह इनाम में पाता है (२)
+तेरी रूह से (२), खुदा की रूह से, मसीह की रूह से
+मेरा जीवन संवर गया, यीशु नाम मिला`}],type:"praise",beat:"4/4",tempo:104},{slug:"yeshu-ka-naam-sabase-pyara",number:121,title:"यीशु का नाम सबसे प्यारा",title_alt:"Yeshu Ka Naam Sabase Pyara",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`यीशु का नाम सबसे प्यारा
+सबसे अलग और सबसे मीठा
+उसका वचन सबसे न्यारा
+सबसे अलग और सबसे मीठा
+गाओ रे गाओ आनंद में
+झूमो नाचो रे आनंद में
+क्योंकि दुनिया में एक ही नाम है`},{label:"Verse 2",text:`१. स्वर्गदूत भी हर पल हर दिन
+यही नाम लेते हैं
+पाते हैं जो, इस नाम को
+पाते हैं वो एक नई शांति को
+गाओ रे . . .`},{label:"Verse 3",text:`२. इस नाम से रोगियों को
+चंगाई मिलती है,
+इस नाम को लेने वालों को
+जिन्दगी मिलती है
+पाते हैं जो, इस नाम को
+पाते हैं वो एक नई शांति को
+गाओ रे . . .`},{label:"Verse 4",text:`३. इस नाम से हर पापी को
+छुटकारा मिलता है,
+इस नाम से भटके हुओं को
+नया मार्ग मिलता है
+पाते हैं जो, इस नाम को
+पाते हैं वो एक नई शांति को
+गाओ रे . . .`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-ka-lahoo-saare-paapon-se",number:122,title:"यीशु का लहू सारे पापों से",title_alt:"Yeshu Ka Lahoo Saare Paapon Se",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`यीशु का लहू सारे पापों से
+शुद्ध करता है
+उद्धार देता, शांति देता
+अनंत जीवन भी देता`},{label:"Verse 1",text:`१. ऐसा कभी ना सोचो मन में
+बेकार का है ये जीवन
+खरीदा है हमें उसने अपने
+लहू का मोल देकर।`},{label:"Verse 2",text:`२. पवित्र स्थान में जाएंगे हम
+उसके लहू के ही द्वारा,
+द्वार हमारा यीशु प्यारा
+वही है भोर का तारा।`},{label:"Verse 3",text:`३. ना ही हम खुद के ना दुनिया के,
+हम तो हैं यीशु मसीह के,
+हम विश्वासी इस जहां के
+गवाह है उसके लहू के।`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-ke-sang-tu-chalta-chal",number:123,title:"यीशु के संग तू चलता चल",title_alt:"Yeshu Ke Sang Tu Chalta Chal",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`यीशु के संग तू चलता चल
+तेरा जीवन होगा महान
+तेरे लिए वो आया है,
+ताकि तू पाए आसानी वा ताज...२`},{label:"Verse 1",text:`१. जब तू अकेला,
+दुनिया के इस सफर में
+थामेगा वो तेरा हाथ,
+जब लोग तुझको छोड़े।
+यीशु के संग . . .`},{label:"Verse 2",text:`२. यीशु का अब्दी प्यार,
+कभी नहीं बदलेगा
+गर तू करता है प्यार,
+तेरा वो है मददगार।
+यीशु के संग . . .`},{label:"Verse 3",text:`३. जीवन उसे सौंप दे,
+आशीष वो देगा तुझे
+पाया यीशु का साथ,
+उद्धार वो देगा तुझे।`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-tu-hai-mahaan",number:124,title:"यीशु तू है महान",title_alt:"Yeshu Tu Hai Mahaan",language:"hindi",tags:["Worship"],stanzas:[{label:"कोरस",text:`येशु तू है महान, तेरी जय, तेरी जय, तेरी जय!
+तू जो आया मेरे जीवन में, लेके खुशियाँ, लेके प्यार।`},{label:"पद 1",text:`मैं पापों में डूबा, ऐसा डूबा, ऐसा डूबा,
+आँखों में थे आँसू, सबने छोड़ा, सबने छोड़ा।
+पर तू आया मेरे जीवन में, लेके खुशियाँ, लेके प्यार।`},{label:"पद 2",text:`मैं दुनिया की चीजों में तुम्हें ढूंढता था,
+नफरत और मतलब की महफ़िल में मैं गुमता था।
+पर तू आया मेरे जीवन में, लेके खुशियाँ, लेके प्यार।`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-tera-naam-hai",number:125,title:"यीशु तेरा नाम है",title_alt:"Yeshu Tera Naam Hai",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`यीशु तेरा नाम है कितना सुन्दर
+यीशु तेरा नाम है कितना पावन...२`},{label:"Verse 2",text:`१. तुझमें मिली है हमको क्षमा
+तुझमें मिला है नया जीवन...२`},{label:"Verse 3",text:`२. तुझमें मिली है हमको कृपा
+तुझमें हुए है हम पावन...२`},{label:"Verse 4",text:`३. तुझमें मिली है हमको शिफा
+तुझमें मिला है अनंत जीवन...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-ne-mujhe-pyaar-kiya-hai",number:126,title:"यीशु ने मुझे प्यार किया है",title_alt:"Yeshu Ne Mujhe Pyaar Kiya Hai",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`यीशु ने मुझे प्यार किया है
+इसलिये मैं गाऊंगा सबको बताऊंगा
+एक ही राजा, यीशु मसीह...२
+हालेलुय्याह आमेन हालेलुय्याह..४`},{label:"Verse 1",text:"१. यीशु ने मुझे जीवन दिया है...४"},{label:"Verse 2",text:"२. यीशु ने मुझे चंगा किया है...४"},{label:"Verse 3",text:"३. यीशु ने मुझे मुक्ति दिया है...४"},{label:"Verse 4",text:"४. यीशु ने मुझे शांति दिया है...४"},{label:"Verse 5",text:"५. यीशु ने मुझे क्षमा दिया है...४"}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-masih-tere-jaisa-koi-nahi",number:127,title:"यीशु मसीह तेरे जैसा कोई नहीं",title_alt:"Yeshu Masih Tere Jaisa Koi Nahi",language:"hindi",type:"worship",beat:"4/4",tempo:72,tags:["Worship","Exaltation"],stanzas:[{label:"कोरस",text:`यीशु मसीह तेरे जैसा कोई नहीं
+तेरे चरणों में झुकते हैं हम (२)
+स्तुति और महिमा, आदर और जलाल
+सब कुछ है तुझको अर्पण (२)`},{label:"पद 1",text:`तूने बनाया आसमान और ज़मीं
+तेरी कुदरत का कोई अंत नहीं (२)
+चाँद सितारों में तेरी महिमा
+सागर की लहरों में तेरी गरिमा`},{label:"पद 2",text:`क्रूस पर तूने बहाया लहू
+हमको दिया नया जीवन तूने (२)
+पापों से हमको छुड़ाया मसीह
+अपना बना लिया हमको मसीह`}]},{slug:"yeshu-mera-yeshu-mera",number:128,title:"यीशु मेरा यीशु मेरा",title_alt:"Yeshu Mera Yeshu Mera",language:"hindi",tags:["Praise","Devotion"],stanzas:[{label:"पद",text:`यीशु मेरा, यीशु मेरा, नाम लेता हूँ (२)
+जय जयकार करूँ मैं तेरा
+तूने मुझको है बचाया
+अपने लहू से है छुड़ाया
+यीशु मेरा, यीशु मेरा नाम लेता हूँ`}],type:"praise",beat:"4/4",tempo:104},{slug:"yeshu-mera-raja",number:129,title:"यीशु मेरा राजा",title_alt:"Yeshu Mera Raja",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`१. यीशु मेरा राजा,
+यीशु मेरा प्रभु,
+यीशु मेरा जीवन,
+यीशु ही सब कुछ है।
+स्तुति के योग्य,
+योग्य तू ही है,
+सदा सदा के लिए
+सृष्टि किया मुझको,
+स्तुति करूं तुझको
+मैं सदा के लिए . . .`},{label:"Verse 2",text:`२. जीवन की रोटी,
+यीशु मेरी ज्योति
+यीशु मेरा प्रेम है
+यीशु ही सब कुछ है।
+स्तुति के योग्य . . .`},{label:"Verse 3",text:`३. यीशु मेरा मार्ग है,
+यीशु मेरा द्वार है।
+स्वर्गराज में यीशु
+यीशु मेरा जीवन,
+यीशु ही सब कुछ है।
+स्तुति के योग्य . . .`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-mere-koi-nahi-tere-jaisa",number:130,title:"यीशु मेरे कोई नहीं तेरे जैसा",title_alt:"Yeshu Mere Koi Nahi Tere Jaisa",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`यीशु मेरे कोई नहीं तेरे जैसा (२)
+अपार प्रेम, अपार करुणा
+दयालु तू बड़ा
+यीशु मेरे ॥धृ॥`},{label:"Verse 1",text:`१. किसी आंख न देखा,
+ना कान ने सुना है
+किसी मानव के चित्त में नहीं आया
+जो परमेश्वर ने तैयार किया है
+अपने प्रेम करने वालों के लिए
+यीशु मेरे . . .`},{label:"Verse 2",text:`२. जो तुझसे प्रेम करते,
+उनमें सारी ही बातें (२)
+भलाई उत्पन्न करती है
+मसीह के प्रेम से दुनिया की बातें
+अलग नहीं कर सकती हमें...
+यीशु मेरे . . .`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-mere-jeevan-mein",number:131,title:"यीशु मेरे जीवन में",title_alt:"Yeshu Mere Jeevan Mein",language:"hindi",tags:["Thanksgiving"],stanzas:[{label:"पद",text:`यीशु मेरे जीवन में तूने जो किया है
+उसके लिए मैं तुझे धन्यवाद दूँगा`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-hai-sachcha-gadiya",number:132,title:"यीशु है सच्चा गड़रिया",title_alt:"Yeshu Hai Sachcha Gadiya",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`यीशु है सच्चा गड़रिया,
+उसकी हम भेड़ें हैं...२
+हरी चराइयों में हमें चराता है
+हालेलूयाह आमीन....`},{label:"Verse 2",text:`१. वादी पहाड़ों में ले चलता है
+जहाँ पर सुखदाई झरने बहते हैं...२`},{label:"Verse 3",text:`२. हमको किसी का अब तो डर नहीं है
+क्योंकि यीशु जो मेरा साथी है...२`},{label:"Verse 4",text:`३. मार्गों में मेरी रक्षा वह करता है
+शैतान के हाथों से हमें बचाता है..२`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-tu-mera-meet",number:133,title:"येसु तू मेरा मीत",title_alt:"Yeshu tu mera meet",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`येसु तू मेरा मीत, येसु तू मेरा गीत
+येसु तू मेरा मीत, येसु तू मेरा गीत
+कैसी ये तेरी प्रीत, जीवन का तू संगीत`},{label:"पद 1",text:`देता मन्ना जीवन का, शरीर लहू प्रभु तेरा
+स्वर्गीय भोजन हमारा, तू है कृपा धारा।`},{label:"पद 2",text:`ये दिल मेरा है सूना, इस दिल में तू आ जाना
+प्रेम की ज्योति जलाना, जीवन का है झरना।`}],type:"worship",beat:"4/4",tempo:74},{slug:"raja-mahan-hai-tu-prabhu",number:134,title:"राजा महान है तू प्रभु",title_alt:"Raja Mahan Hai Tu Prabhu",language:"hindi",type:"praise",beat:"4/4",tempo:108,tags:["Praise","King of Kings"],stanzas:[{label:"कोरस",text:`राजा महान है तू प्रभु
+तेरी जय जयकार हो (२)
+गाएँगे मिलकर स्तुति तेरी
+महिमा से तू भरपूर हो (२)`},{label:"पद 1",text:`तूने तोड़ी मृत्यु की ज़ंजीरें
+यीशु तूने दी हमें नई तकदीरें (२)
+हाल्लेलूयाह, हाल्लेलूयाह
+हाल्लेलूयाह, आमीन!`},{label:"पद 2",text:`स्वर्ग और पृथ्वी पर तेरा ही राज है
+तू ही हमारा सच्चा सरताज है (२)
+राजा महान है तू प्रभु
+तेरी जय जयकार हो!`}]},{slug:"raja-yeshu-aaya",number:135,title:"राजा यीशु आया",title_alt:"Raja Yeshu Aaya",language:"hindi",tags:["Victory"],stanzas:[{label:"कोरस",text:`राजा यीशु आया, राजा यीशु आया
+शैतान को जीतने के लिये राजा यीशु आया`},{label:"पद 1",text:`दुनियाँ में तो पाप और दु:ख होते है बहुतेरे
+पूरी शान्ति देने के लिये राजा यीशु आया
+राजाओं का राजा प्रभुओं का प्रभु जै जै बोलो सारे लोगो
+राजा यीशु आया`},{label:"पद 2",text:`हुआ मैं आनन्दित पाकर पाप की माफ़ी
+दिल को साफ़ करने के लिये राजा यीशु आया
+क्रूस पर देके अपनी जान आप को किया बलिदान
+सारे जग का त्राता होके राजा यीशु आया`},{label:"पद 3",text:`कबर का वह तोड़ कर बंध नाश किया
+मौत का डंक क्षमा मुक्ति जीवन देने राजा यीशु आया
+उस पर करता मैं विश्वास पूरी करता मेरी आस
+हल्लिलुय्याह मेरे दिल में राजा यीशु आया`}],type:"worship",beat:"4/4",tempo:74},{slug:"rajaon-ka-raja-hai",number:136,title:"राजाओं का राजा है",title_alt:"Rajaon Ka Raja Hai",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`राजाओं का राजा है,
+प्रभुओं का प्रभु है... (२)
+प्रभु यीशु मसीह... (४)`},{label:"Verse 2",text:`१. यहूदा का शेर है,
+सारे जगत के लिए,
+मुर्दों में से जी उठा...२`},{label:"Verse 3",text:`२. उसने वचन दिया,
+तुम पर पवित्र आत्मा
+आने वाला है...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"rishta-lahoo-ka",number:137,title:"रिश्ता लहू का",title_alt:"Rishta Lahoo Ka",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`रिश्ता लहू का
+यीशु से है मेरा,
+ये रिश्ता लहू का (२)
+दुनिया से यीशु का,
+ये रिश्ता लहू का (२)
+यीशु से है मेरा,
+ये रिश्ता लहू का`},{label:"Verse 1",text:`१. मेरे लिए, सबके लिए
+यीशु ने दी अपनी जान (२)
+यीशु से है मेरा,
+ये रिश्ता लहू का`},{label:"Verse 2",text:`२. दुनिया में आकर,
+लहू बहाकर, किया हमारा उद्धार
+यीशु से है मेरा,
+ये रिश्ता लहू का`},{label:"Verse 3",text:`३. जीवन मेरा, ये दिल मेरा,
+खुशियों से उसने भरा (२)
+यीशु से है मेरा,
+ये रिश्ता लहू का
+दुनिया से यीशु . . .`}],type:"worship",beat:"4/4",tempo:74},{slug:"lahoo-lahoo-yeshu-ka-lahoo",number:138,title:"लहू लहू यीशु का लहू",title_alt:"Lahoo Lahoo Yeshu Ka Lahoo",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`लहू लहू यीशु का लहू
+गुनाहों से हमको धोता
+मस्सा मस्सा मसीह का मस्सा
+बंधन सारे तोड़ता है`},{label:"Verse 1",text:`१. बड़े बड़े ना पीछ हटे ...२
+खुदावन्द का रूह फर्माता है`},{label:"Verse 2",text:`२. शिफा शिफा मुक्कमल शिफा ...२
+खुदावंद का रूह फर्माता है`},{label:"Verse 3",text:`३. खुदा खुदा हमारा खुदा ...२
+दिल में रहना चाहता है`},{label:"Verse 4",text:`४. खुदा खुदा हमारा खुदा ...२
+रूह से मरना चाहता है`}],type:"worship",beat:"4/4",tempo:74},{slug:"vachan-tera-hai-prabhu-jeevan-ki-jyoti-hai",number:139,title:"वचन तेरा हे प्रभु जीवन की ज्याति है",title_alt:"Vachan tera hai prabhu jeevan ki jyoti hai",language:"hindi",tags:["Acclamation"],stanzas:[{label:"कोरस",text:`वचन तेरा हे प्रभु जीवन की ज्याति है
+वचन तेरा हे गुरु अनंत जीवन है। 2`},{label:"पद 1",text:`दिव्य वचन तेरा भक्ति से सुन लूंगा
+मधुर वचन तेरा दिल से मैं मानूंगा। 2`},{label:"पद 2",text:`भूख मिटाता है, अमर वचन तेरा
+प्यास बुझाता है मीठा वचन तेरा 2`}],type:"worship",beat:"4/4",tempo:74},{slug:"wahan-halleluya-hardam-hoega",number:140,title:"वहाँ हल्लेलुया",title_alt:"Wahan halleluya hardam hoega",language:"hindi",tags:["Recessional"],stanzas:[{label:"कोरस",text:`वहाँ हल्लेलूया हरदम होएगा
+वहाँ हल्लेलुया आनंद होएगा-2`},{label:"पद 1",text:`हल्लेलुया चिल्लाउँगा
+जब देखूगा येसू को
+वहाँ हल्लेलुया आनंद होएगा`},{label:"पद 2",text:`हाँ कहूंगा मैं हल्लेलूया कहूंगा में
+वहाँ हल्लेलुया आनंद होएगा
+हल्लेलूया चिल्लाउँगा जब देखूगा येसु को
+वहाँ हल्लेलुया आनंद होएगा।`},{label:"पद 3",text:`वहां खुशी की जगह होएगी
+वहां आनंद ही आनंद होएगा
+पौलुस होएगा, यूना होएगा,
+मारकुस होएगा, लूका होएगा
+अब्राहम भी वहाँ होएगा और हूँगा मैं
+वहाँ हल्लेलुया आनंद होएगा`},{label:"पद 4",text:`वहां पर मैं येसू से मिलूंगा
+पेत्रस पानी पर फिर चलेगा
+दाऊद होएगा, मूसा होएगा
+मत्ती होएगा, पेत्रस होएगा
+अब्राहम भी वहाँ होएगा और हूंगा मैं
+वहां हल्लेलुया आनंद होएगा`}],type:"worship",beat:"4/4",tempo:74},{slug:"vijayi-hua-vijayi-hua",number:141,title:"विजयी हुआ, विजयी हुआ",title_alt:"Vijayi Hua, Vijayi Hua",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`विजयी हुआ, विजयी हुआ
+यीशु मेरा विजयी हुआ ...२
+शैतान हारा हुआ
+मेरा यीशु विजयी हुआ`},{label:"Verse 1",text:`१. यीशु ने क्रूस पर शैतान के,
+सिर को कुचल दिया ...२
+मृत्यु पर विजयी हौंकर,
+हमें विजयी जीवन दिया...२
+हालेलुय्याह...२
+यीशु मेरा विजयी हुआ ...२`},{label:"Verse 2",text:`२. शत्रु की शक्ति पर,
+अधिकार हमें दिया ...२
+यहोवा निस्सी हमारा,
+है जय देने वाला ...२
+हालेलुय्याह...२
+यीशु मेरा विजयी हुआ ...२`}],type:"praise",beat:"4/4",tempo:104},{slug:"wo-sab-se-bada-sagar",number:142,title:"वो सब से बड़ा सागर",title_alt:"Wo Sab Se Bada Sagar",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`वो सब से बड़ा सागर है,
+जिसने हमें बचाया,
+यीशु ने तेरे पापों को,
+अपने खून से धोया...२`},{label:"Verse 2",text:`१. यीशु ने तेरे रोगों को,
+अपने बल से मिटाया,
+तेरे जीवन में नया जीवन,
+यीशु ने ही दिया...२`},{label:"Verse 3",text:`२. यीशु ने तेरे रोगों को,
+अपने बल से मिटाया,
+तेरे जीवन में नया जीवन,
+यीशु ने ही दिया...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"sang-tere",number:143,title:"संग तेरे",title_alt:"Sang Tere",language:"hindi",tags:["Adoration","Communion","Praise & Worship"],stanzas:[{label:"कोरस",text:`ये कैसा प्यार है तेरा!
+ये ऐसा तूने है किया
+तेरा प्राण दे दिया
+ताकि जियूं मैं सदा`},{label:"पद 1",text:`शैतान को हरा दिया
+पापों को जड़ से उखाड़ दिया
+मुझे घेर लिया नए गीत से
+अब मैं जी उठा नई शक्ति से`},{label:"पद 2",text:`पीछे नहीं मुड़ूंगा
+हार नहीं मानूंगा
+बढ़ता रहूंगा, संग तेरे`},{label:"पद 3",text:`मेरी ओर से लड़ेगा
+कभी हाथ ना छोड़ेगा
+डर हटा कर बल दिया
+जीत तूने मुझे दिया`},{label:"पद 4",text:`शैतान को हरा दिया
+पापों को जड़ से उखाड़ दिया
+मुझे घेर लिया नए गीत से
+अब मैं जी उठा नई शक्ति से`},{label:"पद 5",text:`पीछे नहीं मुड़ूंगा
+हार नहीं मानूंगा
+बढ़ता रहूंगा, संग तेरे
+पीछे नहीं मुड़ूंगा
+हार नहीं मानूंगा
+बढ़ता रहूंगा, संग तेरे`},{label:"पद 6",text:`कहना ही क्या है
+खुदा मेरे पक्ष में
+तो कौन अब मेरा
+विरोधी ठहरेगा?
+कहना ही क्या है (संग तेरे)
+खुदा मेरे पक्ष में (संग तेरे)
+तो कौन अब मेरा (संग तेरे)
+विरोधी ठहरेगा? (संग तेरे)`},{label:"पद 7",text:`मेरी ओर से लड़ेगा
+कभी हाथ ना छोड़ेगा
+डर हटा कर बल दिया
+जीत तूने मुझे दिया`},{label:"पद 8",text:`क्या दे सकता हूं?
+क्या ला सकता हूं?
+कहता तुझे बस शुक्रिया, शुक्रिया
+तेरा शुक्रिया
+तेरा...`},{label:"पद 9",text:`पीछे नहीं मुड़ूंगा (तूफानों में भी)
+हार नहीं मानूंगा (अकेलेपन में)
+बढ़ता रहूंगा (पानी में भी)
+संग तेरे
+पीछे नहीं मुड़ूंगा (हर दम प्रभु)
+हार नहीं मानूंगा (हर पल प्रभु)
+बढ़ता रहूंगा, संग तेरे`}],type:"worship",beat:"4/4",tempo:74},{slug:"sandesh-sunate-jaana",number:144,title:"संदेश सुनाते जाना",title_alt:"Sandesh Sunate Jaana",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`१. संदेश सुनाते जाना,
+सेवा से नहीं शरमाना,
+चाहे जग हमें रोके,
+आये दुख के झरोके,
+हमें देगा वो भरपूर शांति...२`},{label:"Verse 2",text:`२. हम अपना क्रूस उठाये,
+और यीशु के पीछे आये,
+अपने को त्यागे यीशु से मन लगाये
+हम हैं उसके विश्वासी...२`},{label:"Verse 3",text:`३. यीशु ने हमें भेजा है,
+उसका काम दिन ही दिन में करना ह,
+वो है रात आने वाली
+ये हमारी जिम्मेवारी
+यीशु है हमारा न्यायी...२`},{label:"Verse 4",text:`४. प्रतिफल हमें वो देता,
+विश्वास में स्थिर करेगा,
+उसकी आज्ञा हम माने,
+उससे शांति हम पाये
+प्रतिज्ञा है उसकी काफी...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"sajda-karoon",number:145,title:"सजदा करूँ मैं तेरे हुज़ूर में",title_alt:"Sajda Karoon",language:"hindi",type:"worship",beat:"4/4",tempo:70,tags:["Worship","Devotion"],stanzas:[{label:"कोरस",text:`सजदा करूँ मैं तेरे हुज़ूर में
+हाथों को उठाऊँ तेरी हज़ूरी में (२)
+तू ही खुदा, तू ही जहाँ
+तू ही मेरा मसीहा (२)`},{label:"पद 1",text:`जब भी पुकारूँ तू सुनता दुआ
+तेरी दया का कोई अंत ना हुआ (२)
+तूने सम्भाला, तूने बचाया
+मुझको गले से लगाया`},{label:"पद 2",text:`तेरी मोहब्बत है सबसे महान
+तूने दिया है मुझको नया जान (२)
+गाता रहूँगा तेरी स्तुति
+जब तक रहे मेरी जान`}]},{slug:"sada-mai-stuti-karunga",number:146,title:"सदा मैं स्तुति करूंगा",title_alt:"Sada Mai Stuti Karunga",language:"hindi",tags:["Praise"],stanzas:[{label:"कोरस",text:`सदा मैं स्तुति करूंगा हालेलुईया
+सदा मैं सेवा करूंगा, मुझे बचाया यीशु ने
+सदा मै स्तुति करूंगा – 2`},{label:"पद 1",text:`मुझे बचाने आया जब मै गुनाहों में था – 2
+स्वर्ग को छोड़ कर जगत मे आया मुझे बचाने को – 2`},{label:"पद 2",text:`जब मै निराशा मे था तूने मुझे आशा दी – 2
+जगत मे आया जीवन को दिया पवित्र प्रेमी यीशु – 2`},{label:"पद 3",text:`प्रेमी प्रभु यीशु बचाया तूने मुझे – 2
+देता हूं मैं सारा जीवन संपूर्ण आनंद से – 2`},{label:"पद 4",text:`अनादि परमेश्वर सच्चाई और जीवन है तू – 2
+स्तुति प्रशंसा करता रहूंगा तेरे आने समय तक – 2`}],type:"praise",beat:"4/4",tempo:104},{slug:"sab-se-bada-sagar",number:147,title:"सब से बड़ा सागर",title_alt:"Sab Se Bada Sagar",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`सब से बड़ा सागर है,
+तेरे प्यार का सागर,
+हम तैरना चाहते हैं,
+तेरे प्यार के सागर में,
+हम डूबना चाहते हैं`},{label:"Verse 2",text:`१. हम सब पापी हैं... (२)
+प्रभु यीशु ने... (२)
+अपना खून बहाया... (२)`},{label:"Verse 3",text:`२. मुक्ति दी है हमें... (२)
+पापों से छुड़ाया... (२)
+आनंद से भर दिया... (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"sar-ko-apne-jhukaata-hoon",number:148,title:"सर को अपने झुकाता हूँ",title_alt:"Sar Ko Apne Jhukaata Hoon",language:"hindi",tags:["Worship","Surrender"],stanzas:[{label:"पद",text:`सर को अपने झुकाता हूँ मैं तेरे हुज़ूर (२)
+बन कर क़ुरबानी आता हूँ मेरे हुज़ूर (२)
+ओ येशुआ, येशुआ, करूँ आराधना
+हाथों को अपने उठाकर तुझे दूँ महिमा`}],type:"worship",beat:"4/4",tempo:74},{slug:"samarthi-kitna-hai-yeshu-tu-mahaan",number:149,title:"सामर्थी कितना है यीशु तू महान",title_alt:"Samarthi Kitna Hai Yeshu Tu Mahaan",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`सामर्थी कितना है यीशु तू महान
+तेरी रचना तो हैं हम,
+गाते है होके मगन
+सामर्थी कितना . . .`},{label:"Verse 1",text:`१. तू मेरा हमसफर,
+तुझमें हूं मैं निडर (२)
+प्यार मेरा हर पल
+है मेरा जीवन जल (२)
+मेरे दिल से कहता हूं,
+सामर्थी कितना . . .`},{label:"Verse 2",text:`२. आदि भी तू है, अंत भी तू है (२)
+अल्फा भी तू है,
+और ओमेगा भी है (२)
+भरे दिल से कहता हूं,
+यीशु तू है महान
+सामर्थी कितना . . .`},{label:"Verse 3",text:`३. यीशु के मैं साथ,
+करता हूं नित्य बात (२)
+देकर अपना हाथ
+चलता मेरे साथ (२)
+इसलिए मैं कहता हूं,
+यीशु तू है महान
+सामर्थी कितना . . .`}],type:"worship",beat:"4/4",tempo:74},{slug:"saare-jahaan-ka-raja-hai",number:150,title:"सारे जहान का राजा है",title_alt:"Saare Jahaan Ka Raja Hai",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`सारे जहान का राजा है,
+जिसने दुनिया बनाई...
+जिसने पापों से छुड़ाया,
+यीशु का नाम लेता है,
+वो जीवन पाता है...`},{label:"Verse 2",text:`१. यीशु का नाम लेता है,
+वो जीवन पाता है,
+तेरे राहों पर चलकर,
+सच्चा नाम ये पाता है...२`},{label:"Verse 3",text:`२. तेरी रूह से...२
+खुदा की रूह से,
+मसीह के रूह से,
+मेरा जीवन संवर गया,
+येशु नाम......`}],type:"worship",beat:"4/4",tempo:74},{slug:"srishti-hai-teri-kavita",number:151,title:"सृष्टि है तेरी कविता",title_alt:"Srishti hai teri kavita",language:"hindi",tags:["Easter","Entrance"],stanzas:[{label:"कोरस",text:`सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2
+सारी धरा पर गूँजती है, निस दिन महिमा तेरी
+सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2`},{label:"पद 1",text:`झरने की कल कल भी, करती है तेरी महिमा
+पक्षी भी गाते है, तू है कितना महान
+वन के सुमन भी है हंसते, करते हैं जय जयकार । 2`},{label:"पद 2",text:"सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2"},{label:"पद 3",text:`नभ की नीलिमां से तारे, धरती को करते इशारे
+सागर की चंचल मौजे,देती हैं तेरी ही यादें
+ऊँचे शिखर भी हैं कहते, तेरी कला है अपार 2`},{label:"पद 4",text:`सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2
+सारी धरा पर गूँजती है, निस दिन महिमा तेरी
+सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2`}],type:"worship",beat:"4/4",tempo:74},{slug:"mahima-mahima-mahima-ho",number:152,title:"स्वर्ग में महिमा",title_alt:"Mahima mahima mahima ho",language:"hindi",tags:["Gloria"],stanzas:[{label:"कोरस",text:"महिमा महिमा महिमा हो (4)"},{label:"पद 1",text:`स्वर्ग में महिमा परमेश्वर की हो
+भू पर शांति सुजन को। (3)`},{label:"पद 2",text:`हम तेरी प्रशंसा करते हैं,
+धन्य तुझे हम कहते हैं। (2)
+तेरी आराधना करते हैं,
+तेरी महिमा गाते हैं।`},{label:"पद 3",text:`स्वर्ग में महिमा परमेश्वर की हो
+भू पर शांति सुजन को। (2)`},{label:"पद 4",text:`हे सर्वशक्तिमान् पिता परमेश्वर,
+स्वर्गलोक के स्वामी है। (2)
+इकलौते पुत्र येसु खीस्त है,
+तेरा गुणगान करते हैं।`},{label:"पद 5",text:`स्वर्ग में महिमा परमेश्वर की हो
+भू पर शांति सुजन को। (2)`},{label:"पद 6",text:`जगत् का पाप तू हर लेता है,
+हम पर दया तू कर दे। (2)
+पिता के दायें विराजमान है,
+हमारी विनती सुन ले।`},{label:"पद 7",text:`स्वर्ग में महिमा परमेश्वर की हो
+भू पर शांति सुजन को। (2)`},{label:"पद 8",text:`तू ही पावन तू ही प्रभु है
+तू ही पवित्र आत्मा के संग। (2)
+पिता की महिमा सर्वोपरि है,
+तेरी महिमा होती है।`},{label:"पद 9",text:`स्वर्ग में महिमा परमेश्वर की हो
+भू पर शांति सुजन को। (2)`},{label:"पद 10",text:"महिमा महिमा महिमा हो (2)"}],type:"worship",beat:"4/4",tempo:74},{slug:"sweekar-lo-bhagwan",number:153,title:"स्वीकार लो भगवन्",title_alt:"Sweekar lo bhagwan",language:"hindi",tags:["Offertory"],stanzas:[{label:"कोरस",text:`स्वीकार लो भगवन्,
+उपहार हे दिल की ममता`},{label:"पद 1",text:`तव प्रेम की बहे सरिता,
+सदा मिले हमें प्रभुता ये दाखरस रोटी वर लो,
+विनती प्रभु सुन लो।`},{label:"पद 2",text:"स्वीकार लो भगवन्"},{label:"पद 3",text:`तुम हो पिता प्रभु करतार,
+हमें करो मिटे विपदा
+ये कामना पूरी कर लो,
+विनती प्रभु सुन लो।`}],type:"worship",beat:"4/4",tempo:74},{slug:"hum-to-khuda-ke-bete-hai",number:154,title:"हम तो खुदा के बेटे हैं",title_alt:"Hum To Khuda Ke Bete Hai",language:"hindi",tags:["Faith","Identity"],stanzas:[{label:"कोरस",text:`हम तो खुदा के बेटे हैं, सब कुछ हमारा है
+जो कुछ है दिखता वो है पिता का, वो सिरजनहार है
+धन्यवाद... हालेलुयाह...`},{label:"पद 1",text:`यीशु मसीह में स्वर्गीय स्थानों में
+सब आशीषें हमें दीं, हालेलुयाह...
+यीशु मसीह संग हमको पिता ने वारिस बनाया है`},{label:"पद 2",text:`क्या वर्तमान और क्या भविष्य
+सब कुछ हमारा है, हालेलुयाह...
+सौ गुना प्रतिफल यहाँ पर, स्वर्ग में अनंत जीवन है
+यीशु मसीह में इस जीवन को ये धन्य आशा है`}],type:"worship",beat:"4/4",tempo:74},{slug:"har-baaton-mein-dhanyavaad-karo",number:155,title:"हर बातों में धन्यवाद करो",title_alt:"Har Baaton Mein Dhanyavaad Karo",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`हर बातों में धन्यवाद करो
+क्योंकि प्रभु की इच्छा यही है`},{label:"Verse 1",text:`१. ताली को बजाओ और धन्यवाद करो।
+हाथों को मिलाओ और धन्यवाद करो।
+क्योंकि प्रभु की इच्छा यही है`},{label:"Verse 2",text:`२. दुख में सुख में धन्यवाद करो।
+अमीरी और गरीबी में धन्यवाद करो।
+आशीषों में धन्यवाद करो।
+क्योंकि प्रभु की इच्छा यही है`},{label:"Verse 3",text:`३. हर परिस्थिति में धन्यवाद करो।
+नाचते गाते धन्यवाद करो।
+अपने होठों से धन्यवाद करो।
+क्योंकि प्रभु की इच्छा यही है`}],type:"worship",beat:"4/4",tempo:74},{slug:"har-museebat-mein-mujhko-sambhala",number:156,title:"हर मुसीबत में मुझको संभाला",title_alt:"Har Museebat Mein Mujhko Sambhala",language:"hindi",tags:["Comfort","Encouragement"],stanzas:[{label:"कोरस",text:`रखवाला, रखवाला, रखवाला...
+हर मुसीबत में मुझको संभाला (२)
+रखवाला यीशु है रखवाला (२)`},{label:"पद 1",text:`हर मुसीबत में वो काम आया मुझे (२)
+मरते-मरते यीशु ने बचाया मुझे (२)
+रखवाला यीशु है रखवाला...`},{label:"पद 2",text:`जब मसीहा का दीदार हो जाएगा (२)
+तेरा बिगड़ा हुआ काम बन जाएगा (२)
+रखवाला यीशु है रखवाला...`},{label:"पद 3",text:`वो धरती का राजा वो सरकार है (२)
+निराला मसीहा का दरबार है (२)
+रखवाला यीशु है रखवाला...`},{label:"पद 4",text:`मेरी कश्ती को फिर से किनारा मिला (२)
+उसके नज़र-ए-करम का सहारा मिला (२)
+रखवाला यीशु है रखवाला...`}],type:"worship",beat:"4/4",tempo:74},{slug:"haale-haaleluyaah",number:157,title:"हाले हालेलुयाह",title_alt:"Haale Haaleluyaah",language:"hindi",tags:["Praise","Worship"],stanzas:[{label:"कोरस",text:`हाले हालेलुयाह हालेलुयाह हालेलुयाह
+हाले हालेलुयाह हालेलुयाह हालेलुयाह`},{label:"पद 1",text:`करुणा से तेरी नया दिन दिखता है
+ढाल बनकर मेरी मुझे बचाता है
+जब मैं पुकारूँ तू दौड़े आता है
+जब मैं गिरूँ मुझे उठाता है... हाले हालेलुयाह`},{label:"पद 2",text:`सारे जहाँ में तुझ सा कोई नहीं
+तुझ को छोड़ कोई प्रभु ही नहीं
+घुटने मैं टेकूँ बस तेरे सामने
+तू है मेरा प्रभु तू मेरा पिता... हाले हालेलुयाह`}],type:"praise",beat:"4/4",tempo:104},{slug:"haaleluyaah-2-gaayenge",number:158,title:"हालेलुयाह गायेंगे",title_alt:"Haaleluyaah - 2 Gaayenge",language:"hindi",tags:["Praise","Worship"],stanzas:[{label:"कोरस",text:`हालेलुयाह, हालेलुयाह गायेंगे
+यीशु के वचन सुनायेंगे
+चाहे हर मुसीबत से गुज़रना पड़े
+तो भी उसके ही संग हम जायेंगे`},{label:"पद 1",text:`भजन करेंगे, स्तुति करेंगे, और प्रशंसा करेंगे
+जब तक हममें सांस रहेगी उसके ही गुण गायेंगे (२)
+हालेलुयाह, हालेलुयाह गायेंगे
+यीशु के वचन सुनायेंगे`}],type:"praise",beat:"4/4",tempo:104},{slug:"hey-eshwar-ke-balit-memane-tum-har-lete",number:159,title:"हे ईश्वर के बलित मेमने",title_alt:"Hey Eshwar ke balit memane tum har lete",language:"hindi",tags:["Lamb of God"],stanzas:[{label:"कोरस",text:`हे ईश्वर के बलित मेमने,तुम हर लेते,
+पाप जगत के, हम पर दया करो । 2
+हे ईश्वर के बलित मेमने,तुम हर लेते,
+पाप जगत के, शांति प्रदान करो ।`}],type:"worship",beat:"4/4",tempo:74},{slug:"he-jeevit-parameshwar",number:160,title:"हे जीवित परमेश्वर",title_alt:"He Jeevit Parameshwar",language:"hindi",tags:["Worship","Adoration"],stanzas:[{label:"Chorus",text:`हे जीवित परमेश्वर
+मैं तेरी आराधना करता हूं
+जीवन को देनेवाले,
+मैं तेरी आराधना करता हूं
+हालेलुय्याह, होसाना...४`},{label:"Verse 1",text:`१. मृत्यु को जीतने वाले,
+मैं तेरी आराधना करता हूं
+नरक को जीतने वाले,
+मैं तेरी आराधना करता हूं।`},{label:"Verse 2",text:`२. सृष्टि को रचनेवाले,
+मैं तेरी आराधना करता हूं।
+जीवन को देने वाले,
+मैं तेरी आराधना करता हूं।`}],type:"worship",beat:"4/4",tempo:74},{slug:"he-duniya-ke-logon",number:161,title:"हे दुनिया के लोगों",title_alt:"He Duniya Ke Logon",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`हे दुनिया के लोगों,
+ऊंची आवाज करो
+गाओ खुशी के गीत
+उसका धन्यवाद करो
+इबादत करो उसकी, इबादत करो...`},{label:"Verse 2",text:`१. याद रखो कि वही एक खुदा है
+हमको ये जीवन उसी ने है दिया है
+उस चरागाह से हम सब हैं आये
+हम्द और सना के हम गीत गाये
+रब्ब का तुम शुक्र करो, ऊंची आवा
+करो, इबादत करो...`},{label:"Verse 3",text:`२. नामे खुदावंद कितना मुबारक
+मेरा खुदावंद कितना भला है
+रहमत है उसकी सदियों पुरानी
+वफा का अजल से,
+यही सीलसीला है
+उस पर ईमान धरो,
+उसके घर आज चलो
+गाओ खुशी के गीत,
+उसका गुणगाण करो
+इबादत करो...`}],type:"worship",beat:"4/4",tempo:74},{slug:"he-mere-man-yehova-ko-dhanya-dhanya-kaho",number:162,title:"हे मेरे मन यहोवा को धन्य धन्य कहो",title_alt:"He Mere Man Yehova Ko Dhanya Dhanya Kaho",language:"hindi",tags:["Psalms","Thanksgiving"],stanzas:[{label:"कोरस",text:`हे मेरे मन यहोवा को धन्य धन्य कह (२)
+जो कुछ भी मुझ में है, उसके पवित्र नाम को धन्य कहे`},{label:"पद 1",text:`वही तेरे सब अधर्मों को क्षमा करता है
+तेरे सब रोगों को चंगा करता है
+हालेलुयाह... हालेलुयाह...
+वही तो तेरे प्राण को नाश होने से बचाता है (२)
+हे मेरे मन...`},{label:"पद 2",text:`सत्यानाश के गड्ढे से मुझे निकाला
+दलदल की कीच में से मुझे उभारा
+हालेलुयाह... हालेलुयाह...
+मेरे पैरों को दृढ़ किया है, चट्टान पर खड़ा किया है (२)
+हे मेरे मन...`},{label:"पद 3",text:`हे यहोवा के दूतों उसको धन्य कहो
+हे सारी सृष्टि उसको धन्य कहो, धन्य हो धन्य हो
+उसके राज्य के सब स्थानों में यहोवा को धन्य कहो
+हे मेरे मन...`}],type:"worship",beat:"4/4",tempo:74},{slug:"hey-vishwa-ke-udharkarta-hamara-udhaar-kar",number:163,title:"हे विश्व के उद्धारकर्ता",title_alt:"Hey vishwa ke udharkarta hamara udhaar kar",language:"hindi",tags:["Proclamation"],stanzas:[{label:"कोरस",text:`हे विश्व के उद्धारकर्ता, हमारा उद्धार कर
+तूने अपने क्रूस और पुनरुत्थान द्वारा,
+हमें मुक्त किए`}],type:"worship",beat:"4/4",tempo:74},{slug:"he-hamare-vaap-tu-jo-aasman-mein-hai",number:164,title:"हे हमारे बाप तू जो आसमान में है",title_alt:"He Hamare Vaap Tu Jo Aasman Mein Hai",language:"hindi",tags:["Our Father","Prayer"],stanzas:[{label:"कोरस",text:`हे हमारे बाप तू जो आसमान में है
+तेरा नाम पाक माना जाए, तेरी बादशाहत आए`},{label:"पद 1",text:`जैसे तेरी मर्ज़ी आसमान में पूरी होती
+वैसे ही तेरी मर्ज़ी जगत में पूरी हो जाए`},{label:"पद 2",text:`रोज़ की रोटी हमारी आज हमको दे दे
+जीवन की रोटी तू है, वह ही हमारा बल है`},{label:"पद 3",text:`जिस तरह हम अपने अपराधियों को माफ करते
+उसी तरह हमारे अपराधों को माफ कर दे`},{label:"पद 4",text:`हमें आज़माइशों में जाने तू न दे
+बल्कि बुराई से बचा, अपनी राह में चला`},{label:"पद 5",text:`क्योंकि आसमानी बादशाहत और कुव्वत-ओ-कुदरत
+पूरी ज़मीन का जलाल हमेशा तेरा है... आमीन!`}],type:"worship",beat:"4/4",tempo:74},{slug:"hai-di-awaaz",number:165,title:"है दी आवाज़",title_alt:"Hai di awaaz",language:"hindi",tags:["Christmas","Entrance"],stanzas:[{label:"कोरस",text:`है दी आवाज़ फरिश्तों ने ज़मीं के लोगों को
+उतर आया जहाँ में आब खुदा इंसान बनके
+है दी आवाज़`},{label:"पद 1",text:`1. वो आया है गुनाह की कैद से आज़ाद करने को
+जो उजड़े ज़िंदगी के बाग़ उन्हें आबाद करने को
+ना हो मायूस खुदा आया उमीदों का जहाँ बनके
+उतर आया जहाँ में...`},{label:"पद 2",text:`2. जो बैठे हैं अंधेरों में वो आए रोशनी लेले
+ग़मों में रहने वाले ज़िंदगी की हर खुशी लेले
+वो आया है खुदा इंसान, मेहरबान बनके
+उतर आया जहाँ में.....`},{label:"पद 3",text:`3. हमारे वास्ते वो आसमानी प्यार लाया है
+नया जीवन नए राहे नया संसार लाया है
+कभी जो खत्म ना हो आया ऐसी दास्तान बनके
+उतर आया जहाँ में.....`}],type:"worship",beat:"4/4",tempo:74},{slug:"ho-jai-jaikaara-jai-jaikaara-kare",number:166,title:"हो जय जयकारा जय जयकारा करे",title_alt:"Ho Jai Jaikaara Jai Jaikaara Kare",language:"hindi",tags:["Praise","Joy"],stanzas:[{label:"कोरस",text:"हो जय जयकार, जय जयकार करे (२)"},{label:"पद 1",text:`वो है हमारा राजा, दुःख संकट से बचाता
+हम पर अपनी करुणा करता और करता उपकार
+क्यों ना उस पर तन मन वारें, दे अपना अधिकार`},{label:"पद 2",text:`स्वर्ग है उसका सिंहासन, पृथ्वी बनी है आसन
+आकाश उसकी महिमा बताये, हस्तकला को दिखाये
+सारी सृष्टि उसकी रचना, उसका ही है प्रताप`},{label:"पद 3",text:`जिसका उस पर भरोसा, वो तो कभी न गिरेगा
+चाहे बीमारी, चाहे गरीबी, चाहे हो अकाल
+सब संकट से, सब कष्टों से हो जायेगा पार`}],type:"praise",beat:"4/4",tempo:104},{slug:"hovegi-barkat-ki-baarish",number:167,title:"होवेगी बरकत की बारिश",title_alt:"Hovegi Barkat Ki Baarish",language:"hindi",tags:["Revival","Holy Spirit"],stanzas:[{label:"कोरस",text:`होवेगी बरकत की बारिश, वादा पुर प्यार है सही
+आवेगी ताज़गी आसमान से, भेजेगा जिसको मसीह
+
+बरकत की बारिश, बरकत की बारिश भरपूर
+रहम की बूंदें टपकतीं, पर बारिश हमको ज़रूर`},{label:"पद 1",text:`होवेगी बरकत की बारिश, होगी नई कुव्वत ज़रूर
+वादी पहाड़ और मैदान पर, बारिश होगी भरपूर`},{label:"पद 2",text:`होवेगी बरकत की बारिश, काश अभी पावें हम सब
+यीशु तू ताज़गी अब बख़्श दे, वादे को पूरा कर अब`},{label:"पद 3",text:`होवेगी बरकत की बारिश, भेज उसे अभी, हाँ अब
+मानते गुनाह जब हम अपने, दे बारिश यीशु ऐ रब्ब`}],type:"worship",beat:"4/4",tempo:74},{slug:"hosanna-hosanna-prabhuvar-teri",number:168,title:"होसन्ना होसन्ना",title_alt:"Hosanna Hosanna prabhuvar teri",language:"hindi",tags:["Hosanna"],stanzas:[{label:"कोरस",text:`होसन्ना होसन्ना प्रभुवर तेरी
+तेरी जय जयकार हो,
+नूतन स्वर में तुझको भजे पावन ज्योति तेरी जले,
+शतपथ का तू अन्तर्यामी तेरी जय जयकार हो`}],type:"worship",beat:"4/4",tempo:74},{slug:"anande-vajava-tali",number:169,title:"आनंदे वाजवा टाळी",title_alt:"Anande Vajava Tali",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`आनंदे वाजवा टाळी,
+चला जाऊ ख्रिस्ताजवळी ...३
+आनंदे वाजवा टाळी,`}],type:"praise",beat:"4/4",tempo:104},{slug:"khristi-bandhavancha-mela",number:170,title:"ख्रिस्ती बांधवांचा मेळा",title_alt:"Khristi Bandhavancha Mela",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`ख्रिस्ती बांधवांचा मेळा ...२
+ख्रिस्ती बांधवांचा गोड प्रीती मेळा
+भक्तिभाव भोळा
+पाही देवा, पाही देवा रे
+ख्रिस्ती बांधवांचा मेळा`},{label:"Verse 2",text:`१. आवडे तुला रे नाद गायनाचा ...२
+ताळ मृदुगाचा नाही वीट,
+नाही वीट
+ख्रिस्ती बांधवांचा मेळा`},{label:"Verse 3",text:`२. नाचले तुझे ते थोर साधू संत ...२
+तुझ्या कीर्तनात ओढी आम्हा
+ओढी आम्हा
+ख्रिस्ती बांधवांचा मेळा`},{label:"Verse 4",text:`३. रंगू दे आम्हालाए
+रिंगणात गोल ...२
+गाऊ दे अमोल
+प्रेमगीत, प्रेमगीत
+ख्रिस्ती बांधवांचा मेळा`},{label:"Verse 5",text:`४. गोड गाणी गाता
+होऊ पायी लीन
+गाऊ या मिळून
+देवबापा, देवबापा,
+ख्रिस्ती बांधवांचा मेळा`}],type:"worship",beat:"4/4",tempo:74},{slug:"tarak-to-samarth-to",number:171,title:"तारक तो सामर्थ तो",title_alt:"Tarak To Samarth To",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`तारक तो सामर्थ तो
+येशु देव युग युग आहे
+हा..हा.. हालेलुया हो..हो..होसना..२
+हालेलुया, हालेलुया, हालेलुया...२`},{label:"Verse 2",text:`१. हा दिवस प्रभुचा आहे,
+आपण उल्हास व आनंद करू,
+स्वर्गाच्या देवाला स्तुतीचे गीत गाऊ.`},{label:"Verse 3",text:`२. चला हो आता त्या कडे,
+आपण महिमा व स्तुति वर्णु
+किती थोर तो देव, सर्वस्व आपणा दिले.`},{label:"Verse 4",text:`३. त्याचा अनुभव घ्या,
+तो किती चांगला आहे,
+शैतानी बंधनातुनी
+आपणाला सोडवितो.`}],type:"worship",beat:"4/4",tempo:74},{slug:"dhanyavaad-yeshula",number:172,title:"धन्यवाद येशूला",title_alt:"Dhanyavaad Yeshula",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`धन्यवाद येशूला (२)
+राजांच्या राजाला, प्रभुंच्या प्रभुला
+धन्यवाद येशूला
+महिमा हो या त्याला (२)
+राजांच्या राजाला, प्रभुंच्या प्रभुला
+महिमा हो या त्याला (२)
+गौरव या त्याला (२)
+राजांच्या राजाला, प्रभुंच्या प्रभुला
+धन्यवाद येशूला
+गौरव या त्याला`}],type:"worship",beat:"4/4",tempo:74},{slug:"mastake-unch-kara",number:173,title:"मस्तकें ऊंच करा",title_alt:"Mastake Unch Kara",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`मस्तकें उंच करा, येणाया राजाला
+लवून त्याचे नमन करा हो,
+स्तुति गा
+त्याच्या गौरवाला
+तुमची स्तवने असो
+शुद्ध पवित्र गौरव देता
+राजाच्या राजाला`}],type:"worship",beat:"4/4",tempo:74},{slug:"mi-vechale-phulanna",number:174,title:"मी वेचले फुलांना",title_alt:"Mi Vechale Phulanna",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`मी वेचले फुलांना, काटे ख्रिस्ता मिळाले
+जखमी करुनी तुजला, मला सर्व रे मिळाले`},{label:"Verse 2",text:`१. हाती पायी खेळ तुझ्या, रुतले खिळे देहारी
+मी रोगमुक्त झालो, फटके तुला मिळाले
+जखमी करुनी तुजला...`},{label:"Verse 3",text:`२. पाहूनी तुजला, धिक्कारिले जगाने
+पावे कृपा मी आता, श्राप तुला मिळाले
+जखमी करुनी तुजला...`}],type:"worship",beat:"4/4",tempo:74},{slug:"vyaho-tumhi-tali",number:175,title:"व्याहो तुम्ही टाळी",title_alt:"Vyaho Tumhi Tali",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`व्याहो तुम्ही टाळी, व्याहो टाळी
+टाळी कशाची देवबापाची
+करील तो होळी सर्व पापांची`},{label:"Verse 2",text:`१. टाळी कशाची येशु ख्रिस्ताची
+करील तो होळी सर्व पापांची`},{label:"Verse 3",text:`२. टाळी कशाची पवित्र आत्म्याची
+करील तो होळी सर्व पापांची`}],type:"worship",beat:"4/4",tempo:74},{slug:"haatane-tali",number:176,title:"हाताने टाळी",title_alt:"Haatane Tali",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`हाताने टाळी मुखाने जय
+प्रेमाने बोला ख्रिस्ता जय ...३`},{label:"Verse 2",text:"१. जोराने बोला ख्रिस्ता जय ...३"},{label:"Verse 3",text:"२. मोठ्याने बोला ख्रिस्ता जय ...३"}],type:"worship",beat:"4/4",tempo:74},{slug:"pray-for-india",number:177,title:"Pray For India",title_alt:"Pray For India",language:"bilingual",tags:[],stanzas:[{label:"Chorus",text:`Pray for India...6
 तेरा इंडिया मेरा इंडिया
 अपना इंडिया
 Pray for India...3
@@ -1201,1244 +1777,668 @@ Pray for India
 You love India,
 I love India,
 We love India
-Pray for India`}],type:"worship",beat:"4/4",tempo:74},{slug:"neele-aasman-ke-paar-jayenge",number:62,title:"नीले आसमान के पार जाएंगे",title_alt:"Neele aasman ke paar jayenge",language:"hindi",tags:["Entrance","Recessional"],stanzas:[{label:"कोरस",text:`नीले आसमान के पार जाएंगे,
-मेरा येशु रहता वहां
-नीले आसमान के पार जाएंगे,
-मेरा येशु रहता वहां`},{label:"पद 1",text:`हम मिलेंगे बादलों पर
-हम मिलेंगे बादलों पर
-देखेगा सारा जहान`},{label:"पद 2",text:`नीले आसमान के पार जाएंगे,
-मेरा येशु रहता वहां
-नीले आसमान के पार जाएंगे,
-मेरा येशु रहता वहां`},{label:"पद 3",text:`उसका कोई भी वादा ना होगा अधूरा
-हर एक वादा उसका
-होता है पूरा
-उसका कोई भी वादा`},{label:"पद 4",text:`उसका कोई भी वादा ना होगा अधूरा
-हर एक वादा उसका
-होता है पूरा
-उसका कोई भी वादा`},{label:"पद 5",text:`उसके आने का वादा भी होगा पूरा
-देखेगा सारा जहान
-उसके आने का वादा भी होगा पूरा
-देखेगा सारा जहान`},{label:"पद 6",text:`हम मिलेंगे बादलों पर
-हम मिलेंगे बादलों पर
-देखेगा सारा जहान`},{label:"पद 7",text:`नीले आसमान के पार जाएंगे,
-मेरा येशु रहता वहां
-नीले आसमान के पार जाएंगे,
-मेरा येशु रहता वहां`},{label:"पद 8",text:`ये विश्वास है मेरा जो होगा पूरा
-सपना ये मेरा ना
-रहेगा अधूरा
-ये विश्वास है मेरा`},{label:"पद 9",text:`ये विश्वास है मेरा जो होगा पूरा
-सपना ये मेरा ना
-रहेगा अधूरा
-ये विश्वास है मेरा`},{label:"पद 10",text:`फिर संग हम रहेंगे अपने येशु के
-देखेगा सारा जहान
-फिर संग हम रहेंगे अपने येशु के
-देखेगा सारा जहान`},{label:"पद 11",text:`हम मिलेंगे बादलों पर
-हम मिलेंगे बादलों पर
-देखेगा सारा जहान`},{label:"पद 12",text:`नीले आसमान के पार जाएंगे,
-मेरा येशु रहता वहां
-नीले आसमान के पार जाएंगे,
-मेरा येशु रहता वहां`},{label:"पद 13",text:`हम मिलेंगे बादलों पर
-हम मिलेंगे बादलों पर
-देखेगा सारा जहान`},{label:"पद 14",text:`नीले आसमान के पार जाएंगे,
-मेरा येशु रहता वहां
-नीले आसमान के पार जाएंगे,
-मेरा येशु रहता वहां`}],type:"worship",beat:"4/4",tempo:74},{slug:"parvaton-ko-dekhunga-main",number:62,title:"पर्वतों को देखूंगा मैं",title_alt:"Parvaton Ko Dekhunga Main",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`पर्वतों को देखूंगा मैं
-कौन है मददगार मेरा...२
-मेरा मददगार है खुदा...२
-जिसने जमी और आसमां को बनाया`},{label:"Verse 1",text:`१. वो मेरे पांव को,
-फिसलने नहीं देगा...२
-खुदावंद है मेरा जागा हुआ,
-मुझे तन्हा ना छोड़ेगा...२
-मेरा निगेहबान खुदा है...२
-जिसने जमी और आसमां को बनाया`},{label:"Verse 2",text:`२. मेरी जां को बला छूं भी ना पाएगी...२
-न गर्मी चांद और सूरज की,
-कभी मुझको जलाएगी...२
-मेरा साहेबान खुदा है...२
-जिसने जमी और आसमां को बनाया`}],type:"worship",beat:"4/4",tempo:74},{slug:"papa-by-bridge-music",number:63,title:"पापा",title_alt:"Papa by Bridge music",language:"hindi",tags:["Adoration","Communion","Praise & Worship"],stanzas:[{label:"कोरस",text:`तुझे छोड़ मैं चल पड़ा
-ढूंढने घर हर जगह
-खोज में मैं खो गया
-खुद को पहचान ना सका
-रेहमत के दरिया में डुबाया मुझे
-उस से ज़रिया बनाकर चलाया मुझे
-रेहमत के दरिया में डुबाया मुझे
-उस से ज़रिया बनाकर चलाया मुझे`},{label:"पद 1",text:`पापा, पापा
-बेटा मैं तेरा
-पापा, पापा
-बेटा मैं तेरा`},{label:"पद 2",text:`तुझे छोड़ मैं जाऊं कहां
-तू ही तो घर है मेरा
-ना था मुझे ये पता
-बेटा मैं था ही तेरा
-नज़र तेरी कभी ना हटी
-महफूज़ हूं तेरी परछाई में
-नज़र तेरी कभी ना हटी
-महफूज़ हूं तेरी परछाई में`},{label:"पद 3",text:`पापा, पापा
-बेटा मैं तेरा
-पापा, पापा
-बेटा मैं तेरा`},{label:"पद 4",text:`तेरी आंखों की पुतली हूं पापा
-मैं - आंखों की पुतली हूं पापा
-तेरी आंखों की पुतली हूं पापा
-तेरी आंखों की पुतली हूं पापा`},{label:"पद 5",text:`पराया ना हूं मैं - ठुकराया ना तूने
-शर्मिंदगी से - निकाला है तूने
-पराया ना हूं मैं - ठुकराया ना तूने
-शर्मिंदगी से - निकाला है तूने
-पराया ना हूं मैं - ठुकराया ना तूने
-पराया ना हूं मैं - ठुकराया ना तूने
-शर्मिंदगी से - निकाला है तूने
-गले लगाकर चूमा मुझे
-मेरा लत्ता हटाकर लबादा दिया
-गले लगाकर चूमा मुझे
-मेरा लत्ता हटाकर लबादा दिया`},{label:"पद 6",text:`पापा, पापा
-बेटा मैं तेरा
-पापा, पापा
-बेटा मैं तेरा`},{label:"पद 7",text:`तेरी आंखों की पुतली हूं पापा
-मैं - आंखों की पुतली हूं पापा
-तेरी आंखों की पुतली हूं पापा
-मैं - आंखों की पुतली हूं पापा`}],type:"worship",beat:"4/4",tempo:74},{slug:"he-jeevit-parameshwar",number:63,title:"हे जीवित परमेश्वर",title_alt:"He Jeevit Parameshwar",language:"hindi",tags:["Worship","Adoration"],stanzas:[{label:"Chorus",text:`हे जीवित परमेश्वर
-मैं तेरी आराधना करता हूं
-जीवन को देनेवाले,
-मैं तेरी आराधना करता हूं
-हालेलुय्याह, होसाना...४`},{label:"Verse 1",text:`१. मृत्यु को जीतने वाले,
-मैं तेरी आराधना करता हूं
-नरक को जीतने वाले,
-मैं तेरी आराधना करता हूं।`},{label:"Verse 2",text:`२. सृष्टि को रचनेवाले,
-मैं तेरी आराधना करता हूं।
-जीवन को देने वाले,
-मैं तेरी आराधना करता हूं।`}],type:"worship",beat:"4/4",tempo:74},{slug:"taali-bajaakar-khushiyan-manao",number:64,title:"ताली बजाकर खुशियां मनाओ",title_alt:"Taali Bajaakar Khushiyan Manao",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`ताली बजाके खुशियां मनाओ
-प्रभु के सम्मुख आनंद मनाओ...२
-आनंद मनाओ, आनंद मनाओ
-सब दुख भुल कर आनंद मनाओ...२`},{label:"Verse 1",text:`१. बिनती से विचारों से,
-बढ़कर करता है...२`},{label:"Verse 2",text:`२. भयभीत ना हो, मैंने छुड़ाया तुझे
-तू है मेरा अपना...२`},{label:"Verse 3",text:`३. निश्चय भलाई और करुणा
-जीवन भर साथ है सदा...२`},{label:"Verse 4",text:`४. ज्ञान सिखाता राह बताता,
-वचन को देता सदा...२`},{label:"Verse 5",text:`५. संकट में अगर हम, दुहाई दे
-छुटकारा देगा हमें...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"prabhu-tere-hi-mandir-mai",number:65,title:"प्रभु तेरे ही मन्दिर में",title_alt:"Prabhu tere hi mandir mai",language:"hindi",tags:["Offertory"],stanzas:[{label:"कोरस",text:`प्रभु तेरे ही मन्दिर में हम चढाते हैं बलिदान
-स्तुति तेरी गाते सभी भक्ति में झूम, तुझको करे सम्मान`},{label:"पद 1",text:`सब कुछ हमें देता, हमारा प्रमी पिता
-जीवन के संकट में, प्रभु साथ निभाता सदा`},{label:"पद 2",text:`कृपा दया सागर, बरसाता प्रेम की फुहार
-गुमराह भेड़ों का बन जाता राखनहार`}],type:"worship",beat:"4/4",tempo:74},{slug:"yehova-yehova-yehova-yehova",number:65,title:"यहोवा यहोवा यहोवा यहोवा",title_alt:"Yehova Yehova Yehova Yehova",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`यहोवा यहोवा यहोवा यहोवा
-यहोवा जिन्दा खुदा,
-वो हमारा बादशाह
-जो मसीह में मुर्जस्सिम हुआ
-यहोवा यहोवा यहोवा ...`},{label:"Verse 2",text:`१. यहोवा शामा भी तू
-जो रहता साथ साथ
-यहोवा राहें भी तू
-मेरा चौपाल साथ साथ
-जो भी मांगे वही मिल जाए
-जो भी ढूंढेंगे वही पाएंगे
-खटखटाए तो खुल जाएगा
-यहोवा ...`},{label:"Verse 3",text:`२. - ऐ पाक यहोवा निस्सी
-तू झंडा कौम का
-ऐ पाक यहोवा राफा
-तू शाफी कौम का
-तेरे पीछे चलें और
-शक ना करें
-बल्कि रखें ईनाम है मसीह मेरा
-जो भी चाहे हो जाएगा
-यहोवा ...`},{label:"Verse 4",text:`३. तू है यहोवा यारी
-जो मुहय्या करता है
-तू है यहोवा शम्मा
-जो तसल्ली देता है
-तू ने बेटा दिया
-सबको माफ किया
-नया जन्म दिया
-रूह से भर दिया
-आज शैतान झुक जाएगा
-यहोवा ...`}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-hai-mera-parameshwar-pita",number:66,title:"तू है मेरा परमेश्वर पिता",title_alt:"Tu Hai Mera Parameshwar Pita",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`तू है मेरा परमेश्वर पिता
-मैं हूं तेरी संतान,
-तेरा प्यार मेरे लिये है बड़ा महान`},{label:"Verse 1",text:`१. तेरा प्यार मैं चाहूं,
-हर खुशी से बढ़कर
-तेरे घर में मैं रहूं, सदा सर्वदा`},{label:"Verse 2",text:`१. तेरा प्यार मैं चाहूं,
-हर खुशी से बढ़कर
-तेरे घर में मैं रहूं, सदा सर्वदा`}],type:"worship",beat:"4/4",tempo:74},{slug:"pyaar-ka-sagar-hai-tu",number:66,title:"प्यार का सागर है तू",title_alt:"Pyaar ka sagar hai tu",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`प्यार का सागर है तू येसु मेरे मसीह
-प्यार का सागर है तू येसु मेरे मसीह`},{label:"पद 1",text:`जीवन की मंज़िल है तू बिन तेरे मिले न खुशी
-दिल में तेरे मैं बस जाऊँ हर दिन हर पल मैं प्रभू
-पाकर तेरा प्यार बन जाऊँ तेरे समान`},{label:"पद 2",text:`कितना मीठा तेरा प्यार कैसे करूँ मैं वर्णन
-मधुर मधु से भी मीठा तेरा प्यार है।`},{label:"पद 3",text:`ढूँढा सारे जहाँ साजन मिला न कहीं
-हर प्रेम प्रीत में खोजा पर तेरे जैसा नहीं
-तेरे प्रीत में पाऊँ सम्पूर्ण जीवन भी
-पाकर तेरा प्यार चाहूँ न दूजा कोई`},{label:"पद 4",text:`जग में सदा अपनी माता प्यार की मूरत है
-जननी की ममता हमेशा ईश्वर की दीदार है।
-माता अगर भूल भी जाये अपनी ही संतान को
-पर तेरा यह प्यार कभी भूल न जाये हमको।`}],type:"worship",beat:"4/4",tempo:74},{slug:"main-aankhen-apni-parvat-ki-aur-uthaunga",number:66,title:"मैं आंखें अपनी पर्वत की ओर उठाऊंगा",title_alt:"Main Aankhen Apni Parvat Ki Aur Uthaunga",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`मैं आंखें अपनी पर्वत की ओर उठाऊंगा।
-मुझको है पता सहायता
-वहीं से पाऊंगा ...३
-नीचे धरती ऊपर आसमां बनाता है
-परमेश्वर है वो
-उसके गुण गाऊंगा।`},{label:"Verse 1",text:`१. फिसले ना कभी कदम राहों में
-इसीलिए ना सोता दिन रातों में
-इस्राएल का वो है रखवाला
-ऊंघेगा ना वो सोयेगा
-मैं आंखें अपनी...`},{label:"Verse 2",text:`२. कष्टों से यीशु मुझे बचाएगा
-रक्षक बनकर प्राण संभालेगा
-बाहर जाओ या अंदर आओ
-वो ही हमेशा रक्षक होगा
-मैं आंखें अपनी...`}],type:"worship",beat:"4/4",tempo:74},{slug:"pavitra-tu-hi-to-hai",number:67,title:"पवित्र तू ही तो है",title_alt:"Pavitra Tu Hi To Hai",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`पवित्र तू ही तो है,
-तेरा नाम पवित्र है ...२
-आसमां के नीचे और धरती पर
-मेरा यीशु पवित्र है ...२
-पवित्र तू ही तो है,
-तेरा नाम पवित्र है ...२
-आ हा हा हालेलुया, हालेलुया...२`},{label:"Verse 2",text:`१. तू ने हमको अपना बना लिया
-अपनी महिमा को हम पर प्रगट किया
-तेरी महिमा हम रोज करते रहे
-अपने हाथों को उठाकर पवित्र कहे
-पवित्र कहे... पवित्र कहे.. पवित्र कहे..
-पवित्र तू ही`},{label:"Verse 3",text:`२. सिंहासन स्तुति का तैयार है
-आराधना आज ऐसी है
-पवित्र पिता है सिंहासन पे
-और भरता हमें अपने पाक रूह से
-आ पाक रूह ... आ पाक रूह ...
-आ पाक रूह ...`}],type:"worship",beat:"4/4",tempo:74},{slug:"pyaasa-hiran",number:67,title:"प्यासा हिरन",title_alt:"Pyaasa hiran",language:"hindi",tags:["Psalms"],stanzas:[{label:"कोरस",text:`प्यासा हिरन जैसे ढूँढे हैं जल को
-वैसे प्रभु मैं तुझे खोज रहा।`},{label:"पद 1",text:`तू ही मेरे मन की अभिलाषा
-तेरी पूजा नित दिन करता रहूँ मैं`},{label:"पद 2",text:`सोना चाँदी मैं तो न माँगू
-मन तेरे प्रेम से भरता रहूँ मैं`},{label:"पद 3",text:`तू जो बन जाये श्रद्धा सुमन
-पुष्प पराग सा झरता रहूँ मैं`}],type:"worship",beat:"4/4",tempo:74},{slug:"yehova-ka-tum-dhanyavaad-karo",number:68,title:"यहोवा का तुम धन्यवाद करो",title_alt:"Yehova Ka Tum Dhanyavaad Karo",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`यहोवा का तुम धन्यवाद करो
-उसके प्रेम के लिए धन्यवाद करो
-सदा का है . . .२`},{label:"Verse 1",text:`१. सारे गौरव में प्रभु आता
-होकर महिमा में वो सवार
-सच्चाई, नम्रता और नम्रता के लिए`},{label:"Verse 2",text:`२. उसकी सेना आती आकाश में,
-उसकी सेना आती है नाचते
-उसने आनंद से है दिल भरा
-खुशियां मनाओ, राज बढ़ रहा
-उसका प्रेम युद्ध का नारा
-यहोवा का तुम . . .`}],type:"worship",beat:"4/4",tempo:74},{slug:"sang-tere",number:68,title:"संग तेरे",title_alt:"Sang Tere",language:"hindi",tags:["Adoration","Communion","Praise & Worship"],stanzas:[{label:"कोरस",text:`ये कैसा प्यार है तेरा!
-ये ऐसा तूने है किया
-तेरा प्राण दे दिया
-ताकि जियूं मैं सदा`},{label:"पद 1",text:`शैतान को हरा दिया
-पापों को जड़ से उखाड़ दिया
-मुझे घेर लिया नए गीत से
-अब मैं जी उठा नई शक्ति से`},{label:"पद 2",text:`पीछे नहीं मुड़ूंगा
-हार नहीं मानूंगा
-बढ़ता रहूंगा, संग तेरे`},{label:"पद 3",text:`मेरी ओर से लड़ेगा
-कभी हाथ ना छोड़ेगा
-डर हटा कर बल दिया
-जीत तूने मुझे दिया`},{label:"पद 4",text:`शैतान को हरा दिया
-पापों को जड़ से उखाड़ दिया
-मुझे घेर लिया नए गीत से
-अब मैं जी उठा नई शक्ति से`},{label:"पद 5",text:`पीछे नहीं मुड़ूंगा
-हार नहीं मानूंगा
-बढ़ता रहूंगा, संग तेरे
-पीछे नहीं मुड़ूंगा
-हार नहीं मानूंगा
-बढ़ता रहूंगा, संग तेरे`},{label:"पद 6",text:`कहना ही क्या है
-खुदा मेरे पक्ष में
-तो कौन अब मेरा
-विरोधी ठहरेगा?
-कहना ही क्या है (संग तेरे)
-खुदा मेरे पक्ष में (संग तेरे)
-तो कौन अब मेरा (संग तेरे)
-विरोधी ठहरेगा? (संग तेरे)`},{label:"पद 7",text:`मेरी ओर से लड़ेगा
-कभी हाथ ना छोड़ेगा
-डर हटा कर बल दिया
-जीत तूने मुझे दिया`},{label:"पद 8",text:`क्या दे सकता हूं?
-क्या ला सकता हूं?
-कहता तुझे बस शुक्रिया, शुक्रिया
-तेरा शुक्रिया
-तेरा...`},{label:"पद 9",text:`पीछे नहीं मुड़ूंगा (तूफानों में भी)
-हार नहीं मानूंगा (अकेलेपन में)
-बढ़ता रहूंगा (पानी में भी)
-संग तेरे
-पीछे नहीं मुड़ूंगा (हर दम प्रभु)
-हार नहीं मानूंगा (हर पल प्रभु)
-बढ़ता रहूंगा, संग तेरे`}],type:"worship",beat:"4/4",tempo:74},{slug:"sandesh-sunate-jaana",number:69,title:"संदेश सुनाते जाना",title_alt:"Sandesh Sunate Jaana",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`१. संदेश सुनाते जाना,
-सेवा से नहीं शरमाना,
-चाहे जग हमें रोके,
-आये दुख के झरोके,
-हमें देगा वो भरपूर शांति...२`},{label:"Verse 2",text:`२. हम अपना क्रूस उठाये,
-और यीशु के पीछे आये,
-अपने को त्यागे यीशु से मन लगाये
-हम हैं उसके विश्वासी...२`},{label:"Verse 3",text:`३. यीशु ने हमें भेजा है,
-उसका काम दिन ही दिन में करना ह,
-वो है रात आने वाली
-ये हमारी जिम्मेवारी
-यीशु है हमारा न्यायी...२`},{label:"Verse 4",text:`४. प्रतिफल हमें वो देता,
-विश्वास में स्थिर करेगा,
-उसकी आज्ञा हम माने,
-उससे शांति हम पाये
-प्रतिज्ञा है उसकी काफी...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"srishti-hai-teri-kavita",number:69,title:"सृष्टि है तेरी कविता",title_alt:"Srishti hai teri kavita",language:"hindi",tags:["Easter","Entrance"],stanzas:[{label:"कोरस",text:`सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2
-सारी धरा पर गूँजती है, निस दिन महिमा तेरी
-सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2`},{label:"पद 1",text:`झरने की कल कल भी, करती है तेरी महिमा
-पक्षी भी गाते है, तू है कितना महान
-वन के सुमन भी है हंसते, करते हैं जय जयकार । 2`},{label:"पद 2",text:"सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2"},{label:"पद 3",text:`नभ की नीलिमां से तारे, धरती को करते इशारे
-सागर की चंचल मौजे,देती हैं तेरी ही यादें
-ऊँचे शिखर भी हैं कहते, तेरी कला है अपार 2`},{label:"पद 4",text:`सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2
-सारी धरा पर गूँजती है, निस दिन महिमा तेरी
-सृष्टि है तेरी कविता, गाती है सन्ना तेरी 2`}],type:"worship",beat:"4/4",tempo:74},{slug:"tere-geet-gaun",number:70,title:"तेरे गीत गाऊँ",title_alt:"Tere geet gaun",language:"hindi",tags:["Psalms"],stanzas:[{label:"कोरस",text:`तेरे गीत गाऊँ, तेरे संग रहूँ मैं
-पाऊँ मैं जीवन का आनन्द तुझमें प्रभु`},{label:"पद 1",text:`तू ही मेरी ज्योति प्रभु
-तू ही मेरी मसीह`},{label:"पद 2",text:`तू ही मेरी मंजिल प्रभु
-तू ही मेरा मार्ग`},{label:"पद 3",text:`तू ही मेरी शांति प्रभु
-तू ही मेरा नाथ`}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-dil-mai-prabhu-madhur",number:71,title:"तू दिल में हैं प्रभु मधूर",title_alt:"Tu dil mai prabhu madhur",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`तू दिल में हैं प्रभु मधूर मांगू यही दुआ,
-भक्ति भरे हृदय से मैं पूजूँ सदा`},{label:"पद 1",text:`पापों से तू ने मुक्ति दिलाई,
-आये मेरा घर मेहमान बन
-पापी हूँ फिर भी भक्ति निभाई,
-देखा न तुझसा दूजा सजन`},{label:"पद 2",text:`जब से तू आया संतोष पाया,
-दिल तो खुशियों से भरपूर है
-दर्शन मैं तेरा करता हूँ मन से,
-तेरा प्रभु मुझ में तो नूर है`},{label:"पद 3",text:`तू मेरी रक्षा करता हमेशा,
-तेरे उपहारों की गिनती नहीं
-मिल जायें मुझको तेरा सहारा,
-जाऊँ न करने विनती कहीं`},{label:"पद 4",text:`मैं तेरी पूजा हर क्षण करूँगा,
-तू मेरे दिल में हर क्षण रहें,
-मैं तेरा साक्षी बन जाऊँ दाता,
-दिल मेरा दरपन रहे।`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-ke-sang-tu-chalta-chal",number:71,title:"यीशु के संग तू चलता चल",title_alt:"Yeshu Ke Sang Tu Chalta Chal",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`यीशु के संग तू चलता चल
-तेरा जीवन होगा महान
-तेरे लिए वो आया है,
-ताकि तू पाए आसानी वा ताज...२`},{label:"Verse 1",text:`१. जब तू अकेला,
-दुनिया के इस सफर में
-थामेगा वो तेरा हाथ,
-जब लोग तुझको छोड़े।
-यीशु के संग . . .`},{label:"Verse 2",text:`२. यीशु का अब्दी प्यार,
-कभी नहीं बदलेगा
-गर तू करता है प्यार,
-तेरा वो है मददगार।
-यीशु के संग . . .`},{label:"Verse 3",text:`३. जीवन उसे सौंप दे,
-आशीष वो देगा तुझे
-पाया यीशु का साथ,
-उद्धार वो देगा तुझे।`}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-mera-geet-hai",number:72,title:"तू मेरा गीत है",title_alt:"Tu mera Geet hai",language:"hindi",tags:["Psalms"],stanzas:[{label:"कोरस",text:`तू मेरा गीत है
-मेरा संगीत है
-जीवन की राह में
-तू मीत है`},{label:"पद 1",text:`करूँ अब तेरी आराधना
-सम्पूर्ण मन से उपासना
-दे मुझको अपनी आत्मा में यहाँ`},{label:"पद 2",text:`मैं यहाँ प्रभु (x3)
-मैं हूँ यहाँ`},{label:"पद 3",text:`तू मेरी आशा
-तू मेरा प्रीत है
-जीवन की हार में
-तू जीत है`}],type:"worship",beat:"4/4",tempo:74},{slug:"dil-ke-daag-ko-dhove-kaun",number:72,title:"दिल के दाग को धोवे कौन",title_alt:"Dil Ke Daag Ko Dhove Kaun",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`दिल के दाग को धोवे कौन
-लहू जो कि क्रूस से जारी
-मेरे मर्ज को खोवे कौन?
-लहू जो कि क्रूस से जारी`},{label:"Verse 2",text:`वह चश्मा है मामूर
-दाग दिल के करता दूर
-है मुझको दिल मंजूर
-लहू जो कि क्रूस से जारी`},{label:"Verse 3",text:`२. मेरे मर्ज का शाफी है
-लहू जो कि क्रूस से जारी
-माफी को वो काफी है
-लहू जो कि क्रूस से जारी`},{label:"Verse 4",text:`३. वह है मेरे कर्ज का दाम
-लहू जो कि क्रूस से जारी
-वह है मेरा खास इनाम
-लहू जो कि क्रूस से जारी`},{label:"Verse 5",text:`४. मेरी वह उम्मीद है खास
-लहू जो कि क्रूस से जारी
-रास्ती का है खुश लिबास
-लहू जो कि क्रूस से जारी`},{label:"Verse 6",text:`५. दुख तकलीफ में है पनाह
-लहू जो कि क्रूस से जारी
-वह है मेरे घर की राह
-लहू जो कि क्रूस से जारी`},{label:"Verse 7",text:`६. मेरे गीत का है मजमून
-लहू जो कि क्रूस से जारी
-मुझको करता है ममनून
-लहू जो कि क्रूस से जारी`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-mera-raja",number:73,title:"यीशु मेरा राजा",title_alt:"Yeshu Mera Raja",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`१. यीशु मेरा राजा,
-यीशु मेरा प्रभु,
-यीशु मेरा जीवन,
-यीशु ही सब कुछ है।
-स्तुति के योग्य,
-योग्य तू ही है,
-सदा सदा के लिए
-सृष्टि किया मुझको,
-स्तुति करूं तुझको
-मैं सदा के लिए . . .`},{label:"Verse 2",text:`२. जीवन की रोटी,
-यीशु मेरी ज्योति
-यीशु मेरा प्रेम है
-यीशु ही सब कुछ है।
-स्तुति के योग्य . . .`},{label:"Verse 3",text:`३. यीशु मेरा मार्ग है,
-यीशु मेरा द्वार है।
-स्वर्गराज में यीशु
-यीशु मेरा जीवन,
-यीशु ही सब कुछ है।
-स्तुति के योग्य . . .`}],type:"worship",beat:"4/4",tempo:74},{slug:"vachan-tera-hai-prabhu-jeevan-ki-jyoti-hai",number:73,title:"वचन तेरा हे प्रभु जीवन की ज्याति है",title_alt:"Vachan tera hai prabhu jeevan ki jyoti hai",language:"hindi",tags:["Acclamation"],stanzas:[{label:"कोरस",text:`वचन तेरा हे प्रभु जीवन की ज्याति है
-वचन तेरा हे गुरु अनंत जीवन है। 2`},{label:"पद 1",text:`दिव्य वचन तेरा भक्ति से सुन लूंगा
-मधुर वचन तेरा दिल से मैं मानूंगा। 2`},{label:"पद 2",text:`भूख मिटाता है, अमर वचन तेरा
-प्यास बुझाता है मीठा वचन तेरा 2`}],type:"worship",beat:"4/4",tempo:74},{slug:"yehi-diwas-hai-jise-banaya",number:74,title:"यही दिवस है जिसे बनाया",title_alt:"Yehi diwas hai jise banaya",language:"hindi",tags:["Entrance"],stanzas:[{label:"कोरस",text:`यही दिवस है जिसे बनाया प्रभु ने अपने हाथों से
-प्रसन्न मन से खुशी मनावें नाचे गावें तन मन से
-आल्लेलूया, आल्लेलूया ।।`},{label:"पद 1",text:`नाचे गावे तन मन से खुशी मनावे तन मन से
-यही दिवस है जिसे बनाया प्रभु ने अपने हाथों से`},{label:"पद 2",text:`यही दिवस है जिस दिन प्रभु ने भू पर फिर अवतार लिया
-प्रसन्न मन से खुशी मनावें नाचे गावें तन मन से`},{label:"पद 3",text:`यही दिवस है जिस दिन हम ने नव जीवन का लाभ लिया
-प्रसन्न मन से खुशी मनावें नाचे गावें तन मन से`}],type:"worship",beat:"4/4",tempo:74},{slug:"samarthi-kitna-hai-yeshu-tu-mahaan",number:74,title:"सामर्थी कितना है यीशु तू महान",title_alt:"Samarthi Kitna Hai Yeshu Tu Mahaan",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`सामर्थी कितना है यीशु तू महान
-तेरी रचना तो हैं हम,
-गाते है होके मगन
-सामर्थी कितना . . .`},{label:"Verse 1",text:`१. तू मेरा हमसफर,
-तुझमें हूं मैं निडर (२)
-प्यार मेरा हर पल
-है मेरा जीवन जल (२)
-मेरे दिल से कहता हूं,
-सामर्थी कितना . . .`},{label:"Verse 2",text:`२. आदि भी तू है, अंत भी तू है (२)
-अल्फा भी तू है,
-और ओमेगा भी है (२)
-भरे दिल से कहता हूं,
-यीशु तू है महान
-सामर्थी कितना . . .`},{label:"Verse 3",text:`३. यीशु के मैं साथ,
-करता हूं नित्य बात (२)
-देकर अपना हाथ
-चलता मेरे साथ (२)
-इसलिए मैं कहता हूं,
-यीशु तू है महान
-सामर्थी कितना . . .`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-mere-koi-nahi-tere-jaisa",number:75,title:"यीशु मेरे कोई नहीं तेरे जैसा",title_alt:"Yeshu Mere Koi Nahi Tere Jaisa",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`यीशु मेरे कोई नहीं तेरे जैसा (२)
-अपार प्रेम, अपार करुणा
-दयालु तू बड़ा
-यीशु मेरे ॥धृ॥`},{label:"Verse 1",text:`१. किसी आंख न देखा,
-ना कान ने सुना है
-किसी मानव के चित्त में नहीं आया
-जो परमेश्वर ने तैयार किया है
-अपने प्रेम करने वालों के लिए
-यीशु मेरे . . .`},{label:"Verse 2",text:`२. जो तुझसे प्रेम करते,
-उनमें सारी ही बातें (२)
-भलाई उत्पन्न करती है
-मसीह के प्रेम से दुनिया की बातें
-अलग नहीं कर सकती हमें...
-यीशु मेरे . . .`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-tu-mera-meet",number:75,title:"येसु तू मेरा मीत",title_alt:"Yeshu tu mera meet",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`येसु तू मेरा मीत, येसु तू मेरा गीत
-येसु तू मेरा मीत, येसु तू मेरा गीत
-कैसी ये तेरी प्रीत, जीवन का तू संगीत`},{label:"पद 1",text:`देता मन्ना जीवन का, शरीर लहू प्रभु तेरा
-स्वर्गीय भोजन हमारा, तू है कृपा धारा।`},{label:"पद 2",text:`ये दिल मेरा है सूना, इस दिल में तू आ जाना
-प्रेम की ज्योति जलाना, जीवन का है झरना।`}],type:"worship",beat:"4/4",tempo:74},{slug:"alleluya-alleluya",number:76,title:"अल्लेलुया, प्रभु आया जहां में",title_alt:"Alleluya Alleluya",language:"hindi",tags:["Carol","Christmas"],stanzas:[{label:"कोरस",text:`अल्लेलुया, अल्लेलुया
-प्रभु आया जहां में,
-देखो चमकी नई आभा
-हमें उषा देने को,`},{label:"पद 1",text:`आने वाला है वो हम पापियों को,
-जीवन मुक्ति खुशी देने को (2)`}],type:"worship",beat:"4/4",tempo:74},{slug:"dekho-pita-ne-kaisa-mahaan",number:76,title:"देखो पिता ने कैसा महान",title_alt:"Dekho Pita Ne Kaisa Mahaan",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`देखो पिता ने कैसा महान
-प्रेम हमसे किया है
-कि हम सभी उसकी संतान,
-कहलाये जा सके (२)
-और हम है भी
-देखो पिता ने . . .`},{label:"Verse 1",text:`१. कृपा मुझ पर है किया इतना,
-गहराई का कोई नाप नहीं
-प्यार मुझसे है किया इतना,
-सीमाओं का कोई अन्त नहीं (२)
-धन्य हुआ मैं ऐसे प्रेम और कृपा से
-जो महान पिता ने दिखाया
-देखो पिता ने . . .`},{label:"Verse 2",text:`२. गुजर जाऊ मैं नदी से होकर
-उसकी गहराई ना डुबाएगी
-चला जाऊं मैं अग्नि से होकर,
-उसकी लौ ना झुलसाएगी।
-नहीं डरूं मैं अग्नि और पानी से
-उस महान पिता ने छुड़ाया
-देखो पिता ने . . .`}],type:"worship",beat:"4/4",tempo:74},{slug:"rishta-lahoo-ka",number:77,title:"रिश्ता लहू का",title_alt:"Rishta Lahoo Ka",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`रिश्ता लहू का
-यीशु से है मेरा,
-ये रिश्ता लहू का (२)
-दुनिया से यीशु का,
-ये रिश्ता लहू का (२)
-यीशु से है मेरा,
-ये रिश्ता लहू का`},{label:"Verse 1",text:`१. मेरे लिए, सबके लिए
-यीशु ने दी अपनी जान (२)
-यीशु से है मेरा,
-ये रिश्ता लहू का`},{label:"Verse 2",text:`२. दुनिया में आकर,
-लहू बहाकर, किया हमारा उद्धार
-यीशु से है मेरा,
-ये रिश्ता लहू का`},{label:"Verse 3",text:`३. जीवन मेरा, ये दिल मेरा,
-खुशियों से उसने भरा (२)
-यीशु से है मेरा,
-ये रिश्ता लहू का
-दुनिया से यीशु . . .`}],type:"worship",beat:"4/4",tempo:74},{slug:"kehta-hai-dil-mera-dhanyavaad-prabhu",number:78,title:"कहता है दिल मेरा",title_alt:"Kehta hai dil mera dhanyavaad prabhu",language:"hindi",tags:["Recessional"],stanzas:[{label:"कोरस",text:`कहता है दिल मेरा धन्यवाद प्रभु,
-किये तूने कार्य महान मेरे प्रभु।`},{label:"पद 1",text:`तूने चुना इस निर्बल को,
-कैसे कहूँ धन्यवाद मेरे प्रभु।`},{label:"पद 2",text:`तूने दिया जीवन नया,
-लाखों बार धन्यवाद मेरे प्रभु।`}],type:"worship",beat:"4/4",tempo:74},{slug:"gaane-ka-dil",number:78,title:"गाने का दिल",title_alt:"Gaane Ka Dil",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`गाने का दिल
-और बजाने का जीवन,
-हम सबने पाया है ...२
-खुशियां ये कैसी अनोखी ...२
-दिल में यीशु आ गया`},{label:"Verse 1",text:`१. जिस व्यक्ति ने यीशु को पाया ...२
-उसका जीवन बदल गया है
-गाने का दिल...`},{label:"Verse 2",text:`२. जिस व्यक्ति ने आत्मा को पाया ...२
-वो सामर्थ से भर गया है
-गाने का दिल...`},{label:"Verse 3",text:`३. जिस व्यक्ति ने पिता को पाया ...२
-वो स्वर्गीय वारिस बन गया
-गाने का दिल...`}],type:"worship",beat:"4/4",tempo:74},{slug:"khrist-marr-gaye",number:79,title:"ख्रीस्त मर गये",title_alt:"Khrist marr gaye",language:"hindi",tags:["Proclamation"],stanzas:[{label:"कोरस",text:`ख्रीस्त मर गये
-ख्रीस्त जी उठे
-ख्रीस्त महिमा के साथ फिर आयेंगे (2)`}],type:"worship",beat:"4/4",tempo:74},{slug:"lahoo-lahoo-yeshu-ka-lahoo",number:79,title:"लहू लहू यीशु का लहू",title_alt:"Lahoo Lahoo Yeshu Ka Lahoo",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`लहू लहू यीशु का लहू
-गुनाहों से हमको धोता
-मस्सा मस्सा मसीह का मस्सा
-बंधन सारे तोड़ता है`},{label:"Verse 1",text:`१. बड़े बड़े ना पीछ हटे ...२
-खुदावन्द का रूह फर्माता है`},{label:"Verse 2",text:`२. शिफा शिफा मुक्कमल शिफा ...२
-खुदावंद का रूह फर्माता है`},{label:"Verse 3",text:`३. खुदा खुदा हमारा खुदा ...२
-दिल में रहना चाहता है`},{label:"Verse 4",text:`४. खुदा खुदा हमारा खुदा ...२
-रूह से मरना चाहता है`}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-hi-to-hak-aur-tu-hi-raasta",number:80,title:"तू ही तो हक और तू ही रास्ता",title_alt:"Tu Hi To Hak Aur Tu Hi Raasta",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`तू ही तो हक और तू ही रास्ता
-तू ही है जिन्दगी ...२ जिन्दगी ...
-खुदावंत खुदा`},{label:"Verse 1",text:`१. मेरा सब कुछ तू ही तू है
-साथ मेरे अब तेरी रूह है ...२
-तू है मालिक, तू है दाता
-तूर है तू, और तू खुशबू है
-मुझसे हो चाहे सारी
-दुनिया खफा ...२
-तू है जिन्दगी है, तू है बन्दगी है,
-बन्दगी खुदावंत खुदा
-तू है आशिकी है आशिकी
-खुदावंत खुदा`},{label:"Verse 2",text:`२. घर जो बनाए, तू ही बनाए
-तू ना बनाए कौन बनाए ...२
-शहर बचाए तू ही बचाए
-तू ना बचाए कौन बचाए
-दुनिया में होगी बस, तेरी ही रजा
-तू ही जिन्दगी है`},{label:"Verse 3",text:`३. हर बेबस का, तू ही सहारा
-डूबने वालों का है किनारा
-तू आगाज है, तू अंजाम है
-तेरे बिना अब कौन हमारा
-तू ने बनाए है, जुमीं आसमां ...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"daya-karo-bhagwan-kripa-karo-bhagwan",number:80,title:"दया करो भगवन",title_alt:"Daya karo bhagwan kripa karo bhagwan",language:"hindi",tags:["Lord have mercy"],stanzas:[{label:"कोरस",text:`दया करो भगवन, कृपा करो भगवन (2)
-दया करो हे ख्रीस्त प्रभुवर (3)`}],type:"worship",beat:"4/4",tempo:74},{slug:"mere-masiha",number:81,title:"मेरे मसीहा",title_alt:"Mere Masiha",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`मेरे मसीहा ...२
-कोई नहीं है तेरे समान
-तू है महान सर्वशक्तिमान
-तू है महान दयालु प्रभु`},{label:"Verse 2",text:`१. अपने शब्दों से आकाश
-और पृथ्वी बनाया
-अपने सामर्थ से सारे जहा में फैलाया
-पंछी और सागर,
-पर्वत और नदियां
-सारे जहा में बनाया`},{label:"Verse 3",text:`२. आदम को भूमि की मिट्टी से बनाया
-अपने जीवन का सांस
-उसमें फूंक दिया
-अपने स्वरूप में, अपने स्वभाव में
-मनुष्य को उसने बनाया
-तू है महान ...`},{label:"Verse 4",text:`३. अपने वचनों से अंधों को
-आंखे दिया है
-अपनी शक्ति से लंगड़ों को
-उसने चलाया
-अद्भुत सामर्थ से पवित्र प्रेम से
-मुर्दों को उसने जिलाया`}],type:"worship",beat:"4/4",tempo:74},{slug:"paavan-paavan-paavan-eshwar",number:82,title:"पावन पावन ईश्वर",title_alt:"Paavan paavan paavan Eshwar",language:"hindi",tags:["Holy"],stanzas:[{label:"कोरस",text:`पावन पावन पावन ईश्वर
-स्वर्ग महिमा दिखाता तेरी
-स्तुति तव गाती पृथ्वी सारी
-जय जय जय प्रभु जय हो तेरी`}],type:"worship",beat:"4/4",tempo:74},{slug:"main-khush-hoon-chhudaya-yeshu-ne",number:82,title:"मैं खुश हूं छुड़ाया यीशु ने",title_alt:"Main Khush Hoon Chhudaya Yeshu Ne",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`मैं खुश हूं छुड़ाया यीशु ने (३)
-गाऊं महिमा हालेलुय्याह
-छुड़ाया यीशु ने`},{label:"Verse 1",text:`१. शैतान ने बांधा था,
-छुड़ाया यीशु ने (३)
-गाऊं महिमा हालेलुय्याह
-छुड़ाया यीशु ने`},{label:"Verse 2",text:`२. पापों से धोया है,
-छुड़ाया यीशु ने (३)
-गाऊं महिमा हालेलुय्याह
-छुड़ाया यीशु ने`}],type:"worship",beat:"4/4",tempo:74},{slug:"paavan-ati-paavan-prabhu-eshwar-akhileshwar",number:83,title:"पावन, अति पावन",title_alt:"Paavan ati paavan prabhu Eshwar akhileshwar",language:"hindi",tags:["Holy"],stanzas:[{label:"कोरस",text:"पावन, अति पावन, प्रभु ईश्वर अखिलेश्वर - २"},{label:"पद 1",text:`१. स्वर्ग धरा के कोने-कोने गूंजे तेरा नाम
-परमेश्वर की महिमा गरिमा फैले तीनों धाम - २`},{label:"पद 2",text:`२. धन्य है वह जो आता है परमेश्वर के नाम
-परमेश्वर की महिमा गरिमा फेले तीनों धाम - २`}],type:"worship",beat:"4/4",tempo:74},{slug:"he-duniya-ke-logon",number:83,title:"हे दुनिया के लोगों",title_alt:"He Duniya Ke Logon",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`शैतान ने बांधा था,
-छुड़ाया यीशु ने (३)
-गाऊं महिमा हालेलुय्याह
-छुड़ाया यीशु ने`},{label:"Chorus",text:`हे दुनिया के लोगों,
-ऊंची आवाज करो
-गाओ खुशी के गीत
-उसका धन्यवाद करो
-इबादत करो उसकी, इबादत करो...`},{label:"Verse 2",text:`१. याद रखो कि वही एक खुदा है
-हमको ये जीवन उसी ने है दिया है
-उस चरागाह से हम सब हैं आये
-हम्द और सना के हम गीत गाये
-रब्ब का तुम शुक्र करो, ऊंची आवा
-करो, इबादत करो...`},{label:"Verse 3",text:`२. नामे खुदावंद कितना मुबारक
-मेरा खुदावंद कितना भला है
-रहमत है उसकी सदियों पुरानी
-वफा का अजल से,
-यही सीलसीला है
-उस पर ईमान धरो,
-उसके घर आज चलो
-गाओ खुशी के गीत,
-उसका गुणगाण करो
-इबादत करो...`}],type:"worship",beat:"4/4",tempo:74},{slug:"aur-paas-tere-aana-chahta-hoon",number:84,title:"और पास तेरे आना चाहता हूं",title_alt:"Aur Paas Tere Aana Chahta Hoon",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`और पास तेरे, आना चाहता हूं
-चेहरा तेरा निहारने
-कैसा खुबसुरत है तू
-तुलना मैं किससे करूं
-आराधना मैं करता प्रभु
-तुझे ताकते हुए।`}],type:"worship",beat:"4/4",tempo:74},{slug:"pita-hamare-tu-jo-karta-swarg-dham-mein-vaas",number:84,title:"पिता हमारे",title_alt:"Pita hamare tu jo karta swarg dham mein vaas",language:"hindi",tags:["Our Father"],stanzas:[{label:"कोरस",text:`पिता हमारे तू जो करता स्वर्ग धाम में वास,
-पावन तेरा नाम सदा हो आवे तेरा राज,
-स्वर्ग समान हो तेरी इच्छा धरती तल पर पूरण,`},{label:"पद 1",text:`हर दिन का आहार हमारा कर दे आज प्रदान,
-और हमारे अपराधों को क्षमा दान कर नाथ,`},{label:"पद 2",text:`जो अपने अपराधी जन को हम करते हैं माफ़,
-न परीक्षा ले हमारी किन्तु बुराई से बचा.`},{label:"पद 3",text:`क्योंकि तेरा राज तेरा सामर्थ्य और तेरी महिमा,
-अनंत काल तक बनी रहती है
-बनी रहती है (2)`}],type:"worship",beat:"4/4",tempo:74},{slug:"prabhu-ko-ham-bhet-chadaye",number:85,title:"प्रभु को हम भेंट चढ़ायें",title_alt:"Prabhu ko ham bhet chadaye",language:"hindi",tags:["Offertory"],stanzas:[{label:"कोरस",text:`प्रभु को हम भेंट चढ़ायें,
-और गायें उसका नाम सदा (2)`},{label:"पद 1",text:`जो भी हमारा दान तुम्हारा,
-ग्रहण करो उपहार हमारा
-लाये चरणों में अर्पित करने, (2)
-स्वीकारो हे भाग्य विधाता`},{label:"पद 2",text:`मानव श्रम की रोटी जिनका,
-रूप यही है ईश्वर तन का,
-आये चरणों में भेंट चढ़ाने (2),
-अपनाओ हे मुक्ति विधाता ।`},{label:"पद 3",text:`दाख कटोरा मानव श्रम का,
-ले लो प्रभु जी लोहू हमारा
-आये पापी सकल चढ़ाने, (2)
-स्वीकारो हे सकल विधाता ।`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-ka-lahoo-saare-paapon-se",number:85,title:"यीशु का लहू सारे पापों से",title_alt:"Yeshu Ka Lahoo Saare Paapon Se",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`यीशु का लहू सारे पापों से
-शुद्ध करता है
-उद्धार देता, शांति देता
-अनंत जीवन भी देता`},{label:"Verse 1",text:`१. ऐसा कभी ना सोचो मन में
-बेकार का है ये जीवन
-खरीदा है हमें उसने अपने
-लहू का मोल देकर।`},{label:"Verse 2",text:`२. पवित्र स्थान में जाएंगे हम
-उसके लहू के ही द्वारा,
-द्वार हमारा यीशु प्यारा
-वही है भोर का तारा।`},{label:"Verse 3",text:`३. ना ही हम खुद के ना दुनिया के,
-हम तो हैं यीशु मसीह के,
-हम विश्वासी इस जहां के
-गवाह है उसके लहू के।`}],type:"worship",beat:"4/4",tempo:74},{slug:"kehta-hai-tumse-vo-ek-baat",number:86,title:"मेरे तुम",title_alt:"Kehta hai tumse vo ek baat",language:"hindi",tags:["Communion"],stanzas:[{label:"कोरस",text:`कहता है तुमसे, वो एक बात
-सुनो उसको, सुनो उसको`},{label:"पद 1",text:`हर पल तुम्हारे, रहता है साथ
-सुनो उसको, सुनो उसको`},{label:"पद 2",text:`वो ना देखे गुनाह, ना देखे खता
-बस करता है, तुमसे वो प्यार`},{label:"पद 3",text:`सारे जग में तुम्हे, ना मिले ऎसा मीत
-जिसने अपना जीवन दिया`},{label:"पद 4",text:`आँखों का तारा, वो कहे तुमको आज
-कहता है तुमसे, मेरे तुम`},{label:"पद 5",text:"मेरे तुम"}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-ne-mujhe-pyaar-kiya-hai",number:86,title:"यीशु ने मुझे प्यार किया है",title_alt:"Yeshu Ne Mujhe Pyaar Kiya Hai",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`यीशु ने मुझे प्यार किया है
-इसलिये मैं गाऊंगा सबको बताऊंगा
-एक ही राजा, यीशु मसीह...२
-हालेलुय्याह आमेन हालेलुय्याह..४`},{label:"Verse 1",text:"१. यीशु ने मुझे जीवन दिया है...४"},{label:"Verse 2",text:"२. यीशु ने मुझे चंगा किया है...४"},{label:"Verse 3",text:"३. यीशु ने मुझे मुक्ति दिया है...४"},{label:"Verse 4",text:"४. यीशु ने मुझे शांति दिया है...४"},{label:"Verse 5",text:"५. यीशु ने मुझे क्षमा दिया है...४"}],type:"worship",beat:"4/4",tempo:74},{slug:"parameshwar-mera-mahaan-hai",number:87,title:"परमेश्वर मेरा महान है",title_alt:"Parameshwar Mera Mahaan Hai",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`परमेश्वर मेरा महान है,
-उसके बिना जीवन अधूरा है..२
-जिंगूंगा, मरूंगा मैं उसके लिये,
-मैं सबकुछ करूंगा उसके लिये..२`},{label:"Verse 1",text:`१. राहों में जब आएगी कठिनाइयां,
-चलता जाऊंगा मैं पीछे ना हटूंगा..२`},{label:"Verse 2",text:`२. उसने है सिखाया जीना मुझे,
-पापों की डगर पर कभी ना चलना..२`},{label:"Verse 3",text:`३. जीवन का वो ही है उद्देश्य बना,
-गाऊंगा सदा मैं उसकी महिमा..२`}],type:"worship",beat:"4/4",tempo:74},{slug:"main-dhundta-raha-hun-tumko-hey-prabhu",number:87,title:"मैं ढूढ़ता रहा हूँ",title_alt:"Main dhundta raha hun tumko hey prabhu",language:"hindi",tags:["Entrance"],stanzas:[{label:"कोरस",text:`मैं ढूढता रहा हूं तुमको हे प्रभु-2
-पाऊँ कहा तुम्हें, पाऊँ कहा तुम्हें-2
-मैं ढूढता रहा हूं तुमको हे प्रभु`},{label:"पद 1",text:"आ… आ…. आ… आ…."},{label:"पद 2",text:`डुबा जीवन मेरा पाप के सागर में,
-शान्ति है नहीं मेरे जीवन में
-खो गया हूं प्रभु, साथ दे मेरा-2`},{label:"पद 3",text:`तुम हो जीवन साथी, तुम हो मेरा प्यार
-टूटे दिल में मेरी लगी है आस तेरा
-दर्शन दो प्रभु नव जीवन दे मुझे-2`}],type:"worship",beat:"4/4",tempo:74},{slug:"wahan-halleluya-hardam-hoega",number:88,title:"वहाँ हल्लेलुया",title_alt:"Wahan halleluya hardam hoega",language:"hindi",tags:["Recessional"],stanzas:[{label:"कोरस",text:`वहाँ हल्लेलूया हरदम होएगा
-वहाँ हल्लेलुया आनंद होएगा-2`},{label:"पद 1",text:`हल्लेलुया चिल्लाउँगा
-जब देखूगा येसू को
-वहाँ हल्लेलुया आनंद होएगा`},{label:"पद 2",text:`हाँ कहूंगा मैं हल्लेलूया कहूंगा में
-वहाँ हल्लेलुया आनंद होएगा
-हल्लेलूया चिल्लाउँगा जब देखूगा येसु को
-वहाँ हल्लेलुया आनंद होएगा।`},{label:"पद 3",text:`वहां खुशी की जगह होएगी
-वहां आनंद ही आनंद होएगा
-पौलुस होएगा, यूना होएगा,
-मारकुस होएगा, लूका होएगा
-अब्राहम भी वहाँ होएगा और हूँगा मैं
-वहाँ हल्लेलुया आनंद होएगा`},{label:"पद 4",text:`वहां पर मैं येसू से मिलूंगा
-पेत्रस पानी पर फिर चलेगा
-दाऊद होएगा, मूसा होएगा
-मत्ती होएगा, पेत्रस होएगा
-अब्राहम भी वहाँ होएगा और हूंगा मैं
-वहां हल्लेलुया आनंद होएगा`}],type:"worship",beat:"4/4",tempo:74},{slug:"tu-pyaar-ka-sagar-hai",number:90,title:"तू प्यार का सागर है",title_alt:"Tu Pyaar Ka Sagar Hai",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`तू प्यार का सागर है
-सागर दया का तू है,
-तेरे प्यार के सागर में,
-हम तैरना चाहते हैं।
-तेरे प्यार के सागर में हम डूबना चाहते हैं`},{label:"Verse 2",text:`१. गहराई मिले सागर की
-ऊँचाई मिले आसमाँ की।
-पर कोई नाप न पायेगा,
-गहराई तेरे प्यार की।
-तू प्यार का सागर...`},{label:"Verse 3",text:`२. परमेश्वर होने पर भी तू,
-मानव रूप धारण किया।
-प्रभु तेरे इसी प्यार ने,
-हमको है दीवाना बनाया।
-तू प्यार का सागर...`}],type:"worship",beat:"4/4",tempo:74},{slug:"mahima-mahima-mahima-ho",number:90,title:"स्वर्ग में महिमा",title_alt:"Mahima mahima mahima ho",language:"hindi",tags:["Gloria"],stanzas:[{label:"कोरस",text:"महिमा महिमा महिमा हो (4)"},{label:"पद 1",text:`स्वर्ग में महिमा परमेश्वर की हो
-भू पर शांति सुजन को। (3)`},{label:"पद 2",text:`हम तेरी प्रशंसा करते हैं,
-धन्य तुझे हम कहते हैं। (2)
-तेरी आराधना करते हैं,
-तेरी महिमा गाते हैं।`},{label:"पद 3",text:`स्वर्ग में महिमा परमेश्वर की हो
-भू पर शांति सुजन को। (2)`},{label:"पद 4",text:`हे सर्वशक्तिमान् पिता परमेश्वर,
-स्वर्गलोक के स्वामी है। (2)
-इकलौते पुत्र येसु खीस्त है,
-तेरा गुणगान करते हैं।`},{label:"पद 5",text:`स्वर्ग में महिमा परमेश्वर की हो
-भू पर शांति सुजन को। (2)`},{label:"पद 6",text:`जगत् का पाप तू हर लेता है,
-हम पर दया तू कर दे। (2)
-पिता के दायें विराजमान है,
-हमारी विनती सुन ले।`},{label:"पद 7",text:`स्वर्ग में महिमा परमेश्वर की हो
-भू पर शांति सुजन को। (2)`},{label:"पद 8",text:`तू ही पावन तू ही प्रभु है
-तू ही पवित्र आत्मा के संग। (2)
-पिता की महिमा सर्वोपरि है,
-तेरी महिमा होती है।`},{label:"पद 9",text:`स्वर्ग में महिमा परमेश्वर की हो
-भू पर शांति सुजन को। (2)`},{label:"पद 10",text:"महिमा महिमा महिमा हो (2)"}],type:"worship",beat:"4/4",tempo:74},{slug:"bhusiyon-yehova-ki-stuti-karo",number:91,title:"भूसियों यहोवा की स्तुति करो",title_alt:"Bhusiyon Yehova Ki Stuti Karo",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`भूसियों यहोवा की स्तुति करो
-को: वह कितना अच्छा है,
-उसकी करुणा सदा है,
-वो कैसा भला है,
-उसकी करुणा सदा है।
-भूसियों यहोवा की स्तुति करो (२)`},{label:"Verse 2",text:`२. यहोवा सारे सृष्टि का कर्ता,
-हमारा वो सिरजनहार,
-वो हमारा पिता,
-हम उसकी संतान हैं।
-उसका धन्यवाद करो।
-वो कितना अच्छा.....`},{label:"Verse 3",text:`३. यहोवा पवित्र परमेश्वर है,
-हमारा वो तारणहार है,
-वो अच्छा चरवाह,
-हम उसकी भेड़े हैं।
-उसका धन्यवाद करो।
-वो कितना अच्छा.....`}],type:"worship",beat:"4/4",tempo:74},{slug:"sweekar-lo-bhagwan",number:91,title:"स्वीकार लो भगवन्",title_alt:"Sweekar lo bhagwan",language:"hindi",tags:["Offertory"],stanzas:[{label:"कोरस",text:`स्वीकार लो भगवन्,
-उपहार हे दिल की ममता`},{label:"पद 1",text:`तव प्रेम की बहे सरिता,
-सदा मिले हमें प्रभुता ये दाखरस रोटी वर लो,
-विनती प्रभु सुन लो।`},{label:"पद 2",text:"स्वीकार लो भगवन्"},{label:"पद 3",text:`तुम हो पिता प्रभु करतार,
-हमें करो मिटे विपदा
-ये कामना पूरी कर लो,
-विनती प्रभु सुन लो।`}],type:"worship",beat:"4/4",tempo:74},{slug:"man-mandir-mein-yeshu-aaya",number:92,title:"मन मंदिर में यीशु आया",title_alt:"Man Mandir Mein Yeshu Aaya",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`मन मंदिर में यीशु आया
-दिल मेरा खुशियों से भर गया।।(२)
-हालेलूयाह, हालेलूयाह,
-हालेलूयाह, हालेलूयाह, हालेलूयाह,`},{label:"Verse 2",text:`१. जब से आया यीशु दिल में मेरे
-दूर हो गए गम दिल से मेरे...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"hey-eshwar-ke-balit-memane-tum-har-lete",number:92,title:"हे ईश्वर के बलित मेमने",title_alt:"Hey Eshwar ke balit memane tum har lete",language:"hindi",tags:["Lamb of God"],stanzas:[{label:"कोरस",text:`हे ईश्वर के बलित मेमने,तुम हर लेते,
-पाप जगत के, हम पर दया करो । 2
-हे ईश्वर के बलित मेमने,तुम हर लेते,
-पाप जगत के, शांति प्रदान करो ।`}],type:"worship",beat:"4/4",tempo:74},{slug:"hey-vishwa-ke-udharkarta-hamara-udhaar-kar",number:93,title:"हे विश्व के उद्धारकर्ता",title_alt:"Hey vishwa ke udharkarta hamara udhaar kar",language:"hindi",tags:["Proclamation"],stanzas:[{label:"कोरस",text:`हे विश्व के उद्धारकर्ता, हमारा उद्धार कर
-तूने अपने क्रूस और पुनरुत्थान द्वारा,
-हमें मुक्त किए`}],type:"worship",beat:"4/4",tempo:74},{slug:"yehova-nissi",number:94,title:"यहोवा निस्सी",title_alt:"Yehova Nissi",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`यहोवा निस्सी... धन्य तेरा नाम
-धन्य, धन्य, धन्य तेरा नाम`},{label:"Verse 2",text:`१. शत्रुओं की सेना को हराता तू
-जय का झंडा है हमारा तू...२
-धन्य, धन्य, धन्य तेरा नाम।`},{label:"Verse 3",text:`२. शैतान के सिर को कुचल कर तू
-मृत्यु पर जयवंत हुआ है तू...२
-धन्य, धन्य, धन्य तेरा नाम।`},{label:"Verse 4",text:`३. जय के उत्सव में ले चलता तू
-सुन्स वचन की हमसे है फैलाता तू...२
-धन्य, धन्य, धन्य तेरा नाम।`}],type:"worship",beat:"4/4",tempo:74},{slug:"hosanna-hosanna-prabhuvar-teri",number:94,title:"होसन्ना होसन्ना",title_alt:"Hosanna Hosanna prabhuvar teri",language:"hindi",tags:["Hosanna"],stanzas:[{label:"कोरस",text:`होसन्ना होसन्ना प्रभुवर तेरी
-तेरी जय जयकार हो,
-नूतन स्वर में तुझको भजे पावन ज्योति तेरी जले,
-शतपथ का तू अन्तर्यामी तेरी जय जयकार हो`}],type:"worship",beat:"4/4",tempo:74},{slug:"anand-anand-anand-hai",number:95,title:"आनंद आनंद आनंद है",title_alt:"Anand Anand Anand Hai",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`१. आनंद आनंद आनंद है (२)
-अब्दी मोहब्बत से हमें प्रेम किया
-अपना बेटा हमें बना लिया
-यह हमारी आशीष है
-हालेलूयाह सदा गाएंगे, (२)
-हम प्रभु यीशु के लिए`},{label:"Verse 2",text:`२. आनंद आनंद आनंद है (२)
-आनंद के तेल से मस्सा किया है
-पवित्र स्थान में दाखिल किया
-यह हमारा सौभाग्य हुआ
-हालेलूयाह सदा गाएंगे, (२)
-हम प्रभु यीशु के लिए`},{label:"Verse 3",text:`३. आनंद आनंद आनंद है
-प्रभु की स्तुति करना आनंद है`}],type:"praise",beat:"4/4",tempo:104},{slug:"tu-pavitra-pavitra-hai",number:95,title:"तू पवित्र पवित्र है",title_alt:"Tu Pavitra Pavitra Hai",language:"hindi",tags:["Worship"],stanzas:[{label:"कोरस",text:`तू पवित्र पवित्र है – 2
-तू सच्चा है प्रभु, तू झूठा नहीं है, तू पवित्र पवित्र है`},{label:"पद 1",text:`तू सामर्थी भय योग्य है, तू स्वर्गों के स्वर्ग में है – 2
-तू सच्चा है प्रभु, तू झूठा नहीं है, तू पवित्र पवित्र है`},{label:"पद 2",text:`तू करुणा निधान है, प्रभु तू अत्यंत महान है प्रभु – 2
-तू सच्चा है प्रभु, तू झूठा नहीं है, तू पवित्र पवित्र है`},{label:"पद 3",text:`तू अधर्मों को क्षमा करता है, सारे रोगों को चंगा करता है – 2
-तू सच्चा है प्रभु, तू झूठा नहीं है, तू पवित्र पवित्र है`}],type:"worship",beat:"4/4",tempo:74},{slug:"apna-bojh-prabhu-par-daal",number:96,title:"अपना बोझ प्रभु पर डाल",title_alt:"Apna Bojh Prabhu Par Daal",language:"hindi",tags:["Encouragement"],stanzas:[{label:"कोरस",text:`अपना बोझ प्रभु पर डाल, कभी न घबराना,
-तेरा आदर मान करेगा, आश्चर्य कर्म करेगा – 2`},{label:"पद 1",text:"भक्तों को वह भूलेगा नहीं, हमेशा उनको संभाला करेगा – 2"},{label:"पद 2",text:"तारणहारा हमारी शरण, साये में लेकर चलता है – 2"},{label:"पद 3",text:"माता पिता यदि छोड़ भी दे, वो तो गले से लगाएगा – 2"},{label:"पद 4",text:"प्रभु हमारे साथ रहे, सामना कौन कर पाएगा – 2"},{label:"पद 5",text:"पूरा समर्पण उसको करें, वो ही सब कुछ देखेगा – 2"},{label:"पद 6",text:"बोझ प्रभु पर डाल दिया है, अब क्यों घबराना – 2"}],type:"worship",beat:"4/4",tempo:74},{slug:"chhodo-chhodo-ye-tera-naam",number:96,title:"छोड़ो छोड़ो ये तेरा नाम",title_alt:"Chhodo Chhodo Ye Tera Naam",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`छोड़ो छोड़ो ये तेरा नाम
-उसने तो मुझे मुक्ति दी है
-यीशु ने तेरा नाम... (२)
-हम प्रभु यीशु के लिए`},{label:"Verse 2",text:`२. उसने तो हमें अपनी मुक्ति दी है
-यह हमारा सौभाग्य हुआ
-हालेलूयाह सदा गाएंगे, (२)
-हम प्रभु यीशु के लिए`},{label:"Verse 3",text:`३. उसने तो हमें अपनी मुक्ति दी है
-यह हमारा सौभाग्य हुआ
-हालेलूयाह सदा गाएंगे, (२)
-हम प्रभु यीशु के लिए`}],type:"worship",beat:"4/4",tempo:74},{slug:"phir-se-wo-aag-barasa-de",number:97,title:"फिर से वो आग बरसा दे",title_alt:"Phir Se Wo Aag Barasa De",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`फिर से वो आग बरसा दे
-फिर से उफान आने दे
-फिर से महिमा देश में
-आ जाए यहोवा (२)`},{label:"Verse 1",text:`१. तेरी महिमा देश में
-फिर से उफान आने दे
-पवित्र आत्मा की सामर्थ्य से
-फिर से आग बरसा दे`},{label:"Verse 2",text:`२. टूटे हुए दिल जुड़ जाएं
-भटके हुए जन मुड़ आएं
-यीशु के नाम की महिमा हो
-फिर से आग बरसा दे`}],type:"worship",beat:"4/4",tempo:74},{slug:"he-mere-man-yahova-ko",number:97,title:"हे मेरे मन यहोवा को",title_alt:"He Mere Man Yahova Ko",language:"hindi",tags:["Praise"],stanzas:[{label:"कोरस",text:`हे मेरे मन यहोवा को, धन्य धन्य कहो
-हे मेरे मन यहोवा को, धन्य कहते रहो
-जो कुछ भी मुझ में है, उसको धन्य कहें
-जो कुछ भी मुझ में है, धन्य कहता रहे`},{label:"पद 1",text:`वही तेरे अधर्मों को क्षमा करता हैं, तेरे सब रोगों को चंगा करता हैं,
-हाल्लेलुय्याह हाल्लेलुय्याह – 2
-वही तोह तेरे प्राण को, नाश होने से बचाता हैं`},{label:"पद 2",text:`सत्यानाश के गड्ढे से मुझे निकाला, दल दल के कीच से मुझे उभारा,
-हाल्लेलुय्याह हाल्लेलुय्याह – 2
-मेरे पैरो को दृढ़ किया हैं, चट्टान पर खड़ा किया हैं`},{label:"पद 3",text:`हे यहोवा के दूतों उसको धन्य कहो, हे सारी सृष्टि उसको धन्य कहो,
-धन्य हो धन्य हो – 2
-उसके राज्य के सब स्थानों में, यहोवा को धन्य कहो`}],type:"praise",beat:"4/4",tempo:104},{slug:"mere-jeevan-mein-yeshu-tera-naam",number:98,title:"मेरे जीवन में यीशु तेरा नाम",title_alt:"Mere Jeevan Mein Yeshu Tera Naam",language:"hindi",tags:["Worship"],stanzas:[{label:"कोरस",text:`मेरे जीवन में यीशु तेरा नाम, जलाल पाता रहे – 2
-मेरा उठना बैठना और – 2 चलना तुझे भाता रहे`},{label:"पद 1",text:`बेमिशल है तू मैं मिशल बनूँ, तू कामिल है मैं भी कमाल बनूँ – 2
-बेमिशल है तू मैं मिशल बनूँ – 2 तू कामिल है मैं भी कमाल बनूँ
-दुनिया का नूर है यीशु, मेरी रहें सजाता रहे – 2`},{label:"पद 2",text:`मेरे सोचों में तू मेरे ख्वाबों में तू, मेरे सारे सवालों जवाबों में तू – 2
-मेरे सोचों में तू मेरे ख्वाबों में तू – 2 मेरे सारे सवालों जवाबों में तू
-जब भी तुझे पुकारूँ, तेरा रूह मुझपे आता रहे – 2`},{label:"पद 3",text:`ज़िंदगी भर तेरे गीत गाता रहूँ, तू सुनता रहे मैं सुनता रहूँ – 2
-ज़िंदगी भर तेरे गीत गाता रहूँ – 2 तू सुनता रहे मैं सुनता रहूँ
-जब गीत तेरे गाउँ, तेरा रूह मुझमें गाता रहे – 2`}],type:"worship",beat:"4/4",tempo:74},{slug:"rajaon-ka-raja-hai",number:98,title:"राजाओं का राजा है",title_alt:"Rajaon Ka Raja Hai",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`राजाओं का राजा है,
-प्रभुओं का प्रभु है... (२)
-प्रभु यीशु मसीह... (४)`},{label:"Verse 2",text:`१. यहूदा का शेर है,
-सारे जगत के लिए,
-मुर्दों में से जी उठा...२`},{label:"Verse 3",text:`२. उसने वचन दिया,
-तुम पर पवित्र आत्मा
-आने वाला है...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"jay-jay-yeshu-jay-jay-yeshu",number:99,title:"जय जय यीशु, जय जय यीशु",title_alt:"Jay Jay Yeshu, Jay Jay Yeshu",language:"hindi",tags:["Praise"],stanzas:[{label:"कोरस",text:`जय जय यीशु, जय जय यीशु, जय प्रभु जय जयकार
-सिरजनहार, पालनहार, तारणहार`},{label:"पद 1",text:`दीनो का दुःख हरने वाला, हृदय में शांति भरने वाला
-जय जनरंजन, जय दुखभंजन`},{label:"पद 2",text:`नर-तन वार लियो अवतार, दे निज प्राण कियो छुटकारा
-जय जगराता, जय सुखदाता`},{label:"पद 3",text:`मृत्यु के बंधन भंजनहारा, अक्षय जीवन देवनहारा
-रोगिन, शोकीन एक आधारा`},{label:"पद 4",text:`जय जयकार करो सब प्यारो, नर-नारी एक संग पुकारो
-नारा मारो, जय ललकारो`}],type:"praise",beat:"4/4",tempo:104},{slug:"saare-jahaan-ka-raja-hai",number:99,title:"सारे जहान का राजा है",title_alt:"Saare Jahaan Ka Raja Hai",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`सारे जहान का राजा है,
-जिसने दुनिया बनाई...
-जिसने पापों से छुड़ाया,
-यीशु का नाम लेता है,
-वो जीवन पाता है...`},{label:"Verse 2",text:`१. यीशु का नाम लेता है,
-वो जीवन पाता है,
-तेरे राहों पर चलकर,
-सच्चा नाम ये पाता है...२`},{label:"Verse 3",text:`२. तेरी रूह से...२
-खुदा की रूह से,
-मसीह के रूह से,
-मेरा जीवन संवर गया,
-येशु नाम......`}],type:"worship",beat:"4/4",tempo:74},{slug:"pyar-milta-hai",number:100,title:"प्यार मिलता है",title_alt:"Pyar Milta Hai",language:"hindi",tags:["Gospel"],stanzas:[{label:"कोरस",text:`प्यार मिलता है, उद्धार मिलता है
-बैचैन दिल को करार मिलता है
-येशु के नाम से ....`},{label:"पद 1",text:`अंधो को दृष्टि मिलती है, लाचार शांति पाते
-बंधन में जो जकड़े है, वो मुक्ति पाते`},{label:"पद 2",text:`हर गम की दावा येशु, येशु ही मसीहा है
-आओ तुम चले आओ, जीवन यहाँ है`}],type:"worship",beat:"4/4",tempo:74},{slug:"sab-se-bada-sagar",number:100,title:"सब से बड़ा सागर",title_alt:"Sab Se Bada Sagar",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`सब से बड़ा सागर है,
-तेरे प्यार का सागर,
-हम तैरना चाहते हैं,
-तेरे प्यार के सागर में,
-हम डूबना चाहते हैं`},{label:"Verse 2",text:`१. हम सब पापी हैं... (२)
-प्रभु यीशु ने... (२)
-अपना खून बहाया... (२)`},{label:"Verse 3",text:`२. मुक्ति दी है हमें... (२)
-पापों से छुड़ाया... (२)
-आनंद से भर दिया... (२)`}],type:"worship",beat:"4/4",tempo:74},{slug:"prabhu-ka-aanand-hai",number:101,title:"प्रभु का आनंद है",title_alt:"Prabhu Ka Aanand Hai",language:"hindi",tags:["Joy"],stanzas:[{label:"कोरस",text:`प्रभु का आनंद है मेरी ताकत, संसार में यीशु है मेरी ताकत (2)
-वो मेरा आनंद हर एक दिन में, वो मेरा सहारा है (2)`},{label:"पद 1",text:`जब मैंने सोचा मैं अकेला हूँ, तब प्रभु यीशु ने मुझ से कहा (2)
-संसार के अंत तक साथ रहने वाला, मैं तेरे साथ हूँ (2)`},{label:"पद 2",text:`जब मैंने सोचा मैं निर्बल हूँ, तब प्रभु यीशु ने मुझ से कहा (2)
-शक्ति देने वाला सामर्थ देने वाला, मैं तेरे साथ हूँ (2)`},{label:"पद 3",text:`जब मैंने सोचा आसंभव है, तब प्रभु यीशु ने मुझ से कहा (2)
-आसंभव के संभव करने वाला यीशु, मैं तेरे साथ हूँ (2)`}],type:"praise",beat:"4/4",tempo:104},{slug:"wo-sab-se-bada-sagar",number:101,title:"वो सब से बड़ा सागर",title_alt:"Wo Sab Se Bada Sagar",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`वो सब से बड़ा सागर है,
-जिसने हमें बचाया,
-यीशु ने तेरे पापों को,
-अपने खून से धोया...२`},{label:"Verse 2",text:`१. यीशु ने तेरे रोगों को,
-अपने बल से मिटाया,
-तेरे जीवन में नया जीवन,
-यीशु ने ही दिया...२`},{label:"Verse 3",text:`२. यीशु ने तेरे रोगों को,
-अपने बल से मिटाया,
-तेरे जीवन में नया जीवन,
-यीशु ने ही दिया...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"aaye-hain-hum-tere-charnon-mein",number:102,title:"आये हैं हम, तेरे चरणों में",title_alt:"Aaye Hain Hum, Tere Charnon Mein",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`आये हैं हम, तेरे चरणों में,
-लेकर हम स्तुति,
-हालेलूयाह... (४)
-देखो हम यीशु, तेरे चरणों में,
-हालेलूयाह... (४)`},{label:"Verse 2",text:`१. हमको तू अपना बना,
-अपने वचनों से,
-हालेलूयाह... (४)`},{label:"Verse 3",text:`२. पवित्र आत्मा से,
-हमें भर दे तू,
-हालेलूयाह... (४)`}],type:"worship",beat:"4/4",tempo:74},{slug:"raja-yeshu-aaya",number:102,title:"राजा यीशु आया",title_alt:"Raja Yeshu Aaya",language:"hindi",tags:["Victory"],stanzas:[{label:"कोरस",text:`राजा यीशु आया, राजा यीशु आया
-शैतान को जीतने के लिये राजा यीशु आया`},{label:"पद 1",text:`दुनियाँ में तो पाप और दु:ख होते है बहुतेरे
-पूरी शान्ति देने के लिये राजा यीशु आया
-राजाओं का राजा प्रभुओं का प्रभु जै जै बोलो सारे लोगो
-राजा यीशु आया`},{label:"पद 2",text:`हुआ मैं आनन्दित पाकर पाप की माफ़ी
-दिल को साफ़ करने के लिये राजा यीशु आया
-क्रूस पर देके अपनी जान आप को किया बलिदान
-सारे जग का त्राता होके राजा यीशु आया`},{label:"पद 3",text:`कबर का वह तोड़ कर बंध नाश किया
-मौत का डंक क्षमा मुक्ति जीवन देने राजा यीशु आया
-उस पर करता मैं विश्वास पूरी करता मेरी आस
-हल्लिलुय्याह मेरे दिल में राजा यीशु आया`}],type:"worship",beat:"4/4",tempo:74},{slug:"jai-jai-naam",number:103,title:"जय जय नाम",title_alt:"Jai Jai Naam",language:"hindi",tags:["Praise"],stanzas:[{label:"कोरस",text:"जय-जय नाम येशु नाम गाऊँ में सुबह-ओ-शाम (4)"},{label:"पद 1",text:`बलहीन का सहारा, पापियों का दोस्त है तू
-येशु तू है कितना प्यारा, शब्द ना, कैसे बताऊँ?`},{label:"पद 2",text:`तुझमें बना रहूँ तो अमृत फल लाऊँ
-मैं गाऊँ तेरी जय सदा तो तुझसा बन जाऊँ मैं`},{label:"पद 3",text:`तू ही है जो मुझको बुलाता, देता है जीवन जल
-तेरी शक्ति पाऊँ सदा और योजना है सफला`}],type:"praise",beat:"4/4",tempo:104},{slug:"pavitra-aatma-aa",number:103,title:"पवित्र आत्मा आ",title_alt:"Pavitra Aatma Aa",language:"hindi",tags:["Adoration","Holy Spirit"],stanzas:[{label:"Chorus",text:`पवित्र आत्मा आ, पवित्र आत्मा आ
-हम पर छा जा, हम पर छा जा (२)`},{label:"Verse 1",text:`१. अपने सामर्थ्य से भर दे हमें
-अपनी आग से छू ले हमें
-नया जीवन दे दे हमें
-पवित्र आत्मा आ`},{label:"Verse 2",text:`२. ज्ञान और बुद्धि का आत्मा
-शांति और आनंद का आत्मा
-अपने प्रेम से भर दे हमें
-पवित्र आत्मा आ`}],type:"worship",beat:"4/4",tempo:74},{slug:"naare-lagao-aur-gao-re",number:104,title:"नारे लगाओ और गाओ रे",title_alt:"Naare Lagao Aur Gao Re",language:"hindi",tags:["Praise"],stanzas:[{label:"कोरस",text:`नारे लगाओ और गाओ रे, झण्डा मसीह का फैलाओ रे
-हालेलुय्याह, हालेलुय्याह (2)`},{label:"पद 1",text:`जीवन से उलझा हुआ राही, यीशु के पास तुम आओ रे
-गम की यह राहें सब छोड़ो, जिन्दगी में अब कुछ जोड़ो रे…`},{label:"पद 2",text:`लम्बा सफर जिन्दगी का, सच्चाई कोई न जाने रे
-आँखें ऊपर को लगाओ, यीशु के पास तुम आओ रे…`},{label:"पद 3",text:`यीशु कुर्बान हुआ है, पापों का अन्त हुआ है
-खुशियाँ वो बाँट रहा है, प्रेम की धारा वही है…`}],type:"praise",beat:"4/4",tempo:104},{slug:"param-pita-aaya",number:104,title:"परम पिता आया",title_alt:"Param Pita Aaya",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`परम पिता आया,
-यीशु को दिया,
-हमारे पापों के लिए,
-हमें बचाने को,
-अपना खून बहाया,
-यीशु ने हमारे लिए...`},{label:"Verse 2",text:`१. यीशु ने हमारे लिए,
-अपना खून बहाया,
-हमें बचाने को,
-अपना खून बहाया...२`},{label:"Verse 3",text:`२. यीशु ने हमारे लिए,
-अपना खून बहाया,
-हमें बचाने को,
-अपना खून बहाया...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-tu-hai-mahaan",number:105,title:"यीशु तू है महान",title_alt:"Yeshu Tu Hai Mahaan",language:"hindi",tags:["Worship"],stanzas:[{label:"कोरस",text:`येशु तू है महान, तेरी जय, तेरी जय, तेरी जय!
-तू जो आया मेरे जीवन में, लेके खुशियाँ, लेके प्यार।`},{label:"पद 1",text:`मैं पापों में डूबा, ऐसा डूबा, ऐसा डूबा,
-आँखों में थे आँसू, सबने छोड़ा, सबने छोड़ा।
-पर तू आया मेरे जीवन में, लेके खुशियाँ, लेके प्यार।`},{label:"पद 2",text:`मैं दुनिया की चीजों में तुम्हें ढूंढता था,
-नफरत और मतलब की महफ़िल में मैं गुमता था।
-पर तू आया मेरे जीवन में, लेके खुशियाँ, लेके प्यार।`}],type:"worship",beat:"4/4",tempo:74},{slug:"taareef-taareef-taareef",number:106,title:"तारीफ़, तारीफ़, तारीफ़",title_alt:"Taareef, Taareef, Taareef",language:"hindi",tags:["Praise"],stanzas:[{label:"कोरस",text:`तारीफ़, तारीफ़ तारीफ़, मिलके करो सारे तारीफ़ (2)
-यीशु की जो है प्यारा मुन्जी (2)`},{label:"पद 1",text:`उसने हम सब को है बनाया, जो कुछ दिखता उसने रचाया (2)
-सारे जहाँ का वह शाहनशाह (2)`},{label:"पद 2",text:`पापों से वह पाक है करता, सारी खताये माफ है करता (2)
-सारे रोगों को करता चंगा (2)`},{label:"पद 3",text:`उसकी मौत से जिन्दगी है पायी, आशा नयी एक उसने दिलायी (2)
-बैठेंगे तख्त पर फतहमन्द हो (2)`},{label:"पद 4",text:`हम्द-ओ-सन्ना हम मिलके करेंगे, सदा वहां पर उसको ताकेंगे (2)
-गीत नया वहाँ गायेंगे (2)`}],type:"praise",beat:"4/4",tempo:104},{slug:"aadi-aur-ant-tu-hi-hai",number:6,title:"आदि और अंत तू ही है",title_alt:"Aadi Aur Ant Tu Hi Hai",language:"hindi",tags:["Worship"],stanzas:[{label:"कोरस",text:`आदि और अंत तू ही है, अल्फा और ओमेगा तू ही है
-दूतों की स्तुति भी तू ही है, बुद्धि और सब ज्ञान तू ही है`},{label:"पद 1",text:`यीशु तू महान है, यीशु तू अच्छा है
-यीशु तू जिन्दा है, यीशु तू धन्य है`},{label:"पद 2",text:"राजाओं का राजा तू ही है, प्रभुओं का प्रभु तू ही है"},{label:"पद 3",text:`जीवन भरा पापों से मेरा, जग अन्धेरा और अशुद्ध सारा
-मेरे पापों से बचाने को, मेरे लिए जीवन दिया है`},{label:"पद 4",text:`सारे गुनाहगारों के लिए, अपना खून बहाया यीशु ने
-खाई कोड़ों की मार भी दी, सलीब पर उसने अपनी जान`}],type:"worship",beat:"4/4",tempo:74},{slug:"sada-mai-stuti-karunga",number:108,title:"सदा मैं स्तुति करूंगा",title_alt:"Sada Mai Stuti Karunga",language:"hindi",tags:["Praise"],stanzas:[{label:"कोरस",text:`सदा मैं स्तुति करूंगा हालेलुईया
-सदा मैं सेवा करूंगा, मुझे बचाया यीशु ने
-सदा मै स्तुति करूंगा – 2`},{label:"पद 1",text:`मुझे बचाने आया जब मै गुनाहों में था – 2
-स्वर्ग को छोड़ कर जगत मे आया मुझे बचाने को – 2`},{label:"पद 2",text:`जब मै निराशा मे था तूने मुझे आशा दी – 2
-जगत मे आया जीवन को दिया पवित्र प्रेमी यीशु – 2`},{label:"पद 3",text:`प्रेमी प्रभु यीशु बचाया तूने मुझे – 2
-देता हूं मैं सारा जीवन संपूर्ण आनंद से – 2`},{label:"पद 4",text:`अनादि परमेश्वर सच्चाई और जीवन है तू – 2
-स्तुति प्रशंसा करता रहूंगा तेरे आने समय तक – 2`}],type:"praise",beat:"4/4",tempo:104},{slug:"jay-jay-prabhu-yeshu-ki",number:109,title:"जय जय प्रभु यीशु की",title_alt:"Jay Jay Prabhu Yeshu Ki",language:"hindi",tags:["Praise"],stanzas:[{label:"कोरस",text:`जय जय प्रभु यीशु की -2
-हमको बचाने आया जगत में उसकी स्तुति करो
-गाओ खुशी के गीत – हाल्लेलूय्याह हे धरती हे आकाश – होसन्ना
-आया मसीह जग में पापों का करने नाश`},{label:"पद 1",text:`खून की धारा, बहती सूली से जिसमें धुले सब पाप
-धो लो अब तुम अपने हृदय को उसमें रहे ना दाग`},{label:"पद 2",text:`ग्रहण करो तुम आज प्रभु को प्रेम की बहती धार
-उसको बना लो खेवनहारा नाव लगा लो पार`},{label:"पद 3",text:`वापस आता मेरा प्रभु जी ले जायेगा साथ
-आशा मेरी अब तो यही है चलो तुम मेरे साथ`}],type:"praise",beat:"4/4",tempo:104},{slug:"tere-aasan-ke-paas-aaun",number:117,title:"तेरे आसन के पास आऊं",title_alt:"Tere Aasan Ke Paas Aaun",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`तेरे आसन के पास आऊं,
-कृपा मिलती है
-तेरे चरणों के पास बैठूं
-शांति मिलती है
-तेरे मंदिर में मैं आऊं,
-तू मिलता है।`},{label:"Verse 2",text:`१. तू ही है यहोवा शालोम
-प्रभु मेरी शांति
-जो मेरे मन में आई
-मसीहा को जानकर
-तू ही है यहोवा शामा
-प्रभु मेरे करीब है
-वादा किया है मुझसे तेरे
-साथ रहूं सदा`},{label:"Verse 3",text:`२. तेरे हृदय को छूऊं, प्यार मिलता है
-तेरे हाथों को मैं थामूं
-सहारा मिलता है
-तेरे आंखों में मैं देखूं
-तृप्त होता हूं मैं
-तू ही है यहोवा रोही प्रभु मेरा चरवाहा
-हरी चराई में चराता
-सुखदाई जल पिलाता
-तू ही है यहोवा यिरे
-प्रभु जो मुझे देता है
-जरूरत को पूर्ण करता
-महिमा के धन से`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-tera-naam-hai",number:118,title:"यीशु तेरा नाम है",title_alt:"Yeshu Tera Naam Hai",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`यीशु तेरा नाम है कितना सुन्दर
-यीशु तेरा नाम है कितना पावन...२`},{label:"Verse 2",text:`१. तुझमें मिली है हमको क्षमा
-तुझमें मिला है नया जीवन...२`},{label:"Verse 3",text:`२. तुझमें मिली है हमको कृपा
-तुझमें हुए है हम पावन...२`},{label:"Verse 4",text:`३. तुझमें मिली है हमको शिफा
-तुझमें मिला है अनंत जीवन...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"mastake-unch-kara",number:119,title:"मस्तकें ऊंच करा",title_alt:"Mastake Unch Kara",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`मस्तकें उंच करा, येणाया राजाला
-लवून त्याचे नमन करा हो,
-स्तुति गा
-त्याच्या गौरवाला
-तुमची स्तवने असो
-शुद्ध पवित्र गौरव देता
-राजाच्या राजाला`}],type:"worship",beat:"4/4",tempo:74},{slug:"mi-vechale-phulanna",number:120,title:"मी वेचले फुलांना",title_alt:"Mi Vechale Phulanna",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`मी वेचले फुलांना, काटे ख्रिस्ता मिळाले
-जखमी करुनी तुजला, मला सर्व रे मिळाले`},{label:"Verse 2",text:`१. हाती पायी खेळ तुझ्या, रुतले खिळे देहारी
-मी रोगमुक्त झालो, फटके तुला मिळाले
-जखमी करुनी तुजला...`},{label:"Verse 3",text:`२. पाहूनी तुजला, धिक्कारिले जगाने
-पावे कृपा मी आता, श्राप तुला मिळाले
-जखमी करुनी तुजला...`}],type:"worship",beat:"4/4",tempo:74},{slug:"anande-vajava-tali",number:121,title:"आनंदे वाजवा टाळी",title_alt:"Anande Vajava Tali",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`आनंदे वाजवा टाळी,
-चला जाऊ ख्रिस्ताजवळी ...३
-आनंदे वाजवा टाळी,`}],type:"praise",beat:"4/4",tempo:104},{slug:"haatane-tali",number:122,title:"हाताने टाळी",title_alt:"Haatane Tali",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`हाताने टाळी मुखाने जय
-प्रेमाने बोला ख्रिस्ता जय ...३`},{label:"Verse 2",text:"१. जोराने बोला ख्रिस्ता जय ...३"},{label:"Verse 3",text:"२. मोठ्याने बोला ख्रिस्ता जय ...३"}],type:"worship",beat:"4/4",tempo:74},{slug:"vyaho-tumhi-tali",number:123,title:"व्याहो तुम्ही टाळी",title_alt:"Vyaho Tumhi Tali",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`व्याहो तुम्ही टाळी, व्याहो टाळी
-टाळी कशाची देवबापाची
-करील तो होळी सर्व पापांची`},{label:"Verse 2",text:`१. टाळी कशाची येशु ख्रिस्ताची
-करील तो होळी सर्व पापांची`},{label:"Verse 3",text:`२. टाळी कशाची पवित्र आत्म्याची
-करील तो होळी सर्व पापांची`}],type:"worship",beat:"4/4",tempo:74},{slug:"khristi-bandhavancha-mela",number:124,title:"ख्रिस्ती बांधवांचा मेळा",title_alt:"Khristi Bandhavancha Mela",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`ख्रिस्ती बांधवांचा मेळा ...२
-ख्रिस्ती बांधवांचा गोड प्रीती मेळा
-भक्तिभाव भोळा
-पाही देवा, पाही देवा रे
-ख्रिस्ती बांधवांचा मेळा`},{label:"Verse 2",text:`१. आवडे तुला रे नाद गायनाचा ...२
-ताळ मृदुगाचा नाही वीट,
-नाही वीट
-ख्रिस्ती बांधवांचा मेळा`},{label:"Verse 3",text:`२. नाचले तुझे ते थोर साधू संत ...२
-तुझ्या कीर्तनात ओढी आम्हा
-ओढी आम्हा
-ख्रिस्ती बांधवांचा मेळा`},{label:"Verse 4",text:`३. रंगू दे आम्हालाए
-रिंगणात गोल ...२
-गाऊ दे अमोल
-प्रेमगीत, प्रेमगीत
-ख्रिस्ती बांधवांचा मेळा`},{label:"Verse 5",text:`४. गोड गाणी गाता
-होऊ पायी लीन
-गाऊ या मिळून
-देवबापा, देवबापा,
-ख्रिस्ती बांधवांचा मेळा`}],type:"worship",beat:"4/4",tempo:74},{slug:"dhanyavaad-yeshula",number:125,title:"धन्यवाद येशूला",title_alt:"Dhanyavaad Yeshula",language:"marathi",tags:[],stanzas:[{label:"Verse 1",text:`धन्यवाद येशूला (२)
-राजांच्या राजाला, प्रभुंच्या प्रभुला
-धन्यवाद येशूला
-महिमा हो या त्याला (२)
-राजांच्या राजाला, प्रभुंच्या प्रभुला
-महिमा हो या त्याला (२)
-गौरव या त्याला (२)
-राजांच्या राजाला, प्रभुंच्या प्रभुला
-धन्यवाद येशूला
-गौरव या त्याला`}],type:"worship",beat:"4/4",tempo:74},{slug:"har-museebat-mein-mujhko-sambhala",number:125,title:"हर मुसीबत में मुझको संभाला",title_alt:"Har Museebat Mein Mujhko Sambhala",language:"hindi",tags:["Comfort","Encouragement"],stanzas:[{label:"कोरस",text:`रखवाला, रखवाला, रखवाला...
-हर मुसीबत में मुझको संभाला (२)
-रखवाला यीशु है रखवाला (२)`},{label:"पद 1",text:`हर मुसीबत में वो काम आया मुझे (२)
-मरते-मरते यीशु ने बचाया मुझे (२)
-रखवाला यीशु है रखवाला...`},{label:"पद 2",text:`जब मसीहा का दीदार हो जाएगा (२)
-तेरा बिगड़ा हुआ काम बन जाएगा (२)
-रखवाला यीशु है रखवाला...`},{label:"पद 3",text:`वो धरती का राजा वो सरकार है (२)
-निराला मसीहा का दरबार है (२)
-रखवाला यीशु है रखवाला...`},{label:"पद 4",text:`मेरी कश्ती को फिर से किनारा मिला (२)
-उसके नज़र-ए-करम का सहारा मिला (२)
-रखवाला यीशु है रखवाला...`}],type:"worship",beat:"4/4",tempo:74},{slug:"he-mere-man-yehova-ko-dhanya-dhanya-kaho",number:126,title:"हे मेरे मन यहोवा को धन्य धन्य कहो",title_alt:"He Mere Man Yehova Ko Dhanya Dhanya Kaho",language:"hindi",tags:["Psalms","Thanksgiving"],stanzas:[{label:"कोरस",text:`हे मेरे मन यहोवा को धन्य धन्य कह (२)
-जो कुछ भी मुझ में है, उसके पवित्र नाम को धन्य कहे`},{label:"पद 1",text:`वही तेरे सब अधर्मों को क्षमा करता है
-तेरे सब रोगों को चंगा करता है
-हालेलुयाह... हालेलुयाह...
-वही तो तेरे प्राण को नाश होने से बचाता है (२)
-हे मेरे मन...`},{label:"पद 2",text:`सत्यानाश के गड्ढे से मुझे निकाला
-दलदल की कीच में से मुझे उभारा
-हालेलुयाह... हालेलुयाह...
-मेरे पैरों को दृढ़ किया है, चट्टान पर खड़ा किया है (२)
-हे मेरे मन...`},{label:"पद 3",text:`हे यहोवा के दूतों उसको धन्य कहो
-हे सारी सृष्टि उसको धन्य कहो, धन्य हो धन्य हो
-उसके राज्य के सब स्थानों में यहोवा को धन्य कहो
-हे मेरे मन...`}],type:"worship",beat:"4/4",tempo:74},{slug:"ho-jai-jaikaara-jai-jaikaara-kare",number:127,title:"हो जय जयकारा जय जयकारा करे",title_alt:"Ho Jai Jaikaara Jai Jaikaara Kare",language:"hindi",tags:["Praise","Joy"],stanzas:[{label:"कोरस",text:"हो जय जयकार, जय जयकार करे (२)"},{label:"पद 1",text:`वो है हमारा राजा, दुःख संकट से बचाता
-हम पर अपनी करुणा करता और करता उपकार
-क्यों ना उस पर तन मन वारें, दे अपना अधिकार`},{label:"पद 2",text:`स्वर्ग है उसका सिंहासन, पृथ्वी बनी है आसन
-आकाश उसकी महिमा बताये, हस्तकला को दिखाये
-सारी सृष्टि उसकी रचना, उसका ही है प्रताप`},{label:"पद 3",text:`जिसका उस पर भरोसा, वो तो कभी न गिरेगा
-चाहे बीमारी, चाहे गरीबी, चाहे हो अकाल
-सब संकट से, सब कष्टों से हो जायेगा पार`}],type:"praise",beat:"4/4",tempo:104},{slug:"he-hamare-vaap-tu-jo-aasman-mein-hai",number:128,title:"हे हमारे बाप तू जो आसमान में है",title_alt:"He Hamare Vaap Tu Jo Aasman Mein Hai",language:"hindi",tags:["Our Father","Prayer"],stanzas:[{label:"कोरस",text:`हे हमारे बाप तू जो आसमान में है
-तेरा नाम पाक माना जाए, तेरी बादशाहत आए`},{label:"पद 1",text:`जैसे तेरी मर्ज़ी आसमान में पूरी होती
-वैसे ही तेरी मर्ज़ी जगत में पूरी हो जाए`},{label:"पद 2",text:`रोज़ की रोटी हमारी आज हमको दे दे
-जीवन की रोटी तू है, वह ही हमारा बल है`},{label:"पद 3",text:`जिस तरह हम अपने अपराधियों को माफ करते
-उसी तरह हमारे अपराधों को माफ कर दे`},{label:"पद 4",text:`हमें आज़माइशों में जाने तू न दे
-बल्कि बुराई से बचा, अपनी राह में चला`},{label:"पद 5",text:`क्योंकि आसमानी बादशाहत और कुव्वत-ओ-कुदरत
-पूरी ज़मीन का जलाल हमेशा तेरा है... आमीन!`}],type:"worship",beat:"4/4",tempo:74},{slug:"haale-haaleluyaah",number:129,title:"हाले हालेलुयाह",title_alt:"Haale Haaleluyaah",language:"hindi",tags:["Praise","Worship"],stanzas:[{label:"कोरस",text:`हाले हालेलुयाह हालेलुयाह हालेलुयाह
-हाले हालेलुयाह हालेलुयाह हालेलुयाह`},{label:"पद 1",text:`करुणा से तेरी नया दिन दिखता है
-ढाल बनकर मेरी मुझे बचाता है
-जब मैं पुकारूँ तू दौड़े आता है
-जब मैं गिरूँ मुझे उठाता है... हाले हालेलुयाह`},{label:"पद 2",text:`सारे जहाँ में तुझ सा कोई नहीं
-तुझ को छोड़ कोई प्रभु ही नहीं
-घुटने मैं टेकूँ बस तेरे सामने
-तू है मेरा प्रभु तू मेरा पिता... हाले हालेलुयाह`}],type:"praise",beat:"4/4",tempo:104},{slug:"hovegi-barkat-ki-baarish",number:130,title:"होवेगी बरकत की बारिश",title_alt:"Hovegi Barkat Ki Baarish",language:"hindi",tags:["Revival","Holy Spirit"],stanzas:[{label:"कोरस",text:`होवेगी बरकत की बारिश, वादा पुर प्यार है सही
-आवेगी ताज़गी आसमान से, भेजेगा जिसको मसीह
-
-बरकत की बारिश, बरकत की बारिश भरपूर
-रहम की बूंदें टपकतीं, पर बारिश हमको ज़रूर`},{label:"पद 1",text:`होवेगी बरकत की बारिश, होगी नई कुव्वत ज़रूर
-वादी पहाड़ और मैदान पर, बारिश होगी भरपूर`},{label:"पद 2",text:`होवेगी बरकत की बारिश, काश अभी पावें हम सब
-यीशु तू ताज़गी अब बख़्श दे, वादे को पूरा कर अब`},{label:"पद 3",text:`होवेगी बरकत की बारिश, भेज उसे अभी, हाँ अब
-मानते गुनाह जब हम अपने, दे बारिश यीशु ऐ रब्ब`}],type:"worship",beat:"4/4",tempo:74},{slug:"hum-to-khuda-ke-bete-hai",number:131,title:"हम तो खुदा के बेटे हैं",title_alt:"Hum To Khuda Ke Bete Hai",language:"hindi",tags:["Faith","Identity"],stanzas:[{label:"कोरस",text:`हम तो खुदा के बेटे हैं, सब कुछ हमारा है
-जो कुछ है दिखता वो है पिता का, वो सिरजनहार है
-धन्यवाद... हालेलुयाह...`},{label:"पद 1",text:`यीशु मसीह में स्वर्गीय स्थानों में
-सब आशीषें हमें दीं, हालेलुयाह...
-यीशु मसीह संग हमको पिता ने वारिस बनाया है`},{label:"पद 2",text:`क्या वर्तमान और क्या भविष्य
-सब कुछ हमारा है, हालेलुयाह...
-सौ गुना प्रतिफल यहाँ पर, स्वर्ग में अनंत जीवन है
-यीशु मसीह में इस जीवन को ये धन्य आशा है`}],type:"worship",beat:"4/4",tempo:74},{slug:"haaleluyaah-2-gaayenge",number:133,title:"हालेलुयाह गायेंगे",title_alt:"Haaleluyaah - 2 Gaayenge",language:"hindi",tags:["Praise","Worship"],stanzas:[{label:"कोरस",text:`हालेलुयाह, हालेलुयाह गायेंगे
-यीशु के वचन सुनायेंगे
-चाहे हर मुसीबत से गुज़रना पड़े
-तो भी उसके ही संग हम जायेंगे`},{label:"पद 1",text:`भजन करेंगे, स्तुति करेंगे, और प्रशंसा करेंगे
-जब तक हममें सांस रहेगी उसके ही गुण गायेंगे (२)
-हालेलुयाह, हालेलुयाह गायेंगे
-यीशु के वचन सुनायेंगे`}],type:"praise",beat:"4/4",tempo:104},{slug:"karta-samarpan",number:900,title:"करता समर्पण",title_alt:"Karta Samarpan",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`करता समर्पण
-आत्मा और जीवन
-तेरी आराधना में
-तन मन धन
-पिता परमेश्वर
-हो धन्यवाद
-हो तेरी स्तुति और आराधना
-प्यारे मसीहा
-हो धन्यवाद
-हो तेरी स्तुति और आराधना
-पवित्र आत्मा
-हो धन्यवाद
-हो तेरी स्तुति और आराधना`}],type:"worship",beat:"4/4",tempo:74},{slug:"pavitra-ati-pavitra",number:901,title:"पवित्र अति पवित्र",title_alt:"Pavitra Ati Pavitra",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`पवित्र अति पवित्र ...२ है
-सेनाओं का प्रभु`},{label:"Verse 1",text:`१. यशायाह ने देखा
-प्रभु को ऊंचाई पर,
-बैठा सिंहासन पर राजाओं का राज
-उसकी महिमा से
-मंदिर भर गया, दूतों ने कहा
-पवित्र अति पवित्र ...`},{label:"Verse 2",text:`२. यूहन्ना ने देखा
-प्रभु को टापु पर,
-मुर्दों सा गिर पड़ा
-उसके चरणों पर
-दिपों में दिखा`},{label:"Verse 3",text:`मानव पुत्र के समान,
-दूतों ने कहा
-पवित्र अति पवित्र
-पवित्र अति पवित्र है
-सेनाओं का प्रभु`}],type:"worship",beat:"4/4",tempo:74},{slug:"aaradhana-aaradhana",number:902,title:"आराधना आराधना",title_alt:"Aaradhana Aaradhana",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`आराधना आराधना
-स्तुति आराधना आराधना
-सुबह के समय, शाम के समय
-आराधना पिता की`},{label:"Verse 1",text:`१. पवित्र आत्मा तुझे आराधना
-मेरे साथी तुझे आराधना ...२
-स्वर्गीय पिता तुझे आराधना
-मार्गदर्शी तुझे आराधना ...२`},{label:"Verse 2",text:`२. जीवित बलि तुझे आराधना
-जीवन जल तुझे आराधना ...२
-बादल के खंभे तुझे आराधना
-मेरे मसीह तुझे आराधना ...२`}],type:"worship",beat:"4/4",tempo:74},{slug:"yeshu-ka-naam-sabase-pyara",number:903,title:"यीशु का नाम सबसे प्यारा",title_alt:"Yeshu Ka Naam Sabase Pyara",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`यीशु का नाम सबसे प्यारा
-सबसे अलग और सबसे मीठा
-उसका वचन सबसे न्यारा
-सबसे अलग और सबसे मीठा
-गाओ रे गाओ आनंद में
-झूमो नाचो रे आनंद में
-क्योंकि दुनिया में एक ही नाम है`},{label:"Verse 2",text:`१. स्वर्गदूत भी हर पल हर दिन
-यही नाम लेते हैं
-पाते हैं जो, इस नाम को
-पाते हैं वो एक नई शांति को
-गाओ रे . . .`},{label:"Verse 3",text:`२. इस नाम से रोगियों को
-चंगाई मिलती है,
-इस नाम को लेने वालों को
-जिन्दगी मिलती है
-पाते हैं जो, इस नाम को
-पाते हैं वो एक नई शांति को
-गाओ रे . . .`},{label:"Verse 4",text:`३. इस नाम से हर पापी को
-छुटकारा मिलता है,
-इस नाम से भटके हुओं को
-नया मार्ग मिलता है
-पाते हैं जो, इस नाम को
-पाते हैं वो एक नई शांति को
-गाओ रे . . .`}],type:"worship",beat:"4/4",tempo:74},{slug:"jannat-se-aaya-masiha",number:904,title:"जन्नत से आया मसीहा",title_alt:"Jannat Se Aaya Masiha",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`जन्नत से आया मसीहा,
-उसकी हम स्तुति करे,
-गाए, झूमे, हम नाचे,
-जन्नत के गीत सुनाएं
-हालेलुय्याह ...`},{label:"Verse 1",text:`१. आओ हम मिलकर आज खुशियां मनाएं
-उद्धार जो पाया हमने,`},{label:"Verse 2",text:`गीतों में डालकर सुनाएं
-जगत ...`},{label:"Verse 3",text:`२. खाए कोई यीशु ने सबकी चंगाई के लिए
-बहाया खून जो अपना,
-सभी की मुक्ति के लिए
-जगत ...`},{label:"Verse 4",text:`३. हम बचे है जो आज,
-यीशु की दया के कारण
-जीवन बदल गया आज यीशु के वचन
-के कारण
-जगत ...`}],type:"worship",beat:"4/4",tempo:74},{slug:"ishwar-hoon-main-karoon-changa-tujhe",number:905,title:"ईश्वर हूं मैं, करूं चंगा तुझे",title_alt:"Ishwar Hoon Main, Karoon Changa Tujhe",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`ईश्वर हूं मैं करूं चंगा तुझे
-प्रभु हूं मैं चंगा करता
-मैंने भेजा वचन,
-किया चंगा रोगों से
-प्रभु हूं मैं चंगा करता`},{label:"Verse 1",text:`१. ईश्वर हो तुम, मुझे चंगा करता
-प्रभु हो तुम चंगा करता
-तूने भेजा वचन,
-किया चंगा रोगों से
-प्रभु हो तुम चंगा करता`}],type:"worship",beat:"4/4",tempo:74},{slug:"karte-hain-teri-stuti",number:906,title:"करते हैं तेरी स्तुति",title_alt:"Karte Hain Teri Stuti",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`करते हैं तेरी हम स्तुति
-हृदय की गहराईयों से
-यीशु तू ही है
-तू ही है हमारा प्रभु
-महिमा हो तेरी....४`}],type:"worship",beat:"4/4",tempo:74},{slug:"tera-lahoo-tera-lahoo",number:907,title:"तेरा लहू, तेरा लहू",title_alt:"Tera Lahoo, Tera Lahoo",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`तेरा लहू, तेरा लहू
-तेरा लहू पाक करता है
-तेरा लहू जीवन देता है`},{label:"Verse 1",text:`१. तेरे लहू की धार से,
-मिटते गुनाह और खिलते है फूल ...२
-तेरा लहू .... २
-धोकर के साफ करता है,
-तेरा लहू, जीवन देता है।`},{label:"Verse 2",text:`२. तेरे लहू में जो छुपे
-किसी भी बलासे कभी ना डरे .... २
-तेरा लहू .... २
-तेरा लहू हिम्मत देता है,
-तेरा लहू जीवन देता है।`},{label:"Verse 3",text:`३. तेरा लहू ढाल और किला,
-सबकी पनाह बस तू आसरा .... २
-तेरा लहू .... २
-दिल में सुकून भरता है
-तेरा लहू जीवन देता है।`},{label:"Verse 4",text:`४. तेरे लहू के झरनों से,
-जख्म तो क्या मिटें नासूर भी .... २
-तेरा लहू .... २
-मरहम का काम करता है
-तेरा लहू जीवन देता है।`}],type:"worship",beat:"4/4",tempo:74},{slug:"har-baaton-mein-dhanyavaad-karo",number:908,title:"हर बातों में धन्यवाद करो",title_alt:"Har Baaton Mein Dhanyavaad Karo",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`हर बातों में धन्यवाद करो
-क्योंकि प्रभु की इच्छा यही है`},{label:"Verse 1",text:`१. ताली को बजाओ और धन्यवाद करो।
-हाथों को मिलाओ और धन्यवाद करो।
-क्योंकि प्रभु की इच्छा यही है`},{label:"Verse 2",text:`२. दुख में सुख में धन्यवाद करो।
-अमीरी और गरीबी में धन्यवाद करो।
-आशीषों में धन्यवाद करो।
-क्योंकि प्रभु की इच्छा यही है`},{label:"Verse 3",text:`३. हर परिस्थिति में धन्यवाद करो।
-नाचते गाते धन्यवाद करो।
-अपने होठों से धन्यवाद करो।
-क्योंकि प्रभु की इच्छा यही है`}],type:"worship",beat:"4/4",tempo:74},{slug:"alpha-aur-omega",number:909,title:"अल्फा और ओमेगा",title_alt:"Alpha Aur Omega",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`अल्फा और ओमेगा
-आदि और अंत
-अनंतकाल का ईश्वर
-तेरी आराधना आराधना
-आराधना हालेलुय्याह`},{label:"Verse 2",text:`१. यहोवा शालोम तेरा नाम है,
-मुझको शांति देता तू
-यहोवा राफा तेरा नाम है
-मुझको चंगा करता तू,
-मुझको कभी ना छोड़ेगा,
-मुझको कभी ना त्यागेगा ...३
-कैसा प्यारा वादा है`}],type:"worship",beat:"4/4",tempo:74},{slug:"aaradhana-hum-teri-karenge",number:990,title:"आराधना हम तेरी करेंगे",title_alt:"Aaradhana Hum Teri Karenge",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`आराधना हम तेरी करेंगे
-जैसी आसमां पर होती है पूरी`},{label:"Verse 1",text:`१. रोज की रोटी हमें वह देता
-जीवन जल से है तृप्त करता
-हम उसकी महिमा में (२)
-शांति पाए
-आराधना हम तेरी करेंगे`},{label:"Verse 2",text:`२. अंधियारे से उसने हमें है छुड़ाया
-ज्योति में हमको यीशु ने लाया
-हम उसके सदा ही (२)
-वारिस कहलाए
-आराधना हम तेरी करेंगे`},{label:"Verse 3",text:`३. अनंत जीवन यीशु ने दिया है
-प्यार किया है हमसे गहरा
-पिता से उसने ही (२)
-हमें मिलाया है
-आराधना हम तेरी करेंगे`},{label:"Verse 4",text:`४. यहोवा रोही तेरा नाम है,
-मेरा चरवाहा है तू,
-यहोवा यिरे तेरा नाम है
-मेरा उपाय करता तू,
-मुझको ना होगी कोई कमी,
-मुझको ना होगी कोई घटी ...२
-हरी चराईयों में चराता है`},{label:"Verse 5",text:`५. यहोवा निस्सी तेरा नाम है,
-मेरे जय का झंडा तू
-यहोवा सिदकेनु तेरा नाम है
-मेरी धार्मिकता है तू,
-मेरे गुनाहों और पापों की
-सारी सजा को तू ने सहा,
-मुझको धर्मी बना दिया`}],type:"worship",beat:"4/4",tempo:74},{slug:"prabhu-parameshwar-tu-kitna",number:992,title:"प्रभु परमेश्वर, तू कितना",title_alt:"Prabhu Parameshwar, Tu Kitna",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`प्रभु परमेश्वर, तू कितना भला है
-तेरी भलाई सदा की है
-मेरा दिल तुझे धन्यवाद देता
-मेरा प्राण तुझे स्तुति देता`},{label:"Verse 2",text:`१. कठिन समय में तू मजबूत गढ़
-अंधेरी राह में तू उजियाला है
-मेरी दोहाई तू सुनता
-मेरा प्रभु कभी नहीं सोता
-मेरा प्राण तुझे स्तुति करता`},{label:"Verse 3",text:`२. तू कहता है, नहीं छोड़ूंगा
-तू कहता है, नहीं ठुकराऊंगा
-तेरा हाथ मेरी अगुवाई करता
-तेरा सामर्थ मुझे बल देता`}],type:"worship",beat:"4/4",tempo:74},{slug:"mera-yeshu-bhala-hai",number:993,title:"मेरा यीशु भला है",title_alt:"Mera Yeshu Bhala Hai",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`मेरा यीशु भला है,
-हरगिज ना छोड़ेगा
-हरगिज ना त्यागेगा
-जय मिलकर गाएंगे
-शत्रु को हराएंगे,
-देश को जितेंगे`},{label:"Verse 1",text:`१. करता मुझपे करम, आराम देता
-मुश्किल में मुझे / हर
-राहत देता है / मुझको ...`},{label:"Verse 2",text:`२. आंसू देखता, आहों को सुनता
-कष्टों को सहता / मेरे
-मुझको छुड़ाता / यीशु`},{label:"Verse 3",text:`३. हर परीक्षा में, मैं न डरूंगा
-हक को पाकर के / मेरे
-राज करूंगा / यीशु`},{label:"Verse 4",text:`४. टूटे हुए मन से, सच्चे हृदय से
-यीशु को अपना लो / मेरे
-कमियों को भर देगा / तेरे`}],type:"worship",beat:"4/4",tempo:74},{slug:"abhishek-kar",number:994,title:"अभिषेक कर",title_alt:"Abhishek Kar",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`अभिषेक कर, अभिषेक कर...२
-अभिषेक मुझे तू कर`},{label:"Verse 1",text:`१. जिस तरह हिरण तड़पता है,
-पानी के झरने के लिए
-मेरा मन प्यासा है,
-पवित्र आत्मा मेरे लिए ...२
-मैं प्यासा हूं, मेरी प्यास बुझा
-हिरण की तरह तुझे ढूंढ रहा
-प्रभु, प्यास मेरी बुझा`},{label:"Verse 2",text:`२. जीवन के बोझ के तले,
-मैं यूं ही दबा रहा
-जीवन के झरनों से,
-प्रभु मैं अनजान रहा
-अपने लहू से मुझे शुद्ध कर
-नए जीवन को मुझमें तू भर
-प्रभु, प्यास मेरी बुझा`}],type:"worship",beat:"4/4",tempo:74},{slug:"main-yeshu-ka-diwana-hoon",number:995,title:"मैं यीशु का दिवाना हूं",title_alt:"Main Yeshu Ka Diwana Hoon",language:"hindi",tags:[],stanzas:[{label:"Verse 1",text:`मैं यीशु का दिवाना हूं
-यीशु दिवाना.... हूं
-हां मैं यीशु का दिवाना हूं
-यीशु दिवाना.... हूं`},{label:"Verse 2",text:`१. मसीह में हूं मैं नई सृष्टि
-पुराना चला गया
-देखो सब नया हुआ है
-बिता कल चला गया
-मेरे सर पे हाथ को रखकर`},{label:"Verse 3",text:`कहा तुझसे प्यार करूं
-मत डर तू मेरे बेटे
-तेरे संग रहता हूं ... मैं`},{label:"Verse 4",text:`२. अब मेरा जीना मसीह है,
-मरना भी मसीह है
-जीने की है एक आरज़ू
-उसे मैं पहचान लूं
-उसी में मैं पाया जाऊं
-दुखों से सहभागी होऊं
-किसी तरह मरे हुओं से, जी उठने
-तक पहुंचू मैं ... मैं`}],type:"worship",beat:"4/4",tempo:74},{slug:"teri-jai-ho-teri-jai-ho",number:996,title:"तेरी जय हो, तेरी जय हो",title_alt:"Teri Jai Ho, Teri Jai Ho",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`तेरी जय हो, तेरी जय हो
-हर दिन सुबह और शाम
-आज, कल और हरदम ...२`},{label:"Verse 1",text:`१. तू मृदु कृपालु है, तू बड़ दयालु है...२
-विलंब से क्रोध करता है
-तू करुणा निधान है ...२`},{label:"Verse 2",text:`२. तू हमारे साथ है, तू बड़ा सामर्थी है
-उद्धार करने में पराक्रमी है
-प्रेम का तू सागर है ...२`},{label:"Verse 3",text:`३. तू प्रभु विश्वासू है,
-तू अधर्म को ढोता है
-क्षमा गुनाहों को करता है
-तू प्रभु महान है ...२`}],type:"praise",beat:"4/4",tempo:104},{slug:"vijayi-hua-vijayi-hua",number:999,title:"विजयी हुआ, विजयी हुआ",title_alt:"Vijayi Hua, Vijayi Hua",language:"hindi",tags:[],stanzas:[{label:"Chorus",text:`विजयी हुआ, विजयी हुआ
-यीशु मेरा विजयी हुआ ...२
-शैतान हारा हुआ
-मेरा यीशु विजयी हुआ`},{label:"Verse 1",text:`१. यीशु ने क्रूस पर शैतान के,
-सिर को कुचल दिया ...२
-मृत्यु पर विजयी हौंकर,
-हमें विजयी जीवन दिया...२
-हालेलुय्याह...२
-यीशु मेरा विजयी हुआ ...२`},{label:"Verse 2",text:`२. शत्रु की शक्ति पर,
-अधिकार हमें दिया ...२
-यहोवा निस्सी हमारा,
-है जय देने वाला ...२
-हालेलुय्याह...२
-यीशु मेरा विजयी हुआ ...२`}],type:"praise",beat:"4/4",tempo:104},{slug:"yeshu-masih-tere-jaisa-koi-nahi",number:221,title:"यीशु मसीह तेरे जैसा कोई नहीं",title_alt:"Yeshu Masih Tere Jaisa Koi Nahi",language:"hindi",type:"worship",beat:"4/4",tempo:72,tags:["Worship","Exaltation"],stanzas:[{label:"कोरस",text:`यीशु मसीह तेरे जैसा कोई नहीं
-तेरे चरणों में झुकते हैं हम (२)
-स्तुति और महिमा, आदर और जलाल
-सब कुछ है तुझको अर्पण (२)`},{label:"पद 1",text:`तूने बनाया आसमान और ज़मीं
-तेरी कुदरत का कोई अंत नहीं (२)
-चाँद सितारों में तेरी महिमा
-सागर की लहरों में तेरी गरिमा`},{label:"पद 2",text:`क्रूस पर तूने बहाया लहू
-हमको दिया नया जीवन तूने (२)
-पापों से हमको छुड़ाया मसीह
-अपना बना लिया हमको मसीह`}]},{slug:"tune-mujhe-aage-peeche",number:222,title:"तूने मुझे आगे पीछे घेरा है",title_alt:"Tune Mujhe Aage Peeche Ghera Hai",language:"hindi",type:"worship",beat:"4/4",tempo:68,tags:["Worship","Psalm 139"],stanzas:[{label:"कोरस",text:`तूने मुझे आगे पीछे घेरा है
-और अपना हाथ मुझ पर रखा है (२)
-यह ज्ञान मेरे लिए अति अद्भूत है
-मेरी समझ से बहुत ही ऊँचा है (२)`},{label:"पद 1",text:`यदि मैं आकाश पर चढ़ूँ, तो तू वहाँ है
-यदि मैं अधोलोक में बिछौना बिछाऊँ, तो तू वहाँ है (२)
-यदि मैं भोर की किरणों पर चढ़कर
-समुद्र के पार जा बसूँ
-वहाँ भी तेरा हाथ मेरी अगुवाई करेगा
-तेरा दाहिना हाथ मुझे थामे रहेगा`},{label:"पद 2",text:`तूने ही मेरे अंतःकरण को रचा
-माता के गर्भ में मुझे रचा (२)
-मैं तेरा धन्यवाद करूँगा
-क्योंकि मैं भयानक और अद्भूत रीति से रचा गया हूँ`}]},{slug:"aadar-aur-mahima-samarth-ke-yogya",number:223,title:"आदर और महिमा सामर्थ के योग्य",title_alt:"Aadar Aur Mahima",language:"hindi",type:"worship",beat:"4/4",tempo:75,tags:["Worship","Adoration"],stanzas:[{label:"कोरस",text:`आदर और महिमा, सामर्थ के योग्य
-यीशु तू ही तो है (२)
-युगानुयुग जीवित, धन्यवाद के योग्य
-यीशु तू ही तो है (२)
-हम गाएं होसन्ना, होसन्ना... (२)
-राजाओं के राजा को!`},{label:"पद 1",text:`झुकते हैं आकर चरणों में तेरे संग दूतों के
-मुकुट को रखते कदमों में तेरे संग संतों के (२)
-पवित्र, पवित्र, पवित्र प्रभु सर्वशक्तिमान!`},{label:"पद 2",text:`तू ही हमारा उद्धारकर्ता, तू ही हमारा सहारा
-तेरी महिमा से भर दे इस भवन को प्रभु जी (२)
-हम गाएं होसन्ना, होसन्ना... (२)
-राजाओं के राजा को!`}]},{slug:"kitna-pyara-hai-yeshu-naam",number:224,title:"कितना प्यारा है यीशु नाम",title_alt:"Kitna Pyara Hai Yeshu Naam",language:"hindi",type:"worship",beat:"4/4",tempo:80,tags:["Worship","Name of Jesus"],stanzas:[{label:"कोरस",text:`कितना प्यारा है यीशु नाम
-कितना मीठा है यीशु नाम (२)
-सारे नामों से ऊँचा नाम
-मुक्ति देता है यीशु नाम (२)`},{label:"पद 1",text:`बीमारों को चंगाई देता
-दुखियों को दिलासा देता (२)
-पापियों को क्षमा करता
-शांति देता है यीशु नाम`},{label:"पद 2",text:`इस नाम में है सामर्थ भारी
-भागती है अंधकार की शक्ति सारी (२)
-जय दिलाता है हर पल हमको
-अद्भूत है ये यीशु नाम`}]},{slug:"sajda-karoon",number:225,title:"सजदा करूँ मैं तेरे हुज़ूर में",title_alt:"Sajda Karoon",language:"hindi",type:"worship",beat:"4/4",tempo:70,tags:["Worship","Devotion"],stanzas:[{label:"कोरस",text:`सजदा करूँ मैं तेरे हुज़ूर में
-हाथों को उठाऊँ तेरी हज़ूरी में (२)
-तू ही खुदा, तू ही जहाँ
-तू ही मेरा मसीहा (२)`},{label:"पद 1",text:`जब भी पुकारूँ तू सुनता दुआ
-तेरी दया का कोई अंत ना हुआ (२)
-तूने सम्भाला, तूने बचाया
-मुझको गले से लगाया`},{label:"पद 2",text:`तेरी मोहब्बत है सबसे महान
-तूने दिया है मुझको नया जान (२)
-गाता रहूँगा तेरी स्तुति
-जब तक रहे मेरी जान`}]},{slug:"pawan-aatma-aa",number:226,title:"पावन आत्मा आ",title_alt:"Pawan Aatma Aa",language:"hindi",type:"worship",beat:"4/4",tempo:72,tags:["Worship","Holy Spirit"],stanzas:[{label:"कोरस",text:`पावन आत्मा आ, पावन आत्मा आ
-मेरे जीवन में आ, मेरे हृदय में आ (२)
-मुझको छू ले, मुझको भर दे
-अपनी सामर्थ से नया कर दे (२)`},{label:"पद 1",text:`जैसे आग उतरती है, वैसे तू उतर आ
-जैसे हवा बहती है, वैसे तू बहा (२)
-पावन आत्मा आ, पावन आत्मा आ
-मेरे जीवन में आ, मेरे हृदय में आ`},{label:"पद 2",text:`कमज़ोरियों में तू ही बल देता
-अंधकार में तू ज्योति दिखाता (२)
-पावन आत्मा आ, पावन आत्मा आ
-मेरे जीवन में आ, मेरे हृदय में आ`}]},{slug:"raja-mahan-hai-tu-prabhu",number:227,title:"राजा महान है तू प्रभु",title_alt:"Raja Mahan Hai Tu Prabhu",language:"hindi",type:"praise",beat:"4/4",tempo:108,tags:["Praise","King of Kings"],stanzas:[{label:"कोरस",text:`राजा महान है तू प्रभु
-तेरी जय जयकार हो (२)
-गाएँगे मिलकर स्तुति तेरी
-महिमा से तू भरपूर हो (२)`},{label:"पद 1",text:`तूने तोड़ी मृत्यु की ज़ंजीरें
-यीशु तूने दी हमें नई तकदीरें (२)
-हाल्लेलूयाह, हाल्लेलूयाह
-हाल्लेलूयाह, आमीन!`},{label:"पद 2",text:`स्वर्ग और पृथ्वी पर तेरा ही राज है
-तू ही हमारा सच्चा सरताज है (२)
-राजा महान है तू प्रभु
-तेरी जय जयकार हो!`}]}];function Dw(){return`st-${Date.now()}-${Math.random().toString(36).slice(2,7)}`}function Vw(t){const e=t.type?String(t.type).toLowerCase().trim():Array.isArray(t.tags)&&t.tags.some(n=>String(n).toLowerCase()==="praise")?"praise":"worship";return{id:t.id||`song-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,slug:t.slug||null,number:t.number!=null&&t.number!==""?Number(t.number):null,title:t.title||"",title_alt:t.title_alt||null,language:t.language||"hindi",type:e==="praise"?"praise":"worship",beat:t.beat||t.beat_number||null,tempo:t.tempo!=null&&t.tempo!==""?Number(t.tempo):null,tags:Array.isArray(t.tags)?t.tags:[],stanzas:Array.isArray(t.stanzas)?t.stanzas:[],source:t.source||"db",created_at:t.created_at||new Date().toISOString(),updated_at:t.updated_at||new Date().toISOString()}}function ec(){if(!Array.isArray(uh))throw new Error("[seed] songs.seed.json must export an array");const t=new Set;return uh.map((n,r)=>{const s=`songs.seed.json[${r}]`;if(!n||typeof n!="object")throw new Error(`${s}: not an object`);if(!n.slug||typeof n.slug!="string")throw new Error(`${s}: missing "slug"`);if(t.has(n.slug))throw new Error(`${s}: duplicate slug "${n.slug}"`);if(t.add(n.slug),!n.title||typeof n.title!="string")throw new Error(`${s}: missing "title"`);const a=["hindi","english","marathi","bilingual"],i=String(n.language||"hindi").toLowerCase().trim(),o=a.includes(i)?i:"hindi";if(!Array.isArray(n.stanzas)||n.stanzas.length===0)throw new Error(`${s}: "stanzas" must be a non-empty array`);return n.stanzas.forEach((u,c)=>{if(!u||typeof u.text!="string"||!u.text.trim())throw new Error(`${s}.stanzas[${c}]: missing text`)}),Vw({...n,language:o,id:`seed:${n.slug}`,source:"seed",stanzas:n.stanzas.map(u=>({id:u.id||Dw(),label:u.label||"",text:u.text})),tags:n.tags||[]})})}function ym(t){return(t==null?void 0:t.source)==="seed"||String((t==null?void 0:t.id)||"").startsWith("seed:")}const Uw="";function Hw(t){return console.warn("[deleteAuth] VITE_DELETE_PASSWORD is not set. Deletes are disabled."),{ok:!1,reason:"not_configured"}}function Bw(){return!!Uw}const xm="church-songbook:song_meta:v1";function Fw(){try{const t=localStorage.getItem(xm);return t?JSON.parse(t):{}}catch(t){return console.error("Error reading local song metadata:",t),{}}}function ch(t){try{localStorage.setItem(xm,JSON.stringify(t))}catch(e){console.error("Error saving local song metadata:",e)}}async function Ww(t,e={}){if(!t||!t.id&&!t.title)throw new Error("Song information is required to update beat and tempo.");const n=String(t.id||""),r=String(t.title||"").trim(),s=r.toLowerCase(),a=e.beat!==void 0?e.beat?String(e.beat).trim():null:t.beat,i=e.tempo!==void 0?e.tempo!=null&&e.tempo!==""?Number(e.tempo):null:t.tempo,o=e.type!==void 0?e.type?String(e.type).toLowerCase().trim():null:t.type,u={songId:n||null,songTitle:r||null,beat:a||null,tempo:i!=null&&!isNaN(i)?i:null,type:o==="praise"?"praise":o==="worship"?"worship":null,updated_at:new Date().toISOString()},c=`meta:${n||s}`,d=Fw(),h={...u,updatedAt:u.updated_at};if(n&&(d[n]=h),s&&(d[s]=h),ch(d),at&&X)try{const{data:f}=await X.from("missing_songs").select("id").eq("keyword",c).eq("status","song_meta").limit(1);if(f&&f.length>0){const{data:m,error:x}=await X.from("missing_songs").update({notes:JSON.stringify(u),created_at:new Date().toISOString()}).eq("id",f[0].id).select().single();!x&&m&&(h.supabaseId=m.id)}else{const{data:m,error:x}=await X.from("missing_songs").insert([{keyword:c,notes:JSON.stringify(u),status:"song_meta"}]).select().single();!x&&m&&(h.supabaseId=m.id)}if(!n.startsWith("seed:"))try{await X.from("songs").update({beat:u.beat,tempo:u.tempo,type:u.type,updated_at:new Date().toISOString()}).eq("id",n)}catch{}n&&(d[n]=h),s&&(d[s]=h),ch(d)}catch(f){console.warn("Supabase saveSongMetadata error, preserved in local storage:",f.message)}return h}const bm="church-songbook:library_cache:v2",vm="church-songbook:last_sync_timestamp";function Ys(){try{const t=localStorage.getItem(bm);if(t){const e=JSON.parse(t);if(Array.isArray(e)&&e.length>0)return e}}catch(t){console.error("Error reading cached library:",t)}try{const t=ec();return kt(t),t}catch(t){return console.error("Error loading initial seeds:",t),[]}}function kt(t){try{Array.isArray(t)&&localStorage.setItem(bm,JSON.stringify(t))}catch(e){console.error("Error saving cached library:",e)}}function dh(){try{return localStorage.getItem(vm)||null}catch{return null}}function Gw(t){try{localStorage.setItem(vm,t)}catch{}}async function Ra(t){if(!t)return;const e=String(t.id||`song-${Date.now()}-${Math.random().toString(36).slice(2,7)}`),n=`song:${e}`,r={...t,id:e,updated_at:new Date().toISOString()};try{const s=Ys(),a=s.findIndex(o=>String(o.id)===e);let i;a>=0?(i=[...s],i[a]={...i[a],...r}):i=[r,...s],kt(i)}catch(s){console.warn("Could not update local cache for song:",s)}if(!at||!X)return r;try{const{data:s}=await X.from("missing_songs").select("id").eq("keyword",n).eq("status","song_item").limit(1);s&&s.length>0?await X.from("missing_songs").update({notes:JSON.stringify(r),created_at:new Date().toISOString()}).eq("id",s[0].id):await X.from("missing_songs").insert([{keyword:n,notes:JSON.stringify(r),status:"song_item"}]);try{await X.from("songs").upsert([{id:e,number:r.number!=null?Number(r.number):null,title:r.title,title_alt:r.title_alt||null,language:r.language||"hindi",type:r.type||"worship",beat:r.beat||null,tempo:r.tempo!=null?Number(r.tempo):null,stanzas:r.stanzas||[],updated_at:new Date().toISOString()}])}catch{}}catch(s){console.warn("Error saving song to Supabase DB:",s.message)}return r}async function hh(t){if(!t)return;const e=String(t),n=`song:${e}`;try{const s=Ys().filter(a=>String(a.id)!==e);kt(s)}catch(r){console.warn("Could not remove song from local cache:",r)}if(!(!at||!X))try{await X.from("missing_songs").delete().eq("keyword",n).eq("status","song_item");try{await X.from("songs").delete().eq("id",e)}catch{}}catch(r){console.warn("Error deleting song from Supabase DB:",r.message)}}async function Kw(t=()=>{}){if(t(10),!at||!X)return t(100),Ys();try{t(20);const{data:e,error:n}=await X.from("missing_songs").select("*").eq("status","song_item");n&&console.warn("Error fetching song_item from Supabase:",n.message),t(45);let r=[];try{const{data:c}=await X.from("songs").select("*");Array.isArray(c)&&(r=c)}catch{}t(60);const{data:s}=await X.from("missing_songs").select("*").eq("status","song_meta"),a=new Map;Array.isArray(s)&&s.forEach(c=>{try{const d=typeof c.notes=="string"?JSON.parse(c.notes):c.notes;d&&(d.songId&&a.set(String(d.songId),d),d.songTitle&&a.set(d.songTitle.trim().toLowerCase(),d))}catch{}}),t(75);const i=new Map;ec().forEach(c=>{i.set(String(c.id),{...c,source:"seed"})}),r.forEach(c=>{c&&c.id&&i.set(String(c.id),{...c,source:"db"})}),Array.isArray(e)&&e.forEach(c=>{try{const d=typeof c.notes=="string"?JSON.parse(c.notes):c.notes;if(d&&d.id){const h=String(d.id),f=i.get(h)||{};i.set(h,{...f,...d,source:"db"})}}catch{console.warn("Could not parse song record:",c.id)}}),t(90);const u=Array.from(i.values()).map(c=>{const d=a.get(String(c.id))||(c.title?a.get(c.title.trim().toLowerCase()):null);return d?{...c,beat:d.beat!==void 0&&d.beat!==null?d.beat:c.beat,tempo:d.tempo!==void 0&&d.tempo!==null?d.tempo:c.tempo,type:d.type!==void 0&&d.type!==null?d.type:c.type}:c});return u.sort((c,d)=>{const h=c.number??Number.MAX_SAFE_INTEGER,f=d.number??Number.MAX_SAFE_INTEGER;return h!==f?h-f:(c.title||"").localeCompare(d.title||"",["hi","en","mr"])}),kt(u),Gw(new Date().toISOString()),t(100),u}catch(e){return console.error("syncSongsFromDb failed, falling back to local cache:",e),t(100),Ys()}}const wm=v.createContext(null);function Yw({children:t}){const[e,n]=v.useState(()=>{try{return Ys()}catch(w){return console.error("Failed to load initial cached library:",w),ec()}}),[r,s]=v.useState(!1),[a,i]=v.useState(0),[o,u]=v.useState(()=>dh()),[c,d]=v.useState(!1),[h,f]=v.useState(null),m=v.useCallback(async(w=!1)=>{if(!r)try{s(!0),w||i(5);const _=await Kw(j=>{i(j)});Array.isArray(_)&&_.length>0&&(n(_),kt(_)),u(dh()),f(null)}catch(_){console.error("Sync failed:",_),f(_.message)}finally{setTimeout(()=>{s(!1),i(0)},600)}},[r]);v.useEffect(()=>{let w;return at&&X&&(w=X.channel("public:songbook_realtime_sync").on("postgres_changes",{event:"*",schema:"public",table:"missing_songs"},()=>{m(!0)}).on("postgres_changes",{event:"*",schema:"public",table:"songs"},()=>{m(!0)}).subscribe()),()=>{w&&X.removeChannel(w)}},[m]);const x=v.useCallback(async w=>{const _=w.id||`song-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;let j=w.number;j==null||j===""||isNaN(Number(j))?j=e.reduce((A,O)=>{const S=typeof O.number=="number"?O.number:parseInt(O.number,10);return!isNaN(S)&&S>A?S:A},0)+1:j=Number(j);const C={...w,id:_,number:j,source:"db",created_at:new Date().toISOString(),updated_at:new Date().toISOString()};return n(N=>{const A=[C,...N].sort((O,S)=>{const E=O.number??Number.MAX_SAFE_INTEGER,D=S.number??Number.MAX_SAFE_INTEGER;return E!==D?E-D:(O.title||"").localeCompare(S.title||"",["hi","en","mr"])});return kt(A),A}),Ra(C).catch(N=>{console.warn("Background DB save error on addSong:",N)}),C},[e]),b=v.useCallback(async w=>{if(!Array.isArray(w)||w.length===0)return[];let _=e.reduce((C,N)=>{const A=typeof N.number=="number"?N.number:parseInt(N.number,10);return!isNaN(A)&&A>C?A:C},0);const j=w.map(C=>{let N=C.number;return N==null||N===""||isNaN(Number(N))?N=++_:(N=Number(N),N>_&&(_=N)),{...C,id:C.id||`song-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,number:N,source:"db",created_at:new Date().toISOString(),updated_at:new Date().toISOString()}});return n(C=>{const N=[...C,...j].sort((A,O)=>{const S=A.number??Number.MAX_SAFE_INTEGER,E=O.number??Number.MAX_SAFE_INTEGER;return S!==E?S-E:(A.title||"").localeCompare(O.title||"",["hi","en","mr"])});return kt(N),N}),Promise.allSettled(j.map(C=>Ra(C))).catch(()=>{}),j},[e]),k=v.useCallback(async(w,_)=>{const j=String(w),C={..._,id:j,updated_at:new Date().toISOString()};return n(N=>{const A=N.map(O=>String(O.id)===j?{...O,...C}:O);return kt(A),A}),await Ra(C),C},[]),y=v.useCallback(async w=>{const _=String(w);n(j=>{const C=j.filter(N=>String(N.id)!==_);return kt(C),C}),await hh(_)},[]),p=v.useCallback(async(w,_)=>{const{ok:j,reason:C}=Hw();if(!j){const A=new Error(C==="not_configured"?"Delete is not configured. Ask an administrator.":"Incorrect password.");throw A.code=C==="not_configured"?"NOT_CONFIGURED":"BAD_PASSWORD",A}const N=new Set(w.map(String));return n(A=>{const O=A.filter(S=>!N.has(String(S.id)));return kt(O),O}),await Promise.allSettled(w.map(A=>hh(A))),{deleted:w,failed:[],skipped:0}},[]),g=v.useCallback(async(w,_)=>{let j=typeof w=="object"&&w!==null?w:e.find(N=>String(N.id)===String(w));if(!j)throw new Error("Song not found");const C={...j,beat:_.beat!==void 0?_.beat:j.beat,tempo:_.tempo!==void 0?_.tempo:j.tempo,type:_.type!==void 0?_.type:j.type,updated_at:new Date().toISOString()};n(N=>{const A=N.map(O=>String(O.id)===String(j.id)?C:O);return kt(A),A});try{await Ww(j,_),await Ra(C)}catch(N){console.warn("Error syncing beat/tempo to DB:",N)}return C},[e]);return l.jsx(wm.Provider,{value:{songs:e,loading:c,error:h,syncing:r,syncProgress:a,lastSyncTime:o,syncWithCloud:m,refreshSongs:m,addSong:x,addBulkSongs:b,editSong:k,updateSongBeatTempo:g,removeSong:y,deleteMany:p},children:t})}function An(){const t=v.useContext(wm);if(!t)throw new Error("useSongs must be used within a SongProvider");return t}/**
+Pray for India`}],type:"worship",beat:"4/4",tempo:74},{slug:"all-to-jesus-i-surrender",number:178,title:"All to Jesus I surrender",title_alt:null,language:"english",tags:["Offertory"],stanzas:[{label:"Verse 1",text:`All to Jesus I surrender
+All to Him I freely give
+I will ever love and trust Him
+In His presence daily live.`},{label:"Verse 2",text:`I surrender all, I surrender all
+All to thee, my blessed Saviour
+I surrender all`},{label:"Verse 3",text:`All to Jesus I surrender
+Humbly at His feet I bow
+Worldly pleasure all forsaken
+Take me Jesus, take me now.`},{label:"Verse 4",text:`All to Jesus I surrender
+Make me Saviour wholly Thine
+Let me feel Thy Holy Spirit
+Truly know that Thou art mine.`},{label:"Verse 5",text:`All to Jesus I surrender
+Now I feel the sacred flame
+O the joy of full salvation
+Glory, glory to His name.`}],type:"worship",beat:"4/4",tempo:74},{slug:"alleluia-speak-lord",number:179,title:"Alleluia, Speak Lord",title_alt:null,language:"english",tags:["Acclamation"],stanzas:[{label:"Verse 1",text:"Alleluia Alleluia Alleluia x2"},{label:"Verse 2",text:`Speak Lord, your servant is listening
+You have the words of everlasting life`},{label:"Verse 3",text:"Alleluia Alleluia Alleluia x2"}],type:"worship",beat:"4/4",tempo:74},{slug:"amazing-love",number:180,title:"Amazing Love",title_alt:null,language:"english",tags:["Communion"],stanzas:[{label:"Verse 1",text:`I'm forgiven because You were forsaken
+I'm accepted, You were condemned
+I am alive and well, Your spirit is within me
+'Cause You died and rose again`},{label:"Verse 2",text:`Amazing love, how can it be?
+That You, my King would die for me?
+Amazing love, I know its true
+It's my joy to honor You
+In all I do, I honor You`}],type:"worship",beat:"4/4",tempo:74},{slug:"as-the-deer",number:181,title:"As the deer",title_alt:null,language:"english",tags:["Psalms"],stanzas:[{label:"Verse 1",text:`As the deer panteth for the water,
+So my soul longeth after Thee.
+You alone are my heart's desire,
+And I long to worship you.`},{label:"Verse 2",text:`You alone are my Strength, my shield,
+To you alone may my spirit yield.
+You alone are my heart's desire,
+And I long to worship you.`},{label:"Verse 3",text:`I want you more than Gold and silver,
+Only you can satisfy.
+You alone are the real joy-giver,
+And the apple of my eye.`},{label:"Verse 4",text:`You're my friend and you are my brother,
+Even though you are my Lord
+I love you more than any other,
+So much more than anything.`}],type:"worship",beat:"4/4",tempo:74},{slug:"as-we-gather-in-this-place-today",number:182,title:"As we gather in this place today",title_alt:null,language:"english",tags:["Entrance","Holy Spirit"],stanzas:[{label:"Verse 1",text:`As we gather in this place today
+Holy Spirit come and have Your way, have Your way
+As we lay aside our own desires
+Sweep across our hearts with Holy fire, have Your way`},{label:"Verse 2",text:`This is Your house, Your home
+We welcome You, Lord, we welcome You
+This is Your house, Your home
+We welcome You today`},{label:"Verse 3",text:`As we offer up our hearts and lives
+Let them be a living sacrifice, oh have Your way
+Be glorified in everything we do
+Be glorified in everything we say, oh have Your way`},{label:"Verse 4",text:`This is Your house, Your home
+We welcome You, Lord, we welcome You
+This is Your house, Your home
+We welcome You today`}],type:"worship",beat:"4/4",tempo:74},{slug:"awesome-god",number:183,title:"Awesome God",title_alt:null,language:"english",tags:["Psalms"],stanzas:[{label:"Verse 1",text:`When He rolls up His sleeves
+He ain't just putting on the ritz
+(Our God is an awesome God)`},{label:"Verse 2",text:`There's thunder in His footsteps
+And lightning in His fists
+(Our God is an awesome God)`},{label:"Verse 3",text:`And the Lord wasn't joking
+When He kicked 'em out of Eden
+It wasn't for no reason
+That He shed His blood
+His return is very close
+And so you better be believing that
+Our God is an awesome God`},{label:"Verse 4",text:`( Our God is an awesome God
+He reigns from heaven above
+With wisdom, power, and love
+Our God is an awesome God ) x2`},{label:"Verse 5",text:`And when the sky was starless
+In the void of the night
+(Our God is an awesome God)`},{label:"Verse 6",text:`He spoke into the darkness
+And created the light
+(Our God is an awesome God)`},{label:"Verse 7",text:`Judgement and wrath
+He poured out on the Sodom
+Mercy and grace
+He gave us at the cross
+I hope that you have not
+Too quickly forgotten that
+Our God is an awesome God`},{label:"Verse 8",text:`Our God is an awesome God
+He reigns from heaven above
+With wisdom, power, and love
+Our God is an awesome God`}],type:"worship",beat:"4/4",tempo:74},{slug:"because-he-lives",number:184,title:"Because He lives",title_alt:null,language:"english",tags:["Communion","Easter"],stanzas:[{label:"Verse 1",text:`Because He lives, I can face tomorrow
+Because He lives, all fear is gone
+Because I know-w-w He holds the future
+And life is worth a living, just because He lives`},{label:"Verse 2",text:`God sent His son, they called Him Jesus
+He came to love, heal and forgive
+He lived and died to buy my pardon
+An empty grave is there to prove my Savior lives`},{label:"Verse 3",text:`Because He lives, I can face tomorrow
+Because He lives, all fear is gone
+Because I know-w-w He holds the future
+And life is worth a living, just because He lives`},{label:"Verse 4",text:`And then one day, I'll cross the river
+I'll fight life's final war with pain
+And then as death gives way to victory
+I’ll see the lights of glory and l'll know He reigns`},{label:"Verse 5",text:`Because He lives, I can face tomorrow
+Because He lives, all fear is gone
+Because I know-w-w He holds the future
+And life is worth a living, just because He lives`}],type:"worship",beat:"4/4",tempo:74},{slug:"bless-the-lord-o-my-soul",number:185,title:"Bless the Lord O My Soul",title_alt:null,language:"english",tags:["Communion"],stanzas:[{label:"Verse 1",text:`The sun comes up
+It's a new day dawning
+It's time to sing Your song again
+Whatever may pass
+And whatever lies before me
+Let me be singing
+When the evening comes
+Bless the Lord oh my soul
+Oh my soul
+Worship His Holy name
+Sing like never before
+Oh my soul
+I'll worship Your Holy name
+You're rich in love
+And You're slow to anger
+Your name is great
+And Your heart is kind
+For all Your goodness
+I will keep on singing
+Ten thousand reasons
+For my heart to find
+So bless the Lord oh my soul
+Oh my soul
+Worship His Holy name
+Sing like never before
+Oh my soul
+I'll worship Your Holy name
+Bless You Lord
+And on that day
+When my strength is failing
+The end draws near
+And my time has come
+Still my soul will
+Sing Your praise unending
+Ten thousand years
+And then forevermore
+Forevermore
+Bless the Lord oh my soul
+Oh my soul
+Worship His Holy name
+Sing like never before
+Oh my soul
+I'll worship Your Holy name`}],type:"worship",beat:"4/4",tempo:74},{slug:"blest-are-you-lord",number:186,title:"Blest are You Lord",title_alt:null,language:"english",tags:["Offertory"],stanzas:[{label:"Verse 1",text:`Blest are You, Lord, God of all creation
+Thanks to Your goodness,
+this bread we offer
+Fruit of the earth, work of our hands
+It will become the bread of life.`},{label:"Verse 2",text:`Blessed be God (2)
+blessed be God for ever, amen
+Blessed be God (2)
+blessed be God for ever, amen`},{label:"Verse 3",text:`Blest are You, Lord God of all creation
+Thanks to Your goodness
+this wine we offer
+Fruit of the vine, work of our hands
+It will become the cup of joy.`}],type:"worship",beat:"4/4",tempo:74},{slug:"come-holy-spirit-fall-on-me",number:187,title:"Come Holy Spirit (Fall on me)",title_alt:null,language:"english",tags:["Communion","Holy Spirit"],stanzas:[{label:"Verse 1",text:`Come Holy Spirit
+Fall on me now
+I need Your anointing
+Come in Your power
+I love You Holy Spirit
+You're captivating my soul
+And everyday I grow to love You more`},{label:"Verse 2",text:`Come Holy Spirit
+Fall on me now
+I need Your anointing
+Come in Your power
+I love You Holy Spirit
+You're captivating my soul
+And everyday I grow to love You more`},{label:"Verse 3",text:`I'm reaching for Your heart
+You hold my life into Your hands
+Drawing me closer to You
+I feel Your power renew
+Nothing compares to this place
+Where I can see You face to face`},{label:"Verse 4",text:"I worship You in spirit and in truth"}],type:"worship",beat:"4/4",tempo:74},{slug:"feliz-navidad",number:188,title:"Feliz Navidad",title_alt:null,language:"english",tags:["Carol","Christmas"],stanzas:[{label:"Verse 1",text:`Feliz Navidad,
+Feliz Navidad,
+Feliz Navidad,
+Próspero año y felicidad (2)`},{label:"Verse 2",text:`We wanna wish you a merry Christmas!
+We wanna wish you a merry Christmas!
+We wanna wish you a merry Christmas!
+From the bottom of our hearts (2)`}],type:"worship",beat:"4/4",tempo:74},{slug:"give-me-joy-in-my-heart",number:189,title:"Give me Joy in my heart",title_alt:null,language:"english",tags:["Entrance"],stanzas:[{label:"Verse 1",text:`Give me joy in my heart, keep me praising,
+Give me joy in my heart, I pray.
+Give me joy in my heart, keep me praising,
+Keep me praising till the end of day.`},{label:"Verse 2",text:`Sing hosanna! Sing hosanna!
+Sing hosanna to the King of kings!
+Sing hosanna! Sing hosanna!
+Sing hosanna to the King.`},{label:"Verse 3",text:`Give me oil in my heart, keep me burning,
+Give me oil in my heart, I pray.
+Give me joy in my heart, keep me burning,
+Keep me burning till the end of day.`}],type:"worship",beat:"4/4",tempo:74},{slug:"give-thanks",number:190,title:"Give thanks",title_alt:null,language:"english",tags:["Communion","Praise & Worship","Recessional"],stanzas:[{label:"Verse 1",text:`Give thanks with a grateful heart,
+give thanks to the Holy One;
+give thanks, because he’s given
+Jesus Christ, his Son.
+Give thanks with a grateful heart,
+give thanks to the Holy One;
+give thanks, because he’s given
+Jesus Christ, his Son.`},{label:"Verse 2",text:`And now let the weak say ‘I am strong’,
+let the poor say ‘I am rich’,
+because of what the Lord has done for us;
+and now let the weak say ‘I am strong’,
+let the poor say ‘I am rich’,
+because of what the Lord has done for us.`},{label:"Verse 3",text:"Give thanks..."}],type:"worship",beat:"4/4",tempo:74},{slug:"glory-glory-to-god-in-the-highest",number:191,title:"Glory, glory to God in the highest",title_alt:null,language:"english",tags:["Gloria"],stanzas:[{label:"Verse 1",text:`Glory, glory to God in the highest
+Glory, glory to God in the highest
+And on earth, peace to people of good will`},{label:"Verse 2",text:`We praise You
+We bless You
+We adore You
+We glorify You
+We give You thanks for Your great glory
+Lord God, Heavenly King
+O God, Almighty Father`},{label:"Verse 3",text:`Lord Jesus Christ, only Begotten Son
+Lord God, Lamb of God, Son of the Father
+You take away the sins of the world,
+have mercy on us
+You take away the sins of the world.
+receive our pray'r
+You are seated at the right hand of the Father
+have mercy on us`},{label:"Verse 4",text:`For You alone are the Holy One
+You alone are the Lord
+You alone are the Most High, Jesus Christ
+With the Holy Spirit
+In the glory of God the Father`},{label:"Verse 5",text:`Glory, glory to God in the highest
+Glory, glory to God in the highest
+And on earth, peace to people of good will
+Amen`}],type:"worship",beat:"4/4",tempo:74},{slug:"great-indeed-are-your-works-o-lord",number:192,title:"Great indeed are your works O lord",title_alt:null,language:"english",tags:["Easter","Psalms"],stanzas:[{label:"Verse 1",text:`Great indeed are your works O lord
+now and evermore
+Great indeed are your works O lord
+now and evermore`},{label:"Verse 2",text:`The universe night and day
+Tells of all your wonders
+You are our life and our light
+We shall praise you always
+You are the path which we tread
+you will lead us onward`},{label:"Verse 3",text:`From every corner of the Earth
+All the nations gather
+You lead us all by the hand
+To the heavenly kingdom
+Then at the end of all time
+You will come in glory.`}],type:"worship",beat:"4/4",tempo:74},{slug:"heart-of-worship",number:193,title:"Heart of Worship",title_alt:null,language:"english",tags:["Communion","Praise & Worship"],stanzas:[{label:"Verse 1",text:`When the music fades
+All is stripped away
+And I simply come
+Longin' just to bring
+Something that's of worth
+That will bless Your heart
+I'll bring You more than a song
+For a song in itself
+Is not what You have required
+You search much deeper within
+Through the ways things appear
+You're looking into my heart
+I'm comin' back to the heart of worship
+And it's all about You
+It's all about You, Jesus
+I'm sorry, Lord, for the thing I've made it
+When it's all about You
+It's all about You, Jesus
+King of endless worth
+No one could express
+How much You deserve?
+Though I'm weak and poor
+All I have is Yours
+Every single breath
+I'll bring You more than a song
+For a song in itself
+Is not what You have required
+You search much deeper within
+Through the way things appear
+You're looking into my heart, yeah
+I'm comin' back to the heart of worship
+And it's all about You
+It's all about You, Jesus
+I'm sorry, Lord, for the thing I've made it
+When it's all about You
+It's all about You, Jesus`}],type:"worship",beat:"4/4",tempo:74},{slug:"holy-holy-lord-god-of-hosts",number:194,title:"Holy, Holy Lord God of hosts",title_alt:null,language:"english",tags:["Hosanna"],stanzas:[{label:"Verse 1",text:`Holy, Holy Lord God of Hosts
+Heaven and earth are full of your glory
+Hosanna, Hosanna in the highest`},{label:"Verse 2",text:`Blessed is he who comes in the
+name of the Lord
+Hosanna, Hosanna in the highest (2)
+Hosanna!`}],type:"worship",beat:"4/4",tempo:74},{slug:"i-wander-far-away-from-god",number:195,title:"I wander far away from God",title_alt:null,language:"english",tags:[],stanzas:[{label:"Verse 1",text:`I’ve wandered far away from God,
+Now I’m coming home;
+The paths of sin too long I’ve trod,
+Lord, I’m coming home.`},{label:"Verse 2",text:`Coming home, coming home,
+Nevermore to roam;
+Open wide Thine arms of love;
+Lord, I’m coming home.`},{label:"Verse 3",text:`I’ve wasted many precious years,
+Now I’m coming home;
+I now repent with bitter tears,
+Lord, I’m coming home.`},{label:"Verse 4",text:`I’m tired of sin and straying, Lord,
+Now I’m coming home;
+I’ll trust Thy love, believe Thy word;
+Lord, I’m coming home.`},{label:"Verse 5",text:`My soul is sick, my heart is sore,
+Now I’m coming home;
+My strength renew, my hope restore:
+Lord, I’m coming home.`},{label:"Verse 6",text:`My only hope, my only plea,
+Now I’m coming home;
+That Jesus died, and died for me;
+Lord, I’m coming home.`},{label:"Verse 7",text:`I need His cleansing blood, I know,
+Now I’m coming home;
+O wash me whiter than the snow;
+Lord, I’m coming home.`}],type:"worship",beat:"4/4",tempo:74},{slug:"i-will-praise-you",number:196,title:"I will praise you",title_alt:"I will praise you",language:"english",tags:["Worship"],stanzas:[{label:"Verse 1",text:`I will praise you with all of my life
+I will praise you with all of my strength
+With all of my life, with all of my strength
+All of my hope is in you`},{label:"Verse 2",text:`I will seek you with all of my heart
+I will seek you with all of my mind
+With all of my heart, with all of my strength
+All of my hope is in you`}],type:"worship",beat:"4/4",tempo:74},{slug:"i-will-sing-of-the-mercices",number:197,title:"I will sing of the mercices",title_alt:null,language:"english",tags:["Psalms"],stanzas:[{label:"Verse 1",text:`I will sing of the mercies of the Lord for ever
+I will sing, I will sing
+I will sing of the mercies of the Lord for ever
+I will sing of the mercies of the Lord.`},{label:"Verse 2",text:`With my mouth will I make known
+Thy faithfulness, thy faithfulness
+With my mouth will I make known
+Thy faithfulness to all generations.`}],type:"worship",beat:"4/4",tempo:74},{slug:"i-the-lord-of-sea-and-sky",number:198,title:"I, the Lord of sea and sky",title_alt:null,language:"english",tags:["Entrance"],stanzas:[{label:"Verse 1",text:`I, the Lord of sea and sky,
+I have heard my people cry.
+All who dwell in dark and sin,
+my hand will save.`},{label:"Verse 2",text:`I, who made the stars of night,
+I will make their darkness bright.
+Who will bear my light to them?
+Whom shall I send?`},{label:"Verse 3",text:`Here I am, Lord.  Is it I, Lord?
+I have heard you calling in the night.
+I will go, Lord, if you lead me.
+I will hold your people in my heart.`},{label:"Verse 4",text:`I, the Lord of snow and rain,
+I have borne my people’s pain.
+I have wept for love of them.
+They turn away.`},{label:"Verse 5",text:`I will break their hearts of stone,
+give them hearts for love alone.
+I will speak my words to them.
+Whom shall I send?`},{label:"Verse 6",text:"Here I am, Lord..."},{label:"Verse 7",text:`I, the Lord of wind and flame,
+I will send the poor and lame.
+I will set a feast for them.
+My hand will save.
+Finest bread I will provide
+till their hearts be satisfied.
+I will give my life to them.
+Whom shall I send?`},{label:"Verse 8",text:"Here I am, Lord..."}],type:"worship",beat:"4/4",tempo:74},{slug:"in-his-time",number:199,title:"In his time",title_alt:null,language:"english",tags:["Psalms"],stanzas:[{label:"Verse 1",text:`In his time, In his time,
+He makes all things beautiful in his time,
+Lord, please show me everyday
+As you're teaching me your way
+That you do just what you say.`},{label:"Verse 2",text:`In your time, In your time,
+He makes all things beautiful in your time,
+Lord, my life to you bring
+With its winter and its spring
+May I fathom everything in your time.`},{label:"Verse 3",text:`There's a time, There's a time,
+Both for sowing and for reaping there's a time
+Time for losing, time for gain
+Time for joy and time for pain
+Every purpose under heaven has a time.`},{label:"Verse 4",text:`There are times, there are days
+Weeks and months we cannot understand God's ways.
+If for years we fail to scan
+What is his eternal plan
+We'll remember what he can all the time.
+Whom shall I send?`}],type:"worship",beat:"4/4",tempo:74},{slug:"lamb-of-god-sins-of-all-the-world",number:200,title:"Lamb of God - sins of all the world",title_alt:null,language:"english",tags:["Lamb of God"],stanzas:[{label:"Verse 1",text:`Lamb of God
+You take away the sins,
+The sins of all the world
+Give us mercy - 2
+Give us mercy Lamb of God`},{label:"Verse 2",text:`Lamb of God
+You take away the sins,
+The sins of all the world
+Give us mercy - 2
+Give us mercy Lamb of God`},{label:"Verse 3",text:`Lamb of God
+You take away the sins,
+The sins of all the world
+Grant us peace, Lord - 2
+Grant us Peace, O Lamb of God`}],type:"worship",beat:"4/4",tempo:74},{slug:"lamb-of-god-o-jesus-christ",number:201,title:"Lamb of God, O Jesus Christ",title_alt:null,language:"english",tags:["Lamb of God"],stanzas:[{label:"Verse 1",text:`Lamb of God, O Jesus Christ
+You take away our sins
+Have mercy on us
+Have mercy on us`},{label:"Verse 2",text:`Lamb of God, O Jesus Christ
+You take away our sins
+Grant us your true peace
+Grant us your lasting peace.`}],type:"worship",beat:"4/4",tempo:74},{slug:"lord-have-mercy",number:202,title:"Lord have mercy",title_alt:null,language:"english",tags:["Lord have mercy"],stanzas:[{label:"Verse 1",text:`Lord, have mercy, Lord, have mercy
+Lord, have mercy on us all.
+Lord, have mercy, Lord, have mercy
+Lord, have mercy on us all`},{label:"Verse 2",text:`Christ, have mercy, Christ, have mercy
+Christ, have mercy on us all
+Christ, have mercy, Christ, have mercy
+Christ, have mercy on us all`},{label:"Verse 3",text:`Lord, have mercy, Lord, have mercy
+Lord, have mercy on us all.
+Lord, have mercy, Lord, have mercy
+Lord, have mercy on us all.`}],type:"worship",beat:"4/4",tempo:74},{slug:"majesty-worship-his-majesty",number:203,title:"Majesty, worship His majesty",title_alt:"Majesty, worship His majesty",language:"english",tags:["Worship","Adoration"],stanzas:[{label:"Verse 1",text:`Majesty, worship His majesty
+Unto Jesus be all glory, power and praise
+Majesty, kingdom authority,
+Flow from His throne unto His own, His anthem raise!`},{label:"Chorus",text:`So exalt, lift up on high the name of Jesus
+Magnify, come glorify Christ Jesus, the King`},{label:"Verse 2",text:`Majesty, worship His majesty,
+Jesus who died, now glorified, King of all Kings`}],type:"worship",beat:"4/4",tempo:74},{slug:"make-me-a-channel-of-your-peace",number:204,title:"Make me a channel of your peace",title_alt:null,language:"english",tags:["Communion"],stanzas:[{label:"Verse 1",text:`Make me a channel of your peace,
+Where there is hatred let me bring your love.
+Where there is injury your pardon Lord
+And where there's doubt true faith in You.`},{label:"Verse 2",text:`Oh Master grant that I may never seek.
+So much to be consoled as to console,
+To be understood as to understand,
+To be loved as to love with all my soul.`},{label:"Verse 3",text:`Make me a channel of your peace
+Where there's despair in life let me bring hope.
+Where there is darkness, Lord your shining light.
+And where there's sadness, every joy.`},{label:"Verse 4",text:`Make me a channel of your peace,
+It is in pardoning that we are pardoned,
+In giving to all men that we receive,
+And in dying that we're born to eternal life`}],type:"worship",beat:"4/4",tempo:74},{slug:"making-melody-in-your-heart",number:205,title:"Making melody in your heart",title_alt:"Making melody in your heart",language:"english",tags:["Praise","Worship"],stanzas:[{label:"Chorus",text:`Making melody in your heart unto the King of Kings
+Worship and adore Him (2)
+Making melody in your heart unto the King of Kings`},{label:"Verse 1",text:`King of kings and Lord of lords (3), glory to His name
+Give to the Lord glory (3), oh give unto the Lord
+He is the King and Lord (3), महिमा उसकी हो`}],type:"praise",beat:"4/4",tempo:104},{slug:"more-love-more-power",number:206,title:"More love, more power",title_alt:"More love, more power",language:"english",tags:["Worship","Prayer"],stanzas:[{label:"Chorus",text:`More love, more power
+More of you in my life (2)`},{label:"Verse 1",text:`And I will worship you with all of my heart
+And I will worship you with all of my mind
+And I will worship you with all of my strength
+For you are my Lord (2)`},{label:"Verse 2",text:`I will seek your face with all of my heart
+I will seek your face with all of my mind
+I will seek your face with all of my strength
+For you are my Lord (2)`}],type:"worship",beat:"4/4",tempo:74},{slug:"seek-ye-first",number:207,title:"Seek ye first",title_alt:"Seek ye first",language:"english",tags:["Gospel","Scripture"],stanzas:[{label:"Verse 1",text:`Seek ye first the Kingdom of God
+And His righteousness,
+And all these things shall be added unto you
+Hallelu, Hallelujah
+Hallelujah, Hallelujah
+Hallelujah, Hallelu-Hallelujah`},{label:"Verse 2",text:`Ask and it shall be given unto you,
+Seek and you shall find,
+Knock and the door shall be opened unto you
+Hallelu, Hallelujah`},{label:"Verse 3",text:`Man shall not live by bread alone,
+But by every word
+That proceeds from the mouth of God
+Hallelu, Hallelujah`}],type:"worship",beat:"4/4",tempo:74},{slug:"shepherd-of-my-soul",number:208,title:"Shepherd of my soul",title_alt:null,language:"english",tags:["Communion","Psalms"],stanzas:[{label:"Verse 1",text:`Shepherd of my soul I give You full control
+Wherever You may lead I will follow
+I have made the choice to listen for Your voice
+Wherever You may lead I will go`},{label:"Verse 2",text:`Shepherd of my soul I give You full control
+Wherever You may lead I will follow
+I have made the choice to listen for Your voice
+Wherever You may lead I will go`},{label:"Verse 3",text:`Be it in a quiet pasture or by a gentle breeze
+The shepherd of my soul is by my side
+Should I face a mighty mountain or a valley dark and deep
+The shepherd of my soul will be my guide`},{label:"Verse 4",text:`Shepherd of my soul I give You full control
+Wherever You may lead I will follow
+I have made the choice to listen for Your voice
+Wherever You may lead I will go`},{label:"Verse 5",text:`Be it in a quiet pasture or by a gentle breeze
+The shepherd of my soul is by my side
+And should I face a mighty mountain or a valley dark and deep
+The shepherd of my soul will be my guide`},{label:"Verse 6",text:`The Shepherd of my soul I give You full control
+Wherever You may lead I will follow
+I have made the choice to listen for Your voice
+Wherever You may lead I will go
+Wherever wherever You may lead I will go`}],type:"worship",beat:"4/4",tempo:74},{slug:"shine-jesus-shine",number:209,title:"Shine Jesus shine",title_alt:null,language:"english",tags:["Recessional"],stanzas:[{label:"Verse 1",text:`Lord the light of your Love is shining
+In the midst of the darkness shining
+Jesus, Light of the world, shine upon us
+Set us free by the truth you now bring us
+Shine on me
+Shine on me.`},{label:"Verse 2",text:`Shine Jesus shine,
+fill this land with
+The Father's glory
+Blaze spirit blaze,
+set our heart on fire
+Flow river flow;
+flood the nations with Grace and mercy
+Send forth your word,
+Lord let there be light.`},{label:"Verse 3",text:`Lord I come to your awesome presence
+From the shadows into your radiance
+By the blood I may enter your brightness
+Search me, try me, consume all my darkness
+Shine on me
+Shine on me.`}],type:"worship",beat:"4/4",tempo:74},{slug:"shout-to-the-lord",number:210,title:"Shout to the Lord",title_alt:null,language:"english",tags:["Communion","Recessional"],stanzas:[{label:"Verse 1",text:`My Jesus, my Saviour
+Lord there is none like You
+All of my days, I want to praise
+The wonders of Your mighty love`},{label:"Verse 2",text:`My comfort, my shelter
+Tower of refuge and strength
+Let every breath, all that I am
+Never cease to worship You`},{label:"Verse 3",text:`Shout to the Lord all the earth, let us sing
+Power and majesty, praise to the King
+Mountains bow down and the seas will roar
+At the sound of Your name`},{label:"Verse 4",text:`I sing for joy at the works of Your hand
+Forever I'll love You, forever I'll stand
+Nothing compares to the promise I have, in You`},{label:"Verse 5",text:`My Jesus, my Saviour
+Lord there is none like You
+All of my days, I want to praise
+The wonders of Your mighty love`},{label:"Verse 6",text:`My comfort, my shelter
+Tower of refuge and strength
+Let every breath, all that I am
+Never cease to worship You`},{label:"Verse 7",text:`Shout to the Lord all the earth, let us sing
+Power and majesty, praise to the King
+Mountains bow down and the seas will roar
+At the sound of Your name`},{label:"Verse 8",text:`I sing for joy at the works of Your hand
+Forever I'll love You, forever I'll stand
+Nothing compares to the promise I have, in You
+Nothing compares to the promise I have, in You
+Nothing compares to the promise I have, in You`}],type:"worship",beat:"4/4",tempo:74},{slug:"silent-night",number:211,title:"Silent night",title_alt:null,language:"english",tags:["Christmas","Communion"],stanzas:[{label:"Verse 1",text:`Silent night, holy night
+All is calm, all is bright
+Round yon Virgin, Mother and Child
+Holy Infant so tender and mild
+Sleep in heavenly peace
+Sleep in heavenly peace`},{label:"Verse 2",text:`Silent night, holy night
+Shepherds quake at the sight
+Glories stream from heaven afar
+Heavenly hosts sing Alleluia
+Christ the Savior is born
+Christ the Savior is born`},{label:"Verse 3",text:`Silent night, holy night
+Son of God, love's pure light
+Radiant beams from Thy holy face
+With the dawn of redeeming grace
+Jesus Lord, at Thy birth
+Jesus Lord, at Thy birth`}],type:"worship",beat:"4/4",tempo:74},{slug:"the-king-of-glory",number:212,title:"The King of glory",title_alt:null,language:"english",tags:["Entrance","Palm Sunday"],stanzas:[{label:"Verse 1",text:`The King of glory comes, the nation rejoices;
+Open the gates before Him lift up your voices.`},{label:"Verse 2",text:`Who is the King of Glory; how shall we call Him?
+He is Emmanuel, the promised of ages.`},{label:"Verse 3",text:`In all of Galilee, in city or village,
+He goes among His people curing their illness.`},{label:"Verse 4",text:`Sing then of David's Son, our Saviour and brother,
+In all of Galilee was never another.`},{label:"Verse 5",text:`He gave His life for us, the lamb of salvation;
+He took upon Himself the sins of the nation.`},{label:"Verse 6",text:`He conquered sin and death, He truly has risen,
+And he will share with us his heavenly vision.`}],type:"worship",beat:"4/4",tempo:74},{slug:"there-is-no-problem-too-big",number:213,title:"There is no problem too big",title_alt:null,language:"english",tags:["Communion","Good Friday"],stanzas:[{label:"Verse 1",text:`There is no problem too big, God cannot solve it.
+There is no mountain too tall, He cannot move it.
+There is no storm too dark, God cannot calm it.
+There is no sorrow too deep, He cannot soothe it.`},{label:"Verse 2",text:`If he carried the weight of the world,
+Upon his shoulders,
+I know, my brothers, that he will carry you.
+If he carried the weight of the world,
+Upon his shoulders
+I know, my sister, that he will carry you.`}],type:"worship",beat:"4/4",tempo:74},{slug:"there-is-power-power",number:214,title:"There is power, power",title_alt:"There is power, power",language:"english",tags:["Victory","Power"],stanzas:[{label:"Chorus",text:`There is power, power, wonder-working power
+In the blood of the Lamb
+There is power, power, wonder-working power
+In the precious blood of Jesus`},{label:"Verse 1",text:`Victory... Victory to the Blood
+Victory... Victory to the Blood
+Victory... Victory to the Blood of Jesus`}],type:"worship",beat:"4/4",tempo:74},{slug:"thy-word",number:215,title:"Thy Word",title_alt:null,language:"english",tags:["Acclamation"],stanzas:[{label:"Verse 1",text:`Thy Word is a lamp unto my feet
+And a light unto my path
+You're the light unto my path.`}],type:"worship",beat:"4/4",tempo:74},{slug:"way-maker",number:216,title:"Way Maker",title_alt:null,language:"english",tags:["Communion","Praise & Worship"],stanzas:[{label:"Verse 1",text:`You are here, You’re moving in our midst
+I worship You, I worship You
+You are here, You’re working in this place
+I worship You, I worship You`},{label:"Verse 2",text:`Way maker, miracle worker, promise keeper
+Light in the darkness, my God
+That is who You are`},{label:"Verse 3",text:`Way maker, miracle worker, promise keeper
+Light in the darkness, my God
+That is who You are`},{label:"Verse 4",text:`You are here, touching every heart
+I worship You, I worship You
+You are here, healing every heart
+I worship You, I worship You`},{label:"Verse 5",text:`You are here, turning lives around
+I worship You, I worship You
+You are here, mending every heart
+I worship You, I worship You`},{label:"Verse 6",text:`Even when I don’t see it, You’re working
+Even when I don’t feel it, You’re working
+You never stop, You never stop working
+You never stop, You never stop working`}],type:"worship",beat:"4/4",tempo:74},{slug:"we-are-gathering-together-unto-him",number:217,title:"We are gathering together unto Him",title_alt:null,language:"english",tags:["Entrance"],stanzas:[{label:"Verse 1",text:`We are gathering together unto Him,
+We are gathering together unto Him;
+Unto Him shall the gathering of the people be;
+We are gathering together unto Him;`},{label:"Verse 2",text:`We are offering together unto Him,
+We are offering together unto Him;
+Unto Him shall the offering of the people be;
+We are offering together unto Him;`},{label:"Verse 3",text:`We are singing together unto Him,
+We are singing together unto Him;
+Unto Him shall the singing of the people be;
+We are singing together unto Him;`},{label:"Verse 4",text:`We are praying together unto Him,
+We are praying together unto Him;
+Unto Him shall the praying of the people be;
+We are praying together unto Him;`}],type:"worship",beat:"4/4",tempo:74},{slug:"we-three-kings",number:218,title:"We three Kings",title_alt:null,language:"english",tags:["Carol","Christmas","Entrance","Epiphany","Recessional"],stanzas:[{label:"Verse 1",text:`We three kings of Orient are
+Bearing gifts we traverse afar.
+Field and fountain, moor and mountain,
+Following yonder star.`},{label:"Verse 2",text:`O star of wonder, star of night,
+Star with royal beauty bright,
+Westward leading, still proceeding,
+Guide us to thy perfect Light.`},{label:"Verse 3",text:`Born a king on Bethlehem's plain,
+Gold I bring to crown Him again,
+King forever, ceasing never
+Over us all to reign.`},{label:"Verse 4",text:`O star of wonder, star of night,
+Star with royal beauty bright,
+Westward leading, still proceeding,
+Guide us to thy perfect Light.`},{label:"Verse 5",text:`Frankincense to offer have I.
+Incense owns a Deity nigh.
+Prayer and praising all men raising,
+Worship Him, God on high.`},{label:"Verse 6",text:`O star of wonder, star of night,
+Star with royal beauty bright,
+Westward leading, still proceeding,
+Guide us to thy perfect Light.`},{label:"Verse 7",text:`Myrrh is mine: Its bitter perfume
+Breaths a life of gathering gloom.
+Sorrowing, sighing, bleeding dying,
+Sealed in the stone-cold tomb.`},{label:"Verse 8",text:`O star of wonder, star of night,
+Star with royal beauty bright,
+Westward leading, still proceeding,
+Guide us to thy perfect Light.`},{label:"Verse 9",text:`Glorious now behold Him arise,
+King and God and Sacrifice.
+Alleluia, alleluia!
+Sounds through the earth and skies.`},{label:"Verse 10",text:`O star of wonder, star of night,
+Star with royal beauty bright,
+Westward leading, still proceeding,
+Guide us to thy perfect Light.`}],type:"worship",beat:"4/4",tempo:74},{slug:"we-wish-you-a-merry-christmas",number:219,title:"We wish you a Merry Christmas",title_alt:null,language:"english",tags:["Carol","Christmas"],stanzas:[{label:"Verse 1",text:`We wish you a merry Christmas,
+We wish you a merry Christmas,
+We wish you a merry Christmas
+And a happy new year!`},{label:"Verse 2",text:`Good tidings we bring to you and your kin,
+We wish you a merry Christmas
+And a happy new year!`}],type:"worship",beat:"4/4",tempo:74},{slug:"welcome-holy-spirit",number:220,title:"Welcome Holy Spirit",title_alt:null,language:"english",tags:["Adoration","Communion","Entrance","Holy Spirit"],stanzas:[{label:"Verse 1",text:`Welcome Holy Spirit
+We are in Your presence
+Fill us with Your power
+Live inside of me`},{label:"Verse 2",text:`Welcome Holy Spirit
+We are in Your presence
+Fill us with Your power
+Live inside of me`},{label:"Verse 3",text:`You’re the Living Water
+Never drying Fountain
+Comforter and Counselor
+Take complete control`},{label:"Verse 4",text:`Welcome Holy Spirit
+We are in Your presence
+Fill us with Your power
+Live inside of me`},{label:"Verse 5",text:`Welcome Holy Spirit
+We are in Your presence
+Fill us with Your power
+Live inside of me`},{label:"Verse 6",text:`You’re the Living Water
+Never drying Fountain
+Comforter and Counselor
+Take complete control`},{label:"Verse 7",text:`You’re the Living Water
+Never drying Fountain
+Comforter and Counselor
+Take complete control`},{label:"Verse 8",text:`Welcome Holy Spirit
+We are in Your presence
+Fill us with Your power
+Live inside of me`},{label:"Verse 9",text:`Fill us with Your power
+Live inside of me
+Fill us with Your power
+Live inside of me`}],type:"worship",beat:"4/4",tempo:74},{slug:"what-a-beautiful-name",number:221,title:"What a beautiful name",title_alt:null,language:"english",tags:["Communion","Easter"],stanzas:[{label:"Verse 1",text:`You were the Word at the beginning
+One with God the Lord Most High
+Your hidden glory in creation
+Now revealed in You our Christ`},{label:"Verse 2",text:`What a beautiful name it is
+What a beautiful name it is
+The name of Jesus Christ my King`},{label:"Verse 3",text:`What a beautiful name it is
+Nothing compares to this
+What a beautiful name it is
+The name of Jesus`},{label:"Verse 4",text:`You didn't want heaven without us
+So Jesus, You brought heaven down
+My sin was great, Your love was greater
+What could separate us now`},{label:"Verse 5",text:`What a wonderful name it is
+What a wonderful name it is
+The name of Jesus Christ my King`},{label:"Verse 6",text:`What a wonderful name it is
+Nothing compares to this
+What a wonderful name it is
+The name of Jesus`},{label:"Verse 7",text:`Death could not hold You
+The veil tore before You
+You silenced the boast, of sin and grave
+The heavens are roaring the praise of Your glory
+For You are raised to life again`},{label:"Verse 8",text:`You have no rival
+You have no equal
+Now and forever, God You reign
+Yours is the Kingdom
+Yours is the Glory
+Yours is the name, above all names`},{label:"Verse 9",text:`What a powerful name it is
+What a powerful name it is
+The name of Jesus Christ my King`},{label:"Verse 10",text:`What a powerful name it is
+Nothing can stand against
+What a powerful name it is
+The name of Jesus`},{label:"Verse 11",text:`What a powerful name it is
+The name of Jesus
+What a powerful name it is
+The name of Jesus`}],type:"worship",beat:"4/4",tempo:74},{slug:"what-a-friend-we-have-in-jesus",number:222,title:"What a friend we have in Jesus",title_alt:null,language:"english",tags:["Entrance","Recessional"],stanzas:[{label:"Verse 1",text:`What a friend we have in Jesus,
+All our sins and griefs to bear,
+What a privilege to carry,
+Everything to God in prayer,
+Oh, what grace we often forfeit,
+Oh, what needless pain we bear,
+All because we do not carry,
+Everything to God in Prayer.`},{label:"Verse 2",text:`Have we trials and temptations,
+Is there trouble anywhere,
+Take it to the Lord in prayer.
+Can we find a friend so faithful,
+Who will all our sorrows share,
+Jesus knows our every weakness,
+Take it to the Lord in prayer.`},{label:"Verse 3",text:`Are we weak and heavy laden?
+Cumbered with load of care?
+Precious Saviour, still our refuge.
+Take it to the Lord in prayer.
+Do thy friends despise, forsake thee?
+Take it to the Lord in prayer;
+In His arms He'll take and shield thee
+Thou wilt find a solace there.`}],type:"worship",beat:"4/4",tempo:74},{slug:"when-the-spirit-of-the-lord",number:223,title:"When the Spirit of the Lord",title_alt:"When the Spirit of the Lord",language:"english",tags:["Praise","Holy Spirit"],stanzas:[{label:"Verse 1",text:`When the Spirit of the Lord moves in my heart
+I will praise like David praised (2)
+I will sing like David sang
+I will clap like David clapped
+I will dance like David danced`}],type:"praise",beat:"4/4",tempo:104},{slug:"when-we-eat-this-bread",number:224,title:"When we eat this bread",title_alt:null,language:"english",tags:["Proclamation"],stanzas:[{label:"Verse 1",text:`When we eat this bread
+and we drink this cup,
+we proclaim your death, Lord Jesus,
+until you come,
+until you come in glory.`}],type:"worship",beat:"4/4",tempo:74},{slug:"you-are-my-all-in-all",number:225,title:"You are my all in all",title_alt:null,language:"english",tags:["Communion"],stanzas:[{label:"Verse 1",text:`You are my strength when I am weak
+You are the treasure that I seek
+You are my all in all
+Seeking You as a precious jewel
+Lord, to give up I'd be a fool
+You are my all in all`},{label:"Verse 2",text:`Jesus, Lamb of God
+Worthy is Your name
+Jesus, Lamb of God
+Worthy is Your name`},{label:"Verse 3",text:`Taking my sin, my cross, my shame
+Rising again I bless Your name
+You are my all in all
+When I fall down You pick me up
+When I am dry You fill my cup
+You are my all in all`},{label:"Verse 4",text:`Jesus, Lamb of God
+Worthy is Your name
+Jesus, Lamb of God
+Worthy is Your name`}],type:"worship",beat:"4/4",tempo:74}];function Dw(){return`st-${Date.now()}-${Math.random().toString(36).slice(2,7)}`}function Vw(t){const e=t.type?String(t.type).toLowerCase().trim():Array.isArray(t.tags)&&t.tags.some(n=>String(n).toLowerCase()==="praise")?"praise":"worship";return{id:t.id||`song-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,slug:t.slug||null,number:t.number!=null&&t.number!==""?Number(t.number):null,title:t.title||"",title_alt:t.title_alt||null,language:t.language||"hindi",type:e==="praise"?"praise":"worship",beat:t.beat||t.beat_number||null,tempo:t.tempo!=null&&t.tempo!==""?Number(t.tempo):null,tags:Array.isArray(t.tags)?t.tags:[],stanzas:Array.isArray(t.stanzas)?t.stanzas:[],source:t.source||"db",created_at:t.created_at||new Date().toISOString(),updated_at:t.updated_at||new Date().toISOString()}}function ec(){if(!Array.isArray(uh))throw new Error("[seed] songs.seed.json must export an array");const t=new Set;return uh.map((n,r)=>{const s=`songs.seed.json[${r}]`;if(!n||typeof n!="object")throw new Error(`${s}: not an object`);if(!n.slug||typeof n.slug!="string")throw new Error(`${s}: missing "slug"`);if(t.has(n.slug))throw new Error(`${s}: duplicate slug "${n.slug}"`);if(t.add(n.slug),!n.title||typeof n.title!="string")throw new Error(`${s}: missing "title"`);const a=["hindi","english","marathi","bilingual"],i=String(n.language||"hindi").toLowerCase().trim(),o=a.includes(i)?i:"hindi";if(!Array.isArray(n.stanzas)||n.stanzas.length===0)throw new Error(`${s}: "stanzas" must be a non-empty array`);return n.stanzas.forEach((u,c)=>{if(!u||typeof u.text!="string"||!u.text.trim())throw new Error(`${s}.stanzas[${c}]: missing text`)}),Vw({...n,language:o,id:`seed:${n.slug}`,source:"seed",stanzas:n.stanzas.map(u=>({id:u.id||Dw(),label:u.label||"",text:u.text})),tags:n.tags||[]})})}function ym(t){return(t==null?void 0:t.source)==="seed"||String((t==null?void 0:t.id)||"").startsWith("seed:")}const Uw="";function Hw(t){return console.warn("[deleteAuth] VITE_DELETE_PASSWORD is not set. Deletes are disabled."),{ok:!1,reason:"not_configured"}}function Bw(){return!!Uw}const xm="church-songbook:song_meta:v1";function Fw(){try{const t=localStorage.getItem(xm);return t?JSON.parse(t):{}}catch(t){return console.error("Error reading local song metadata:",t),{}}}function ch(t){try{localStorage.setItem(xm,JSON.stringify(t))}catch(e){console.error("Error saving local song metadata:",e)}}async function Ww(t,e={}){if(!t||!t.id&&!t.title)throw new Error("Song information is required to update beat and tempo.");const n=String(t.id||""),r=String(t.title||"").trim(),s=r.toLowerCase(),a=e.beat!==void 0?e.beat?String(e.beat).trim():null:t.beat,i=e.tempo!==void 0?e.tempo!=null&&e.tempo!==""?Number(e.tempo):null:t.tempo,o=e.type!==void 0?e.type?String(e.type).toLowerCase().trim():null:t.type,u={songId:n||null,songTitle:r||null,beat:a||null,tempo:i!=null&&!isNaN(i)?i:null,type:o==="praise"?"praise":o==="worship"?"worship":null,updated_at:new Date().toISOString()},c=`meta:${n||s}`,d=Fw(),h={...u,updatedAt:u.updated_at};if(n&&(d[n]=h),s&&(d[s]=h),ch(d),at&&X)try{const{data:f}=await X.from("missing_songs").select("id").eq("keyword",c).eq("status","song_meta").limit(1);if(f&&f.length>0){const{data:m,error:x}=await X.from("missing_songs").update({notes:JSON.stringify(u),created_at:new Date().toISOString()}).eq("id",f[0].id).select().single();!x&&m&&(h.supabaseId=m.id)}else{const{data:m,error:x}=await X.from("missing_songs").insert([{keyword:c,notes:JSON.stringify(u),status:"song_meta"}]).select().single();!x&&m&&(h.supabaseId=m.id)}if(!n.startsWith("seed:"))try{await X.from("songs").update({beat:u.beat,tempo:u.tempo,type:u.type,updated_at:new Date().toISOString()}).eq("id",n)}catch{}n&&(d[n]=h),s&&(d[s]=h),ch(d)}catch(f){console.warn("Supabase saveSongMetadata error, preserved in local storage:",f.message)}return h}const bm="church-songbook:library_cache:v3",vm="church-songbook:last_sync_timestamp";function Ys(){try{const t=localStorage.getItem(bm);if(t){const e=JSON.parse(t);if(Array.isArray(e)&&e.length>0)return e}}catch(t){console.error("Error reading cached library:",t)}try{const t=ec();return kt(t),t}catch(t){return console.error("Error loading initial seeds:",t),[]}}function kt(t){try{Array.isArray(t)&&localStorage.setItem(bm,JSON.stringify(t))}catch(e){console.error("Error saving cached library:",e)}}function dh(){try{return localStorage.getItem(vm)||null}catch{return null}}function Gw(t){try{localStorage.setItem(vm,t)}catch{}}async function Ra(t){if(!t)return;const e=String(t.id||`song-${Date.now()}-${Math.random().toString(36).slice(2,7)}`),n=`song:${e}`,r={...t,id:e,updated_at:new Date().toISOString()};try{const s=Ys(),a=s.findIndex(o=>String(o.id)===e);let i;a>=0?(i=[...s],i[a]={...i[a],...r}):i=[r,...s],kt(i)}catch(s){console.warn("Could not update local cache for song:",s)}if(!at||!X)return r;try{const{data:s}=await X.from("missing_songs").select("id").eq("keyword",n).eq("status","song_item").limit(1);s&&s.length>0?await X.from("missing_songs").update({notes:JSON.stringify(r),created_at:new Date().toISOString()}).eq("id",s[0].id):await X.from("missing_songs").insert([{keyword:n,notes:JSON.stringify(r),status:"song_item"}]);try{await X.from("songs").upsert([{id:e,number:r.number!=null?Number(r.number):null,title:r.title,title_alt:r.title_alt||null,language:r.language||"hindi",type:r.type||"worship",beat:r.beat||null,tempo:r.tempo!=null?Number(r.tempo):null,stanzas:r.stanzas||[],updated_at:new Date().toISOString()}])}catch{}}catch(s){console.warn("Error saving song to Supabase DB:",s.message)}return r}async function hh(t){if(!t)return;const e=String(t),n=`song:${e}`;try{const s=Ys().filter(a=>String(a.id)!==e);kt(s)}catch(r){console.warn("Could not remove song from local cache:",r)}if(!(!at||!X))try{await X.from("missing_songs").delete().eq("keyword",n).eq("status","song_item");try{await X.from("songs").delete().eq("id",e)}catch{}}catch(r){console.warn("Error deleting song from Supabase DB:",r.message)}}async function Kw(t=()=>{}){if(t(10),!at||!X)return t(100),Ys();try{t(20);const{data:e,error:n}=await X.from("missing_songs").select("*").eq("status","song_item");n&&console.warn("Error fetching song_item from Supabase:",n.message),t(45);let r=[];try{const{data:c}=await X.from("songs").select("*");Array.isArray(c)&&(r=c)}catch{}t(60);const{data:s}=await X.from("missing_songs").select("*").eq("status","song_meta"),a=new Map;Array.isArray(s)&&s.forEach(c=>{try{const d=typeof c.notes=="string"?JSON.parse(c.notes):c.notes;d&&(d.songId&&a.set(String(d.songId),d),d.songTitle&&a.set(d.songTitle.trim().toLowerCase(),d))}catch{}}),t(75);const i=new Map;ec().forEach(c=>{i.set(String(c.id),{...c,source:"seed"})}),r.forEach(c=>{c&&c.id&&i.set(String(c.id),{...c,source:"db"})}),Array.isArray(e)&&e.forEach(c=>{try{const d=typeof c.notes=="string"?JSON.parse(c.notes):c.notes;if(d&&d.id){const h=String(d.id),f=i.get(h)||{};i.set(h,{...f,...d,source:"db"})}}catch{console.warn("Could not parse song record:",c.id)}}),t(90);const u=Array.from(i.values()).map(c=>{const d=a.get(String(c.id))||(c.title?a.get(c.title.trim().toLowerCase()):null);return d?{...c,beat:d.beat!==void 0&&d.beat!==null?d.beat:c.beat,tempo:d.tempo!==void 0&&d.tempo!==null?d.tempo:c.tempo,type:d.type!==void 0&&d.type!==null?d.type:c.type}:c});return u.sort((c,d)=>{const h=c.number??Number.MAX_SAFE_INTEGER,f=d.number??Number.MAX_SAFE_INTEGER;return h!==f?h-f:(c.title||"").localeCompare(d.title||"",["hi","en","mr"])}),kt(u),Gw(new Date().toISOString()),t(100),u}catch(e){return console.error("syncSongsFromDb failed, falling back to local cache:",e),t(100),Ys()}}const wm=v.createContext(null);function Yw({children:t}){const[e,n]=v.useState(()=>{try{return Ys()}catch(w){return console.error("Failed to load initial cached library:",w),ec()}}),[r,s]=v.useState(!1),[a,i]=v.useState(0),[o,u]=v.useState(()=>dh()),[c,d]=v.useState(!1),[h,f]=v.useState(null),m=v.useCallback(async(w=!1)=>{if(!r)try{s(!0),w||i(5);const _=await Kw(j=>{i(j)});Array.isArray(_)&&_.length>0&&(n(_),kt(_)),u(dh()),f(null)}catch(_){console.error("Sync failed:",_),f(_.message)}finally{setTimeout(()=>{s(!1),i(0)},600)}},[r]);v.useEffect(()=>{let w;return at&&X&&(w=X.channel("public:songbook_realtime_sync").on("postgres_changes",{event:"*",schema:"public",table:"missing_songs"},()=>{m(!0)}).on("postgres_changes",{event:"*",schema:"public",table:"songs"},()=>{m(!0)}).subscribe()),()=>{w&&X.removeChannel(w)}},[m]);const x=v.useCallback(async w=>{const _=w.id||`song-${Date.now()}-${Math.random().toString(36).slice(2,8)}`;let j=w.number;j==null||j===""||isNaN(Number(j))?j=e.reduce((A,O)=>{const S=typeof O.number=="number"?O.number:parseInt(O.number,10);return!isNaN(S)&&S>A?S:A},0)+1:j=Number(j);const C={...w,id:_,number:j,source:"db",created_at:new Date().toISOString(),updated_at:new Date().toISOString()};return n(N=>{const A=[C,...N].sort((O,S)=>{const E=O.number??Number.MAX_SAFE_INTEGER,D=S.number??Number.MAX_SAFE_INTEGER;return E!==D?E-D:(O.title||"").localeCompare(S.title||"",["hi","en","mr"])});return kt(A),A}),Ra(C).catch(N=>{console.warn("Background DB save error on addSong:",N)}),C},[e]),b=v.useCallback(async w=>{if(!Array.isArray(w)||w.length===0)return[];let _=e.reduce((C,N)=>{const A=typeof N.number=="number"?N.number:parseInt(N.number,10);return!isNaN(A)&&A>C?A:C},0);const j=w.map(C=>{let N=C.number;return N==null||N===""||isNaN(Number(N))?N=++_:(N=Number(N),N>_&&(_=N)),{...C,id:C.id||`song-${Date.now()}-${Math.random().toString(36).slice(2,8)}`,number:N,source:"db",created_at:new Date().toISOString(),updated_at:new Date().toISOString()}});return n(C=>{const N=[...C,...j].sort((A,O)=>{const S=A.number??Number.MAX_SAFE_INTEGER,E=O.number??Number.MAX_SAFE_INTEGER;return S!==E?S-E:(A.title||"").localeCompare(O.title||"",["hi","en","mr"])});return kt(N),N}),Promise.allSettled(j.map(C=>Ra(C))).catch(()=>{}),j},[e]),k=v.useCallback(async(w,_)=>{const j=String(w),C={..._,id:j,updated_at:new Date().toISOString()};return n(N=>{const A=N.map(O=>String(O.id)===j?{...O,...C}:O);return kt(A),A}),await Ra(C),C},[]),y=v.useCallback(async w=>{const _=String(w);n(j=>{const C=j.filter(N=>String(N.id)!==_);return kt(C),C}),await hh(_)},[]),p=v.useCallback(async(w,_)=>{const{ok:j,reason:C}=Hw();if(!j){const A=new Error(C==="not_configured"?"Delete is not configured. Ask an administrator.":"Incorrect password.");throw A.code=C==="not_configured"?"NOT_CONFIGURED":"BAD_PASSWORD",A}const N=new Set(w.map(String));return n(A=>{const O=A.filter(S=>!N.has(String(S.id)));return kt(O),O}),await Promise.allSettled(w.map(A=>hh(A))),{deleted:w,failed:[],skipped:0}},[]),g=v.useCallback(async(w,_)=>{let j=typeof w=="object"&&w!==null?w:e.find(N=>String(N.id)===String(w));if(!j)throw new Error("Song not found");const C={...j,beat:_.beat!==void 0?_.beat:j.beat,tempo:_.tempo!==void 0?_.tempo:j.tempo,type:_.type!==void 0?_.type:j.type,updated_at:new Date().toISOString()};n(N=>{const A=N.map(O=>String(O.id)===String(j.id)?C:O);return kt(A),A});try{await Ww(j,_),await Ra(C)}catch(N){console.warn("Error syncing beat/tempo to DB:",N)}return C},[e]);return l.jsx(wm.Provider,{value:{songs:e,loading:c,error:h,syncing:r,syncProgress:a,lastSyncTime:o,syncWithCloud:m,refreshSongs:m,addSong:x,addBulkSongs:b,editSong:k,updateSongBeatTempo:g,removeSong:y,deleteMany:p},children:t})}function An(){const t=v.useContext(wm);if(!t)throw new Error("useSongs must be used within a SongProvider");return t}/**
  * @license lucide-react v0.383.0 - ISC
  *
  * This source code is licensed under the ISC license.
