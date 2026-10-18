@@ -380,17 +380,9 @@ export default function SongManage() {
               >
                 {/* Left: Selection check/lock, Title, Type & Tempo Badges */}
                 <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                  {/* Selection Checkbox (or subtle Lock if Seed) */}
-                  <div className="shrink-0 flex items-center" onClick={(e) => e.stopPropagation()}>
-                    {isSeed ? (
-                      <span
-                        className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-bold text-slate-500 border border-slate-200/80 shadow-2xs"
-                        title="Seed song · Read-only"
-                      >
-                        <Lock className="h-2.5 w-2.5 text-slate-400" />
-                        <span>SEED</span>
-                      </span>
-                    ) : (
+                  {/* Selection Checkbox (DB songs only) */}
+                  {!isSeed && (
+                    <div className="shrink-0 flex items-center" onClick={(e) => e.stopPropagation()}>
                       <button
                         type="button"
                         onClick={(e) => toggleSelect(song.id, e)}
@@ -403,8 +395,8 @@ export default function SongManage() {
                           <Square className="h-4 w-4 text-slate-300 hover:text-slate-500" />
                         )}
                       </button>
-                    )}
-                  </div>
+                    </div>
+                  )}
 
                   {/* Song Title (Clean & Simple) */}
                   <span className="font-semibold text-sm sm:text-base text-slate-900 group-hover:text-emerald-700 transition-colors truncate">
@@ -448,7 +440,7 @@ export default function SongManage() {
                       className="flex items-center gap-1 rounded-xl border border-slate-200 bg-white px-2.5 py-1.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 transition shadow-2xs"
                       title="View / Duplicate Seed Song"
                     >
-                      <Lock className="h-3 w-3 text-slate-400" />
+                      <Eye className="h-3 w-3 text-slate-500" />
                       <span>View</span>
                     </Link>
                   ) : (
