@@ -1,8 +1,14 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useSongs } from '../store/SongContext';
 import { buildIndex, parseQuery, scoreSongMatch } from '../lib/search';
 import { isSeedSong } from '../lib/seed';
+import {
+  fetchMissingSongs,
+  addMissingSong,
+  deleteMissingSong,
+} from '../lib/missingSongs';
+import MissingSongModal from '../components/MissingSongModal';
 import {
   Search,
   Play,
@@ -10,7 +16,10 @@ import {
   X,
   SlidersHorizontal,
   Eye,
-  Lock
+  Lock,
+  FileQuestion,
+  Plus,
+  CheckCircle2
 } from 'lucide-react';
 
 export default function SongList() {
@@ -19,6 +28,55 @@ export default function SongList() {
 
   const [search, setSearch] = useState('');
   const [langFilter, setLangFilter] = useState('all'); // 'all' | 'hindi' | 'marathi' | 'english'
+
+  // Missing Songs State
+  const [missingSongs, setMissingSongs] = useState([]);
+  const [isMissingModalOpen, setIsMissingModalOpen] = useState(false);
+  const [modalKeyword, setModalKeyword] = useState('');
+  const [toastMessage, setToastMessage] = useState(null);
+
+  // Load missing songs on mount
+  useEffect(() => {
+    fetchMissingSongs().then((list) => {
+      if (Array.isArray(list)) setMissingSongs(list);
+    });
+  }, []);
+
+  const handleOpenMissingModal = (keyword = '') => {
+    setModalKeyword(keyword || search || '');
+    setIsMissingModalOpen(true);
+  };
+
+  const handleQuickReport = async (keywordToReport) => {
+    const val = String(keywordToReport || search || '').trim();
+    if (!val) {
+      handleOpenMissingModal('');
+      return;
+    }
+
+    try {
+      const { entry, list } = await addMissingSong(val);
+      setMissingSongs(list);
+      setToastMessage(`"${val}" added to missing songs!`);
+      setTimeout(() => setToastMessage(null), 3500);
+      // Open modal so user sees the word added in the list as requested
+      setModalKeyword('');
+      setIsMissingModalOpen(true);
+    } catch (err) {
+      console.error('Error reporting missing song:', err);
+      handleOpenMissingModal(val);
+    }
+  };
+
+  const handleAddMissingFromModal = async (keyword, notes) => {
+    const { list } = await addMissingSong(keyword, notes);
+    setMissingSongs(list);
+  };
+
+  const handleDeleteMissingFromModal = async (id) => {
+    const updated = await deleteMissingSong(id);
+    setMissingSongs(updated);
+  };
 
   // Precompute normalised search index per song
   const indexed = useMemo(
@@ -48,9 +106,23 @@ export default function SongList() {
 
   return (
     <div className="space-y-4 pb-20">
+      {/* Toast Notification */}
+      {toastMessage && (
+        <div className="fixed top-16 sm:top-20 right-4 left-4 sm:left-auto sm:max-w-md z-50 flex items-center gap-2.5 rounded-2xl bg-slate-900/95 text-white p-3.5 shadow-xl border border-slate-800 backdrop-blur-md text-xs font-bold animate-in fade-in slide-in-from-top-4 duration-200">
+          <CheckCircle2 className="h-5 w-5 text-emerald-400 shrink-0" />
+          <span className="flex-1 truncate">{toastMessage}</span>
+          <button
+            onClick={() => setToastMessage(null)}
+            className="text-slate-400 hover:text-white p-1 rounded-lg"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+      )}
+
       {/* Top Header */}
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2.5">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-2 sm:gap-2.5">
           <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
             Songbook
           </h1>
@@ -59,13 +131,31 @@ export default function SongList() {
           </span>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          {/* Button Near Manage Songs to Report Missing */}
+          <button
+            type="button"
+            onClick={() => handleOpenMissingModal(search)}
+            className="flex items-center gap-1.5 rounded-xl border border-amber-200/90 bg-amber-50 hover:bg-amber-100 hover:border-amber-300 px-2.5 sm:px-3 py-1.5 text-xs font-bold text-amber-800 transition-all shadow-2xs active:scale-95"
+            title="Report missing song"
+          >
+            <FileQuestion className="h-3.5 w-3.5 text-amber-600 shrink-0" />
+            <span className="hidden sm:inline">Report Missing</span>
+            <span className="sm:hidden">Missing</span>
+            {missingSongs.length > 0 && (
+              <span className="rounded-full bg-amber-200/90 px-1.5 py-0.2 text-[10px] font-black text-amber-900 leading-none">
+                {missingSongs.length}
+              </span>
+            )}
+          </button>
+
           <Link
             to="/manage"
-            className="flex items-center gap-1.5 rounded-xl border border-slate-200/90 bg-white px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition shadow-xs"
+            className="flex items-center gap-1.5 rounded-xl border border-slate-200/90 bg-white px-2.5 sm:px-3 py-1.5 text-xs font-medium text-slate-700 hover:bg-slate-50 hover:border-slate-300 transition shadow-xs"
           >
-            <SlidersHorizontal className="h-3.5 w-3.5 text-slate-500" />
-            <span>Manage Songs</span>
+            <SlidersHorizontal className="h-3.5 w-3.5 text-slate-500 shrink-0" />
+            <span className="hidden sm:inline">Manage Songs</span>
+            <span className="sm:hidden">Manage</span>
           </Link>
         </div>
       </div>
@@ -79,16 +169,35 @@ export default function SongList() {
             type="text"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full rounded-xl border border-slate-200/90 bg-white pl-10 pr-9 py-2.5 text-sm font-normal text-slate-800 focus:border-slate-400 focus:outline-none shadow-2xs transition"
+            placeholder="Search by title, number (#5), or lyrics..."
+            className="w-full rounded-xl border border-slate-200/90 bg-white pl-10 pr-24 sm:pr-28 py-2.5 text-sm font-normal text-slate-800 focus:border-slate-400 focus:outline-none shadow-2xs transition"
           />
-          {search && (
-            <button
-              onClick={() => setSearch('')}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition"
-            >
-              <X className="h-3.5 w-3.5" />
-            </button>
-          )}
+
+          {/* Action buttons inside / near search bar */}
+          <div className="absolute right-1.5 top-1/2 -translate-y-1/2 flex items-center gap-1">
+            {search.trim() && (
+              <button
+                type="button"
+                onClick={() => handleQuickReport(search)}
+                className="flex items-center gap-1 rounded-lg bg-amber-100 hover:bg-amber-200 text-amber-800 px-2 py-1 text-[11px] font-bold transition shadow-2xs active:scale-95"
+                title={`Report "${search}" as missing song`}
+              >
+                <Plus className="h-3 w-3 text-amber-700" />
+                <span>Report</span>
+              </button>
+            )}
+
+            {search && (
+              <button
+                type="button"
+                onClick={() => setSearch('')}
+                className="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition"
+                title="Clear search"
+              >
+                <X className="h-3.5 w-3.5" />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* Language Tabs */}
@@ -126,15 +235,30 @@ export default function SongList() {
 
       {/* Empty State */}
       {!loading && filteredSongs.length === 0 && (
-        <div className="rounded-2xl border border-dashed border-slate-300 bg-white/80 p-10 text-center shadow-xs">
+        <div className="rounded-2xl border border-dashed border-slate-300 bg-white/80 p-8 sm:p-10 text-center shadow-xs">
           <Music className="mx-auto h-12 w-12 text-slate-300 mb-3" />
           <h3 className="text-base font-bold text-slate-900">No songs found</h3>
           <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-            Try adjusting your search filter or clear the current filters.
+            {search
+              ? `Could not find any song matching "${search}". You can report it as missing so it gets added!`
+              : 'Try adjusting your search filter or clear the current filters.'}
           </p>
-          <div className="mt-4 flex justify-center gap-2.5">
+
+          <div className="mt-4 flex flex-wrap justify-center gap-2.5">
+            {search && (
+              <button
+                type="button"
+                onClick={() => handleQuickReport(search)}
+                className="inline-flex items-center gap-1.5 rounded-xl bg-amber-600 px-4 py-2 text-xs font-bold text-white hover:bg-amber-700 shadow-sm shadow-amber-600/20 transition active:scale-95"
+              >
+                <FileQuestion className="h-4 w-4" />
+                <span>Report "{search}" as Missing</span>
+              </button>
+            )}
+
             {(search || langFilter !== 'all') && (
               <button
+                type="button"
                 onClick={() => {
                   setSearch('');
                   setLangFilter('all');
@@ -144,15 +268,26 @@ export default function SongList() {
                 Clear Filters
               </button>
             )}
+
             <Link
               to="/manage"
               className="inline-flex items-center gap-1.5 rounded-xl bg-emerald-600 px-4 py-2 text-xs font-medium text-white hover:bg-emerald-700 shadow-sm shadow-emerald-600/20 transition"
             >
-              <span>Go to Manage & Import</span>
+              <span>Manage & Import</span>
             </Link>
           </div>
         </div>
       )}
+
+      {/* Missing Song Modal Popup */}
+      <MissingSongModal
+        open={isMissingModalOpen}
+        initialKeyword={modalKeyword}
+        missingList={missingSongs}
+        onClose={() => setIsMissingModalOpen(false)}
+        onAddMissing={handleAddMissingFromModal}
+        onDeleteMissing={handleDeleteMissingFromModal}
+      />
 
       {/* High-Density Responsive Song Cards Grid */}
       {!loading && filteredSongs.length > 0 && (
