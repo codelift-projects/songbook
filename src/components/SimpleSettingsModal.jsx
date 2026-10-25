@@ -284,6 +284,18 @@ export default function SimpleSettingsModal({ isOpen, onClose }) {
 
           {/* Optional Display Preferences */}
           <div className="pt-1 border-t border-slate-800/80 space-y-2.5">
+            <label className="flex items-center justify-between text-xs font-bold text-slate-200 cursor-pointer">
+              <div>
+                <span>Text Border (Low-Light Emphasis)</span>
+                <span className="block text-[10px] text-slate-400 font-normal">Sharp outline for dim rooms & projectors</span>
+              </div>
+              <input
+                type="checkbox"
+                checked={settings.textBorderEmphasis ?? true}
+                onChange={(e) => update({ textBorderEmphasis: e.target.checked })}
+                className="h-4 w-4 rounded accent-emerald-500 cursor-pointer"
+              />
+            </label>
             <label className="flex items-center justify-between text-xs font-medium text-slate-300 cursor-pointer">
               <span>Show Progress Indicator</span>
               <input

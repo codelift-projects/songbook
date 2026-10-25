@@ -60,11 +60,57 @@ export function setLastSyncTime(isoString) {
 }
 
 /**
+ * Fetch a single song from client cache first (0ms), fallback to Supabase DB only if not found.
+ */
+export async function fetchSongById(id) {
+  if (!id) return null;
+  const songId = String(id);
+  const lookupKey = `song:${songId}`;
+
+  // 1. First check local client cache (instant, 0 network calls)
+  try {
+    const cached = getCachedLibrary();
+    const found = cached.find((s) => String(s.id) === songId);
+    if (found) return found;
+  } catch {}
+
+  // 2. Fallback to bundled seed songs (instant, 0 network calls)
+  try {
+    const seeds = loadSeedSongs();
+    const foundSeed = seeds.find((s) => String(s.id) === songId);
+    if (foundSeed) return foundSeed;
+  } catch {}
+
+  // 3. Fallback to Supabase DB only if not in local cache
+  if (isSupabaseConfigured && supabase) {
+    try {
+      const { data, error } = await supabase
+        .from('missing_songs')
+        .select('*')
+        .eq('keyword', lookupKey)
+        .eq('status', 'song_item')
+        .maybeSingle();
+
+      if (!error && data && data.notes) {
+        const parsed = typeof data.notes === 'string' ? JSON.parse(data.notes) : data.notes;
+        if (parsed && parsed.id) {
+          return parsed;
+        }
+      }
+    } catch (err) {
+      console.warn('Error fetching song from Supabase DB fallback:', err.message);
+    }
+  }
+
+  return null;
+}
+
+/**
  * Save a single song to Supabase DB and update local cache.
- * Stores in `missing_songs` table with status 'song_item' and attempts `songs` table.
+ * Stores in `missing_songs` table with status 'song_item'.
  */
 export async function saveSongToDb(song) {
-  if (!song) return;
+  if (!song) return null;
 
   const songId = String(song.id || `song-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`);
   const lookupKey = `song:${songId}`;
@@ -92,60 +138,53 @@ export async function saveSongToDb(song) {
   }
 
   // 2. Persist to Supabase if configured
-  if (!isSupabaseConfigured || !supabase) return payload;
-
-  try {
-    // Upsert into missing_songs with status 'song_item'
-    const { data: existing } = await supabase
-      .from('missing_songs')
-      .select('id')
-      .eq('keyword', lookupKey)
-      .eq('status', 'song_item')
-      .limit(1);
-
-    if (existing && existing.length > 0) {
-      await supabase
-        .from('missing_songs')
-        .update({
-          notes: JSON.stringify(payload),
-          created_at: new Date().toISOString(),
-        })
-        .eq('id', existing[0].id);
-    } else {
-      await supabase
-        .from('missing_songs')
-        .insert([
-          {
-            keyword: lookupKey,
-            notes: JSON.stringify(payload),
-            status: 'song_item',
-          },
-        ]);
-    }
-
-    // Also attempt saving to public.songs if table exists
+  if (isSupabaseConfigured && supabase) {
     try {
-      await supabase
-        .from('songs')
-        .upsert([
-          {
-            id: songId,
-            number: payload.number != null ? Number(payload.number) : null,
-            title: payload.title,
-            title_alt: payload.title_alt || null,
-            language: payload.language || 'hindi',
-            type: payload.type || 'worship',
-            beat: payload.beat || null,
-            tempo: payload.tempo != null ? Number(payload.tempo) : null,
-            stanzas: payload.stanzas || [],
-            updated_at: new Date().toISOString(),
-          },
-        ]);
-    } catch {
-      // Table may not exist; missing_songs is primary
+      // Upsert into missing_songs with status 'song_item'
+      const { data: existing, error: selectErr } = await supabase
+        .from('missing_songs')
+        .select('id')
+        .eq('keyword', lookupKey)
+        .eq('status', 'song_item')
+        .limit(1);
+
+      if (selectErr) {
+        console.warn('Error checking existing song record in Supabase:', selectErr.message);
+      }
+
+      if (existing && existing.length > 0) {
+        const { error: updateErr } = await supabase
+          .from('missing_songs')
+          .update({
+            notes: JSON.stringify(payload),
+            created_at: new Date().toISOString(),
+          })
+          .eq('id', existing[0].id);
+
+        if (updateErr) {
+          console.error('Error updating song in Supabase:', updateErr.message);
+          throw new Error(updateErr.message);
+        }
+      } else {
+        const { error: insertErr } = await supabase
+          .from('missing_songs')
+          .insert([
+            {
+              keyword: lookupKey,
+              notes: JSON.stringify(payload),
+              status: 'song_item',
+            },
+          ]);
+
+        if (insertErr) {
+          console.error('Error inserting song into Supabase:', insertErr.message);
+          throw new Error(insertErr.message);
+        }
+      }
+    } catch (err) {
+      console.warn('Persist to Supabase error:', err.message);
+      throw err;
     }
-  } catch (err) {
-    console.warn('Error saving song to Supabase DB:', err.message);
   }
 
   return payload;
@@ -173,17 +212,25 @@ export async function deleteSongFromDb(id) {
   if (!isSupabaseConfigured || !supabase) return;
 
   try {
-    await supabase
+    const { error } = await supabase
       .from('missing_songs')
       .delete()
       .eq('keyword', lookupKey)
       .eq('status', 'song_item');
 
-    try {
-      await supabase.from('songs').delete().eq('id', songId);
-    } catch {}
+    if (error) {
+      console.warn('Supabase delete error:', error.message);
+    }
+
+    // Also delete any song metadata override for this song
+    await supabase
+      .from('missing_songs')
+      .delete()
+      .eq('keyword', `meta:${songId}`)
+      .eq('status', 'song_meta');
   } catch (err) {
     console.warn('Error deleting song from Supabase DB:', err.message);
+    throw err;
   }
 }
 
@@ -204,32 +251,25 @@ export async function syncSongsFromDb(onProgress = () => {}) {
   try {
     onProgress(20);
 
-    // 1. Fetch all song_item records from Supabase
+    // 1. Fetch all song_item records from Supabase in ONE query
     const { data: dbRecords, error: dbErr } = await supabase
       .from('missing_songs')
       .select('*')
-      .eq('status', 'song_item');
+      .eq('status', 'song_item')
+      .limit(5000);
 
     if (dbErr) {
       console.warn('Error fetching song_item from Supabase:', dbErr.message);
     }
 
-    onProgress(45);
+    onProgress(50);
 
-    // 2. Also try fetching from songs table if present
-    let directSongs = [];
-    try {
-      const { data: rawSongs } = await supabase.from('songs').select('*');
-      if (Array.isArray(rawSongs)) directSongs = rawSongs;
-    } catch {}
-
-    onProgress(60);
-
-    // 3. Fetch song_meta (beat, tempo, type overrides)
+    // 2. Fetch song_meta (beat, tempo, type overrides)
     const { data: metaRecords } = await supabase
       .from('missing_songs')
       .select('*')
-      .eq('status', 'song_meta');
+      .eq('status', 'song_meta')
+      .limit(5000);
 
     const metaMap = new Map();
     if (Array.isArray(metaRecords)) {
@@ -246,8 +286,9 @@ export async function syncSongsFromDb(onProgress = () => {}) {
 
     onProgress(75);
 
-    // 4. Combine base seeds + current cached songs + Supabase songs
+    // 3. Combine base seeds + current cached songs + Supabase songs
     const mergedMap = new Map();
+    const existingDbKeys = new Set();
 
     // Start with bundled seeds
     const baseSeeds = loadSeedSongs();
@@ -255,17 +296,12 @@ export async function syncSongsFromDb(onProgress = () => {}) {
       mergedMap.set(String(seed.id), { ...seed, source: 'seed' });
     });
 
-    // Layer direct songs table
-    directSongs.forEach((s) => {
-      if (s && s.id) {
-        mergedMap.set(String(s.id), { ...s, source: 'db' });
-      }
-    });
-
-    // Layer song_item from missing_songs
+    // Layer song_item from Supabase DB (persisted database songs)
+    const missingSeedsToPersist = [];
     if (Array.isArray(dbRecords)) {
       dbRecords.forEach((row) => {
         try {
+          if (row.keyword) existingDbKeys.add(row.keyword);
           const song = typeof row.notes === 'string' ? JSON.parse(row.notes) : row.notes;
           if (song && song.id) {
             const sid = String(song.id);
@@ -276,6 +312,22 @@ export async function syncSongsFromDb(onProgress = () => {}) {
           console.warn('Could not parse song record:', row.id);
         }
       });
+    }
+
+    // Persist any seed songs that might not yet be in the DB
+    baseSeeds.forEach((seed) => {
+      const keyword = `song:${seed.id}`;
+      if (!existingDbKeys.has(keyword)) {
+        missingSeedsToPersist.push({
+          keyword,
+          notes: JSON.stringify({ ...seed, source: 'seed' }),
+          status: 'song_item',
+        });
+      }
+    });
+
+    if (missingSeedsToPersist.length > 0) {
+      supabase.from('missing_songs').insert(missingSeedsToPersist).then(() => {}).catch(() => {});
     }
 
     onProgress(90);

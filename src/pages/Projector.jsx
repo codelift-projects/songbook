@@ -6,7 +6,7 @@ import { useSwipe } from '../hooks/useSwipe';
 import { useFullscreen } from '../hooks/useFullscreen';
 import { useOrientation } from '../hooks/useOrientation';
 import { useContainerSize } from '../hooks/useContainerSize';
-import { projectorStyle, hexA, computeFitFontSize } from '../lib/theme';
+import { projectorStyle, hexA, computeFitFontSize, getTextEmphasisStyle } from '../lib/theme';
 import { formatCommaLines } from '../lib/parse';
 import { getGroup } from '../lib/groups';
 import SimpleSettingsModal from '../components/SimpleSettingsModal';
@@ -49,13 +49,40 @@ export default function Projector() {
     return group.songIds[groupSongIndex + 1];
   }, [group, groupSongIndex]);
 
-  const rootRef = useRef(null);
   const contentRef = useRef(null);
-  const { isFullscreen, toggle: toggleFullscreen, enter: enterFullscreen } = useFullscreen(rootRef);
+  const { isFullscreen, toggle: toggleFullscreen } = useFullscreen();
 
   const [index, setIndex] = useState(0);
   const [showUi, setShowUi] = useState(true);
   const [settingsOpen, setSettingsOpen] = useState(false);
+
+  // Fullscreen conservation: record whether the app was in fullscreen mode when entering Present
+  useEffect(() => {
+    if (!sessionStorage.getItem('present_session_active')) {
+      sessionStorage.setItem('present_session_active', 'true');
+      sessionStorage.setItem(
+        'present_was_fullscreen',
+        document.fullscreenElement ? 'true' : 'false'
+      );
+    }
+
+    return () => {
+      // If navigating away from /present route, restore outside state if needed
+      const isStayingInPresent = window.location.pathname.startsWith('/present');
+      if (!isStayingInPresent) {
+        const wasFullscreenOutside = sessionStorage.getItem('present_was_fullscreen') === 'true';
+        sessionStorage.removeItem('present_session_active');
+        sessionStorage.removeItem('present_was_fullscreen');
+
+        if (!wasFullscreenOutside && document.fullscreenElement) {
+          try {
+            if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+            else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
+          } catch (e) {}
+        }
+      }
+    };
+  }, []);
 
   // Automatic orientation handling: attempt landscape lock in Present view,
   // and upon exit, unlock and restore original orientation so it goes back to
@@ -236,7 +263,14 @@ export default function Projector() {
       }
     } catch (e) {}
 
-    if (document.fullscreenElement) {
+    const wasFullscreenOutside = sessionStorage.getItem('present_was_fullscreen') === 'true';
+    sessionStorage.removeItem('present_session_active');
+    sessionStorage.removeItem('present_was_fullscreen');
+
+    // Conserve what was the mode outside present:
+    // If outside present was not fullscreen, exit fullscreen now.
+    // If outside present was fullscreen, conserve it (do not exit).
+    if (!wasFullscreenOutside && document.fullscreenElement) {
       try {
         if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
         else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
@@ -274,8 +308,7 @@ export default function Projector() {
           poke();
           break;
         case 'Escape':
-          if (document.fullscreenElement) document.exitFullscreen();
-          else handleExit();
+          handleExit();
           break;
       }
     };
@@ -350,7 +383,11 @@ export default function Projector() {
               )}
               <h1 
                 className="w-full font-black leading-tight tracking-tight break-words text-balance" 
-                style={{ fontSize: currentFontSize * 1.1, fontFamily }}
+                style={{
+                  fontSize: currentFontSize * 1.1,
+                  fontFamily,
+                  ...getTextEmphasisStyle(settings)
+                }}
               >
                 {slide.title}
               </h1>
@@ -378,7 +415,8 @@ export default function Projector() {
                 style={{ 
                   fontSize: currentFontSize, 
                   fontFamily, 
-                  lineHeight: settings.lineHeight || 1.18 
+                  lineHeight: settings.lineHeight || 1.18,
+                  ...getTextEmphasisStyle(settings)
                 }}
               >
                 {slide.lines.join('\n')}

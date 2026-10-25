@@ -1,27 +1,38 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect, useMemo, useRef } from 'react';
 import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { useSongs } from '../store/SongContext';
 import { useSettings } from '../store/SettingsContext';
-import { projectorStyle, FONT_STACKS } from '../lib/theme';
+import { projectorStyle, FONT_STACKS, getTextEmphasisStyle } from '../lib/theme';
 import { isSeedSong } from '../lib/seed';
 import { formatCommaLines, NEXT_LINE_SHIFT_SYMBOL } from '../lib/parse';
+import { fetchSongById } from '../lib/songDbSync';
+import { isManageAuthenticated } from '../lib/manageAuth';
 import SongImportModal from '../components/SongImportModal';
+import AdminPasswordModal from '../components/AdminPasswordModal';
 import {
   ArrowLeft,
   Trash2,
   MoveUp,
   MoveDown,
-  Copy
+  Copy,
+  Plus,
+  Play
 } from 'lucide-react';
 
 export default function SongEditor() {
   const { id } = useParams();
   const navigate = useNavigate();
   const location = useLocation();
-  const { songs, addSong, editSong, updateSongBeatTempo } = useSongs();
+  const { songs, addSong, editSong, removeSong } = useSongs();
   const { settings } = useSettings();
 
   const isEdit = Boolean(id);
+  const loadedIdRef = useRef(null);
+
+  // Authentication gate for editor
+  const [authUnlocked, setAuthUnlocked] = useState(() => isManageAuthenticated());
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const [number, setNumber] = useState('');
   const [title, setTitle] = useState('');
@@ -75,11 +86,12 @@ export default function SongEditor() {
     }
   }, [isEdit, songs, number]);
 
-  // Load existing song if editing
+  // Load existing song if editing - only once per id, driving from memory or directly from Supabase DB
   useEffect(() => {
-    if (isEdit && songs.length > 0) {
-      const existing = songs.find((s) => String(s.id) === String(id));
-      if (existing) {
+    if (isEdit && id) {
+      if (loadedIdRef.current === id) return;
+
+      const populate = (existing) => {
         setNumber(existing.number != null ? String(existing.number) : '');
         setTitle(existing.title || '');
         setTitleAlt(existing.title_alt || '');
@@ -97,6 +109,19 @@ export default function SongEditor() {
             : [{ id: 'st-1', label: 'Verse 1', text: '' }]
         );
         setIsSeed(isSeedSong(existing));
+        loadedIdRef.current = id;
+      };
+
+      const found = songs.find((s) => String(s.id) === String(id));
+      if (found) {
+        populate(found);
+      } else {
+        // Drive directly from DB
+        fetchSongById(id).then((fromDb) => {
+          if (fromDb) {
+            populate(fromDb);
+          }
+        });
       }
     }
   }, [isEdit, id, songs]);
@@ -284,31 +309,31 @@ export default function SongEditor() {
         targetId = created.id;
       }
 
-      // Sync beat, tempo, and type to Supabase metadata store
-      if (targetId) {
-        try {
-          await updateSongBeatTempo(targetId, {
-            type: songType,
-            beat: beat ? String(beat).trim() : null,
-            tempo: tempo ? parseInt(tempo, 10) : null,
-          });
-        } catch (syncErr) {
-          console.warn('Sync beat/tempo to Supabase metadata error:', syncErr.message);
-        }
-      }
-
       if (launchProjector && targetId) {
         navigate(`/present/${targetId}`);
       } else if (targetId) {
         const groupQuery = location.state?.groupId ? `?groupId=${location.state.groupId}` : '';
         navigate(`/view/${targetId}${groupQuery}`);
       } else {
-        navigate('/');
+        navigate('/manage');
       }
     } catch (err) {
       alert(`Error saving song: ${err.message}`);
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleConfirmDelete = async () => {
+    try {
+      setIsDeleting(true);
+      await removeSong(id);
+      setIsDeleteModalOpen(false);
+      navigate('/manage', { replace: true });
+    } catch (err) {
+      alert(`Error deleting song: ${err.message}`);
+    } finally {
+      setIsDeleting(false);
     }
   };
 
@@ -325,6 +350,21 @@ export default function SongEditor() {
 
   const activeSlide = previewSlides[previewSlideIdx] || previewSlides[0];
 
+  if (!authUnlocked) {
+    return (
+      <div className="min-h-[70vh] flex items-center justify-center p-4">
+        <AdminPasswordModal
+          open={true}
+          title="Admin Password Required"
+          subtitle="Password is required to create or edit songs."
+          actionLabel="Unlock Editor"
+          onCancel={() => navigate(-1)}
+          onSuccess={() => setAuthUnlocked(true)}
+        />
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-5xl pb-16 space-y-4 w-full max-w-full overflow-x-hidden">
       {/* Top Header */}
@@ -332,7 +372,7 @@ export default function SongEditor() {
         <div className="flex items-center gap-2">
           <button
             onClick={() => navigate(-1)}
-            className="rounded-xl border border-slate-200 bg-white p-2 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition shadow-2xs active:scale-95 shrink-0"
+            className="rounded-xl border border-slate-200 bg-white p-2.5 text-slate-600 hover:bg-slate-100 hover:text-slate-900 transition shadow-2xs active:scale-95 shrink-0 min-h-[40px] min-w-[40px] flex items-center justify-center"
             title="Go back"
           >
             <ArrowLeft className="h-4 w-4" />
@@ -342,12 +382,24 @@ export default function SongEditor() {
           </h1>
         </div>
 
-        {/* Action Buttons: Clean text-only buttons */}
-        <div className="flex items-center gap-1.5 w-full sm:w-auto">
+        {/* Action Buttons: Clean text-only buttons with larger touch targets for mobile */}
+        <div className="flex flex-wrap items-center gap-1.5 sm:gap-2 w-full sm:w-auto">
+          {isEdit && (
+            <button
+              type="button"
+              onClick={() => setIsDeleteModalOpen(true)}
+              className="flex-1 sm:flex-none flex items-center justify-center gap-1 rounded-xl border border-rose-200 bg-rose-50 px-3.5 py-2 text-xs font-black text-rose-700 hover:bg-rose-100 hover:border-rose-300 transition shadow-2xs active:scale-95 text-center min-h-[40px]"
+              title="Delete this song"
+            >
+              <Trash2 className="h-3.5 w-3.5" />
+              <span>Delete</span>
+            </button>
+          )}
+
           <button
             type="button"
             onClick={() => setImportModalOpen(true)}
-            className="flex-1 sm:flex-none flex items-center justify-center rounded-xl border border-slate-300/80 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-2xs active:scale-95 text-center"
+            className="flex-1 sm:flex-none flex items-center justify-center rounded-xl border border-slate-300/80 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-2xs active:scale-95 text-center min-h-[40px]"
           >
             Import
           </button>
@@ -356,7 +408,7 @@ export default function SongEditor() {
             <button
               type="button"
               onClick={handleDuplicateToDb}
-              className="flex-1 sm:flex-none flex items-center justify-center rounded-xl border border-slate-300/80 bg-white px-2.5 py-1.5 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-2xs active:scale-95 text-center"
+              className="flex-1 sm:flex-none flex items-center justify-center rounded-xl border border-slate-300/80 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-50 transition shadow-2xs active:scale-95 text-center min-h-[40px]"
               title="Duplicate into a new song"
             >
               Duplicate
@@ -367,28 +419,29 @@ export default function SongEditor() {
             type="button"
             onClick={(e) => handleSubmit(e, true)}
             disabled={isSaving}
-            className="flex-1 sm:flex-none flex items-center justify-center rounded-xl bg-slate-900 px-3 py-1.5 text-xs font-bold text-white hover:bg-slate-800 transition shadow-sm active:scale-95 text-center"
+            className="flex-1 sm:flex-none flex items-center justify-center gap-1 rounded-xl bg-slate-900 px-3.5 py-2 text-xs font-bold text-white hover:bg-slate-800 transition shadow-sm active:scale-95 text-center min-h-[40px]"
           >
-            Present
+            <Play className="h-3.5 w-3.5 fill-current" />
+            <span>Present</span>
           </button>
 
           <button
             type="button"
             onClick={(e) => handleSubmit(e, false)}
             disabled={isSaving}
-            className="flex-1 sm:flex-none flex items-center justify-center rounded-xl bg-emerald-600 px-3.5 py-1.5 text-xs font-black text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 transition active:scale-95 text-center"
+            className="flex-1 sm:flex-none flex items-center justify-center rounded-xl bg-emerald-600 px-4 py-2 text-xs font-black text-white hover:bg-emerald-700 shadow-md shadow-emerald-600/20 transition active:scale-95 text-center min-h-[40px]"
           >
             {isSaving ? 'Saving...' : 'Save'}
           </button>
         </div>
       </div>
 
-      {/* Mobile Tab Switcher (Visible on mobile screens) */}
+      {/* Mobile Tab Switcher (Visible on mobile screens) - Larger touch area */}
       <div className="lg:hidden flex rounded-xl border border-slate-200/90 bg-white p-1 shadow-2xs">
         <button
           type="button"
           onClick={() => setMobileTab('edit')}
-          className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition text-center ${mobileTab === 'edit'
+          className={`flex-1 py-2 text-xs font-black rounded-lg transition text-center min-h-[40px] flex items-center justify-center ${mobileTab === 'edit'
             ? 'bg-slate-900 text-white shadow-2xs'
             : 'text-slate-600 hover:text-slate-900'
             }`}
@@ -398,7 +451,7 @@ export default function SongEditor() {
         <button
           type="button"
           onClick={() => setMobileTab('preview')}
-          className={`flex-1 py-1.5 text-xs font-bold rounded-lg transition text-center ${mobileTab === 'preview'
+          className={`flex-1 py-2 text-xs font-black rounded-lg transition text-center min-h-[40px] flex items-center justify-center ${mobileTab === 'preview'
             ? 'bg-emerald-600 text-white shadow-2xs'
             : 'text-slate-600 hover:text-slate-900'
             }`}
@@ -596,12 +649,12 @@ export default function SongEditor() {
                 Stanzas & Slides ({stanzas.length})
               </h2>
 
-              {/* Quick Action Buttons */}
-              <div className="flex flex-wrap items-center gap-1.5">
+              {/* Quick Action Buttons - Larger touch-friendly buttons */}
+              <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
                 <button
                   type="button"
                   onClick={() => handleAddStanza(language === 'marathi' ? 'ध्रुवपद' : language === 'hindi' ? 'कोरस' : 'Chorus')}
-                  className="rounded-lg border border-emerald-300 bg-emerald-50 px-2 py-1 text-xs font-black text-emerald-800 hover:bg-emerald-100 transition shadow-2xs"
+                  className="rounded-xl border border-emerald-300 bg-emerald-50 px-3 py-2 text-xs font-black text-emerald-800 hover:bg-emerald-100 transition shadow-2xs active:scale-95 min-h-[38px]"
                   title="Add Chorus slide"
                 >
                   + {language === 'marathi' ? 'ध्रुवपद' : language === 'hindi' ? 'कोरस' : 'Chorus'}
@@ -610,7 +663,7 @@ export default function SongEditor() {
                 <button
                   type="button"
                   onClick={handleDuplicateChorus}
-                  className="rounded-lg border border-slate-300/80 bg-white px-2 py-1 text-xs font-bold text-slate-700 hover:bg-slate-100 transition shadow-2xs"
+                  className="rounded-xl border border-slate-300/80 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-100 transition shadow-2xs active:scale-95 min-h-[38px]"
                   title="Insert duplicate of Chorus at the end"
                 >
                   Repeat Chorus
@@ -619,7 +672,7 @@ export default function SongEditor() {
                 <button
                   type="button"
                   onClick={() => handleAddStanza(language === 'marathi' ? 'सेतु (Bridge)' : language === 'hindi' ? 'सेतु (Bridge)' : 'Bridge')}
-                  className="rounded-lg border border-slate-300/80 bg-white px-2 py-1 text-xs font-bold text-slate-700 hover:bg-slate-100 transition shadow-2xs"
+                  className="rounded-xl border border-slate-300/80 bg-white px-3 py-2 text-xs font-bold text-slate-700 hover:bg-slate-100 transition shadow-2xs active:scale-95 min-h-[38px]"
                 >
                   + Bridge
                 </button>
@@ -627,7 +680,7 @@ export default function SongEditor() {
                 <button
                   type="button"
                   onClick={() => handleAddStanza()}
-                  className="rounded-lg bg-emerald-600 px-2.5 py-1 text-xs font-black text-white hover:bg-emerald-700 transition shadow-xs"
+                  className="rounded-xl bg-emerald-600 px-3.5 py-2 text-xs font-black text-white hover:bg-emerald-700 transition shadow-xs active:scale-95 min-h-[38px]"
                 >
                   + {language === 'marathi' ? 'चरण' : language === 'hindi' ? 'पद' : 'Verse'}
                 </button>
@@ -646,7 +699,7 @@ export default function SongEditor() {
                 return (
                   <div
                     key={stanza.id || idx}
-                    className={`rounded-2xl border p-3 sm:p-4 transition-all duration-150 ${
+                    className={`rounded-2xl border p-3.5 sm:p-4 transition-all duration-150 ${
                       isChorus
                         ? 'border-emerald-300/80 bg-emerald-50/40 shadow-xs'
                         : 'border-slate-200/90 bg-white hover:border-slate-300 shadow-2xs'
@@ -655,7 +708,7 @@ export default function SongEditor() {
                     {/* Stanza Header Row */}
                     <div className="mb-2 flex items-center justify-between gap-1.5 min-w-0">
                       <div className="flex items-center gap-1.5 flex-1 min-w-0">
-                        <span className="grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-slate-100 border border-slate-200/80 text-[11px] font-black text-slate-700">
+                        <span className="grid h-7 w-7 shrink-0 place-items-center rounded-xl bg-slate-100 border border-slate-200/80 text-xs font-black text-slate-700">
                           {idx + 1}
                         </span>
 
@@ -664,7 +717,7 @@ export default function SongEditor() {
                           value={stanza.label}
                           onChange={(e) => handleUpdateStanza(idx, 'label', e.target.value)}
                           placeholder="Label (e.g. Verse 1)"
-                          className={`w-full min-w-0 max-w-[140px] sm:max-w-[220px] rounded-lg border px-2 py-1 text-xs font-black focus:outline-none truncate ${
+                          className={`w-full min-w-0 max-w-[150px] sm:max-w-[220px] rounded-xl border px-2.5 py-1.5 text-xs font-black focus:outline-none truncate ${
                             isChorus
                               ? 'border-emerald-300 bg-white text-emerald-800 focus:border-emerald-600'
                               : 'border-slate-200 bg-slate-50/70 text-slate-900 focus:border-emerald-600'
@@ -672,41 +725,41 @@ export default function SongEditor() {
                         />
                       </div>
 
-                      {/* Stanza Action Buttons */}
-                      <div className="flex items-center gap-0.5 shrink-0">
+                      {/* Stanza Action Buttons - Larger touch area */}
+                      <div className="flex items-center gap-1 shrink-0">
                         <button
                           type="button"
                           onClick={() => handleDuplicateStanza(idx)}
-                          className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition"
+                          className="rounded-xl p-2 min-h-[36px] min-w-[36px] flex items-center justify-center text-slate-500 hover:bg-slate-100 hover:text-slate-900 transition active:scale-95"
                           title="Duplicate Stanza"
                         >
-                          <Copy className="h-3.5 w-3.5" />
+                          <Copy className="h-4 w-4" />
                         </button>
                         <button
                           type="button"
                           disabled={idx === 0}
                           onClick={() => handleMoveStanza(idx, -1)}
-                          className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-900 disabled:opacity-30 transition"
+                          className="rounded-xl p-2 min-h-[36px] min-w-[36px] flex items-center justify-center text-slate-500 hover:bg-slate-100 hover:text-slate-900 disabled:opacity-30 transition active:scale-95"
                           title="Move Up"
                         >
-                          <MoveUp className="h-3.5 w-3.5" />
+                          <MoveUp className="h-4 w-4" />
                         </button>
                         <button
                           type="button"
                           disabled={idx === stanzas.length - 1}
                           onClick={() => handleMoveStanza(idx, 1)}
-                          className="rounded-lg p-1.5 text-slate-500 hover:bg-slate-100 hover:text-slate-900 disabled:opacity-30 transition"
+                          className="rounded-xl p-2 min-h-[36px] min-w-[36px] flex items-center justify-center text-slate-500 hover:bg-slate-100 hover:text-slate-900 disabled:opacity-30 transition active:scale-95"
                           title="Move Down"
                         >
-                          <MoveDown className="h-3.5 w-3.5" />
+                          <MoveDown className="h-4 w-4" />
                         </button>
                         <button
                           type="button"
                           onClick={() => handleRemoveStanza(idx)}
-                          className="rounded-lg p-1.5 text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition"
+                          className="rounded-xl p-2 min-h-[36px] min-w-[36px] flex items-center justify-center text-slate-400 hover:bg-rose-50 hover:text-rose-600 transition active:scale-95"
                           title="Delete Stanza"
                         >
-                          <Trash2 className="h-3.5 w-3.5" />
+                          <Trash2 className="h-4 w-4" />
                         </button>
                       </div>
                     </div>
@@ -848,15 +901,26 @@ export default function SongEditor() {
       </div>
     </div>
   </div>
-      </div >
+    </div>
 
-    {/* Song Import Modal */ }
-    < SongImportModal
-  isOpen = { importModalOpen }
-  onClose = {() => setImportModalOpen(false)
-}
-onImportSongs = { handleImportModalResult }
-  />
-    </div >
+    {/* Song Import Modal */}
+    <SongImportModal
+      isOpen={importModalOpen}
+      onClose={() => setImportModalOpen(false)}
+      onImportSongs={handleImportModalResult}
+    />
+
+    {/* Delete Song Password Confirmation Modal */}
+    <AdminPasswordModal
+      open={isDeleteModalOpen}
+      title={`Delete "${title || 'this song'}"?`}
+      subtitle="Admin password required to permanently delete this song."
+      actionLabel="Delete Song"
+      danger={true}
+      busy={isDeleting}
+      onCancel={() => setIsDeleteModalOpen(false)}
+      onSuccess={handleConfirmDelete}
+    />
+  </div>
   );
 }

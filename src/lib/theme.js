@@ -38,6 +38,43 @@ export function projectorStyle(settings) {
   };
 }
 
+export function isDarkColor(hex) {
+  const h = String(hex || '#000000').replace('#', '');
+  const full = h.length === 3 ? h.split('').map((c) => c + c).join('') : h;
+  const r = parseInt(full.substring(0, 2), 16) || 0;
+  const g = parseInt(full.substring(2, 4), 16) || 0;
+  const b = parseInt(full.substring(4, 6), 16) || 0;
+  const yiq = (r * 299 + g * 587 + b * 114) / 1000;
+  return yiq < 128;
+}
+
+/**
+ * Returns bolder font and high-contrast text border / outline styles
+ * to ensure lyrics are deeply visible in low-light sanctuaries and projector beams.
+ */
+export function getTextEmphasisStyle(settings) {
+  if (settings && settings.textBorderEmphasis === false) {
+    return {
+      fontWeight: 800,
+    };
+  }
+
+  const isDarkBg = isDarkColor(settings?.background || '#000000');
+  if (isDarkBg) {
+    return {
+      fontWeight: 900,
+      WebkitTextStroke: '0.6px rgba(0, 0, 0, 0.85)',
+      textShadow: '0 0 1px rgba(0,0,0,0.9), -1px -1px 0 rgba(0,0,0,0.85), 1px -1px 0 rgba(0,0,0,0.85), -1px 1px 0 rgba(0,0,0,0.85), 1px 1px 0 rgba(0,0,0,0.85), 0 2px 5px rgba(0,0,0,0.7)',
+    };
+  } else {
+    return {
+      fontWeight: 900,
+      WebkitTextStroke: '0.4px rgba(0, 0, 0, 0.35)',
+      textShadow: '0 0 1px rgba(255,255,255,0.9), -1px -1px 0 rgba(255,255,255,0.8), 1px -1px 0 rgba(255,255,255,0.8), -1px 1px 0 rgba(255,255,255,0.8), 1px 1px 0 rgba(255,255,255,0.8)',
+    };
+  }
+}
+
 /** Convert `#rrggbb` to `rgba(r,g,b,a)` – safe against bad input. */
 export function hexA(hex, alpha) {
   const h = String(hex || '#000000').replace('#', '');

@@ -23,15 +23,21 @@ function saveLocalIncomplete(data) {
 /**
  * Fetch incomplete / requires-edit flags from Supabase and merge with local storage.
  */
-export async function fetchIncompleteFlags() {
+export async function fetchIncompleteFlags(forceNetwork = false) {
   const localFlags = getLocalIncomplete();
+
+  // Client-side first: do not make network calls on ordinary page views
+  if (!forceNetwork) {
+    return localFlags;
+  }
 
   if (isSupabaseConfigured && supabase) {
     try {
       const { data, error } = await supabase
         .from('missing_songs')
         .select('*')
-        .eq('status', 'needs_edit');
+        .eq('status', 'needs_edit')
+        .limit(1000);
 
       if (!error && Array.isArray(data)) {
         const merged = { ...localFlags };

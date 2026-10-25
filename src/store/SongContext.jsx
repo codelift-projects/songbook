@@ -66,28 +66,38 @@ export function SongProvider({ children }) {
     }
   }, [syncing]);
 
-  // Realtime updates from Supabase
+  // Cross-tab / cross-window sync listener (0 network calls, purely client-side JSON sync)
   useEffect(() => {
-    let channel;
-    if (isSupabaseConfigured && supabase) {
-      channel = supabase
-        .channel('public:songbook_realtime_sync')
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'missing_songs' }, () => {
-          // Re-sync silently in background
-          syncWithCloud(true);
-        })
-        .on('postgres_changes', { event: '*', schema: 'public', table: 'songs' }, () => {
-          syncWithCloud(true);
-        })
-        .subscribe();
-    }
-
-    return () => {
-      if (channel) {
-        supabase.removeChannel(channel);
+    const handleStorageChange = (e) => {
+      if (e.key === 'church-songbook:library_cache:v6') {
+        try {
+          const fresh = getCachedLibrary();
+          if (Array.isArray(fresh) && fresh.length > 0) {
+            setSongs(fresh);
+            setLastSyncTime(getLastSyncTime());
+          }
+        } catch {}
       }
     };
-  }, [syncWithCloud]);
+
+    const handleCustomSync = () => {
+      try {
+        const fresh = getCachedLibrary();
+        if (Array.isArray(fresh) && fresh.length > 0) {
+          setSongs(fresh);
+          setLastSyncTime(getLastSyncTime());
+        }
+      } catch {}
+    };
+
+    window.addEventListener('storage', handleStorageChange);
+    window.addEventListener('songbook:sync', handleCustomSync);
+
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+      window.removeEventListener('songbook:sync', handleCustomSync);
+    };
+  }, []);
 
   /**
    * Add a new song: updates client-side JSON cache immediately and persists to Supabase DB.
@@ -129,9 +139,17 @@ export function SongProvider({ children }) {
     });
 
     // 2. Dual-save to Supabase DB
-    saveSongToDb(newSong).catch((err) => {
+    try {
+      await saveSongToDb(newSong);
+    } catch (err) {
       console.warn('Background DB save error on addSong:', err);
-    });
+    }
+
+    // 3. Sync site
+    setLastSyncTime(new Date().toISOString());
+    try {
+      window.dispatchEvent(new CustomEvent('songbook:sync', { detail: { newSong } }));
+    } catch {}
 
     return newSong;
   }, [songs]);
@@ -180,12 +198,17 @@ export function SongProvider({ children }) {
     // Dual-save each to Supabase in background
     Promise.allSettled(prepared.map((s) => saveSongToDb(s))).catch(() => {});
 
+    setLastSyncTime(new Date().toISOString());
+    try {
+      window.dispatchEvent(new CustomEvent('songbook:sync', { detail: { bulk: prepared } }));
+    } catch {}
+
     return prepared;
   }, [songs]);
 
   /**
    * Edit ANY song (both seed songs and user created songs).
-   * Updates client-side JSON cache immediately and persists to Supabase DB.
+   * Updates client-side JSON cache immediately, persists to Supabase DB, and syncs the site.
    */
   const editSong = useCallback(async (id, songData) => {
     const songId = String(id);
@@ -208,8 +231,14 @@ export function SongProvider({ children }) {
       return next;
     });
 
-    // 2. Dual-save to Supabase DB
+    // 2. Persist update directly to Supabase DB
     await saveSongToDb(updated);
+
+    // 3. Sync the site: update sync timestamp and dispatch site-wide sync event
+    setLastSyncTime(new Date().toISOString());
+    try {
+      window.dispatchEvent(new CustomEvent('songbook:sync', { detail: { updatedSong: updated } }));
+    } catch {}
 
     return updated;
   }, []);
@@ -229,6 +258,12 @@ export function SongProvider({ children }) {
 
     // 2. Dual-delete from Supabase DB
     await deleteSongFromDb(songId);
+
+    // 3. Sync site
+    setLastSyncTime(new Date().toISOString());
+    try {
+      window.dispatchEvent(new CustomEvent('songbook:sync', { detail: { removedId: songId } }));
+    } catch {}
   }, []);
 
   /**

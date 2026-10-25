@@ -1,5 +1,5 @@
 import { useSettings } from '../store/SettingsContext';
-import { FONT_STACKS, BACKGROUND_COLOR_OPTIONS, TEXT_COLOR_OPTIONS } from '../lib/theme';
+import { FONT_STACKS, BACKGROUND_COLOR_OPTIONS, TEXT_COLOR_OPTIONS, getTextEmphasisStyle } from '../lib/theme';
 import { RotateCcw, Palette, Type, Sliders, Check } from 'lucide-react';
 
 export default function Settings() {
@@ -224,6 +224,24 @@ export default function Settings() {
             className="w-full h-2 rounded-lg bg-slate-200 accent-emerald-600 cursor-pointer"
           />
         </div>
+
+        {/* Text Border / Low Light Emphasis Toggle */}
+        <div className="pt-3 border-t border-slate-100">
+          <label className="flex items-center justify-between text-xs font-bold text-slate-700 cursor-pointer">
+            <div>
+              <span className="block text-slate-800">Text Border (Low-Light Projector Emphasis)</span>
+              <span className="block text-[11px] text-slate-500 font-normal mt-0.5">
+                Bolder text with contrast outline for projector beams & dim ambient rooms
+              </span>
+            </div>
+            <input
+              type="checkbox"
+              checked={settings.textBorderEmphasis ?? true}
+              onChange={(e) => update({ textBorderEmphasis: e.target.checked })}
+              className="h-4 w-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+            />
+          </label>
+        </div>
       </div>
 
       {/* Live Preview Card */}
@@ -250,8 +268,11 @@ export default function Settings() {
             कोरस / CHORUS
           </div>
           <p
-            className="text-xl font-bold leading-tight"
-            style={{ lineHeight: settings.lineHeight }}
+            className="text-xl font-black leading-tight"
+            style={{
+              lineHeight: settings.lineHeight,
+              ...getTextEmphasisStyle(settings)
+            }}
           >
             Amazing grace, how sweet the sound<br />
             तेरी स्तुति और आराधना करता रहूँ मैं सदा
