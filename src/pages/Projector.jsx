@@ -49,6 +49,7 @@ export default function Projector() {
     return group.songIds[groupSongIndex + 1];
   }, [group, groupSongIndex]);
 
+  const rootRef = useRef(null);
   const contentRef = useRef(null);
   const { isFullscreen, toggle: toggleFullscreen } = useFullscreen();
 
