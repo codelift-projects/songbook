@@ -13,7 +13,7 @@ const DEFAULTS = {
   showNextPreview: false,
   autoHideControls: true,
   autoHideDelayMs: 2000,
-  textBorderEmphasis: true, // Bolder effects like border to text for low-light projector visibility
+  textBorderEmphasis: false,
 };
 
 const PRESETS = [

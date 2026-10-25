@@ -49,30 +49,24 @@ export function isDarkColor(hex) {
 }
 
 /**
- * Returns bolder font and high-contrast text border / outline styles
- * to ensure lyrics are deeply visible in low-light sanctuaries and projector beams.
+ * Returns text styles for lyrics rendering.
+ * Keeps text crisp, sharp, and naturally bold without muddy stroke or shadow artifacts.
  */
 export function getTextEmphasisStyle(settings) {
-  if (settings && settings.textBorderEmphasis === false) {
-    return {
-      fontWeight: 800,
-    };
+  if (!settings?.textBorderEmphasis) {
+    return {};
   }
 
   const isDarkBg = isDarkColor(settings?.background || '#000000');
   if (isDarkBg) {
-    return {
-      fontWeight: 900,
-      WebkitTextStroke: '0.6px rgba(0, 0, 0, 0.85)',
-      textShadow: '0 0 1px rgba(0,0,0,0.9), -1px -1px 0 rgba(0,0,0,0.85), 1px -1px 0 rgba(0,0,0,0.85), -1px 1px 0 rgba(0,0,0,0.85), 1px 1px 0 rgba(0,0,0,0.85), 0 2px 5px rgba(0,0,0,0.7)',
-    };
-  } else {
-    return {
-      fontWeight: 900,
-      WebkitTextStroke: '0.4px rgba(0, 0, 0, 0.35)',
-      textShadow: '0 0 1px rgba(255,255,255,0.9), -1px -1px 0 rgba(255,255,255,0.8), 1px -1px 0 rgba(255,255,255,0.8), -1px 1px 0 rgba(255,255,255,0.8), 1px 1px 0 rgba(255,255,255,0.8)',
-    };
+    // In dark mode, avoid -webkit-text-stroke and multi-shadows which erode glyphs and create dirty halos
+    return {};
   }
+
+  // In washed-out light mode only, apply a clean subtle shadow
+  return {
+    textShadow: '0 1px 2px rgba(0, 0, 0, 0.12)',
+  };
 }
 
 /** Convert `#rrggbb` to `rgba(r,g,b,a)` – safe against bad input. */

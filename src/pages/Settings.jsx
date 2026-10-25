@@ -236,7 +236,7 @@ export default function Settings() {
             </div>
             <input
               type="checkbox"
-              checked={settings.textBorderEmphasis ?? true}
+              checked={Boolean(settings.textBorderEmphasis)}
               onChange={(e) => update({ textBorderEmphasis: e.target.checked })}
               className="h-4 w-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer"
             />
